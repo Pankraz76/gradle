@@ -22,8 +22,14 @@ plugins {
     id("gradlebuild.warmup-ec2") // Warm up EC2 AMI
 
     id("com.autonomousapps.dependency-analysis")
+    id("com.autonomousapps.dependency-analysis")
 }
 
+dependencies {
+    rewrite(platform(dependencyFromLibs("openrewrite-recipe-bom")))
+    rewrite("org.openrewrite.recipe:rewrite-migrate-java")
+    rewrite("org.openrewrite.recipe:rewrite-testing-frameworks")
+}
 configure<DependencyAnalysisExtension> {
     issues {
         all {
