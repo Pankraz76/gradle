@@ -8,6 +8,26 @@ plugins {
 
     id("gradlebuild.update-versions")            // Local development: Convenience tasks to update versions in this build: 'released-versions.json', 'agp-versions.properties', ...
     id("gradlebuild.wrapper")                    // Local development: Convenience tasks to update the wrapper (like 'nightlyWrapper')
+    id("org.openrewrite.rewrite") version "7.14.1"
 }
 
 description = "Adaptable, fast automation for all"
+
+rewrite {
+    activeRecipe("org.gradle.openrewrite.CodeCleanupComposition")
+    exclusions.add("**.GarbageCollectedMemoryPoolTest.java")
+    exclusions.add("**.MetadataVersionTest.java")
+    setExportDatatables(true)
+    setFailOnDryRunResults(true)
+}
+
+dependencies {
+    rewrite("org.openrewrite.recipe:rewrite-static-analysis:latest.release")
+    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:latest.release"))
+}
+
+tasks {
+    check {
+        dependsOn(rewriteDryRun)
+    }
+}
