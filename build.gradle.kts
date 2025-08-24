@@ -11,6 +11,10 @@ plugins {
     id("org.openrewrite.rewrite") version "7.14.1"
 }
 
+repositories {
+    mavenCentral()
+}
+
 description = "Adaptable, fast automation for all"
 
 rewrite {
