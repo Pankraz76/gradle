@@ -44,7 +44,7 @@ configure<DependencyAnalysisExtension> {
 }
 
 rewrite {
-    activeRecipe("org.kotlin.openrewrite.RewriteComposition")
+    activeRecipe("org.gradle.openrewrite.CodeCleanupComposition")
     exclusions.add("**RunnerWithCustomUniqueIdsAndDisplayNames.java")
     exclusions.add("**SpockTestCaseWithUnrolledAndRegularFeatureMethods.groovy")
     failOnDryRunResults = true

@@ -1,6 +1,6 @@
 type: specs.openrewrite.org/v1beta/recipe
-name: org.kotlin.openrewrite.RewriteComposition
-displayName: Definition of Done
+name: org.gradle.openrewrite.CodeCleanupComposition
+displayName: Composition of Cleanup Code
 description: Automatically cleanup code to comply checkstyle convention.
 recipeList:
   - org.openrewrite.java.RemoveUnusedImports
