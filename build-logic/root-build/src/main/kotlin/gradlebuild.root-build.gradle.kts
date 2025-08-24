@@ -16,13 +16,17 @@
 
 import com.autonomousapps.DependencyAnalysisExtension
 
+repositories {
+    mavenCentral()
+}
+
 plugins {
     id("gradlebuild.buildscan") // Reporting: Add more data through custom tags to a Build Scan
     id("gradlebuild.ide") // Local development: Tweak IDEA import
     id("gradlebuild.warmup-ec2") // Warm up EC2 AMI
 
     id("com.autonomousapps.dependency-analysis")
-    id("org.openrewrite.rewrite")
+    id("org.openrewrite.rewrite") version("latest.release")
 }
 
 configure<DependencyAnalysisExtension> {
@@ -51,9 +55,9 @@ rewrite {
 }
 
 dependencies {
-    rewrite(platform(dependencyFromLibs("openrewrite-recipe-bom")))
-    rewrite("org.openrewrite.recipe:rewrite-migrate-java")
-    rewrite("org.openrewrite.recipe:rewrite-testing-frameworks")
+    rewrite(platform(dependencyFromLibs("openrewrite-recipe-bom:latest.release")))
+    rewrite("org.openrewrite.recipe:rewrite-migrate-java:latest.release")
+    rewrite("org.openrewrite.recipe:rewrite-testing-frameworks:latest.release")
 }
 
 tasks {
