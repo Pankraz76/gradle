@@ -44,12 +44,7 @@ configure<DependencyAnalysisExtension> {
 }
 
 rewrite {
-    activeRecipe("org.openrewrite.java.RemoveUnusedImports")
-    activeRecipe("org.openrewrite.staticanalysis.EqualsAvoidsNull")
-    activeRecipe("org.openrewrite.staticanalysis.ModifierOrder")
-    activeRecipe("org.openrewrite.staticanalysis.RemoveUnusedPrivateMethods")
-    activeRecipe("org.openrewrite.text.EndOfLineAtEndOfFile")
-    configFile = file("config/rewrite.yml")
+    activeRecipe("org.kotlin.openrewrite.RewriteComposition")
     exclusions.add("**RunnerWithCustomUniqueIdsAndDisplayNames.java")
     exclusions.add("**SpockTestCaseWithUnrolledAndRegularFeatureMethods.groovy")
     failOnDryRunResults = true
