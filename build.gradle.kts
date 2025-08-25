@@ -9,6 +9,7 @@ plugins {
     id("gradlebuild.update-versions")            // Local development: Convenience tasks to update versions in this build: 'released-versions.json', 'agp-versions.properties', ...
     id("gradlebuild.wrapper")                    // Local development: Convenience tasks to update the wrapper (like 'nightlyWrapper')
     id("org.openrewrite.rewrite") version "7.14.1"
+    id("pmd")
 }
 
 repositories {
