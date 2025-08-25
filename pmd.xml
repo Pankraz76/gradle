@@ -7,9 +7,9 @@
     <!--<rule ref="category/java/errorprone.xml"/>-->
     <!--<rule ref="category/java/codestyle.xml"/>-->
     <rule ref="category/java/codestyle.xml">
-        <exclude name="UnusedPrivateMethod"/>
-        <exclude name="UnnecessaryImport"/>
-        <!--<exclude name="WhileLoopsMustUseBraces"/>-->
         <!--<exclude name="IfElseStmtsMustUseBraces"/>-->
+        <!--<exclude name="UnusedPrivateMethod"/>-->
+        <!--<exclude name="WhileLoopsMustUseBraces"/>-->
+        <exclude name="UnnecessaryImport"/>
     </rule>
 </ruleset>
