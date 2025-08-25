@@ -26,6 +26,11 @@ rewrite {
     setFailOnDryRunResults(true)
 }
 
+pmd {
+    ruleSetFiles = files("custom-pmd-ruleset.xml")
+    ruleSets = []
+}
+
 dependencies {
     rewrite("org.openrewrite.recipe:rewrite-static-analysis:latest.release")
     rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:latest.release"))
