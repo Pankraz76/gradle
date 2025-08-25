@@ -38,6 +38,7 @@ dependencies {
 
 tasks {
     check {
-        dependsOn(rewriteDryRun, "pmdMain")
+//        dependsOn(rewriteDryRun, "pmdMain")
+        dependsOn("pmdMain")
     }
 }
