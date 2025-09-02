@@ -56,7 +56,7 @@ jobs:
         shell: bash
         run: |
           echo "fix potentially failing build with:"
-          echo "./gradlew spotlessApply
+          echo "./gradlew spotlessApply"
           ./gradlew clean spotlessCheck > /dev/null
 
       - name: PMD # 6m 40s / vs cached 39s
