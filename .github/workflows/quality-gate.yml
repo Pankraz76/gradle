@@ -52,13 +52,16 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Spotless
+      - name: Spotless # 21s
         shell: bash
-        run: ./gradlew clean spotlessCheck # 21s
+        run: |
+          echo "fix potentially failing build with:"
+          echo "./gradlew spotlessApply
+          ./gradlew clean spotlessCheck > /dev/null
 
-      - name: PMD
+      - name: PMD # 6m 40s / vs cached 39s
         shell: bash
-        run: ./gradlew clean pmdMain # 6m 40s / vs cached 39s
+        run: ./gradlew clean pmdMain
 
       - name: Rewrite
         shell: bash
