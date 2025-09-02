@@ -54,17 +54,18 @@ jobs:
 
       - name: Spotless
         shell: bash
-        run: ./gradlew spotlessCheck
+        run: ./gradlew clean spotlessCheck # 42s
 
       - name: PMD
         shell: bash
-        run: ./gradlew pmdMain
+        run: ./gradlew clean pmdMain # 6m 40s
 
       - name: Rewrite
         shell: bash
         run: |
-          echo "fix failing build with './gradlew rewriteRun -Dorg.gradle.jvmargs=-Xmx8G'"
-          ./gradlew rewriteDryRun -Dorg.gradle.jvmargs=-Xmx8G > /dev/null
+          echo "fix potentially failing build with:"
+          echo "./gradlew clean rewriteRun -Dorg.gradle.jvmargs=-Xmx8G"
+          ./gradlew clean rewriteDryRun -Dorg.gradle.jvmargs=-Xmx8G > /dev/null
         # https://docs.openrewrite.org/reference/faq#im-getting-javalangoutofmemoryerror-java-heap-space-when-running-openrewrite
         timeout-minutes: 180
 
