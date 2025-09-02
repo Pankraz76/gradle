@@ -54,11 +54,11 @@ jobs:
 
       - name: Spotless
         shell: bash
-        run: ./gradlew clean spotlessCheck # 42s
+        run: ./gradlew clean spotlessCheck # 21s
 
       - name: PMD
         shell: bash
-        run: ./gradlew clean pmdMain # 6m 40s
+        run: ./gradlew clean pmdMain # 6m 40s / vs cached 39s
 
       - name: Rewrite
         shell: bash
