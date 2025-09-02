@@ -1,0 +1,18 @@
+type: specs.openrewrite.org/v1beta/recipe
+name: DefinitionOfDone
+displayName: Definition of Done
+description: Automatically cleanup code to apply coding convention.
+recipeList:
+  - org.openrewrite.java.RemoveUnusedImports
+  - org.openrewrite.staticanalysis.RemoveUnusedPrivateMethods
+  # - org.openrewrite.staticanalysis.RemoveUnusedPrivateFields
+  # - org.openrewrite.staticanalysis.RemoveUnusedLocalVariables
+  # - org.openrewrite.staticanalysis.UnnecessaryParentheses
+  # - org.openrewrite.staticanalysis.RemoveUnnecessaryModifiers
+  # - org.openrewrite.staticanalysis.RemoveUnnecessarySemicolons
+  # - org.openrewrite.staticanalysis.RemoveUnusedParameters
+exclusions:
+  - "**platforms/documentation**"
+  - "**platforms/enterprise/enterprise-plugin-performance/src/templates**"
+  - "**platforms/jvm/language-groovy/src/testFixtures/resources**"
+  - "**testing/performance/src/templates**"

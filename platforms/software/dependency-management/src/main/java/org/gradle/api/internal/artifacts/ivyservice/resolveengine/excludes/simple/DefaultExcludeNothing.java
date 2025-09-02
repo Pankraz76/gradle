@@ -59,7 +59,4 @@ class DefaultExcludeNothing implements ExcludeNothing {
         return this == obj;
     }
 
-    private int size() {
-        return 1;
-    }
 }

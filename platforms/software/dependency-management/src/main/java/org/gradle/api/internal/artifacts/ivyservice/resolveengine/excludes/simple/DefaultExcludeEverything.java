@@ -60,7 +60,4 @@ final class DefaultExcludeEverything implements ExcludeEverything {
         return this == obj;
     }
 
-    private int size() {
-        return 1;
-    }
 }
