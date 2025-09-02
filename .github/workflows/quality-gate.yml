@@ -58,7 +58,9 @@ jobs:
 
       - name: Rewrite
         shell: bash
-        run: ./gradlew rewriteDryRun -Dorg.gradle.jvmargs=-Xmx8G
+        run: |
+          echo "fix failing build with './gradlew rewriteRun -Dorg.gradle.jvmargs=-Xmx8G'"
+          ./gradlew rewriteDryRun -Dorg.gradle.jvmargs=-Xmx8G > /dev/null
         # https://docs.openrewrite.org/reference/faq#im-getting-javalangoutofmemoryerror-java-heap-space-when-running-openrewrite
         timeout-minutes: 120
 
