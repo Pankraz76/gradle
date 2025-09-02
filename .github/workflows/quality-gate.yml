@@ -52,9 +52,13 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Spotless & PMD & Rewrite
+      - name: Spotless & PMD
         shell: bash
-        run: ./gradlew spotlessCheck pmdMain rewriteDryRun -Dorg.gradle.jvmargs=-Xmx8G
+        run: ./gradlew spotlessCheck pmdMain
+
+      - name: Rewrite
+        shell: bash
+        run: ./gradlew rewriteDryRun -Dorg.gradle.jvmargs=-Xmx8G
         # https://docs.openrewrite.org/reference/faq#im-getting-javalangoutofmemoryerror-java-heap-space-when-running-openrewrite
         timeout-minutes: 120
 
