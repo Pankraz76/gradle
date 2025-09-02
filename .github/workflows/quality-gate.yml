@@ -62,7 +62,7 @@ jobs:
           echo "fix failing build with './gradlew rewriteRun -Dorg.gradle.jvmargs=-Xmx8G'"
           ./gradlew rewriteDryRun -Dorg.gradle.jvmargs=-Xmx8G > /dev/null
         # https://docs.openrewrite.org/reference/faq#im-getting-javalangoutofmemoryerror-java-heap-space-when-running-openrewrite
-        timeout-minutes: 120
+        timeout-minutes: 180
 
       - name: Cleanup Gradle Cache
         # Cleans up the Gradle caches before being cached
