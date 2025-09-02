@@ -1,4 +1,4 @@
-name: "quality-gate - action"
+name: "Spotless & PMD & Rewrite"
 
 on:
   push:
@@ -52,17 +52,9 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Spotless
+      - name: Spotless & PMD & Rewrite
         shell: bash
-        run: ./gradlew spotlessCheck
-
-      - name: PMD
-        shell: bash
-        run: ./gradlew pmdMain
-
-      - name: Rewrite
-        shell: bash
-        run: ./gradlew rewriteDryRun -Dorg.gradle.jvmargs=-Xmx8G
+        run: ./gradlew spotlessCheck pmdMain rewriteDryRun -Dorg.gradle.jvmargs=-Xmx8G
         # https://docs.openrewrite.org/reference/faq#im-getting-javalangoutofmemoryerror-java-heap-space-when-running-openrewrite
         timeout-minutes: 120
 
