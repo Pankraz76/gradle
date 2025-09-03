@@ -201,10 +201,6 @@ abstract public class DefaultCacheConfigurations implements CacheConfigurationsI
         this.cleanupHasBeenConfigured = hasBeenConfigured;
     }
 
-    private static <T> Provider<T> providerFromSupplier(Supplier<T> supplier) {
-        return new DefaultProvider<>(supplier::get);
-    }
-
     static abstract class DefaultCacheResourceConfiguration implements CacheResourceConfigurationInternal {
         private final String name;
         private final Clock clock;
