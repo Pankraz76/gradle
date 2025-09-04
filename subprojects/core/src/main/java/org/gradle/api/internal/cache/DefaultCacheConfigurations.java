@@ -23,7 +23,6 @@ import org.gradle.api.cache.Cleanup;
 import org.gradle.api.cache.MarkingStrategy;
 import org.gradle.api.internal.DocumentationRegistry;
 import org.gradle.api.internal.provider.DefaultProperty;
-import org.gradle.api.internal.provider.DefaultProvider;
 import org.gradle.api.internal.provider.PropertyHost;
 import org.gradle.api.invocation.Gradle;
 import org.gradle.api.model.ObjectFactory;

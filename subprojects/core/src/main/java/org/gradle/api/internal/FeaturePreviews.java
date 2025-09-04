@@ -18,7 +18,6 @@ package org.gradle.api.internal;
 import org.gradle.internal.buildoption.FeatureFlag;
 import org.jspecify.annotations.Nullable;
 
-import java.util.EnumSet;
 
 public class FeaturePreviews {
 
