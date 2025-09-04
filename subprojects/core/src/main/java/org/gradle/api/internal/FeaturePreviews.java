@@ -54,19 +54,6 @@ public class FeaturePreviews {
             }
         }
 
-        /**
-         * Returns the set of active {@linkplain Feature features}.
-         */
-        private static EnumSet<Feature> activeFeatures() {
-            EnumSet<Feature> activeFeatures = EnumSet.noneOf(Feature.class);
-            for (Feature feature : Feature.values()) {
-                if (feature.isActive()) {
-                    activeFeatures.add(feature);
-                }
-            }
-            return activeFeatures;
-        }
-
         private final boolean active;
         private final String systemPropertyName;
 
