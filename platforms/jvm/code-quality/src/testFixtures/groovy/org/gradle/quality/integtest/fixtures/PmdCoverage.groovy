@@ -48,9 +48,6 @@ class PmdCoverage {
         25: '7.16.0',
     ]
 
-    // See https://mvnrepository.com/artifact/net.sourceforge.pmd/pmd
-    private static final String LATEST_PMD_VERSION = '7.16.0'
-
     private final static Set<String> TESTED_VERSIONS = [
         PmdPlugin.DEFAULT_PMD_VERSION,
         // LTS versions
@@ -60,7 +57,7 @@ class PmdCoverage {
         VERSION_COVERAGE[21],
         // Latest JVM that Gradle supports toolchains on
         VERSION_COVERAGE[25],
-        LATEST_PMD_VERSION
+        PmdPlugin.DEFAULT_PMD_VERSION
     ]
 
     static Set<String> getSupportedVersionsByJdk() {
