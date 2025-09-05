@@ -172,8 +172,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/master' }}
-      - run: ./gradlew rewriteDiscover -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }} -Dorg.gradle.jvmargs=-Xmx16G
-      # - run: ./gradlew rewriteDryRun -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }} -Dorg.gradle.jvmargs=-Xmx16G
+      - run: ./gradlew rewriteDryRun -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }} -Dorg.gradle.jvmargs=-Xmx16G
         timeout-minutes: 240
 
   unit-test:
