@@ -16,7 +16,7 @@
 
 package org.gradle.quality.integtest.fixtures
 
-import org.gradle.api.plugins.quality.PmdPlugin
+
 import org.gradle.internal.jvm.Jvm
 import org.gradle.util.internal.VersionNumber
 

@@ -16,7 +16,7 @@
 
 package org.gradle.api.plugins.quality.pmd
 
-import org.gradle.api.plugins.quality.PmdPlugin
+
 import org.gradle.integtests.fixtures.MultiVersionIntegrationSpec
 import org.gradle.integtests.fixtures.TargetCoverage
 import org.gradle.quality.integtest.fixtures.PmdCoverage

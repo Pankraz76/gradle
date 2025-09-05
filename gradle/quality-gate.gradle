@@ -26,6 +26,7 @@ allprojects {
     }
     // check.dependsOn(rewriteDryRun) // fixme stuck locally / too long
     // check.dependsOn(pmdMain) // why not working? Task with path 'pmdMain' not found in root project 'gradle'.
+    // sanityCheck.dependsOn(pmdMain) // why not working? Task with path 'pmdMain' not found in root project 'gradle'.
 }
 
 spotless {
@@ -44,7 +45,8 @@ spotless {
     }
 }
 
-check.dependsOn(spotlessCheck)
+// check.dependsOn(spotlessCheck)
+sanityCheck.dependsOn(spotlessCheck)
 
 repositories {
     mavenCentral()
