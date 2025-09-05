@@ -4,8 +4,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.net/ruleset_2_0_0.xsd">
     <description>DefinitionOfDone</description>
-    <exclude-pattern>.*internal/classpath/FileUtils.java</exclude-pattern><!--link-->
     <exclude-pattern>.*DependencyMetadataRules.java</exclude-pattern>
+    <exclude-pattern>.*classpath/FileUtils.java</exclude-pattern>
     <exclude-pattern>.*platforms/documentation.*</exclude-pattern>
     <exclude-pattern>.*platforms/enterprise/enterprise-plugin-performance/src/templates.*</exclude-pattern>
     <exclude-pattern>.*platforms/jvm/language-groovy/src/testFixtures/resources.*</exclude-pattern>
