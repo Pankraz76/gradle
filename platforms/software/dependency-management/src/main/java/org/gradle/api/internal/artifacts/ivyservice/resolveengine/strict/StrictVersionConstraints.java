@@ -27,12 +27,12 @@ public class StrictVersionConstraints {
 
     public static final StrictVersionConstraints EMPTY = new StrictVersionConstraints() {
         @Override
-        public StrictVersionConstraints union(StrictVersionConstraints other) {
+        public final StrictVersionConstraints union(StrictVersionConstraints other) {
             return other;
         }
 
         @Override
-        public StrictVersionConstraints intersect(StrictVersionConstraints other) {
+        public final StrictVersionConstraints intersect(StrictVersionConstraints other) {
             return EMPTY;
         }
 

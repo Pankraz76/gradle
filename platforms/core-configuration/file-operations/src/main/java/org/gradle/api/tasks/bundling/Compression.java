@@ -31,7 +31,7 @@ public enum Compression {
     private final String defaultExtension;
     private final ImmutableList<String> supportedExtensions;
 
-    Compression(String defaultExtension, String... additionalSupportedExtensions) {
+    private Compression(String defaultExtension, String... additionalSupportedExtensions) {
         this.defaultExtension = defaultExtension;
 
         ImmutableList.Builder<String> builder = ImmutableList.builder();

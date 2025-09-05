@@ -34,7 +34,7 @@ public interface SignatureAwareCallInterceptor {
     SignatureMatch matchesMethodSignature(Class<?> receiverClass, Class<?>[] argumentClasses, boolean isStatic);
 
     @NullMarked
-    class SignatureMatch {
+    public static class SignatureMatch {
         public final boolean isVararg;
         public final Class<?>[] argClasses;
 

@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.Reader;
 
 public class LineFilter extends Reader {
-    private enum State {
+    private static enum State {
         NORMAL,
         SKIP_LINE,
         EOF
