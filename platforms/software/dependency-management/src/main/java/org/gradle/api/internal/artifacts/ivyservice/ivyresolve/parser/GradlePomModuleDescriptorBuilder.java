@@ -211,7 +211,7 @@ public class GradlePomModuleDescriptorBuilder {
 
         private final String name;
 
-        private JarDependencyType(String name) {
+        JarDependencyType(String name) {
             this.name = name;
         }
 

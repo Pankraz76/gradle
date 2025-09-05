@@ -97,7 +97,7 @@ class ImplementationDependencyRelocator extends Remapper {
         // JGit properties work from their relocated locations and conflict if they are left in place.
         "org/eclipse/jgit");
 
-    private final boolean mustBeRelocated(String resource) {
+    private boolean mustBeRelocated(String resource) {
         for (String mustRelocate : mustRelocateList) {
             if (resource.startsWith(mustRelocate)) {
                 return true;
