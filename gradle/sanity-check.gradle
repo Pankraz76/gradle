@@ -20,3 +20,32 @@ allprojects {
     // sanityCheck.dependsOn(pmdMain)
     // why not working? (Maybe after merge/release?) Task with path 'pmdMain' not found in root project 'gradle'.
 }
+rewrite {
+    activeRecipe("DefinitionOfDone")
+    setExportDatatables(true)
+    setFailOnDryRunResults(true)
+}
+spotless {
+    java {
+        //endWithNewline()
+        //removeWildcardImports() https://docs.openrewrite.org/recipes/java/removeunusedimports
+        //trimTrailingWhitespace()
+        removeUnusedImports()
+        target "**/*.java"
+        targetExclude(
+            "platforms/documentation/**",
+            "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
+            "platforms/jvm/language-groovy/src/testFixtures/resources/**",
+            "testing/performance/src/templates/**",
+        )
+    }
+}
+check.dependsOn(spotlessCheck)
+//check.dependsOn(spotlessCheck, rewriteDryRun)
+//sanityCheck.dependsOn(spotlessCheck)
+repositories {
+    mavenCentral()
+}
+dependencies {
+    rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.15.0")
+}
