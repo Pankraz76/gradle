@@ -11,21 +11,21 @@
     <exclude-pattern>.*platforms/jvm/language-groovy/src/testFixtures/resources.*</exclude-pattern>
     <exclude-pattern>.*testing/performance/src/templates.*</exclude-pattern>
     <!--<rule ref="category/java/bestpractices.xml" />-->
-    <!--<rule ref="category/java/codestyle.xml" />-->
-    <!--<rule ref="category/java/design.xml" />-->
-    <!--<rule ref="category/java/documentation.xml" />-->
-    <!--<rule ref="category/java/errorprone.xml" />-->
-    <!--<rule ref="category/java/multithreading.xml" />-->
-    <!--<rule ref="category/java/performance.xml" />-->
-    <!--<rule ref="category/java/security.xml" />-->
     <!--<rule ref="category/java/bestpractices.xml/UnusedFormalParameter"/>-->
-    <!--<rule ref="category/java/bestpractices.xml/UnusedLocalVariable"/>-->
     <!--<rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>-->
     <!--<rule ref="category/java/bestpractices.xml/UnusedPrivateMethod"/>-->
-    <rule ref="category/java/codestyle.xml/UnnecessaryImport"/>
+    <!--<rule ref="category/java/codestyle.xml" />-->
     <!--<rule ref="category/java/codestyle.xml/UnnecessaryModifier"/>-->
     <!--<rule ref="category/java/codestyle.xml/UnnecessaryParentheses"/>-->
     <!--<rule ref="category/java/codestyle.xml/UnnecessaryReturn"/>-->
     <!--<rule ref="category/java/codestyle.xml/UnnecessarySemicolon"/>-->
+    <!--<rule ref="category/java/design.xml" />-->
+    <!--<rule ref="category/java/documentation.xml" />-->
+    <!--<rule ref="category/java/errorprone.xml" />-->
     <!--<rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashCodeOnComparable" />-->
+    <!--<rule ref="category/java/multithreading.xml" />-->
+    <!--<rule ref="category/java/performance.xml" />-->
+    <rule ref="category/java/security.xml" />
+    <rule ref="category/java/bestpractices.xml/UnusedLocalVariable"/>
+    <rule ref="category/java/codestyle.xml/UnnecessaryImport"/>
 </ruleset>
