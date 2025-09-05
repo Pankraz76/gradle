@@ -29,9 +29,6 @@ class DefaultExcludeNothing implements ExcludeNothing {
     private DefaultExcludeNothing() {
     }
 
-    private void unusedTestCi() {
-    }
-
     @Override
     public boolean excludes(ModuleIdentifier module) {
         return false;
@@ -60,5 +57,9 @@ class DefaultExcludeNothing implements ExcludeNothing {
     @Override
     public boolean equals(Object obj) {
         return this == obj;
+    }
+
+    private int size() {
+        return 1;
     }
 }

@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static org.gradle.internal.component.external.model.maven.DefaultMavenModuleResolveMetadata.POM_PACKAGING;
 
 /**
  * This based on a copy of org.apache.ivy.plugins.parser.m2.PomModuleDescriptorParser, but now heavily refactored.
@@ -79,6 +80,10 @@ public final class GradlePomModuleDescriptorParser extends AbstractModuleDescrip
     @Override
     public String toString() {
         return "gradle pom parser";
+    }
+
+    private boolean isBom(PomReader pomReader) {
+        return POM_PACKAGING.equals(pomReader.getPackaging());
     }
 
     @Override

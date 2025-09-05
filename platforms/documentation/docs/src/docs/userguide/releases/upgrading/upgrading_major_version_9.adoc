@@ -776,7 +776,7 @@ The default version of Checkstyle is link:https://checkstyle.sourceforge.io/rele
 
 The default version of CodeNarc is link:https://github.com/CodeNarc/CodeNarc/blob/v3.6.0/CHANGELOG.md#version-360--feb-2025[3.6.0].
 
-The default version of Pmd is link:https://github.com/pmd/pmd/releases/tag/pmd_releases%2F7.17.0[7.17.0]
+The default version of Pmd is link:https://github.com/pmd/pmd/releases/tag/pmd_releases%2F7.13.0[7.13.0]
 
 === Upgraded default versions of testing frameworks
 

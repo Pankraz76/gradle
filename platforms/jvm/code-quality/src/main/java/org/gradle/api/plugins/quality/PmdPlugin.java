@@ -16,7 +16,6 @@
 package org.gradle.api.plugins.quality;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.artifacts.Configuration;
@@ -61,27 +60,9 @@ import static org.gradle.api.internal.lambdas.SerializableLambdas.action;
  */
 public abstract class PmdPlugin extends AbstractCodeQualityPlugin<Pmd> {
 
-    /**
-     * @implNote update links in {@link Pmd} and {@link PmdExtension} as well when updating!
-     * s&r for '7.13.0' -> '7.17.0'
-     */
-    public static final String DEFAULT_PMD_VERSION = "7.17.0";
+    // When updating DEFAULT_PMD_VERSION, also update links in Pmd and PmdExtension!
+    public static final String DEFAULT_PMD_VERSION = "7.13.0";
     private static final String PMD_ADDITIONAL_AUX_DEPS_CONFIGURATION = "pmdAux";
-    private static final ImmutableList<String> RULE_SET = ImmutableList.of(
-        "category/java/bestpractices.xml/UnusedPrivateMethod",
-        "category/java/errorprone.xml"
-        // "category/java/bestpractices.xml", need rewrite
-        // "category/java/bestpractices.xml/UnusedFormalParameter",
-        // "category/java/bestpractices.xml/UnusedLocalVariable",
-        // "category/java/bestpractices.xml/UnusedPrivateField",
-        // "category/java/codestyle.xml", need rewrite
-        // "category/java/codestyle.xml/UnnecessaryImport",
-        // "category/java/codestyle.xml/UnnecessaryModifier",
-        // "category/java/codestyle.xml/UnnecessaryParentheses",
-        // "category/java/codestyle.xml/UnnecessaryReturn",
-        // "category/java/codestyle.xml/UnnecessarySemicolon",
-        // "category/java/errorprone.xml/OverrideBothEqualsAndHashCodeOnComparable" wait for new release
-    );
 
     private PmdExtension extension;
 
@@ -148,7 +129,7 @@ public abstract class PmdPlugin extends AbstractCodeQualityPlugin<Pmd> {
 
     private static List<String> ruleSetsConvention(PmdExtension extension) {
         if (extension.getRuleSetConfig() == null && extension.getRuleSetFiles().isEmpty()) {
-            return RULE_SET;
+            return Collections.singletonList("category/java/errorprone.xml");
         } else {
             return Collections.emptyList();
         }
