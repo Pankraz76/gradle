@@ -45,8 +45,8 @@ spotless {
     }
 }
 
-// check.dependsOn(spotlessCheck)
-sanityCheck.dependsOn(spotlessCheck)
+ check.dependsOn(spotlessCheck)
+//sanityCheck.dependsOn(spotlessCheck)
 
 repositories {
     mavenCentral()
