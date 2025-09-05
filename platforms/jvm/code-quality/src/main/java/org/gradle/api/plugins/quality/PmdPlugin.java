@@ -16,6 +16,7 @@
 package org.gradle.api.plugins.quality;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.artifacts.Configuration;
@@ -61,8 +62,18 @@ import static org.gradle.api.internal.lambdas.SerializableLambdas.action;
 public abstract class PmdPlugin extends AbstractCodeQualityPlugin<Pmd> {
 
     // When updating DEFAULT_PMD_VERSION, also update links in Pmd and PmdExtension!
-    public static final String DEFAULT_PMD_VERSION = "7.13.0";
+    public static final String DEFAULT_PMD_VERSION = "7.16.0";
     private static final String PMD_ADDITIONAL_AUX_DEPS_CONFIGURATION = "pmdAux";
+    private static final ImmutableList<String> RULE_SET = ImmutableList.of(
+        "category/java/bestpractices.xml",
+        "category/java/codestyle.xml",
+        "category/java/design.xml",
+        "category/java/documentation.xml",
+        "category/java/errorprone.xml",
+        "category/java/multithreading.xml",
+        "category/java/performance.xml",
+        "category/java/security.xml"
+    );
 
     private PmdExtension extension;
 
@@ -88,7 +99,7 @@ public abstract class PmdPlugin extends AbstractCodeQualityPlugin<Pmd> {
         extension.getMaxFailures().convention(0);
         extension.getThreads().convention(1);
         extension.setRuleSetFiles(project.getLayout().files());
-        extension.getRuleSetsProperty().convention(project.getProviders().provider(() -> ruleSetsConvention(extension)));
+        extension.getRuleSetsProperty().convention(project.getProviders().provider(PmdPlugin::ruleSetsConvention));
         conventionMappingOf(extension).map("targetJdk", () ->
             getDefaultTargetJdk(getJavaPluginExtension().getSourceCompatibility()));
         return extension;
@@ -127,12 +138,8 @@ public abstract class PmdPlugin extends AbstractCodeQualityPlugin<Pmd> {
         configureToolchains(task);
     }
 
-    private static List<String> ruleSetsConvention(PmdExtension extension) {
-        if (extension.getRuleSetConfig() == null && extension.getRuleSetFiles().isEmpty()) {
-            return Collections.singletonList("category/java/errorprone.xml");
-        } else {
-            return Collections.emptyList();
-        }
+    private static List<String> ruleSetsConvention() {
+        return RULE_SET;
     }
 
     private void configureDefaultDependencies(Configuration configuration) {

@@ -43,6 +43,11 @@ class PmdPluginTest extends AbstractProjectBuilderSpec {
         project.plugins.hasPlugin(ReportingBasePlugin)
     }
 
+    def "pmd 7.16.0 is loading the right dependencies"() {
+        expect:
+        PmdPlugin.calculateDefaultDependencyNotation("7.16.0") == ImmutableSet.of("net.sourceforge.pmd:pmd-java:7.16.0", "net.sourceforge.pmd:pmd-ant:7.16.0")
+    }
+
     def "pmd 7.0.0 is loading the right dependencies"() {
         expect:
         PmdPlugin.calculateDefaultDependencyNotation("7.0.0") == ImmutableSet.of("net.sourceforge.pmd:pmd-java:7.0.0", "net.sourceforge.pmd:pmd-ant:7.0.0")
