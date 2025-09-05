@@ -45,7 +45,7 @@ spotless {
     }
 }
 
- check.dependsOn(spotlessCheck)
+check.dependsOn(spotlessCheck)
 //sanityCheck.dependsOn(spotlessCheck)
 
 repositories {
