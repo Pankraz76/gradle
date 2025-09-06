@@ -25,9 +25,10 @@ import org.gradle.util.internal.VersionNumber
  */
 
 plugins {
-    id("base")
-    id("checkstyle")
-    id("codenarc")
+    base
+    checkstyle
+    codenarc
+    pmd
     id("net.ltgt.errorprone")
     id("net.ltgt.nullaway")
 }
@@ -247,4 +248,10 @@ abstract class CodeNarcRule @Inject constructor(
             }
         }
     }
+}
+
+pmd {
+    isConsoleOutput = true
+    ruleSetFiles = files("pmd.xml")
+    toolVersion = "7.16.0"
 }
