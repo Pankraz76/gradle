@@ -97,7 +97,7 @@ class MavenHttpPluginRepository extends MavenHttpRepository implements HttpPlugi
                                  @DelegatesTo(value = HttpServletResponse, strategy = Closure.DELEGATE_FIRST) Closure<?> markerQueryConfigurer) {
         def pluginMarker = module(pluginId, pluginId + PLUGIN_MARKER_SUFFIX, pluginVersion)
         server.expect(pluginMarker.pomPath, ["GET"], new HttpServer.ActionSupport("plugin marker pom") {
-            void handle(HttpServletRequest request, HttpServletResponse response) {
+            void handle(HttpServletRequest ignored, HttpServletResponse response) {
                 ConfigureUtil.configure(markerQueryConfigurer, response)
             }
         })
