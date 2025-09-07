@@ -49,16 +49,8 @@ class AbstractAutoTestedSamplesTest extends AbstractIntegrationTest {
         executer
             .withTasks('help')
             .withArguments("--stacktrace", "--init-script", settingsEvaluatedHook.absolutePath)
-        beforeSample(file, tagSuffix)
         executer.run()
         fileToTest.delete()
-    }
-
-    void runSamplesFromFile(File f, String fileContent) {
-        def settingsEvaluatedHook = createSettingsEvaluatedHook()
-        AutoTestedSamplesUtil.runSamplesFromFile(f, fileContent) { file, sample, tagSuffix ->
-            runSample(file, sample, tagSuffix, settingsEvaluatedHook)
-        }
     }
 
     void runSamplesFrom(String dir) {
@@ -67,18 +59,5 @@ class AbstractAutoTestedSamplesTest extends AbstractIntegrationTest {
         AutoTestedSamplesUtil.findSamples(dir) { file, sample, tagSuffix ->
             runSample(file, sample, tagSuffix, settingsEvaluatedHook)
         }
-    }
-
-    protected void beforeSample(File file, String tagSuffix) {
-        // default is no-op
-    }
-
-    /**
-     * Useful for quick dev cycles when you need to run test against a single file.
-     *
-     * @param includes ant-like includes, e.g. '**\SomeClass.java'
-     */
-    void includeOnly(String includes) {
-        util.includes = includes
     }
 }

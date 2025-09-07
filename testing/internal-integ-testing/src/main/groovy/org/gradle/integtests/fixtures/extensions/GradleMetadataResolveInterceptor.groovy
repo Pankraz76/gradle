@@ -39,10 +39,6 @@ class GradleMetadataResolveInterceptor extends BehindFlagFeatureInterceptor {
         !GradleContextualExecuter.isNoDaemon()
     }
 
-    def isInvalidCombination(Map<String, String> values) {
-        false
-    }
-
     static boolean isGradleMetadataPublished() {
         System.getProperty(GRADLE_METADATA) == "true"
     }
