@@ -58,10 +58,6 @@ abstract class BehindFlagFeatureInterceptor extends AbstractMultiTestInterceptor
         (Collection<A>) testAnnotations.findAll { annotationType.isAssignableFrom(it.getClass()) }
     }
 
-    def isInvalidCombination(Map<String, String> values) {
-        false
-    }
-
     @Override
     protected void createExecutions() {
         def requiredFeatures = requiredFeatures(target.annotations)
@@ -77,7 +73,7 @@ abstract class BehindFlagFeatureInterceptor extends AbstractMultiTestInterceptor
                     skip = true
                 }
             }
-            if (!skip && !isInvalidCombination(executionValues)) {
+            if (!skip) {
                 add(new FeatureExecution(features, executionValues))
             }
         }

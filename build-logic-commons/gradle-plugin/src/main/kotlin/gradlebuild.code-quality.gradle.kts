@@ -28,6 +28,7 @@ plugins {
     id("base")
     id("checkstyle")
     id("codenarc")
+    id("pmd")
     id("net.ltgt.errorprone")
     id("net.ltgt.nullaway")
 }
@@ -247,4 +248,15 @@ abstract class CodeNarcRule @Inject constructor(
             }
         }
     }
+}
+
+pmd {
+    isConsoleOutput = true
+    // ruleSetFiles = files("pmd.xml")
+    ruleSets = listOf(
+        "category/java/bestpractices.xml/UnusedLocalVariable",
+        "category/java/bestpractices.xml/UnusedPrivateMethod",
+        "category/java/security.xml"
+    )
+    toolVersion = "7.16.0"
 }
