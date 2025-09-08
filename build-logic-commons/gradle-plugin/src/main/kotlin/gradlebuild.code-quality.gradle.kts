@@ -267,3 +267,38 @@ pmd {
     )
     toolVersion = "7.16.0"
 }
+
+rewrite {
+    activeRecipe("SanityCheck")
+    configFile = project.getRootProject().file("${rootDir}/gradle/sanity-check.rewrite.yml")
+    setExportDatatables(true)
+    setFailOnDryRunResults(true)
+    exclusion(
+        "platforms/documentation/**",
+        "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
+        "platforms/jvm/language-groovy/src/testFixtures/resources/**",
+        "testing/performance/src/templates/**"
+    )
+}
+spotless {
+    java {
+        // endWithNewline()
+        // removeWildcardImports() https://docs.openrewrite.org/recipes/java/removeunusedimports
+        // trimTrailingWhitespace()
+        removeUnusedImports()
+        target "**/*.java"
+        targetExclude(
+            "platforms/documentation/**",
+            "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
+            "platforms/jvm/language-groovy/src/testFixtures/resources/**",
+            "testing/performance/src/templates/**",
+        )
+    }
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+    rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.15.0")
+}
+// check.dependsOn(spotlessCheck)
