@@ -8,8 +8,8 @@ plugins {
 
     id("gradlebuild.update-versions")            // Local development: Convenience tasks to update versions in this build: 'released-versions.json', 'agp-versions.properties', ...
     id("gradlebuild.wrapper")                    // Local development: Convenience tasks to update the wrapper (like 'nightlyWrapper')
-    id("com.diffplug.spotless") version "latest.release"
-    id("org.openrewrite.rewrite") version "latest.release"
+    id("com.diffplug.spotless") version "latest.release" apply false
+    id("org.openrewrite.rewrite") version "latest.release" apply false
 }
 
 description = "Adaptable, fast automation for all"
