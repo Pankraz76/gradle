@@ -286,7 +286,7 @@ spotless {
         // removeWildcardImports() https://docs.openrewrite.org/recipes/java/removeunusedimports
         // trimTrailingWhitespace()
         removeUnusedImports()
-        target "**/*.java"
+        target("**/*.java")
         targetExclude(
             "platforms/documentation/**",
             "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
