@@ -1,6 +1,6 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: org.checkstyle.CheckstyleAutoFix
+name: org.gradle.GradleAutoFix
 displayName: Checkstyle Auto Fix Configured
 description: |
   Automatically applies OpenRewrite recipes to fix Checkstyle violations
@@ -19,7 +19,7 @@ recipeList:
       propertiesPath: "config/openrewrite-recipes-checkstyle.properties"
 ---
 type: specs.openrewrite.org/v1beta/style
-name: org.checkstyle.CheckstyleImportLayout
+name: org.gradle.GradleImportLayout
 displayName: Checkstyle Import Layout
 description: |
   Defines the import layout style to match Checkstyle’s expectations.
@@ -42,7 +42,7 @@ styleConfigs:
       - import all other imports
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: org.checkstyle.CheckstyleLicenseHeader
+name: org.gradle.GradleLicenseHeader
 displayName: Checkstyle License Header
 description: |
   Ensures that all Java source files include a standardized license header.
@@ -71,7 +71,7 @@ recipeList:
         ///////////////////////////////////////////////////////////////////////////////////////////////
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: org.checkstyle.CheckstyleSanityCheck
+name: org.gradle.GradleSanityCheck
 displayName: Checkstyle Sanity Check
 description: |
   A comprehensive sanity-check recipe that integrates Checkstyle-driven
