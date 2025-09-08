@@ -273,6 +273,7 @@ rewrite {
         "testing/performance/src/templates/**"
     )
 }
+
 spotless {
     java {
         // endWithNewline()
@@ -288,10 +289,13 @@ spotless {
         )
     }
 }
+
 repositories {
     mavenCentral()
 }
+
 dependencies {
     rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.15.0")
 }
+
 // check.dependsOn(spotlessCheck)
