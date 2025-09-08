@@ -33,8 +33,8 @@ plugins {
     id("net.ltgt.nullaway")
 }
 
-project.apply plugin: "com.diffplug.spotless"
-project.apply plugin: "com.diffplug.spotless"
+project.apply(plugin: "com.diffplug.spotless")
+project.apply(plugin: "org.openrewrite.rewrite")
 
 open class ErrorProneProjectExtension(
     val disabledChecks: ListProperty<String>,
