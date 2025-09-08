@@ -31,8 +31,6 @@ plugins {
     id("pmd")
     id("net.ltgt.errorprone")
     id("net.ltgt.nullaway")
-    id("com.diffplug.spotless")
-    id("org.openrewrite.rewrite")
 }
 
 open class ErrorProneProjectExtension(
