@@ -33,6 +33,9 @@ plugins {
     id("net.ltgt.nullaway")
 }
 
+project.apply plugin: "com.diffplug.spotless"
+project.apply plugin: "com.diffplug.spotless"
+
 open class ErrorProneProjectExtension(
     val disabledChecks: ListProperty<String>,
     val nullawayEnabled: Property<Boolean>
