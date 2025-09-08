@@ -270,8 +270,9 @@ pmd {
 }
 
 rewrite {
-    activeRecipe("org.gradle.CheckstyleSanityCheck")
-    configFile = project.getRootProject().file("${rootDir}/gradle/sanity-check.rewrite.yml")
+    activeRecipe("org.gradle.GradleSanityCheck")
+    activeStyle("org.gradle.GradleImportLayout")
+    // configFile = project.getRootProject().file("${rootDir}/gradle/sanity-check.rewrite.yml")
     setExportDatatables(true)
     setFailOnDryRunResults(true)
     exclusion(
