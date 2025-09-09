@@ -14,7 +14,7 @@ apply(plugin = "org.openrewrite.rewrite")
 rewrite {
     activeRecipe("org.gradle.GradleSanityCheck")
     activeStyle("org.gradle.GradleImportLayout")
-    // configFile = project.getRootProject().file("$rootDir/gradle/sanity-check/rewrite.yml")
+    configFile = project.getRootProject().file("$rootDir/gradle/sanity-check/rewrite.yml")
     setExportDatatables(true)
     setFailOnDryRunResults(true)
     exclusion(
