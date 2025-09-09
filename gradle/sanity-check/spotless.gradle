@@ -13,7 +13,7 @@ project.apply plugin: "com.diffplug.spotless"
 
 spotless {
     java {
-        // removeWildcardImports() resolve with #link, but rewrite currently not scaling.
+        // removeWildcardImports()
         // endWithNewline()
         // trimTrailingWhitespace()
         removeUnusedImports()
