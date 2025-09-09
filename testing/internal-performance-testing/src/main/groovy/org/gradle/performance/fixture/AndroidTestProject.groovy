@@ -86,7 +86,7 @@ class AndroidTestProject implements TestProject {
     static void configureForAgpVersion(CrossVersionPerformanceTestRunner runner, String agpVersion) {
         runner.args.add("-DagpVersion=${agpVersion}")
 
-        def javaVersion = AGP_VERSIONS.getMinimumJavaVersionFor(agpVersion)
+        def javaVersion = AGP_VERSIONS.getMinimumJavaVersion()
         def buildJavaHome = AvailableJavaHomes.getJdk(javaVersion).javaHome
         runner.addBuildMutator { invocation -> new JavaVersionMutator(invocation, javaVersion, buildJavaHome) }
 
