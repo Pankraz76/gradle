@@ -42,4 +42,4 @@ configure<DependencyAnalysisExtension> {
     useTypesafeProjectAccessors(true)
 }
 
-apply(from = "gradle/quality-gate.gradle")
+apply(from = "gradle/spotless.gradle.kts")
