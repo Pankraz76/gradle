@@ -29,6 +29,6 @@ repositories {
     mavenCentral()
 }
 
-//dependencies {
-//    rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.15.0")
-//}
+dependencies {
+    rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.15.0")
+}
