@@ -1,10 +1,10 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: org.gradle.GradleAutoFix
-displayName: Gradle Auto Fix Configured
+name: org.gradle.CheckstyleAutoFix
+displayName: Checkstyle Auto Fix Configured
 description: |
-  Automatically applies OpenRewrite recipes to fix Gradle violations
-  based on the provided Gradle XML violation report. This recipe serves
+  Automatically applies OpenRewrite recipes to fix Checkstyle violations
+  based on the provided Checkstyle XML violation report. This recipe serves
   as an entry point to apply all auto-fixable rules configured in the report.
 tags:
   - checkstyle
@@ -106,7 +106,7 @@ recipeList:
   - tech.picnic.errorprone.refasterrules.BugCheckerRulesRecipes
   - tech.picnic.errorprone.refasterrules.SuggestedFixRulesRecipes
   # Potential future additions:
-  # - org.gradle.GradleAutoFix
+  # - org.gradle.CheckstyleAutoFix
   # - org.gradle.GradleLicenseHeader
   # - org.openrewrite.java.RemoveUnusedImports
   # - org.openrewrite.java.recipes.JavaRecipeBestPractices
