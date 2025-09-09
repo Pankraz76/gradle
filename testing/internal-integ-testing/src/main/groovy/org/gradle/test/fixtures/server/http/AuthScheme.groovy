@@ -16,6 +16,7 @@
 
 package org.gradle.test.fixtures.server.http
 
+import org.apache.http.HttpHeaders
 import org.eclipse.jetty.http.HttpHeader
 import org.eclipse.jetty.security.Authenticator
 import org.eclipse.jetty.security.ConstraintMapping
@@ -29,6 +30,7 @@ import org.eclipse.jetty.util.security.Constraint
 
 import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
+import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 enum AuthScheme {
@@ -53,6 +55,11 @@ enum AuthScheme {
         @Override
         protected Authenticator getAuthenticator() {
             return new BasicAuthenticator()
+        }
+
+        @Override
+        protected boolean containsUnexpectedAuthentication(HttpServletRequest request) {
+            return request.getHeader(HttpHeaders.AUTHORIZATION)
         }
     }
 
@@ -108,6 +115,10 @@ enum AuthScheme {
         protected abstract String constraintName()
 
         protected abstract Authenticator getAuthenticator()
+
+        protected boolean containsUnexpectedAuthentication(HttpServletRequest request) {
+            false
+        }
     }
 
     private static class NtlmAuthHandler extends AuthSchemeHandler {

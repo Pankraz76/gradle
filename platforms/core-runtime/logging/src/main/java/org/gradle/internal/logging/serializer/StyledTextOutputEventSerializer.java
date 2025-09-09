@@ -58,3 +58,4 @@ public class StyledTextOutputEventSerializer implements Serializer<StyledTextOut
         return new StyledTextOutputEvent(timestamp, category, logLevel, buildOperationId, spans);
     }
 }
+

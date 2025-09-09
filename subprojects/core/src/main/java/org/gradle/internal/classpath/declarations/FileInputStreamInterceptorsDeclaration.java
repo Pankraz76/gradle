@@ -52,3 +52,4 @@ public class FileInputStreamInterceptorsDeclaration {
         Instrumented.fileOpened(path, consumer);
     }
 }
+

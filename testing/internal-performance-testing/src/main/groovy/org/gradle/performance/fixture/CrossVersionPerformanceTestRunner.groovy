@@ -101,6 +101,10 @@ class CrossVersionPerformanceTestRunner extends PerformanceTestSpec {
         buildMutators.add(buildMutator)
     }
 
+    List<String> getMeasuredBuildOperations() {
+        return measuredBuildOperations
+    }
+
     CrossVersionPerformanceResults run() {
         assumeShouldRun()
 
@@ -178,6 +182,10 @@ class CrossVersionPerformanceTestRunner extends PerformanceTestSpec {
             FileUtils.cleanDirectory(directory)
         }
         directory
+    }
+
+    private static boolean versionMeetsLowerBaseVersionRequirement(String targetVersion, String minimumBaseVersion) {
+        return minimumBaseVersion == null || GradleVersion.version(targetVersion).baseVersion >= GradleVersion.version(minimumBaseVersion)
     }
 
     private void runVersion(String displayName, GradleDistribution dist, File workingDir, MeasuredOperationList results) {

@@ -73,3 +73,4 @@ public interface TestPrecondition {
         return !satisfied(preconditionClass);
     }
 }
+

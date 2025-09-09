@@ -25,3 +25,5 @@ import org.gradle.authentication.Authentication;
  */
 public interface AwsImAuthentication extends Authentication {
 }
+
+

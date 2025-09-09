@@ -45,3 +45,4 @@ public class SettingsLocation {
         return settingsFile;
     }
 }
+

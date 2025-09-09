@@ -61,3 +61,4 @@ public interface TaskDependencyInternal extends TaskDependency {
         }
     };
 }
+

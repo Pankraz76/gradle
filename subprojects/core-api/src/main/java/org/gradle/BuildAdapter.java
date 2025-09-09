@@ -45,3 +45,4 @@ public class BuildAdapter implements BuildListener {
     public void buildFinished(BuildResult result) {
     }
 }
+

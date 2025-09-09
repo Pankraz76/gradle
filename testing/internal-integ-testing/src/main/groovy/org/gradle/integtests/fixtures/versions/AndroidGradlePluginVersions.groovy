@@ -178,9 +178,14 @@ class AndroidGradlePluginVersions {
     }
 
     static void assumeCurrentJavaVersionIsSupportedBy(String agpVersion) {
+        VersionNumber agpVersionNumber = VersionNumber.parse(agpVersion)
         JavaVersion current = JavaVersion.current()
-        JavaVersion mini = getMinimumJavaVersion()
+        JavaVersion mini = getMinimumJavaVersionFor(agpVersionNumber)
         assumeTrue("AGP $agpVersion minimum supported Java version is $mini, current is $current", current >= mini)
+    }
+
+    static JavaVersion getMinimumJavaVersionFor(String agpVersion) {
+        return getMinimumJavaVersionFor(VersionNumber.parse(agpVersion))
     }
 
     static String getBuildToolsVersionFor(String agpVersion) {
@@ -197,7 +202,7 @@ class AndroidGradlePluginVersions {
         return "35.0.0"
     }
 
-    static JavaVersion getMinimumJavaVersion() {
+    static JavaVersion getMinimumJavaVersionFor(VersionNumber agpVersion) {
         return JavaVersion.VERSION_17
     }
 

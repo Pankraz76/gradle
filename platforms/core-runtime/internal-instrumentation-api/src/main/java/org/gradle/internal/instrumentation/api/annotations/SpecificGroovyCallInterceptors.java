@@ -29,3 +29,5 @@ public @interface SpecificGroovyCallInterceptors {
     String generatedClassName();
     BytecodeInterceptorType type() default BytecodeInterceptorType.INSTRUMENTATION;
 }
+
+

@@ -528,8 +528,7 @@ class ResolveTestFixture {
             }
         }
 
-        // bug: undo to private UnusedPrivateMethod.doNotApplyToClassNames=ResolveTestFixture
-        NodeBuilder moduleNode(String moduleVersionId) {
+        private NodeBuilder moduleNode(String moduleVersionId) {
             def parts = moduleVersionId.split(':')
             // the supplied moduleVersionId may contain additional attributes
             assert parts.length >= 3

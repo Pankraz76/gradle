@@ -35,3 +35,4 @@ public class UserHomeInitScriptFinder extends DirectoryInitScriptFinder implemen
         findScriptsInDir(new File(userHomeDir, "init.d"), scripts);
     }
 }
+

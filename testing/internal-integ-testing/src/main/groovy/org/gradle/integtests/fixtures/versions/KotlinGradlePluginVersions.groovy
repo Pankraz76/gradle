@@ -119,15 +119,15 @@ class KotlinGradlePluginVersions {
 
     static void assumeCurrentJavaVersionIsSupportedBy(VersionNumber kotlinVersionNumber) {
         JavaVersion current = JavaVersion.current()
-        JavaVersion mini = getMinimumJavaVersion()
+        JavaVersion mini = getMinimumJavaVersionFor(kotlinVersionNumber)
         assumeTrue("KGP $kotlinVersionNumber minimum supported Java version is $mini, current is $current", current >= mini)
-        JavaVersion maxi = getMaximumJavaVersionFor()
+        JavaVersion maxi = getMaximumJavaVersionFor(kotlinVersionNumber)
         if (maxi != null) {
             assumeTrue("KGP $kotlinVersionNumber maximum supported Java version is $maxi, current is $current", current <= maxi)
         }
     }
 
-    static JavaVersion getMinimumJavaVersion() {
+    static JavaVersion getMinimumJavaVersionFor(VersionNumber kotlinVersion) {
         return JavaVersion.VERSION_1_8
     }
 

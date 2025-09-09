@@ -24,3 +24,4 @@ public class DaemonUnavailableException extends RuntimeException {
         super(message);
     }
 }
+

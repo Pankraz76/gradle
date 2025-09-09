@@ -331,3 +331,4 @@ public class CallInterceptionClosureInstrumentingClassVisitor extends ClassVisit
 
     private static final String IS_EFFECTIVELY_INSTRUMENTED_FIELD_NAME = "$isEffectivelyInstrumented";
 }
+

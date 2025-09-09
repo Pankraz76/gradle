@@ -50,6 +50,7 @@ class NtlmAuthenticator extends LoginAuthenticator {
 
     @Override
     Authentication validateRequest(ServletRequest request, ServletResponse response, boolean mandatory) throws ServerAuthException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response
         NtlmConnectionAuthentication connectionAuth = connections[HttpConnection.currentConnection]
 
