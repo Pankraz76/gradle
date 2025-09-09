@@ -11,18 +11,19 @@
 
 apply(plugin = "org.openrewrite.rewrite")
 
-//rewrite {
-//    activeRecipe("org.gradle.GradleSanityCheck")
-//    activeStyle("org.gradle.GradleImportLayout")
-//    setExportDatatables(true)
-//    setFailOnDryRunResults(true)
-//    exclusion(
-//        "platforms/documentation/**",
-//        "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
-//        "platforms/jvm/language-groovy/src/testFixtures/resources/**",
-//        "testing/performance/src/templates/**"
-//    )
-//}
+rewrite {
+    activeRecipe("org.gradle.GradleSanityCheck")
+    activeStyle("org.gradle.GradleImportLayout")
+    // configFile = project.getRootProject().file("$rootDir/gradle/sanity-check/rewrite.yml")
+    setExportDatatables(true)
+    setFailOnDryRunResults(true)
+    exclusion(
+        "platforms/documentation/**",
+        "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
+        "platforms/jvm/language-groovy/src/testFixtures/resources/**",
+        "testing/performance/src/templates/**"
+    )
+}
 
 repositories {
     mavenCentral()
