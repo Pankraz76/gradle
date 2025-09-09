@@ -9,14 +9,16 @@
  * GitHub history for details.
  */
 
-//apply(plugin = "org.openrewrite.rewrite")
+apply plugin: "org.openrewrite.rewrite"
 
 rewrite {
     activeRecipe("org.gradle.GradleSanityCheck")
     activeStyle("org.gradle.GradleImportLayout")
     configFile = project.getRootProject().file("$rootDir/gradle/sanity-check/rewrite.yml")
-    setExportDatatables(true)
-    setFailOnDryRunResults(true)
+    exportDatatables = true
+    exclusions.add("**.GarbageCollectedMemoryPoolTest.java")
+    exclusions.add("**.MetadataVersionTest.java")
+    failOnDryRunResults = true
     exclusion(
         "platforms/documentation/**",
         "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
