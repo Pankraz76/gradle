@@ -16,15 +16,13 @@ rewrite {
     activeStyle("org.gradle.GradleImportLayout")
     configFile = project.getRootProject().file("$rootDir/gradle/sanity-check/rewrite.yml")
     exportDatatables = true
-    exclusions.add("**.GarbageCollectedMemoryPoolTest.java")
-    exclusions.add("**.MetadataVersionTest.java")
-    failOnDryRunResults = true
-    exclusion(
+    exclusions.addAll(
         "platforms/documentation/**",
         "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
         "platforms/jvm/language-groovy/src/testFixtures/resources/**",
         "testing/performance/src/templates/**"
     )
+    failOnDryRunResults = true
 }
 
 repositories {
