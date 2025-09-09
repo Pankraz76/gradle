@@ -46,7 +46,7 @@ class ScalaCompileRelocationIntegrationTest extends ForkCapableRelocationIntegra
     }
 
     @Override
-    protected void prepareForRelocation(TestFile projectDir) {
+    protected void prepareForRelocation() {
         // Move Zinc and Scala library dependencies around on disk
         executer.requireOwnGradleUserHomeDir()
     }
