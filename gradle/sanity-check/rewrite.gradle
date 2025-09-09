@@ -32,3 +32,5 @@ dependencies {
 repositories {
     mavenCentral()
 }
+
+check.dependsOn(rewriteDryRun)
