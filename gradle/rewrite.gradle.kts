@@ -10,13 +10,12 @@
  */
 
 plugins {
-    id("com.diffplug.spotless")
+    id("org.openrewrite.rewrite")
 }
 
 rewrite {
     activeRecipe("org.gradle.GradleSanityCheck")
     activeStyle("org.gradle.GradleImportLayout")
-    // configFile = project.getRootProject().file("${rootDir}/gradle/sanity-check.rewrite.yml")
     setExportDatatables(true)
     setFailOnDryRunResults(true)
     exclusion(
@@ -34,5 +33,3 @@ repositories {
 dependencies {
     rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.15.0")
 }
-
-// check.dependsOn(spotlessCheck)

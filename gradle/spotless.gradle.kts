@@ -36,3 +36,5 @@ tasks.check {
 repositories {
     mavenCentral()
 }
+
+// check.dependsOn(spotlessCheck)
