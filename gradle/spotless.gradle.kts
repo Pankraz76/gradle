@@ -21,8 +21,8 @@ plugins {
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     java {
         // removeWildcardImports() resolve with #link, but rewrite currently not scaling.
-        endWithNewline()
-        trimTrailingWhitespace()
+        // endWithNewline()
+        // trimTrailingWhitespace()
         removeUnusedImports()
         target("**/*.java")
         targetExclude(
