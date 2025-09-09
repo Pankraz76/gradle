@@ -27,7 +27,3 @@ spotless {
 }
 
 check.dependsOn(spotlessCheck)
-
-repositories {
-    mavenCentral()
-}
