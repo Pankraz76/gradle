@@ -13,7 +13,7 @@ tags:
   - java
   - code-quality
 recipeList:
-  - org.checkstyle.autofix.CheckstyleAutoFix:
+  - org.gradle.autofix.CheckstyleAutoFix:
       violationReportPath: "target/cs_errors.xml"
       configurationPath: "config/checkstyle-checks.xml"
       propertiesPath: "config/openrewrite-recipes-checkstyle.properties"
@@ -102,31 +102,31 @@ tags:
   - java
   - code-quality
 recipeList:
-  - org.checkstyle.CheckstyleAutoFix
-  - org.checkstyle.CheckstyleLicenseHeader
-  - org.openrewrite.java.RemoveUnusedImports
-  - org.openrewrite.java.recipes.JavaRecipeBestPractices
-  - org.openrewrite.staticanalysis.JavaApiBestPractices
-  - org.openrewrite.staticanalysis.LowercasePackage
-  - org.openrewrite.staticanalysis.MissingOverrideAnnotation
-  - org.openrewrite.staticanalysis.ModifierOrder
-  - org.openrewrite.staticanalysis.NoFinalizer
-  - org.openrewrite.staticanalysis.RemoveUnusedLocalVariables
-  - org.openrewrite.staticanalysis.RemoveUnusedPrivateFields
-  - org.openrewrite.staticanalysis.RemoveUnusedPrivateMethods
-  - tech.picnic.errorprone.refasterrules.BigDecimalRulesRecipes
-  - tech.picnic.errorprone.refasterrules.BugCheckerRulesRecipes
-  - tech.picnic.errorprone.refasterrules.CharSequenceRulesRecipes
-  - tech.picnic.errorprone.refasterrules.ClassRulesRecipes
-  - tech.picnic.errorprone.refasterrules.CollectionRulesRecipes
-  - tech.picnic.errorprone.refasterrules.ComparatorRulesRecipes
-  - tech.picnic.errorprone.refasterrules.MicrometerRulesRecipes
-  - tech.picnic.errorprone.refasterrules.PatternRulesRecipes
-  - tech.picnic.errorprone.refasterrules.PrimitiveRulesRecipes
   - tech.picnic.errorprone.refasterrules.StreamRulesRecipes
+  - tech.picnic.errorprone.refasterrules.BugCheckerRulesRecipes
   - tech.picnic.errorprone.refasterrules.SuggestedFixRulesRecipes
-  - tech.picnic.errorprone.refasterrules.TimeRulesRecipes
   # Potential future additions:
+  # - org.gradle.CheckstyleAutoFix
+  # - org.gradle.CheckstyleLicenseHeader
+  # - org.openrewrite.java.RemoveUnusedImports
+  # - org.openrewrite.java.recipes.JavaRecipeBestPractices
+  # - org.openrewrite.staticanalysis.JavaApiBestPractices
+  # - org.openrewrite.staticanalysis.LowercasePackage
+  # - org.openrewrite.staticanalysis.MissingOverrideAnnotation
+  # - org.openrewrite.staticanalysis.ModifierOrder
+  # - org.openrewrite.staticanalysis.NoFinalizer
+  # - org.openrewrite.staticanalysis.RemoveUnusedLocalVariables
+  # - org.openrewrite.staticanalysis.RemoveUnusedPrivateFields
+  # - org.openrewrite.staticanalysis.RemoveUnusedPrivateMethods
+  # - tech.picnic.errorprone.refasterrules.BigDecimalRulesRecipes
+  # - tech.picnic.errorprone.refasterrules.CharSequenceRulesRecipes
+  # - tech.picnic.errorprone.refasterrules.ClassRulesRecipes
+  # - tech.picnic.errorprone.refasterrules.CollectionRulesRecipes
+  # - tech.picnic.errorprone.refasterrules.ComparatorRulesRecipes
+  # - tech.picnic.errorprone.refasterrules.MicrometerRulesRecipes
+  # - tech.picnic.errorprone.refasterrules.PatternRulesRecipes
+  # - tech.picnic.errorprone.refasterrules.PrimitiveRulesRecipes
+  # - tech.picnic.errorprone.refasterrules.TimeRulesRecipes
   # - org.openrewrite.java.OrderImports apply CheckstyleImportLayout, currently bug
   # - org.openrewrite.java.migrate.UpgradeToJava17 #pull/17730
   # - org.openrewrite.java.migrate.UpgradeToJava25 #issue/17734
