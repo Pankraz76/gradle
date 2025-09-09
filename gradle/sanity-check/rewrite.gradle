@@ -27,6 +27,7 @@ rewrite {
 
 dependencies {
     rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.15.0")
+    rewrite("com.puppycrawl.tools:checkstyle-openrewrite-recipes:1.0.0")
 }
 
 repositories {
