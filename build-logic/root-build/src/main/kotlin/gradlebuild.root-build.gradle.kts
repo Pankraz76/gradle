@@ -42,4 +42,5 @@ configure<DependencyAnalysisExtension> {
     useTypesafeProjectAccessors(true)
 }
 
+apply(from = "gradle/rewrite.gradle.kts")
 apply(from = "gradle/spotless.gradle.kts")
