@@ -89,6 +89,16 @@ jobs:
         with:
           name: binary-compatibility-report
           path: testing/architecture-test/build/reports/binary-compatibility/report.html
+      - name: PMD
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
+      - run: ./gradlew pmdMain -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }}
+      - name: Rewrite
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
+      - run: ./gradlew rewriteDryRun -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }} -Dorg.gradle.jvmargs=-Xmx8g
 
   unit-test:
     name: "${{ matrix.bucket.name }} (Unit Test)"

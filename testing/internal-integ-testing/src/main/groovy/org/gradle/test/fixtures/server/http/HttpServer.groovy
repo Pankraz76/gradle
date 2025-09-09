@@ -391,7 +391,7 @@ class HttpServer extends ServerWithExpectations implements HttpServerFixture {
     /**
      * Allows one HEAD request for the given URL with http authentication.
      */
-    void expectHead(String path, String username, String password, File srcFile, Long lastModified = null, Long contentLength = null) {
+    void expectHead(String path, String username, String password, File srcFile) {
         expect(path, false, ['HEAD'], fileHandler(path, srcFile), TestCredentialUtil.defaultPasswordCredentials(username, password))
     }
 
@@ -478,15 +478,8 @@ class HttpServer extends ServerWithExpectations implements HttpServerFixture {
     /**
      * Expects one GET request for the given URL, responding with a redirect.
      */
-    void forbidGetRedirected(String path, String location, PasswordCredentials passwordCredentials = null, RedirectType redirectType = RedirectType.FOUND_302) {
+    void forbidGetRedirected(String path, String location, RedirectType redirectType = RedirectType.FOUND_302) {
         forbidRedirected('GET', path, location, redirectType)
-    }
-
-    /**
-     * Expects one HEAD request for the given URL, responding with a redirect.
-     */
-    void expectHeadRedirected(String path, String location, PasswordCredentials passwordCredentials = null, RedirectType redirectType = RedirectType.FOUND_302) {
-        expectRedirected('HEAD', path, location, passwordCredentials, redirectType)
     }
 
     /**
@@ -722,25 +715,6 @@ class HttpServer extends ServerWithExpectations implements HttpServerFixture {
         }
     }
 
-    private static Action withLenientQueryString(String query, Action action) {
-        return new Action() {
-            @Override
-            HttpResourceInteraction getInteraction() {
-                return action.interaction
-            }
-
-            String getDisplayName() {
-                return action.displayName
-            }
-
-            void handle(HttpServletRequest request, HttpServletResponse response) {
-                if (request.queryString.startsWith(query)) {
-                    action.handle(request, response)
-                }
-            }
-        }
-    }
-
     void expect(String path, Collection<String> methods, PasswordCredentials passwordCredentials = null, Action action) {
         expect(path, false, methods, action, passwordCredentials)
     }
@@ -791,11 +765,6 @@ class HttpServer extends ServerWithExpectations implements HttpServerFixture {
             }
 
             void handle(HttpServletRequest request, HttpServletResponse response) {
-
-                if (authenticationScheme.handler.containsUnexpectedAuthentication(request)) {
-                    response.sendError(500, "unexpected authentication in headers ")
-                    return
-                }
                 action.handle(request, response)
             }
         }

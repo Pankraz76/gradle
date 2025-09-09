@@ -528,7 +528,8 @@ class ResolveTestFixture {
             }
         }
 
-        private NodeBuilder moduleNode(String moduleVersionId) {
+        // bug: make private or ignore UnusedPrivateMethod.doNotApplyToClassNames=ResolveTestFixture
+        NodeBuilder _moduleNode(String moduleVersionId) {
             def parts = moduleVersionId.split(':')
             // the supplied moduleVersionId may contain additional attributes
             assert parts.length >= 3
@@ -761,14 +762,14 @@ class ResolveTestFixture {
          * Defines a dependency on the given external module.
          */
         NodeBuilder module(String moduleVersionId) {
-            return addNode(graph.moduleNode(moduleVersionId))
+            return addNode(graph._moduleNode(moduleVersionId))
         }
 
         /**
          * Defines a dependency on the given external module. The closure delegates to a {@link NodeBuilder} instance that represents the target node.
          */
         NodeBuilder module(String moduleVersionId, @DelegatesTo(NodeBuilder) Closure cl) {
-            def node = addNode(graph.moduleNode(moduleVersionId))
+            def node = addNode(graph._moduleNode(moduleVersionId))
             applyTo(node, cl)
             return node
         }
@@ -800,7 +801,7 @@ class ResolveTestFixture {
          * Defines a link between nodes created through a dependency constraint.
          */
         NodeBuilder constraint(String requested, String selectedModuleVersionId = requested, @DelegatesTo(NodeBuilder) Closure cl = {}) {
-            def node = graph.moduleNode(selectedModuleVersionId)
+            def node = graph._moduleNode(selectedModuleVersionId)
             def edge = new EdgeBuilder(this, requested, node)
             edge.constraint = true
             deps << edge
@@ -824,7 +825,7 @@ class ResolveTestFixture {
          * Defines a dependency from the current node to the given module. The closure delegates to a {@link NodeBuilder} instance that represents the target node.
          */
         NodeBuilder edge(String requested, String selectedModuleVersionId, @DelegatesTo(NodeBuilder) Closure cl = {}) {
-            def node = graph.moduleNode(selectedModuleVersionId)
+            def node = graph._moduleNode(selectedModuleVersionId)
             deps << new EdgeBuilder(this, requested, node)
             applyTo(node, cl)
             return node

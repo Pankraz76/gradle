@@ -55,7 +55,7 @@ abstract class AbstractProjectRelocationIntegrationTest extends AbstractIntegrat
         result.assertTaskSkipped taskName
 
         when: "it is executed in the new location"
-        prepareForRelocation(relocatedDir)
+        prepareForRelocation()
         inDirectory(relocatedDir)
         executer.withJavaHome(relocatedJavaHome.absolutePath)
         withBuildCache().run taskName
@@ -82,7 +82,7 @@ abstract class AbstractProjectRelocationIntegrationTest extends AbstractIntegrat
     abstract protected def extractResultsFrom(TestFile projectDir)
 
     @SuppressWarnings("GrMethodMayBeStatic")
-    protected void prepareForRelocation(TestFile projectDir) {
+    protected void prepareForRelocation() {
         // Do nothing
     }
 
