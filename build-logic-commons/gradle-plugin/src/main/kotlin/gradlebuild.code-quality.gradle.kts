@@ -32,9 +32,6 @@ plugins {
     id("net.ltgt.nullaway")
 }
 
-apply(from = "gradle/rewrite.gradle.kts")
-apply(from = "gradle/spotless.gradle.kts")
-
 open class ErrorProneProjectExtension(
     val disabledChecks: ListProperty<String>,
     val nullawayEnabled: Property<Boolean>
