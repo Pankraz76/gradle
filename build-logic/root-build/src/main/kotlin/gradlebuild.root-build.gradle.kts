@@ -22,6 +22,8 @@ plugins {
     id("gradlebuild.warmup-ec2") // Warm up EC2 AMI
 
     id("com.autonomousapps.dependency-analysis")
+    // id("com.diffplug.spotless") version "7.2.1" apply false
+    // id("org.openrewrite.rewrite") version "7.15.0" apply false
 }
 
 configure<DependencyAnalysisExtension> {
@@ -42,5 +44,5 @@ configure<DependencyAnalysisExtension> {
     useTypesafeProjectAccessors(true)
 }
 
-apply(from = "$rootDir/gradle/rewrite.gradle.kts")
-apply(from = "$rootDir/gradle/spotless.gradle.kts")
+apply(from = "$rootDir/gradle/sanity-check/rewrite.gradle.kts")
+apply(from = "$rootDir/gradle/sanity-check/spotless.gradle.kts")

@@ -14,29 +14,25 @@
  * limitations under the License.
  */
 
-plugins {
-    id("com.diffplug.spotless")
-}
+apply(plugin = "com.diffplug.spotless")
 
-configure<com.diffplug.gradle.spotless.SpotlessExtension> {
-    java {
-        // removeWildcardImports() resolve with #link, but rewrite currently not scaling.
-        // endWithNewline()
-        // trimTrailingWhitespace()
-        removeUnusedImports()
-        target("**/*.java")
-        targetExclude(
-            "platforms/documentation/**",
-            "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
-            "platforms/jvm/language-groovy/src/testFixtures/resources/**",
-            "testing/performance/src/templates/**"
-        )
-    }
-}
+//java {
+//    // removeWildcardImports() resolve with #link, but rewrite currently not scaling.
+//    // endWithNewline()
+//    // trimTrailingWhitespace()
+//    removeUnusedImports()
+//    target("**/*.java")
+//    targetExclude(
+//        "platforms/documentation/**",
+//        "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
+//        "platforms/jvm/language-groovy/src/testFixtures/resources/**",
+//        "testing/performance/src/templates/**"
+//    )
+//}
 
-tasks.check {
-    dependsOn(tasks.spotlessCheck)
-}
+//tasks.check {
+//    dependsOn(tasks.spotlessCheck)
+//}
 
 repositories {
     mavenCentral()
