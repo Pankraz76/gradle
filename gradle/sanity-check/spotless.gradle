@@ -9,7 +9,7 @@
  * GitHub history for details.
  */
 
-project.apply plugin: "com.diffplug.spotless"
+apply plugin: "com.diffplug.spotless"
 
 spotless {
     java {
