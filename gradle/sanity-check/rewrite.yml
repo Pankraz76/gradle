@@ -106,8 +106,8 @@ recipeList:
   - tech.picnic.errorprone.refasterrules.BugCheckerRulesRecipes
   - tech.picnic.errorprone.refasterrules.SuggestedFixRulesRecipes
   # Potential future additions:
-  # - org.gradle.CheckstyleAutoFix
-  # - org.gradle.CheckstyleLicenseHeader
+  # - org.gradle.GradleAutoFix
+  # - org.gradle.GradleLicenseHeader
   # - org.openrewrite.java.RemoveUnusedImports
   # - org.openrewrite.java.recipes.JavaRecipeBestPractices
   # - org.openrewrite.staticanalysis.JavaApiBestPractices
