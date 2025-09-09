@@ -17,7 +17,6 @@ spotless {
         // endWithNewline()
         // trimTrailingWhitespace()
         removeUnusedImports()
-        target "**/*.java"
         targetExclude(
             "platforms/documentation/**",
             "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
