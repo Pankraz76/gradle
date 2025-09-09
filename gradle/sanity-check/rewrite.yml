@@ -1,10 +1,10 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.gradle.GradleAutoFix
-displayName: Checkstyle Auto Fix Configured
+displayName: Gradle Auto Fix Configured
 description: |
-  Automatically applies OpenRewrite recipes to fix Checkstyle violations
-  based on the provided Checkstyle XML violation report. This recipe serves
+  Automatically applies OpenRewrite recipes to fix Gradle violations
+  based on the provided Gradle XML violation report. This recipe serves
   as an entry point to apply all auto-fixable rules configured in the report.
 tags:
   - checkstyle
@@ -13,16 +13,16 @@ tags:
   - java
   - code-quality
 recipeList:
-  - org.gradle.autofix.CheckstyleAutoFix:
+  - org.checkstyle.autofix.CheckstyleAutoFix:
       violationReportPath: "target/cs_errors.xml"
       configurationPath: "config/checkstyle-checks.xml"
       propertiesPath: "config/openrewrite-recipes-checkstyle.properties"
 ---
 type: specs.openrewrite.org/v1beta/style
 name: org.gradle.GradleImportLayout
-displayName: Checkstyle Import Layout
+displayName: Gradle Import Layout
 description: |
-  Defines the import layout style to match Checkstyle’s expectations.
+  Defines the import layout style to match Gradle’s expectations.
   Controls grouping and ordering of imports, while preventing wildcard
   imports unless thresholds are exceeded.
 styleConfigs:
@@ -43,7 +43,7 @@ styleConfigs:
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.gradle.GradleLicenseHeader
-displayName: Checkstyle License Header
+displayName: Gradle License Header
 description: |
   Ensures that all Java source files include a standardized license header.
   This enforces compliance with project licensing requirements and provides
@@ -72,9 +72,9 @@ recipeList:
 ---
 type: specs.openrewrite.org/v1beta/recipe
 name: org.gradle.GradleSanityCheck
-displayName: Checkstyle Sanity Check
+displayName: Gradle Sanity Check
 description: |
-  A comprehensive sanity-check recipe that integrates Checkstyle-driven
+  A comprehensive sanity-check recipe that integrates Gradle-driven
   auto-fixes with additional OpenRewrite best practices and static analysis.
   This recipe is intended as a higher-level entry point for improving Java
   code quality across large projects.
@@ -127,7 +127,7 @@ recipeList:
   # - tech.picnic.errorprone.refasterrules.PatternRulesRecipes
   # - tech.picnic.errorprone.refasterrules.PrimitiveRulesRecipes
   # - tech.picnic.errorprone.refasterrules.TimeRulesRecipes
-  # - org.openrewrite.java.OrderImports apply CheckstyleImportLayout, currently bug
+  # - org.openrewrite.java.OrderImports apply GradleImportLayout, currently bug
   # - org.openrewrite.java.migrate.UpgradeToJava17 #pull/17730
   # - org.openrewrite.java.migrate.UpgradeToJava25 #issue/17734
   # - org.openrewrite.java.recipes.RecipeNullabilityBestPractices
