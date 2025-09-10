@@ -98,6 +98,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/master' }}
+      - run: ./gradlew dependencyCheckAnalyze -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }}
 
   unit-test:
     name: "${{ matrix.bucket.name }} (Unit Test)"
