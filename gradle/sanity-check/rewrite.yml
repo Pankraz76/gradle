@@ -31,12 +31,12 @@ tags:
   - java
   - code-quality
 recipeList:
-  - org.openrewrite.java.RemoveUnusedImports
-  # - org.openrewrite.staticanalysis.RemoveUnusedLocalVariables
-  # - org.openrewrite.staticanalysis.RemoveUnusedPrivateMethods
+  - org.openrewrite.staticanalysis.RemoveUnusedPrivateMethods
   #  - tech.picnic.errorprone.refasterrules.BugCheckerRulesRecipes
   #  - tech.picnic.errorprone.refasterrules.StreamRulesRecipes
   #  - tech.picnic.errorprone.refasterrules.SuggestedFixRulesRecipes
+  # - org.openrewrite.java.RemoveUnusedImports
+  # - org.openrewrite.staticanalysis.RemoveUnusedLocalVariables
   # Potential future additions:
   # - org.gradle.CheckstyleAutoFix
   # - org.gradle.GradleLicenseHeader
