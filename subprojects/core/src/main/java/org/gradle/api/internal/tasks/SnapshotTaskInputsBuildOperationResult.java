@@ -76,15 +76,8 @@ public class SnapshotTaskInputsBuildOperationResult extends BaseSnapshotInputsBu
         }
 
         static class TaskProperty extends Property {
-            private final String normalization;
-
-            public TaskProperty(String hash, String normalization, Set<String> attributes) {
+            public TaskProperty(String hash, String ignored, Set<String> attributes) {
                 super(hash, attributes);
-                this.normalization = normalization;
-            }
-
-            public String getNormalization() {
-                return normalization;
             }
         }
     }
