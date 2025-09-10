@@ -41,3 +41,7 @@ configure<DependencyAnalysisExtension> {
 
     useTypesafeProjectAccessors(true)
 }
+
+apply(from = "$rootDir/gradle/sanity-check/owasp.gradle")
+apply(from = "$rootDir/gradle/sanity-check/rewrite.gradle")
+apply(from = "$rootDir/gradle/sanity-check/spotless.gradle")
