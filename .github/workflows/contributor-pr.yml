@@ -89,6 +89,15 @@ jobs:
         with:
           name: binary-compatibility-report
           path: testing/architecture-test/build/reports/binary-compatibility/report.html
+      - name: Rewrite
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
+      - run: ./gradlew rewriteDryRun -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }} -Dorg.gradle.jvmargs=-Xmx8g
+      - name: OWASP
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
 
   unit-test:
     name: "${{ matrix.bucket.name }} (Unit Test)"
