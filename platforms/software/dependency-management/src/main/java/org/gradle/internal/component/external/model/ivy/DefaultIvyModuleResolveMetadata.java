@@ -55,7 +55,7 @@ public class DefaultIvyModuleResolveMetadata extends AbstractLazyModuleComponent
     private final ImmutableMap<NamespaceId, String> extraAttributes;
     private final String branch;
     // Since a single `Artifact` is shared between configurations, share the metadata type as well.
-    private Map<Artifact, ModuleComponentArtifactMetadata> artifacts;
+    private final IdentityHashMap<Artifact, ModuleComponentArtifactMetadata> artifacts = new IdentityHashMap<>();
 
     DefaultIvyModuleResolveMetadata(DefaultMutableIvyModuleResolveMetadata metadata) {
         super(metadata);
@@ -93,9 +93,6 @@ public class DefaultIvyModuleResolveMetadata extends AbstractLazyModuleComponent
 
     @Override
     protected DefaultConfigurationMetadata createConfiguration(ModuleComponentIdentifier componentId, String name, boolean transitive, boolean visible, ImmutableSet<String> hierarchy, VariantMetadataRules componentMetadataRules) {
-        if (artifacts == null) {
-            artifacts = new IdentityHashMap<>();
-        }
         IvyConfigurationHelper configurationHelper = new IvyConfigurationHelper(artifactDefinitions, artifacts, excludes, dependencies, componentId);
         ImmutableList<ModuleComponentArtifactMetadata> artifacts = configurationHelper.filterArtifacts(name, hierarchy);
         ImmutableList<ExcludeMetadata> excludesForConfiguration = configurationHelper.filterExcludes(hierarchy);

@@ -117,25 +117,26 @@ public class DefaultGradleUserHomeScopeServiceRegistry implements GradleUserHome
     public void release(ServiceRegistry registry) {
         lock.lock();
         try {
-            for (Map.Entry<File, Services> entry : servicesForHomeDir.entrySet()) {
-                Services services = entry.getValue();
-                if (services.registry == registry) {
-                    if (services.count <= 0) {
-                        break;
-                    }
-                    services.count--;
-                    if (services.count == 0 && (servicesForHomeDir.size() > 1 || System.getProperty(REUSE_USER_HOME_SERVICES, "true").equals("false"))) {
-                        // Other home dir in use, close these. Otherwise, keep the services for next time
-                        CompositeStoppable.stoppable(services.registry).stop();
-                        servicesForHomeDir.remove(entry.getKey());
-                    }
-                    return;
-                }
+            Optional<Map.Entry<File, Services>> match = servicesForHomeDir.entrySet().stream()
+                .filter(entry -> entry.getValue().registry == registry)
+                .findFirst();
+            if (!match.isPresent()) {
+                throw new IllegalStateException("Gradle user home directory scoped services have already been released.");
+            }
+            Map.Entry<File, Services> entry = match.get();
+            Services services = entry.getValue();
+            if (services.count <= 0) {
+                throw new IllegalStateException("Gradle user home directory scoped services have already been released.");
+            }
+            services.count--;
+            if (services.count == 0 && (servicesForHomeDir.size() > 1
+                || System.getProperty(REUSE_USER_HOME_SERVICES, "true").equals("false"))) {
+                CompositeStoppable.stoppable(services.registry).stop();
+                servicesForHomeDir.remove(entry.getKey());
             }
         } finally {
             lock.unlock();
         }
-        throw new IllegalStateException("Gradle user home directory scoped services have already been released.");
     }
 
     private static class Services {
