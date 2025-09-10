@@ -18,7 +18,6 @@ package org.gradle.internal.composite;
 
 import com.google.common.base.Preconditions;
 import org.gradle.api.Task;
-import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.tasks.TaskDependencyContainer;
 import org.gradle.api.internal.tasks.TaskDependencyResolveContext;
 import org.gradle.api.tasks.TaskReference;
@@ -72,10 +71,6 @@ public class IncludedRootBuild implements IncludedBuildInternal {
         @Override
         public String getName() {
             return Path.path(taskPath).getName();
-        }
-
-        public BuildIdentifier getBuildIdentifier() {
-            return rootBuildState.getBuildIdentifier();
         }
 
         @Override

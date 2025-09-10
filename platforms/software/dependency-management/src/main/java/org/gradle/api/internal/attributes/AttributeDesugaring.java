@@ -31,7 +31,7 @@ import java.util.Set;
 
 @ServiceScope(Scope.BuildTree.class)
 public class AttributeDesugaring {
-    private final Map<ImmutableAttributes, ImmutableAttributes> desugared = new IdentityHashMap<>();
+    private final IdentityHashMap<ImmutableAttributes, ImmutableAttributes> desugared = new IdentityHashMap<>();
     private final AttributesFactory attributesFactory;
 
     public AttributeDesugaring(AttributesFactory attributesFactory) {
