@@ -21,29 +21,15 @@ import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Maps;
 import org.gradle.api.internal.tasks.properties.InputFilePropertySpec;
 import org.gradle.api.internal.tasks.properties.PropertySpec;
-import org.gradle.internal.execution.model.InputNormalizer;
 import org.gradle.internal.fingerprint.CurrentFileCollectionFingerprint;
-import org.gradle.internal.fingerprint.FileNormalizer;
-import org.gradle.internal.fingerprint.FingerprintingStrategy;
-import org.gradle.internal.fingerprint.impl.AbsolutePathFingerprintingStrategy;
-import org.gradle.internal.fingerprint.impl.IgnoredPathFingerprintingStrategy;
-import org.gradle.internal.fingerprint.impl.NameOnlyFingerprintingStrategy;
-import org.gradle.internal.fingerprint.impl.RelativePathFingerprintingStrategy;
 import org.gradle.internal.snapshot.DirectorySnapshot;
+import org.gradle.operations.execution.FilePropertyVisitor;
 
 import java.util.Map;
 import java.util.Set;
 
-public class SnapshotTaskInputsResultFilePropertyVisitState extends BaseFilePropertyVisitState implements SnapshotTaskInputsBuildOperationType.Result.VisitState {
+public class SnapshotTaskInputsResultFilePropertyVisitState extends BaseFilePropertyVisitState implements FilePropertyVisitor.VisitState {
 
-    private static final Map<FileNormalizer, String> FINGERPRINTING_STRATEGIES_BY_NORMALIZER = ImmutableMap.<FileNormalizer, String>builder()
-        .put(InputNormalizer.RUNTIME_CLASSPATH, FingerprintingStrategy.CLASSPATH_IDENTIFIER)
-        .put(InputNormalizer.COMPILE_CLASSPATH, FingerprintingStrategy.COMPILE_CLASSPATH_IDENTIFIER)
-        .put(InputNormalizer.ABSOLUTE_PATH, AbsolutePathFingerprintingStrategy.IDENTIFIER)
-        .put(InputNormalizer.RELATIVE_PATH, RelativePathFingerprintingStrategy.IDENTIFIER)
-        .put(InputNormalizer.NAME_ONLY, NameOnlyFingerprintingStrategy.IDENTIFIER)
-        .put(InputNormalizer.IGNORE_PATH, IgnoredPathFingerprintingStrategy.IDENTIFIER)
-        .build();
     private final SnapshotTaskInputsBuildOperationType.Result.InputFilePropertyVisitor visitor;
 
     public static void visitInputFileProperties(ImmutableSortedMap<String, CurrentFileCollectionFingerprint> inputFileProperties, SnapshotTaskInputsBuildOperationType.Result.InputFilePropertyVisitor visitor, Set<InputFilePropertySpec> inputFilePropertySpecs) {
@@ -97,28 +83,10 @@ public class SnapshotTaskInputsResultFilePropertyVisitState extends BaseFileProp
         visitor.file(this);
     }
 
-    @Override
-    @Deprecated
-    public String getPropertyNormalizationStrategyName() {
-        InputFilePropertySpec propertySpec = propertySpec(propertyName);
-        FileNormalizer normalizer = propertySpec.getNormalizer();
-        String normalizationStrategy = FINGERPRINTING_STRATEGIES_BY_NORMALIZER.get(normalizer);
-        if (normalizationStrategy == null) {
-            throw new IllegalStateException("No strategy name for " + normalizer);
-        }
-        return normalizationStrategy;
-    }
+    private static class TaskDirectoryVisitState extends DirectoryVisitState<FilePropertyVisitor.VisitState> implements FilePropertyVisitor.VisitState {
 
-    private static class TaskDirectoryVisitState extends DirectoryVisitState<SnapshotTaskInputsBuildOperationType.Result.VisitState> implements SnapshotTaskInputsBuildOperationType.Result.VisitState {
-
-        public TaskDirectoryVisitState(DirectorySnapshot unvisited, SnapshotTaskInputsBuildOperationType.Result.VisitState delegate) {
+        public TaskDirectoryVisitState(DirectorySnapshot unvisited, FilePropertyVisitor.VisitState delegate) {
             super(unvisited, delegate);
-        }
-
-        @SuppressWarnings("deprecation")
-        @Override
-        public String getPropertyNormalizationStrategyName() {
-            return delegate.getPropertyNormalizationStrategyName();
         }
     }
 }

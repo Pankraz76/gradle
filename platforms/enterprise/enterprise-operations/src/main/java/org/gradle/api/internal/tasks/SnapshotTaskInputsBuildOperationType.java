@@ -17,7 +17,7 @@
 package org.gradle.api.internal.tasks;
 
 import org.gradle.internal.operations.BuildOperationType;
-import org.gradle.operations.execution.FilePropertyVisitor;
+import org.gradle.operations.execution.FilePropertyVisitor.VisitState;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -147,35 +147,6 @@ public final class SnapshotTaskInputsBuildOperationType implements BuildOperatio
              * Called when exiting a property.
              */
             void postProperty();
-        }
-
-        /**
-         * Provides information about the current location in the visit.
-         * <p>
-         * Consumers should expect this to be mutable.
-         * Calling any method on this outside of a method that received it has undefined behavior.
-         */
-        interface VisitState extends FilePropertyVisitor.VisitState {
-
-            /**
-             * The "primary" attribute of the current property.
-             * <p>
-             * Used by Develocity plugin &lt; 3.8, retained for backwards compatibility.
-             * <p>
-             * Returns the name value of one of:
-             * <ul>
-             * <li>org.gradle.internal.fingerprint.FingerprintingStrategy#CLASSPATH_IDENTIFIER</li>
-             * <li>org.gradle.internal.fingerprint.FingerprintingStrategy#COMPILE_CLASSPATH_IDENTIFIER</li>
-             * <li>org.gradle.internal.fingerprint.impl.AbsolutePathFingerprintingStrategy#IDENTIFIER</li>
-             * <li>org.gradle.internal.fingerprint.impl.RelativePathFingerprintingStrategy#IDENTIFIER</li>
-             * <li>org.gradle.internal.fingerprint.impl.NameOnlyFingerprintingStrategy#IDENTIFIER</li>
-             * <li>org.gradle.internal.fingerprint.impl.IgnoredPathFingerprintingStrategy#IDENTIFIER</li>
-             * </ul>
-             *
-             * @deprecated since 7.3, superseded by {@link #getPropertyAttributes()}
-             */
-            @Deprecated
-            String getPropertyNormalizationStrategyName();
         }
 
         /**

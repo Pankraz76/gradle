@@ -22,6 +22,7 @@ import org.gradle.internal.execution.history.BeforeExecutionState;
 import org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep;
 import org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep;
 import org.gradle.internal.hash.HashCode;
+import org.gradle.operations.execution.FilePropertyVisitor;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
@@ -67,10 +68,10 @@ public class SnapshotTaskInputsBuildOperationResult extends BaseSnapshotInputsBu
         return visitor.getFileProperties();
     }
 
-    private static class FilePropertyCollectingVisitor extends BaseFilePropertyCollectingVisitor<VisitState> implements InputFilePropertyVisitor {
+    private static class FilePropertyCollectingVisitor extends BaseFilePropertyCollectingVisitor<FilePropertyVisitor.VisitState> implements InputFilePropertyVisitor {
 
         @Override
-        protected Property createProperty(VisitState state) {
+        protected Property createProperty(FilePropertyVisitor.VisitState state) {
             return new TaskProperty(HashCode.fromBytes(state.getPropertyHashBytes()).toString(), state.getPropertyAttributes());
         }
 
