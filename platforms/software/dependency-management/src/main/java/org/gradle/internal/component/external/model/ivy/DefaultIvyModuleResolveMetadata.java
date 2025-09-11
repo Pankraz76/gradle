@@ -40,7 +40,6 @@ import org.gradle.util.internal.CollectionUtils;
 
 import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * {@link AbstractLazyModuleComponentResolveMetadata Lazy version} of a {@link IvyModuleResolveMetadata}.

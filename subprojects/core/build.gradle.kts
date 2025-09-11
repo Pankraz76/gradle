@@ -45,6 +45,7 @@ val testInterceptorsImplementation: Configuration by configurations.getting {
 errorprone {
     disabledChecks.addAll(
         "DefaultCharset", // 4 occurrences
+        "Finally", // 1 occurrences
         "NonApiType", // 1 occurrences
         "NonCanonicalType", // 16 occurrences
         "ReferenceEquality", // 2 occurrences
@@ -52,6 +53,7 @@ errorprone {
         "TypeParameterShadowing", // 1 occurrences
         "TypeParameterUnusedInFormals", // 2 occurrences
         "UndefinedEquals", // 1 occurrences
+        "UnusedMethod", // 18 occurrences
     )
 }
 

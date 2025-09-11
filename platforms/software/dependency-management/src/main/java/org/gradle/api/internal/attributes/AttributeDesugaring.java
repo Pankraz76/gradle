@@ -26,7 +26,6 @@ import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 
 import java.util.IdentityHashMap;
-import java.util.Map;
 import java.util.Set;
 
 @ServiceScope(Scope.BuildTree.class)

@@ -125,6 +125,10 @@ public class DefaultTaskClassInfoStore implements TaskClassInfoStore {
             this.method = method;
         }
 
+        public Method getMethod() {
+            return method;
+        }
+
         @Override
         public Action<? super Task> create(Instantiator instantiator) {
             return new IncrementalTaskAction(taskType, method);

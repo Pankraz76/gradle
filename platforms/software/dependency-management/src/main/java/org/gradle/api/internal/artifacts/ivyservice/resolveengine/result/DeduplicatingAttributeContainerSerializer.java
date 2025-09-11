@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A serializer for {@link AttributeContainer} that deduplicates the values and delegates to
