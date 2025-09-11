@@ -1,0 +1,36 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+apply plugin: "org.openrewrite.rewrite"
+
+rewrite {
+    // activeRecipe("org.gradle.GradleSanityCheck")
+    configFile = project.getRootProject().file("$rootDir/gradle/sanity-check/rewrite.yml")
+    exportDatatables = true
+    exclusions.addAll(
+        "platforms/documentation/**",
+        "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
+        "platforms/jvm/language-groovy/src/testFixtures/resources/**",
+        "testing/performance/src/templates/**"
+    )
+    failOnDryRunResults = true
+}
+
+dependencies {
+    // rewrite("com.puppycrawl.tools:checkstyle-openrewrite-recipes:1.0.0") await release
+    rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.15.0")
+    rewrite("org.openrewrite.recipe:rewrite-third-party:0.26.0")
+    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:3.14.0"))
+}
+
+repositories {
+    mavenCentral()
+}
