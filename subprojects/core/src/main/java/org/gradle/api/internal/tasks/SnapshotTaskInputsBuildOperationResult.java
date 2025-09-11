@@ -69,10 +69,8 @@ public class SnapshotTaskInputsBuildOperationResult extends BaseSnapshotInputsBu
 
     private static class FilePropertyCollectingVisitor extends BaseFilePropertyCollectingVisitor<VisitState> implements InputFilePropertyVisitor {
 
-        @SuppressWarnings({"deprecation", "unused"})
         @Override
         protected Property createProperty(VisitState state) {
-            state.getPropertyNormalizationStrategyName();
             return new TaskProperty(HashCode.fromBytes(state.getPropertyHashBytes()).toString(), state.getPropertyAttributes());
         }
 
