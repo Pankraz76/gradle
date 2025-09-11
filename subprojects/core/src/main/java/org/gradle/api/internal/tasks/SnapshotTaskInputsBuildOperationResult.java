@@ -72,19 +72,12 @@ public class SnapshotTaskInputsBuildOperationResult extends BaseSnapshotInputsBu
         @SuppressWarnings("deprecation")
         @Override
         protected Property createProperty(VisitState state) {
-            return new TaskProperty(HashCode.fromBytes(state.getPropertyHashBytes()).toString(), state.getPropertyNormalizationStrategyName(), state.getPropertyAttributes());
+            return new TaskProperty(HashCode.fromBytes(state.getPropertyHashBytes()).toString(), state.getPropertyAttributes());
         }
 
         static class TaskProperty extends Property {
-            private final String normalization;
-
-            public TaskProperty(String hash, String normalization, Set<String> attributes) {
+            public TaskProperty(String hash, Set<String> attributes) {
                 super(hash, attributes);
-                this.normalization = normalization;
-            }
-
-            public String getNormalization() {
-                return normalization;
             }
         }
     }

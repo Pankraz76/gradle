@@ -16,22 +16,22 @@
 
 package org.gradle.internal.composite;
 
-import org.gradle.api.internal.tasks.DefaultTaskReference;
-import org.gradle.api.internal.tasks.TaskDependencyFactory;
+import com.google.common.base.Preconditions;
+import org.gradle.api.Task;
+import org.gradle.api.internal.tasks.TaskDependencyContainer;
+import org.gradle.api.internal.tasks.TaskDependencyResolveContext;
 import org.gradle.api.tasks.TaskReference;
 import org.gradle.internal.build.BuildState;
 import org.gradle.internal.build.CompositeBuildParticipantBuildState;
+import org.gradle.util.Path;
 
 import java.io.File;
 
 public class IncludedRootBuild implements IncludedBuildInternal {
-
     private final CompositeBuildParticipantBuildState rootBuild;
-    private final TaskDependencyFactory taskDependencyFactory;
 
-    public IncludedRootBuild(CompositeBuildParticipantBuildState rootBuild, TaskDependencyFactory taskDependencyFactory) {
+    public IncludedRootBuild(CompositeBuildParticipantBuildState rootBuild) {
         this.rootBuild = rootBuild;
-        this.taskDependencyFactory = taskDependencyFactory;
     }
 
     public CompositeBuildParticipantBuildState getRootBuild() {
@@ -49,8 +49,9 @@ public class IncludedRootBuild implements IncludedBuildInternal {
     }
 
     @Override
-    public TaskReference task(String pathStr) {
-        return DefaultTaskReference.create(pathStr, taskDependencyFactory);
+    public TaskReference task(String path) {
+        Preconditions.checkArgument(path.startsWith(":"), "Task path '%s' is not a qualified task path (e.g. ':task' or ':project:task').", path);
+        return new IncludedRootBuildTaskReference(rootBuild, path);
     }
 
     @Override
@@ -58,19 +59,28 @@ public class IncludedRootBuild implements IncludedBuildInternal {
         return rootBuild;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) {
-            return false;
+    private static class IncludedRootBuildTaskReference implements TaskReference, TaskDependencyContainer {
+        private final String taskPath;
+        private final CompositeBuildParticipantBuildState rootBuildState;
+
+        public IncludedRootBuildTaskReference(CompositeBuildParticipantBuildState rootBuildState, String taskPath) {
+            this.rootBuildState = rootBuildState;
+            this.taskPath = taskPath;
         }
 
-        IncludedRootBuild that = (IncludedRootBuild) o;
-        return rootBuild.equals(that.rootBuild);
-    }
+        @Override
+        public String getName() {
+            return Path.path(taskPath).getName();
+        }
 
-    @Override
-    public int hashCode() {
-        return rootBuild.hashCode();
-    }
+        @Override
+        public void visitDependencies(TaskDependencyResolveContext context) {
+            context.add(resolveTask());
+        }
 
+        private Task resolveTask() {
+            rootBuildState.ensureProjectsConfigured();
+            return rootBuildState.getMutableModel().getRootProject().getTasks().getByPath(taskPath);
+        }
+    }
 }

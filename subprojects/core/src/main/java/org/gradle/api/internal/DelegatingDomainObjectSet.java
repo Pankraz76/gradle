@@ -29,34 +29,34 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-public class DelegatingDomainObjectSet<T> implements DomainObjectSet<T>, DomainObjectCollectionInternal<T> {
-    private final DomainObjectSet<T> delegate;
+public class DelegatingDomainObjectSet<TYPE> implements DomainObjectSet<TYPE>, DomainObjectCollectionInternal<TYPE> {
+    private final DomainObjectSet<TYPE> delegate;
 
-    public DelegatingDomainObjectSet(DomainObjectSet<T> delegate) {
+    public DelegatingDomainObjectSet(DomainObjectSet<TYPE> delegate) {
         this.delegate = delegate;
     }
 
-    protected DomainObjectSet<T> getDelegate() {
+    protected DomainObjectSet<TYPE> getDelegate() {
         return delegate;
     }
 
     @Override
-    public DomainObjectSet<T> matching(Closure spec) {
+    public DomainObjectSet<TYPE> matching(Closure spec) {
         return matching(Specs.convertClosureToSpec(spec));
     }
 
     @Override
-    public DomainObjectSet<T> matching(Spec<? super T> spec) {
+    public DomainObjectSet<TYPE> matching(Spec<? super TYPE> spec) {
         return delegate.matching(spec);
     }
 
     @Override
-    public <S extends T> DomainObjectSet<S> withType(Class<S> type) {
+    public <S extends TYPE> DomainObjectSet<S> withType(Class<S> type) {
         return delegate.withType(type);
     }
 
     @Override
-    public void all(Action<? super T> action) {
+    public void all(Action<? super TYPE> action) {
         delegate.all(action);
     }
 
@@ -66,12 +66,12 @@ public class DelegatingDomainObjectSet<T> implements DomainObjectSet<T>, DomainO
     }
 
     @Override
-    public void configureEach(Action<? super T> action) {
+    public void configureEach(Action<? super TYPE> action) {
         delegate.configureEach(action);
     }
 
     @Override
-    public Action<? super T> whenObjectAdded(Action<? super T> action) {
+    public Action<? super TYPE> whenObjectAdded(Action<? super TYPE> action) {
         return delegate.whenObjectAdded(action);
     }
 
@@ -81,7 +81,7 @@ public class DelegatingDomainObjectSet<T> implements DomainObjectSet<T>, DomainO
     }
 
     @Override
-    public Action<? super T> whenObjectRemoved(Action<? super T> action) {
+    public Action<? super TYPE> whenObjectRemoved(Action<? super TYPE> action) {
         return delegate.whenObjectRemoved(action);
     }
 
@@ -91,32 +91,32 @@ public class DelegatingDomainObjectSet<T> implements DomainObjectSet<T>, DomainO
     }
 
     @Override
-    public <S extends T> DomainObjectCollection<S> withType(Class<S> type, Action<? super S> configureAction) {
+    public <S extends TYPE> DomainObjectCollection<S> withType(Class<S> type, Action<? super S> configureAction) {
         return delegate.withType(type, configureAction);
     }
 
     @Override
-    public <S extends T> DomainObjectCollection<S> withType(Class<S> type, Closure configureClosure) {
+    public <S extends TYPE> DomainObjectCollection<S> withType(Class<S> type, Closure configureClosure) {
         return withType(type, ConfigureUtil.configureUsing(configureClosure));
     }
 
     @Override
-    public void addLater(Provider<? extends T> provider) {
+    public void addLater(Provider<? extends TYPE> provider) {
         delegate.addLater(provider);
     }
 
     @Override
-    public void addAllLater(Provider<? extends Iterable<T>> provider) {
+    public void addAllLater(Provider<? extends Iterable<TYPE>> provider) {
         delegate.addAllLater(provider);
     }
 
     @Override
-    public boolean add(T o) {
+    public boolean add(TYPE o) {
         return delegate.add(o);
     }
 
     @Override
-    public boolean addAll(Collection<? extends T> c) {
+    public boolean addAll(Collection<? extends TYPE> c) {
         return delegate.addAll(c);
     }
 
@@ -141,7 +141,7 @@ public class DelegatingDomainObjectSet<T> implements DomainObjectSet<T>, DomainO
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public Iterator<TYPE> iterator() {
         return delegate.iterator();
     }
 
@@ -176,7 +176,7 @@ public class DelegatingDomainObjectSet<T> implements DomainObjectSet<T>, DomainO
     }
 
     @Override
-    public Set<T> findAll(Closure spec) {
+    public Set<TYPE> findAll(Closure spec) {
         return delegate.findAll(spec);
     }
 
