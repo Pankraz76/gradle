@@ -23,8 +23,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import static java.util.Objects.deepEquals;
-
 public class ConfigureByMapAction<T> implements Action<T> {
 
     private final Map<?, ?> properties;
@@ -52,13 +50,23 @@ public class ConfigureByMapAction<T> implements Action<T> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ConfigureByMapAction<?> that = (ConfigureByMapAction<?>) o;
-        return deepEquals(mandatoryProperties, that.mandatoryProperties)
-            && deepEquals(properties, that.properties);
+
+        ConfigureByMapAction that = (ConfigureByMapAction) o;
+
+        if (!mandatoryProperties.equals(that.mandatoryProperties)) {
+            return false;
+        }
+        if (!properties.equals(that.properties)) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return 31 * properties.hashCode() + mandatoryProperties.hashCode();
+        int result = properties.hashCode();
+        result = 31 * result + mandatoryProperties.hashCode();
+        return result;
     }
 }
