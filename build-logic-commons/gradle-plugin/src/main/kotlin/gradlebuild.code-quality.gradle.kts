@@ -147,7 +147,7 @@ tasks.withType<JavaCompile>().configureEach {
         disableWarningsInGeneratedCode = true
         allErrorsAsWarnings = true
         errorproneArgs.addAll(
-            "-XepPatchLocation:IN_PLACE -XepPatchChecks:UnusedMethod",
+            "-XepPatchLocation:IN_PLACE,-XepPatchChecks:UnusedMethod",
 //            "-XepPatchChecks:UndefinedEquals",
 //            "-XepPatchChecks:MissingOverride",
 //            "-XepPatchLocation:IN_PLACE"
