@@ -149,7 +149,7 @@ tasks.withType<JavaCompile>().configureEach {
         options.errorprone.errorproneArgs.addAll(
             "-XepPatchChecks:UnusedMethod",
             // "-XepPatchChecks:MissingOverride",
-            "-XepPatchLocation:IN_PLACE"
+            "-XepPatchLocation:IN_PLACEeeee"
 //            if(EnvVariableRead.getEnv("PatchLocationInPlace") && !EnvVariableRead.getEnv("CI")) {
 //                "-XepPatchLocation:IN_PLACE"
 //            }
