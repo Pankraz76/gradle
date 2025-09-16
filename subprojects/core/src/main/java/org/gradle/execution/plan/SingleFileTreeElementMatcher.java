@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.util.Objects;
 
 public class SingleFileTreeElementMatcher {
 
@@ -49,7 +50,7 @@ public class SingleFileTreeElementMatcher {
         // All parent paths need to match the spec as well, since this is how we implement the file system walking for file tree.
         RelativePath parentRelativePath = relativePath.getParent();
         File parentFile = element.getParentFile();
-        while (parentRelativePath != null && parentRelativePath != RelativePath.EMPTY_ROOT) {
+        while (parentRelativePath != null && !Objects.equals(parentRelativePath, RelativePath.EMPTY_ROOT)) {
             if (!filter.isSatisfiedBy(new ReadOnlyFileTreeElement(parentFile, parentRelativePath, stat))) {
                 return false;
             }
