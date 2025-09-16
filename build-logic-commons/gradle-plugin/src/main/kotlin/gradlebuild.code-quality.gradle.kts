@@ -141,7 +141,7 @@ project.plugins.withType<JavaBasePlugin> {
         }
     }
 }
-if(EnvVariableRead.getEnv("PatchLocationInPlace")) {
+if(EnvVariableRead.getEnv("PatchLocationInPlace") && !EnvVariableRead.getEnv("CI")) {
     tasks.withType<JavaCompile>().configureEach {
         options.errorprone {
             disableWarningsInGeneratedCode = true
