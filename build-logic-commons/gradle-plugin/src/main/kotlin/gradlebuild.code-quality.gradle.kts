@@ -141,18 +141,26 @@ project.plugins.withType<JavaBasePlugin> {
         }
     }
 }
-
-tasks.withType<JavaCompile>().configureEach {
-    options.errorprone {
-        disableWarningsInGeneratedCode = true
-        allErrorsAsWarnings = true
-        options.errorprone.errorproneArgs.addAll(
-            "-XepPatchChecks:UnusedMethod",
+if(EnvVariableRead.getEnv("IN_PLACE")) {
+    tasks.withType<JavaCompile>().configureEach {
+        options.errorprone {
+            disableWarningsInGeneratedCode = true
+            allErrorsAsWarnings = true
+            options.errorprone.errorproneArgs.addAll(
+                "-XepPatchChecks:UnusedMethod",
 //            "-XepPatchChecks:UndefinedEquals",
 //            "-XepPatchChecks:MissingOverride",
-            // "-XepPatchChecks:UnnecessaryParentheses,EqualsGetClass,AlmostJavadoc",
-            "-XepPatchLocation:IN_PLACE"
-        )
+                // "-XepPatchChecks:UnnecessaryParentheses,EqualsGetClass,AlmostJavadoc",
+                "-XepPatchLocation:IN_PLACE"
+            )
+        }
+    }
+} else {
+    tasks.withType<JavaCompile>().configureEach {
+        options.errorprone {
+            disableWarningsInGeneratedCode = true
+            allErrorsAsWarnings = true
+        }
     }
 }
 
