@@ -141,26 +141,17 @@ project.plugins.withType<JavaBasePlugin> {
         }
     }
 }
-if(EnvVariableRead.getEnv("PatchLocationInPlace") && !EnvVariableRead.getEnv("CI")) {
-    tasks.withType<JavaCompile>().configureEach {
-        options.errorprone {
-            disableWarningsInGeneratedCode = true
-            allErrorsAsWarnings = true
-            options.errorprone.errorproneArgs.addAll(
-                "-XepPatchChecks:UnusedMethod",
-//            "-XepPatchChecks:UndefinedEquals",
-//            "-XepPatchChecks:MissingOverride",
-                // "-XepPatchChecks:UnnecessaryParentheses,EqualsGetClass,AlmostJavadoc",
+
+tasks.withType<JavaCompile>().configureEach {
+    options.errorprone {
+        disableWarningsInGeneratedCode = true
+        allErrorsAsWarnings = true
+        options.errorprone.errorproneArgs.addAll(
+            "-XepPatchChecks:MissingOverride",
+            if(EnvVariableRead.getEnv("PatchLocationInPlace") && !EnvVariableRead.getEnv("CI")) {
                 "-XepPatchLocation:IN_PLACE"
-            )
-        }
-    }
-} else {
-    tasks.withType<JavaCompile>().configureEach {
-        options.errorprone {
-            disableWarningsInGeneratedCode = true
-            allErrorsAsWarnings = true
-        }
+            }
+        )
     }
 }
 
