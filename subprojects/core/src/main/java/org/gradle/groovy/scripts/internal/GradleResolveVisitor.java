@@ -329,7 +329,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
         // GROOVY-3110: It may be an inner enum defined by this class itself, in which case it does not need to be
         // explicitly qualified by the currentClass name
         String name = type.getName();
-        if (currentClass != type && !name.contains(".") && type.getClass().equals(ClassNode.class)) {
+        if (!Objects.equals(currentClass, type) && !name.contains(".") && type.getClass().equals(ClassNode.class)) {
             ClassNode tmp = new ConstructedNestedClass(currentClass, name);
             if (resolve(tmp)) {
                 type.setRedirect(tmp);
