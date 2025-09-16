@@ -863,7 +863,7 @@ class ConfigurationCacheState(
             return readList {
                 val project = readNonNull<CachedProjectState>()
                 if (project is ProjectWithWork) {
-                    if (project.path == Path.ROOT) {
+                    if (project.Objects.equals(path, Path.ROOT)) {
                         build.registerRootProject(rootProjectName, project.projectDir, project.buildDir)
                     } else {
                         build.registerProject(project.path, project.projectDir, project.buildDir)

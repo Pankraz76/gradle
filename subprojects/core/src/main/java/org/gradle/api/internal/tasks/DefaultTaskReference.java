@@ -20,6 +20,8 @@ import com.google.common.collect.ImmutableSet;
 import org.gradle.api.tasks.TaskReference;
 import org.gradle.util.Path;
 
+import java.util.Objects;
+
 /**
  * Default implementation of {@link TaskReference}.
  */
@@ -63,7 +65,7 @@ public class DefaultTaskReference implements TaskReference, TaskDependencyContai
         }
         String taskName = path.getName();
         if (taskName == null) {
-            assert path == Path.ROOT;
+            assert Objects.equals(path, Path.ROOT);
             throw new IllegalArgumentException("The root path is not a valid task path");
         }
         TaskDependencyContainer taskDependency = taskDependencyFactory.configurableDependency(ImmutableSet.of(pathStr));
