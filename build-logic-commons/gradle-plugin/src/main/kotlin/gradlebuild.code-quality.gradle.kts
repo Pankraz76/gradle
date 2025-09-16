@@ -143,28 +143,15 @@ project.plugins.withType<JavaBasePlugin> {
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    options.errorprone.allErrorsAsWarnings.set(true)
-    options.errorprone.disableWarningsInGeneratedCode.set(true)
-    options.errorprone.errorproneArgs.addAll(
-        "-XepPatchChecks:UnusedMethod",
-        "-XepPatchLocation:IN_PLACE"
-    )
+    options.errorprone {
+        disableWarningsInGeneratedCode = true
+        allErrorsAsWarnings = true
+        errorproneArgs.addAll(
+            "-XepPatchChecks:UnusedMethod",
+            "-XepPatchLocation:IN_PLACE"
+        )
+    }
 }
-
-//tasks.withType<JavaCompile>().configureEach {
-//    options.errorprone {
-//        disableWarningsInGeneratedCode = true
-//        allErrorsAsWarnings = true
-//        errorproneArgs.addAll(
-////            "-XepPatchChecks:UnusedMethod",
-//            // "-XepPatchChecks:MissingOverride",
-//            "-XepPatchLocation:IN_PLACE"
-////            if(EnvVariableRead.getEnv("PatchLocationInPlace") && !EnvVariableRead.getEnv("CI")) {
-////                "-XepPatchLocation:IN_PLACE"
-////            }
-//        )
-//    }
-//}
 
 val codeQuality = tasks.register("codeQuality") {
     dependsOn(tasks.withType<CodeNarc>())
