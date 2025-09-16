@@ -24,6 +24,7 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ListIterator;
+import java.util.Objects;
 
 /**
  * <p>Represents a relative path from some base directory to a file.  Used in file copying to represent both a source
@@ -296,7 +297,7 @@ public class RelativePath implements Serializable, Comparable<RelativePath>, Cha
         while (k < lim) {
             String c1 = v1[k];
             String c2 = v2[k];
-            int compareResult = c1 == c2 ? 0 : c1.compareTo(c2);
+            int compareResult = Objects.equals(c1, c2) ? 0 : c1.compareTo(c2);
             if (compareResult != 0) {
                 return compareResult;
             }
