@@ -31,6 +31,7 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A type token, representing a resolved type.
@@ -172,7 +173,7 @@ public abstract class ModelType<T> {
     }
 
     public boolean isAssignableFrom(ModelType<?> modelType) {
-        return modelType == this || wrapper.isAssignableFrom(modelType.wrapper);
+        return Objects.equals(modelType, this) || wrapper.isAssignableFrom(modelType.wrapper);
     }
 
     public boolean isAnnotationPresent(Class<? extends Annotation> annotation) {
