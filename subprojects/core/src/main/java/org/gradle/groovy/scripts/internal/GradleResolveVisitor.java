@@ -378,7 +378,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
         }
 
         // test if vanilla name is current class name
-        if (currentClass == type) {
+        if (Objects.equals(currentClass, type)) {
             return true;
         }
 
@@ -436,7 +436,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
              * We know that DefaultScript & friends don't have user-visible nested types,
              * so don't try to look up nonsensical types like org.gradle.Script#sourceCompatibility
              */
-             classToCheck != null && classToCheck != ClassHelper.OBJECT_TYPE && !SCRIPTS_PACKAGE.equals(classToCheck.getPackageName());
+             classToCheck != null && !classToCheck.equals(ClassHelper.OBJECT_TYPE) && !SCRIPTS_PACKAGE.equals(classToCheck.getPackageName());
              classToCheck = classToCheck.getSuperClass()) {
             if (classHierarchy.containsKey(classToCheck.getName())) {
                 break;
