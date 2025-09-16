@@ -36,6 +36,7 @@ import org.gradle.internal.deprecation.Documentation;
 import org.gradle.util.Path;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Handles locating and processing setting.gradle files.  Also deals with the buildSrc module, since that module is
@@ -175,7 +176,7 @@ public class DefaultSettingsLoader implements SettingsLoader {
         settings.getProjectRegistry().getAllProjects().forEach(project -> {
             if (project.getPath().equals(BUILD_SRC_PROJECT_PATH)) {
                 Path buildPath = settings.getGradle().getIdentityPath();
-                String suffix = buildPath == Path.ROOT ? "" : " (in build " + buildPath + ")";
+                String suffix = Objects.equals(buildPath, Path.ROOT) ? "" : " (in build " + buildPath + ")";
                 throw new GradleException("'" + SettingsInternal.BUILD_SRC + "' cannot be used as a project name as it is a reserved name" + suffix);
             }
             if (!project.getProjectDir().exists() || !project.getProjectDir().isDirectory() || !project.getProjectDir().canWrite()) {
