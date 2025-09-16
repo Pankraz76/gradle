@@ -148,6 +148,7 @@ tasks.withType<JavaCompile>().configureEach {
         allErrorsAsWarnings = true
         errorproneArgs.addAll(
             "-XepPatchChecks:ReferenceEquality",
+            //"-XepPatchChecks:ReferenceEquality,MissingOverride,DefaultCharset,DeadException",
             "-XepPatchLocation:IN_PLACE"
         )
     }
