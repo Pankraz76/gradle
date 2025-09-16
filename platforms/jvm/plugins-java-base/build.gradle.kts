@@ -22,7 +22,7 @@ description = "Contains a basic JVM plugin used to compile, test, and assemble J
 
 errorprone {
     disabledChecks.addAll(
-        "UnusedMethod", // 1 occurrences
+        // "UnusedMethod", // 1 occurrences
     )
 }
 
