@@ -147,8 +147,7 @@ tasks.withType<JavaCompile>().configureEach {
         disableWarningsInGeneratedCode = true
         allErrorsAsWarnings = true
         errorproneArgs.addAll(
-            "-XepPatchChecks:ReferenceEquality",
-            //"-XepPatchChecks:ReferenceEquality,MissingOverride,DefaultCharset,DeadException",
+            "-XepPatchChecks:ReferenceEquality,MissingOverride",
             "-XepPatchLocation:IN_PLACE"
         )
     }
