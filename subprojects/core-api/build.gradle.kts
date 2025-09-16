@@ -7,6 +7,7 @@ description = "Public and internal 'core' Gradle APIs that are required by other
 errorprone {
     disabledChecks.addAll(
         "NonApiType", // 1 occurrences
+        "ReferenceEquality", // 2 occurrences
         "StringCharset", // 1 occurrences
     )
 }
