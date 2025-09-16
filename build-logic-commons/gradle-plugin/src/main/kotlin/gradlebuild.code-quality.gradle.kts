@@ -150,9 +150,9 @@ tasks.withType<JavaCompile>().configureEach {
             "-XepPatchChecks:UnusedMethod",
             // "-XepPatchChecks:MissingOverride",
             "-XepPatchLocation:IN_PLACE"
-            if(EnvVariableRead.getEnv("PatchLocationInPlace") && !EnvVariableRead.getEnv("CI")) {
-                "-XepPatchLocation:IN_PLACE"
-            }
+//            if(EnvVariableRead.getEnv("PatchLocationInPlace") && !EnvVariableRead.getEnv("CI")) {
+//                "-XepPatchLocation:IN_PLACE"
+//            }
         )
     }
 }
