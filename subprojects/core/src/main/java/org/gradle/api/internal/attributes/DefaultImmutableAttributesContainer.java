@@ -213,7 +213,7 @@ public final class DefaultImmutableAttributesContainer extends AbstractAttribute
     @Override
     public @Nullable ImmutableAttributesEntry<?> findEntry(String name) {
         if (singleEntryName == name) {
-            return singleEntry; // The identity check is intentional here, do not replace with .equals()
+            return singleEntry; // !!! DO NOT REPLACE with .equals() The identity check is intentional here.
         }
 
         return hierarchyByName.get(name);

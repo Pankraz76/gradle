@@ -72,6 +72,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -128,7 +129,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public boolean hasPackageName() {
-            if (redirect() != this) {
+            if (!Objects.equals(redirect(), this)) {
                 return super.hasPackageName();
             }
             return knownEnclosingType.hasPackageName();
@@ -136,7 +137,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public String setName(String name) {
-            if (redirect() != this) {
+            if (!Objects.equals(redirect(), this)) {
                 return super.setName(name);
             } else {
                 throw new GroovyBugError("ConstructedNestedClass#setName should not be called");
@@ -165,7 +166,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public String getName() {
-            if (redirect() != this) {
+            if (!Objects.equals(redirect(), this)) {
                 return super.getName();
             }
             return prefix + className;
@@ -173,7 +174,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public boolean hasPackageName() {
-            if (redirect() != this) {
+            if (!Objects.equals(redirect(), this)) {
                 return super.hasPackageName();
             }
             return getName().indexOf('.') != -1;
@@ -181,7 +182,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public String setName(String name) {
-            if (redirect() != this) {
+            if (!Objects.equals(redirect(), this)) {
                 return super.setName(name);
             } else {
                 throw new GroovyBugError("ConstructedClassWithPackage#setName should not be called");
@@ -205,7 +206,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public String getName() {
-            if (redirect() != this) {
+            if (!Objects.equals(redirect(), this)) {
                 return super.getName();
             }
             return className;
@@ -213,7 +214,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public boolean hasPackageName() {
-            if (redirect() != this) {
+            if (!Objects.equals(redirect(), this)) {
                 return super.hasPackageName();
             }
             return false;
@@ -221,7 +222,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public String setName(String name) {
-            if (redirect() != this) {
+            if (!Objects.equals(redirect(), this)) {
                 return super.setName(name);
             } else {
                 throw new GroovyBugError("LowerCaseClass#setName should not be called");
