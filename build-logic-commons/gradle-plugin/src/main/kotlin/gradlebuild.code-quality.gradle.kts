@@ -146,11 +146,12 @@ tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
         disableWarningsInGeneratedCode = true
         allErrorsAsWarnings = true
-        errorproneArgs.addAll(
-            "-XepPatchLocation:IN_PLACE,-XepPatchChecks:UnusedMethod",
+        options.errorprone.errorproneArgs.addAll(
+            "-XepPatchChecks:UnusedMethod",
 //            "-XepPatchChecks:UndefinedEquals",
 //            "-XepPatchChecks:MissingOverride",
-//            "-XepPatchLocation:IN_PLACE"
+            // "-XepPatchChecks:UnnecessaryParentheses,EqualsGetClass,AlmostJavadoc",
+            "-XepPatchLocation:IN_PLACE"
         )
     }
 }
