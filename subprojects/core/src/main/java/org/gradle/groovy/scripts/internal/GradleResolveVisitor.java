@@ -72,7 +72,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -129,7 +128,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public boolean hasPackageName() {
-            if (!Objects.equals(redirect(), this)) {
+            if (redirect() != this) {
                 return super.hasPackageName();
             }
             return knownEnclosingType.hasPackageName();
@@ -137,7 +136,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public String setName(String name) {
-            if (!Objects.equals(redirect(), this)) {
+            if (redirect() != this) {
                 return super.setName(name);
             } else {
                 throw new GroovyBugError("ConstructedNestedClass#setName should not be called");
@@ -166,7 +165,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public String getName() {
-            if (!Objects.equals(redirect(), this)) {
+            if (redirect() != this) {
                 return super.getName();
             }
             return prefix + className;
@@ -174,7 +173,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public boolean hasPackageName() {
-            if (!Objects.equals(redirect(), this)) {
+            if (redirect() != this) {
                 return super.hasPackageName();
             }
             return getName().indexOf('.') != -1;
@@ -182,7 +181,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public String setName(String name) {
-            if (!Objects.equals(redirect(), this)) {
+            if (redirect() != this) {
                 return super.setName(name);
             } else {
                 throw new GroovyBugError("ConstructedClassWithPackage#setName should not be called");
@@ -206,7 +205,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public String getName() {
-            if (!Objects.equals(redirect(), this)) {
+            if (redirect() != this) {
                 return super.getName();
             }
             return className;
@@ -214,7 +213,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public boolean hasPackageName() {
-            if (!Objects.equals(redirect(), this)) {
+            if (redirect() != this) {
                 return super.hasPackageName();
             }
             return false;
@@ -222,7 +221,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
 
         @Override
         public String setName(String name) {
-            if (!Objects.equals(redirect(), this)) {
+            if (redirect() != this) {
                 return super.setName(name);
             } else {
                 throw new GroovyBugError("LowerCaseClass#setName should not be called");
@@ -329,7 +328,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
         // GROOVY-3110: It may be an inner enum defined by this class itself, in which case it does not need to be
         // explicitly qualified by the currentClass name
         String name = type.getName();
-        if (!Objects.equals(currentClass, type) && !name.contains(".") && type.getClass().equals(ClassNode.class)) {
+        if (currentClass != type && !name.contains(".") && type.getClass().equals(ClassNode.class)) {
             ClassNode tmp = new ConstructedNestedClass(currentClass, name);
             if (resolve(tmp)) {
                 type.setRedirect(tmp);
@@ -378,7 +377,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
         }
 
         // test if vanilla name is current class name
-        if (Objects.equals(currentClass, type)) {
+        if (currentClass == type) {
             return true;
         }
 
@@ -436,7 +435,7 @@ public class GradleResolveVisitor extends ResolveVisitor {
              * We know that DefaultScript & friends don't have user-visible nested types,
              * so don't try to look up nonsensical types like org.gradle.Script#sourceCompatibility
              */
-             classToCheck != null && !classToCheck.equals(ClassHelper.OBJECT_TYPE) && !SCRIPTS_PACKAGE.equals(classToCheck.getPackageName());
+             classToCheck != null && classToCheck != ClassHelper.OBJECT_TYPE && !SCRIPTS_PACKAGE.equals(classToCheck.getPackageName());
              classToCheck = classToCheck.getSuperClass()) {
             if (classHierarchy.containsKey(classToCheck.getName())) {
                 break;

@@ -21,8 +21,6 @@ import org.gradle.api.internal.tasks.TaskResolver;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.util.Path;
 
-import java.util.Objects;
-
 /**
  * Resolves tasks from this project or other projects in a build, given some task path.
  */
@@ -46,7 +44,7 @@ public class ProjectScopedTaskResolver implements TaskResolver {
     public Task resolveTask(Path path) {
         String targetTaskName = path.getName();
         if (targetTaskName == null) {
-            assert Objects.equals(path, Path.ROOT);
+            assert path == Path.ROOT;
             throw new IllegalArgumentException("The root path is not a valid task path");
         }
 

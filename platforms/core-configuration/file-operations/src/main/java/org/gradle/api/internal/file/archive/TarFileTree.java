@@ -222,7 +222,7 @@ public class TarFileTree extends AbstractArchiveFileTree {
             if (read) {
                 getFile();
                 return GFileUtils.openInputStream(getFile());
-            } else if (!Objects.equals(tar.getCurrentEntry(), entry)) {
+            } else if (tar.getCurrentEntry() != entry) {
                 throw new UnsupportedOperationException(String.format("The contents of %s have already been read.", this));
             } else {
                 read = true;
