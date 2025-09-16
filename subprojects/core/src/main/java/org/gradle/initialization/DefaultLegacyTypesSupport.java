@@ -28,7 +28,6 @@ import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.gradle.internal.classpath.transforms.CommonTypes.OBJECT_TYPE;
 
 
@@ -63,7 +62,7 @@ public class DefaultLegacyTypesSupport implements LegacyTypesSupport {
     private Set<String> readClassNames(String resourceName) {
         Set<String> classNames = new LinkedHashSet<>();
         URL resource = LegacyTypesSupport.class.getResource(resourceName);
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.openStream(), UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.openStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 classNames.add(line.trim());

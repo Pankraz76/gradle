@@ -23,12 +23,9 @@ import org.gradle.internal.UncheckedException;
 import org.gradle.internal.logging.ConsoleRenderer;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.nio.file.Files.newOutputStream;
 
 class DefaultBuildOperationLogger implements BuildOperationLogger {
     private final BuildOperationLogInfo configuration;
@@ -59,7 +56,7 @@ class DefaultBuildOperationLogger implements BuildOperationLogger {
     protected PrintWriter createWriter(File outputFile) {
         PrintWriter logWriter = null;
         try {
-            logWriter = new PrintWriter(new OutputStreamWriter(newOutputStream(outputFile.toPath()), UTF_8), true);
+            logWriter = new PrintWriter(new FileWriter(outputFile), true);
         } catch (IOException e) {
             UncheckedException.throwAsUncheckedException(e);
         }
