@@ -21,6 +21,8 @@ import org.gradle.api.internal.tasks.TaskResolver;
 import org.gradle.internal.build.BuildState;
 import org.gradle.util.Path;
 
+import java.util.Objects;
+
 /**
  * Resolves tasks within a single build, given some absolute task path.
  */

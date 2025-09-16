@@ -209,12 +209,11 @@ public final class DefaultImmutableAttributesContainer extends AbstractAttribute
         return typedEntry;
     }
 
+    @SuppressWarnings({"ReferenceEquality", "StringEquality"})
     @Override
     public @Nullable ImmutableAttributesEntry<?> findEntry(String name) {
-        //noinspection StringEquality
         if (singleEntryName == name) {
-            // The identity check is intentional here, do not replace with .equals()
-            return singleEntry;
+            return singleEntry; // The identity check is intentional here, do not replace with .equals()
         }
 
         return hierarchyByName.get(name);
