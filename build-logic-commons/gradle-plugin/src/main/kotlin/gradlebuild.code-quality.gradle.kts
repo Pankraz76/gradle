@@ -138,6 +138,12 @@ project.plugins.withType<JavaBasePlugin> {
                     severity = errorproneExtension.nullawayEnabled.map { if (it) CheckSeverity.ERROR else CheckSeverity.OFF }
                 }
             }
+            options.errorprone.errorproneArgs.addAll(
+                "-XepPatchChecks:UnusedMethod",
+                "-Xep:UnusedMethod:ERROR",
+                // "-XepPatchChecks:UnusedMethod", // why not working?
+                "-XepPatchLocation:IN_PLACE"
+            )
         }
     }
 }
