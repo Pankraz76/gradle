@@ -30,6 +30,7 @@ plugins {
     id("codenarc")
     id("net.ltgt.errorprone")
     id("net.ltgt.nullaway")
+    id("org.openrewrite.rewrite")
 }
 
 open class ErrorProneProjectExtension(
@@ -254,4 +255,28 @@ abstract class CodeNarcRule @Inject constructor(
             }
         }
     }
+}
+
+rewrite {
+    activeRecipe("org.gradle.GradleSanityCheck")
+    activeStyle("org.gradle.GradleImportLayout")
+    configFile = project.getRootProject().file("$rootDir/gradle/sanity-check/rewrite.yml")
+    exportDatatables = true
+    exclusions.addAll(
+        "platforms/documentation/**",
+        "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
+        "platforms/jvm/language-groovy/src/testFixtures/resources/**",
+        "testing/performance/src/templates/**"
+    )
+    failOnDryRunResults = true
+}
+
+dependencies {
+    rewrite("com.puppycrawl.tools:checkstyle-openrewrite-recipes:1.0.0-SNAPSHOT")
+    rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.15.0")
+    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:3.14.0"))
+}
+
+repositories {
+    mavenCentral()
 }
