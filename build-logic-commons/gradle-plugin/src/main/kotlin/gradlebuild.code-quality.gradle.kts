@@ -137,13 +137,13 @@ project.plugins.withType<JavaBasePlugin> {
                     isJSpecifyMode = true
                     severity = errorproneExtension.nullawayEnabled.map { if (it) CheckSeverity.ERROR else CheckSeverity.OFF }
                 }
+                errorproneArgs.addAll(
+                    "-XepPatchChecks:UnusedMethod",
+                    "-Xep:UnusedMethod:ERROR",
+                    // "-XepPatchChecks:UnusedMethod", // why not working?
+                    "-XepPatchLocation:IN_PLACE"
+                )
             }
-            options.errorprone.errorproneArgs.addAll(
-                "-XepPatchChecks:UnusedMethod",
-                "-Xep:UnusedMethod:ERROR",
-                // "-XepPatchChecks:UnusedMethod", // why not working?
-                "-XepPatchLocation:IN_PLACE"
-            )
         }
     }
 }
@@ -151,12 +151,7 @@ project.plugins.withType<JavaBasePlugin> {
 tasks.withType<JavaCompile>().configureEach {
     options.errorprone.allErrorsAsWarnings.set(true)
     options.errorprone.disableWarningsInGeneratedCode.set(true)
-    options.errorprone.errorproneArgs.addAll(
-        "-XepPatchChecks:UnusedMethod",
-        "-Xep:UnusedMethod:ERROR",
-        // "-XepPatchChecks:UnusedMethod", // why not working?
-        "-XepPatchLocation:IN_PLACE"
-    )
+    // options.errorprone.errorproneArgs.addAll("-XepPatchLocation:IN_PLACE")
 }
 
 val codeQuality = tasks.register("codeQuality") {
