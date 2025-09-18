@@ -137,6 +137,7 @@ project.plugins.withType<JavaBasePlugin> {
                     isJSpecifyMode = true
                     severity = errorproneExtension.nullawayEnabled.map { if (it) CheckSeverity.ERROR else CheckSeverity.OFF }
                 }
+
                 errorproneArgs.addAll(
                     "-XepPatchChecks:UndefinedEquals",
                     "-XepPatchLocation:IN_PLACE"
