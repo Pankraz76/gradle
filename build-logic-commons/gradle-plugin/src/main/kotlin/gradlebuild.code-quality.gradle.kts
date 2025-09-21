@@ -146,6 +146,7 @@ tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
         disableWarningsInGeneratedCode = true
         allErrorsAsWarnings = true
+        errorproneArgs.add("-XepPatchLocation:IN_PLACE")
     }
 }
 
