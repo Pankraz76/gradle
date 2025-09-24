@@ -271,7 +271,8 @@ rewrite {
 }
 
 dependencies {
-    rewrite("org.openrewrite.recipe:rewrite-third-party:0.27.0")
+    //rewrite("org.openrewrite.recipe:rewrite-third-party:0.27.0")
+    rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.17.0")
 }
 
 repositories {
