@@ -93,7 +93,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/master' }}
-      - run: ./gradlew rewriteRun -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }} -Dorg.gradle.jvmargs=-Xmx8G
+      - run: ./gradlew rewriteDryRun -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }} -Dorg.gradle.jvmargs=-Xmx8G
 
   unit-test:
     name: "${{ matrix.bucket.name }} (Unit Test)"

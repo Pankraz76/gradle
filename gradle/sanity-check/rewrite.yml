@@ -103,8 +103,6 @@ tags:
   - code-quality
 recipeList:
   - tech.picnic.errorprone.refasterrules.StreamRulesRecipes
-  - tech.picnic.errorprone.refasterrules.BugCheckerRulesRecipes
-  - tech.picnic.errorprone.refasterrules.SuggestedFixRulesRecipes
   # Potential future additions:
   # - org.gradle.CheckstyleAutoFix
   # - org.gradle.GradleLicenseHeader
