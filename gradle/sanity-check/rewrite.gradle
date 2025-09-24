@@ -26,13 +26,9 @@ rewrite {
 }
 
 dependencies {
-    rewrite("com.puppycrawl.tools:checkstyle-openrewrite-recipes:1.0.0-SNAPSHOT")
-    rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.15.0")
-    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:3.14.0"))
+    rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.17.0")
 }
 
 repositories {
     mavenCentral()
 }
-
-check.dependsOn(rewriteDryRun)

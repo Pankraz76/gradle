@@ -30,7 +30,6 @@ plugins {
     id("codenarc")
     id("net.ltgt.errorprone")
     id("net.ltgt.nullaway")
-    id("org.openrewrite.rewrite")
 }
 
 open class ErrorProneProjectExtension(
@@ -138,23 +137,16 @@ project.plugins.withType<JavaBasePlugin> {
                     isJSpecifyMode = true
                     severity = errorproneExtension.nullawayEnabled.map { if (it) CheckSeverity.ERROR else CheckSeverity.OFF }
                 }
-
-                errorproneArgs.addAll(
-                    "-XepPatchChecks:UndefinedEquals",
-                    "-XepPatchLocation:IN_PLACE"
-                )
             }
         }
     }
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    options.errorprone.allErrorsAsWarnings.set(true)
-    options.errorprone.disableWarningsInGeneratedCode.set(true)
-    options.errorprone.errorproneArgs.addAll(
-        "-XepPatchChecks:UndefinedEquals",
-        "-XepPatchLocation:IN_PLACE"
-    )
+    options.errorprone {
+        disableWarningsInGeneratedCode = true
+        allErrorsAsWarnings = true
+    }
 }
 
 val codeQuality = tasks.register("codeQuality") {
@@ -255,26 +247,4 @@ abstract class CodeNarcRule @Inject constructor(
             }
         }
     }
-}
-
-rewrite {
-    activeRecipe("org.gradle.GradleSanityCheck")
-    configFile = project.getRootProject().file("$rootDir/gradle/sanity-check/rewrite.yml")
-    exportDatatables = true
-    exclusions.addAll(
-        "platforms/documentation/**",
-        "platforms/enterprise/enterprise-plugin-performance/src/templates/**",
-        "platforms/jvm/language-groovy/src/testFixtures/resources/**",
-        "testing/performance/src/templates/**"
-    )
-    failOnDryRunResults = true
-}
-
-dependencies {
-    //rewrite("org.openrewrite.recipe:rewrite-third-party:0.27.0")
-    rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.17.0")
-}
-
-repositories {
-    mavenCentral()
 }
