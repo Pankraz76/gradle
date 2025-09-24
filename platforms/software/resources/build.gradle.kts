@@ -6,7 +6,7 @@ description = "A set of general-purpose resource abstractions"
 
 errorprone {
     disabledChecks.addAll(
-        //"UndefinedEquals", // 1 occurrences
+        "UndefinedEquals", // 1 occurrences
     )
 }
 
