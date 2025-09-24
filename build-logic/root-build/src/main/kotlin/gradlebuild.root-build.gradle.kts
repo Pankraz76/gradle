@@ -43,4 +43,3 @@ configure<DependencyAnalysisExtension> {
 }
 
 apply(from = "$rootDir/gradle/sanity-check/rewrite.gradle")
-apply(from = "$rootDir/gradle/sanity-check/spotless.gradle")

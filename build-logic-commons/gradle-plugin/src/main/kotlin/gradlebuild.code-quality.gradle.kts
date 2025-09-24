@@ -259,7 +259,6 @@ abstract class CodeNarcRule @Inject constructor(
 
 rewrite {
     activeRecipe("org.gradle.GradleSanityCheck")
-    activeStyle("org.gradle.GradleImportLayout")
     configFile = project.getRootProject().file("$rootDir/gradle/sanity-check/rewrite.yml")
     exportDatatables = true
     exclusions.addAll(
@@ -272,9 +271,7 @@ rewrite {
 }
 
 dependencies {
-    rewrite("com.puppycrawl.tools:checkstyle-openrewrite-recipes:1.0.0-SNAPSHOT")
-    rewrite("org.openrewrite.recipe:rewrite-static-analysis:2.15.0")
-    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:3.14.0"))
+    rewrite("org.openrewrite.recipe:rewrite-third-party:0.27.0")
 }
 
 repositories {
