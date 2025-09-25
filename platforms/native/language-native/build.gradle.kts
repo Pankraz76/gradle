@@ -8,7 +8,6 @@ errorprone {
     disabledChecks.addAll(
         "JavaLangClash", // 1 occurrences
         "MixedMutabilityReturnType", // 1 occurrences
-        "UnusedVariable", // 10 occurrences
     )
 }
 
