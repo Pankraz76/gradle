@@ -13,7 +13,6 @@ errorprone {
     disabledChecks.addAll(
         "AmbiguousMethodReference", // 1 occurrences
         "ClassCanBeStatic",
-        "DefaultCharset", // 3 occurrences
         "Finally", // 4 occurrences
         "IdentityHashMapUsage", // 2 occurrences
         "InlineFormatString", // 5 occurrences

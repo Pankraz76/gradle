@@ -9,7 +9,6 @@ This project should NOT be used as an implementation dependency anywhere (except
 
 errorprone {
     disabledChecks.addAll(
-        "DefaultCharset", // 6 occurrences
         "GetClassOnEnum", // 1 occurrences
         "ImmutableEnumChecker", // 2 occurrences
         "ReferenceEquality", // 1 occurrences

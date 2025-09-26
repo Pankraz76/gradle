@@ -6,7 +6,6 @@ description = "Plugins, tasks and compiler infrastructure for compiling/linking 
 
 errorprone {
     disabledChecks.addAll(
-        "DefaultCharset", // 2 occurrences
         "EqualsUnsafeCast", // 1 occurrences
         "GetClassOnClass", // 1 occurrences
         "ReferenceEquality", // 2 occurrences
