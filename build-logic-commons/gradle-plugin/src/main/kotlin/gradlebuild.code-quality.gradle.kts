@@ -53,20 +53,16 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
         "CanonicalAnnotationSyntax", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:CanonicalAnnotationSyntax
         "LexicographicalAnnotationListing", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:LexicographicalAnnotationListing
-        // picnic // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:StaticImport
-        "StaticImport",
-        "DirectReturn",
-        "TimeZoneUsage",
-        "NonStaticImport",
-        "Slf4jLoggerDeclaration",
-        "ConstantNaming",
-        "CollectorMutability",
+        // picnic // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
         "AmbiguousJsonCreator",
         "AssertJNullnessAssertion",
         "AssociativeMethodInvocation",
         "AutowiredConstructor",
         "BugPatternLink",
         "ClassCastLambdaUsage",
+        "CollectorMutability",
+        "ConstantNaming",
+        "DirectReturn",
         "EmptyMethod",
         "EmptyMonoZip",
         "ErrorProneRuntimeClasspath",
@@ -90,6 +86,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "NestedOptionals",
         "NestedPublishers",
         "NonEmptyMono",
+        "NonStaticImport",
         "OptionalOrElseGet",
         "PrimitiveComparison",
         "RedundantStringConversion",
@@ -100,8 +97,11 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "RequestMappingAnnotation",
         "RequestParamType",
         "Slf4jLogStatement",
+        "Slf4jLoggerDeclaration",
         "SpringMvcAnnotation",
+        "StaticImport",
         "StringJoin",
+        "TimeZoneUsage",
         // NEVER
         "AssignmentExpression", // Not using it is more a matter of taste.
         "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
