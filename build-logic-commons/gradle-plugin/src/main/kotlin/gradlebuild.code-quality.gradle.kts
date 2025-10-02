@@ -88,6 +88,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "JUnitValueSource",
         "LexicographicalAnnotationListing",
         "MockitoMockClassReference",
+        "AndroidJdkLibsChecker",
         "MockitoStubbing",
         "MongoDBTextFilterUsage",
         "NestedOptionals",
