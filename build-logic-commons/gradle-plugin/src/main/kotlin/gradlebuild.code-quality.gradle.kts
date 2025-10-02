@@ -150,7 +150,8 @@ tasks.withType<JavaCompile>().configureEach {
         disableWarningsInGeneratedCode = true
         allErrorsAsWarnings = true
         errorproneArgs.addAll(
-            "-XepPatchChecks:CanonicalAnnotationSyntax,StaticImport,LexicographicalAnnotationListing",
+            //"-XepPatchChecks:CanonicalAnnotationSyntax,StaticImport,LexicographicalAnnotationListing",
+            "-XepPatchChecks:StaticImport",
             "-XepPatchLocation:IN_PLACE"
         )
     }
