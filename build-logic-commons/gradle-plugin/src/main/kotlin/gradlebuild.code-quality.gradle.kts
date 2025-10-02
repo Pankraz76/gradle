@@ -54,7 +54,6 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         // picnic https://error-prone.picnic.tech
         "AmbiguousJsonCreator",
         "AssertJNullnessAssertion",
-        "AssociativeMethodInvocation",
         "AutowiredConstructor",
         "BugPatternLink",
         "CanonicalAnnotationSyntax",
