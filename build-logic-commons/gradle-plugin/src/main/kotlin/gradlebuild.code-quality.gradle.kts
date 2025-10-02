@@ -67,6 +67,8 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "JavaxInjectOnAbstractMethod", // We use abstract injection as a pattern
         "MissingSummary", // We have another mechanism to check Javadocs on public API
         "StringSplitter", // We are fine with using String.split() as is
+        "Refaster Rule", // We are fine with using String.split() as is
+        "PreconditionsRules", // We are fine with using String.split() as is
     )
 
     nullawayEnabled.convention(false)
