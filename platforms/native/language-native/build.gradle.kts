@@ -9,7 +9,6 @@ errorprone {
         "JavaLangClash", // 1 occurrences
         "MixedMutabilityReturnType", // 1 occurrences
         "UnusedMethod", // 2 occurrences
-        "UnusedVariable", // 10 occurrences
     )
 }
 

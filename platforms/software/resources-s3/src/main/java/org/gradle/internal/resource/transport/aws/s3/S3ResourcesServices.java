@@ -45,7 +45,6 @@ public class S3ResourcesServices extends AbstractGradleModuleServices {
     }
 
     private static class AuthenticationSchemeAction implements ServiceRegistrationProvider {
-        @SuppressWarnings("UnusedVariable")
         @Provides
         public void configure(ServiceRegistration registration, AuthenticationSchemeRegistry authenticationSchemeRegistry) {
             authenticationSchemeRegistry.registerScheme(AwsImAuthentication.class, DefaultAwsImAuthentication.class);

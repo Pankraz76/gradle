@@ -59,7 +59,6 @@ public class HttpResourcesServices extends AbstractGradleModuleServices {
     }
 
     private static class AuthenticationSchemeAction implements ServiceRegistrationProvider {
-        @SuppressWarnings("UnusedVariable")
         @Provides
         public void configure(ServiceRegistration registration, AuthenticationSchemeRegistry authenticationSchemeRegistry) {
             authenticationSchemeRegistry.registerScheme(BasicAuthentication.class, DefaultBasicAuthentication.class);
