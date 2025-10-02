@@ -86,7 +86,6 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "PrimitiveComparison",
         "RedundantStringConversion",
         "RedundantStringEscape",
-        "RefasterAnyOfUsage",
         "RefasterMethodParameterOrder",
         "RefasterRuleModifiers",
         "RequestMappingAnnotation",
