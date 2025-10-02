@@ -83,6 +83,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "JUnitMethodDeclaration",
         "JUnitNullaryParameterizedTestDeclaration",
         "JUnitValueSource",
+        "EagerStringFormatting",
         "LexicographicalAnnotationListing",
         "MockitoMockClassReference",
         "MockitoStubbing",
