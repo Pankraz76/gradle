@@ -51,6 +51,12 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "EnumOrdinal", // This violation is ubiquitous, though most are benign.
         "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals()
         "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
+        "CanonicalAnnotationSyntax", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:CanonicalAnnotationSyntax
+        "LexicographicalAnnotationListing", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:LexicographicalAnnotationListing
+        "StaticImport", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:StaticImport
+        "DirectReturn", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
+        "TimeZoneUsage", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
+        "NonStaticImport", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
 
         // NEVER
         "AssignmentExpression", // Not using it is more a matter of taste.
@@ -125,6 +131,8 @@ project.plugins.withType<JavaBasePlugin> {
         // don't forget to update the version in distributions-dependencies/build.gradle.kts
         addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0")
         addErrorProneDependency("com.uber.nullaway:nullaway:0.12.10")
+        addErrorProneDependency("tech.picnic.error-prone-support:error-prone-contrib:0.25.0")
+        addErrorProneDependency("tech.picnic.error-prone-support:refaster-runner:0.25.0")
 
         project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
             options.errorprone {
