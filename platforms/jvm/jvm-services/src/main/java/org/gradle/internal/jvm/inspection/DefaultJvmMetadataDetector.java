@@ -36,8 +36,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.EnumMap;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 
 public class DefaultJvmMetadataDetector implements JvmMetadataDetector {
 
@@ -114,7 +112,7 @@ public class DefaultJvmMetadataDetector implements JvmMetadataDetector {
             ExecResult result = exec.build().start().waitForFinish();
             int exitValue = result.getExitValue();
             if (exitValue == 0) {
-                return parseExecOutput(jdkPath, out.toString(UTF_8,""));
+                return parseExecOutput(jdkPath, out.toString());
             }
             String errorMessage = "Command returned unexpected result code: " + exitValue + "\nError output:\n" + errorOutput;
             logger.debug("Failed to get metadata from JVM installation at '{}'. {}", jdkPath, errorMessage);
