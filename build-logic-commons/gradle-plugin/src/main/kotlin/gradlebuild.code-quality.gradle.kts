@@ -51,6 +51,15 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "EnumOrdinal", // This violation is ubiquitous, though most are benign.
         "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals()
         "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
+        // NEVER
+        "AssignmentExpression", // Not using it is more a matter of taste.
+        "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
+        "InjectOnConstructorOfAbstractClass", // We use abstract injection as a pattern
+        "InlineMeSuggester", // Only suppression seems to actually "fix" this, so make it global
+        "JavaUtilDate", // We are fine with using Date
+        "JavaxInjectOnAbstractMethod", // We use abstract injection as a pattern
+        "MissingSummary", // We have another mechanism to check Javadocs on public API
+        "StringSplitter", // We are fine with using String.split() as is
         // picnic https://error-prone.picnic.tech
         "AmbiguousJsonCreator",
         "AssertJNullnessAssertion",
@@ -86,25 +95,13 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "PrimitiveComparison",
         "RedundantStringConversion",
         "RedundantStringEscape",
-        "RefasterMethodParameterOrder",
-        "RefasterRuleModifiers",
         "RequestMappingAnnotation",
         "RequestParamType",
         "Slf4jLogStatement",
         "Slf4jLoggerDeclaration",
-        "SpringMvcAnnotation",
         "StaticImport",
         "StringJoin",
         "TimeZoneUsage",
-        // NEVER
-        "AssignmentExpression", // Not using it is more a matter of taste.
-        "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
-        "InjectOnConstructorOfAbstractClass", // We use abstract injection as a pattern
-        "InlineMeSuggester", // Only suppression seems to actually "fix" this, so make it global
-        "JavaUtilDate", // We are fine with using Date
-        "JavaxInjectOnAbstractMethod", // We use abstract injection as a pattern
-        "MissingSummary", // We have another mechanism to check Javadocs on public API
-        "StringSplitter", // We are fine with using String.split() as is
     )
 
     nullawayEnabled.convention(false)
