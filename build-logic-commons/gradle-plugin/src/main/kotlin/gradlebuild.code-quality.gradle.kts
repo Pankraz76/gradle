@@ -155,6 +155,8 @@ tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
         disableWarningsInGeneratedCode = true
         allErrorsAsWarnings = true
+        errorproneArgs.add("-XepOpt:Refaster:NamePattern=^(?!PreconditionsRules\\\$).*")
+        errorproneArgs.add("-XepOpt:Refaster:NamePattern=^(?!.*Rules\\\$).*")
     }
 }
 
