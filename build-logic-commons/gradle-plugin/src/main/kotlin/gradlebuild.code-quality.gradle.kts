@@ -52,14 +52,12 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals()
         "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
         // picnic https://error-prone.picnic.tech
-        // -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
-        "CanonicalAnnotationSyntax",
-        "LexicographicalAnnotationListing",
         "AmbiguousJsonCreator",
         "AssertJNullnessAssertion",
         "AssociativeMethodInvocation",
         "AutowiredConstructor",
         "BugPatternLink",
+        "CanonicalAnnotationSyntax",
         "ClassCastLambdaUsage",
         "CollectorMutability",
         "ConstantNaming",
@@ -81,6 +79,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "JUnitMethodDeclaration",
         "JUnitNullaryParameterizedTestDeclaration",
         "JUnitValueSource",
+        "LexicographicalAnnotationListing",
         "MockitoMockClassReference",
         "MockitoStubbing",
         "MongoDBTextFilterUsage",
