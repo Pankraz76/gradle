@@ -62,7 +62,6 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "DirectReturn",
         "EmptyMethod",
         "EmptyMonoZip",
-        "ErrorProneRuntimeClasspath",
         "ErrorProneTestHelperSourceFormat",
         "ExhaustiveRefasterTypeMigration",
         "ExplicitArgumentEnumeration",
