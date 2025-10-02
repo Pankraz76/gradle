@@ -57,8 +57,6 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "DirectReturn", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
         "TimeZoneUsage", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
         "NonStaticImport", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
-        "Preconditions", // We are fine with using String.split() as is
-        "CharSequence", // We are fine with using String.split() as is
 
         // NEVER
         "AssignmentExpression", // Not using it is more a matter of taste.
