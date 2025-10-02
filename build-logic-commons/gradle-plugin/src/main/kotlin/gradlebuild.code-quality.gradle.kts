@@ -193,6 +193,7 @@ tasks.withType<JavaCompile>().configureEach {
         allErrorsAsWarnings = true
         // fix potential issues with:
         // errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn")
+         errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:EnumOrdinal")
         errorproneArgs.add("-XepOpt:Refaster:NamePattern=^(?!PreconditionsRules\\\$).*")
         errorproneArgs.add("-XepOpt:Refaster:NamePattern=^(?!.*Rules\\\$).*")
     }
