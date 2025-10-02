@@ -124,6 +124,8 @@ project.plugins.withType<JavaBasePlugin> {
         // 2.31.0 is the latest version that works with JDK 11
         addErrorProneDependency("com.google.errorprone:error_prone_core:2.31.0")
         addErrorProneDependency("com.uber.nullaway:nullaway:0.12.7")
+        addErrorProneDependency("tech.picnic.error-prone-support:error-prone-contrib:0.25.0")
+        addErrorProneDependency("tech.picnic.error-prone-support:refaster-runner:0.25.0")
 
         project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
             options.errorprone {
