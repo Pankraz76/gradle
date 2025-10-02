@@ -53,13 +53,14 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
         "CanonicalAnnotationSyntax", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:CanonicalAnnotationSyntax
         "LexicographicalAnnotationListing", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:LexicographicalAnnotationListing
-        "StaticImport", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:StaticImport
-        "DirectReturn", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
-        "TimeZoneUsage", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
-        "NonStaticImport", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
-        "Slf4jLoggerDeclaration", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
-        "ConstantNaming", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
-        "CollectorMutability", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
+        // picnic // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:StaticImport
+        "StaticImport",
+        "DirectReturn",
+        "TimeZoneUsage",
+        "NonStaticImport",
+        "Slf4jLoggerDeclaration",
+        "ConstantNaming",
+        "CollectorMutability",
         "AmbiguousJsonCreator",
         "AssertJNullnessAssertion",
         "AssociativeMethodInvocation",
@@ -101,7 +102,6 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "Slf4jLogStatement",
         "SpringMvcAnnotation",
         "StringJoin",
-
         // NEVER
         "AssignmentExpression", // Not using it is more a matter of taste.
         "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
