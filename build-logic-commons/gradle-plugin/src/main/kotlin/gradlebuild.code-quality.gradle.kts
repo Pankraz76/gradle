@@ -48,7 +48,6 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
 ).apply {
     disabledChecks.addAll(
         // DISCUSS
-        "EnumOrdinal", // This violation is ubiquitous, though most are benign.
         "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals()
         "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
 
@@ -197,6 +196,8 @@ tasks.withType<JavaCompile>().configureEach {
         // fix potential issues with:
         // errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn")
         // errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:PreconditionsRules")
+        // errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:StringJoining")
+        errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:EnumOrdinal")
         errorproneArgs.add("-XepOpt:Refaster:NamePattern=^(?!.*Rules\\\$).*")
     }
 }
