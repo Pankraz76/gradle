@@ -55,7 +55,6 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "AmbiguousJsonCreator",
         "AssertJNullnessAssertion",
         "AutowiredConstructor",
-        "BugPatternLink",
         "CanonicalAnnotationSyntax",
         "ClassCastLambdaUsage",
         "CollectorMutability",
