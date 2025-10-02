@@ -48,9 +48,10 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
 ).apply {
     disabledChecks.addAll(
         // DISCUSS
-        //"EnumOrdinal", // This violation is ubiquitous, though most are benign.
+        "EnumOrdinal", // This violation is ubiquitous, though most are benign.
         "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals()
         "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
+
         // NEVER
         "AssignmentExpression", // Not using it is more a matter of taste.
         "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
@@ -60,6 +61,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "JavaxInjectOnAbstractMethod", // We use abstract injection as a pattern
         "MissingSummary", // We have another mechanism to check Javadocs on public API
         "StringSplitter", // We are fine with using String.split() as is
+
         // picnic https://error-prone.picnic.tech
         "AmbiguousJsonCreator",
         "AssertJNullnessAssertion",
@@ -193,8 +195,7 @@ tasks.withType<JavaCompile>().configureEach {
         allErrorsAsWarnings = true
         // fix potential issues with:
         // errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn")
-        // errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:UnusedMethod")
-        errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:EnumOrdinal")
+        // errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:PreconditionsRules")
         errorproneArgs.add("-XepOpt:Refaster:NamePattern=^(?!.*Rules\\\$).*")
     }
 }
