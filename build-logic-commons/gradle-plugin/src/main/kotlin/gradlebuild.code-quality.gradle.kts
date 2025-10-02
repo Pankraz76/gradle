@@ -151,7 +151,7 @@ tasks.withType<JavaCompile>().configureEach {
         allErrorsAsWarnings = true
         errorproneArgs.addAll(
             //"-XepPatchChecks:CanonicalAnnotationSyntax,StaticImport,LexicographicalAnnotationListing",
-            "-XepPatchChecks:StaticImport",
+            //"-XepPatchChecks:StaticImport",
             "-XepPatchLocation:IN_PLACE"
         )
     }
