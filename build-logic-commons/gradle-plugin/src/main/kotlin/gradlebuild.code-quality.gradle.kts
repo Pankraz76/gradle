@@ -51,9 +51,10 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "EnumOrdinal", // This violation is ubiquitous, though most are benign.
         "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals()
         "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
-        "CanonicalAnnotationSyntax", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:CanonicalAnnotationSyntax
-        "LexicographicalAnnotationListing", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:LexicographicalAnnotationListing
-        // picnic // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
+        // picnic https://error-prone.picnic.tech
+        // -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
+        "CanonicalAnnotationSyntax",
+        "LexicographicalAnnotationListing",
         "AmbiguousJsonCreator",
         "AssertJNullnessAssertion",
         "AssociativeMethodInvocation",
