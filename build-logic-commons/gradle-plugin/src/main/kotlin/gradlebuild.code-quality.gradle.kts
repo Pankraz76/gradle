@@ -57,6 +57,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "DirectReturn", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
         "TimeZoneUsage", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
         "NonStaticImport", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
+        "Slf4jLoggerDeclaration", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
         "ConstantNaming", // fix after merge: -XepPatchLocation:IN_PLACE,-XepPatchChecks:DirectReturn
 
         // NEVER
