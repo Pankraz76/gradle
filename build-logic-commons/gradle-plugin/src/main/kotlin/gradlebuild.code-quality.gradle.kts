@@ -63,12 +63,12 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
 
         // picnic https://error-prone.picnic.tech
         "AmbiguousJsonCreator",
+        "AndroidJdkLibsChecker",
         "AssertJNullnessAssertion",
         "AutowiredConstructor",
         "CanonicalAnnotationSyntax",
         "ClassCastLambdaUsage",
         "CollectorMutability",
-        "PrivateConstructorForUtilityClass",
         "ConstantNaming",
         "DirectReturn",
         "EagerStringFormatting",
@@ -86,9 +86,9 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "JUnitMethodDeclaration",
         "JUnitNullaryParameterizedTestDeclaration",
         "JUnitValueSource",
+        "Java8ApiChecker",
         "LexicographicalAnnotationListing",
         "MockitoMockClassReference",
-        "AndroidJdkLibsChecker",
         "MockitoStubbing",
         "MongoDBTextFilterUsage",
         "NestedOptionals",
@@ -97,6 +97,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "NonStaticImport",
         "OptionalOrElseGet",
         "PrimitiveComparison",
+        "PrivateConstructorForUtilityClass",
         "RedundantStringConversion",
         "RedundantStringEscape",
         "RequestMappingAnnotation",
@@ -106,6 +107,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "StaticImport",
         "StringJoin",
         "TimeZoneUsage",
+        "Var",
     )
 
     nullawayEnabled.convention(false)
