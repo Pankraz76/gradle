@@ -68,6 +68,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "CanonicalAnnotationSyntax",
         "ClassCastLambdaUsage",
         "CollectorMutability",
+        "PrivateConstructorForUtilityClass",
         "ConstantNaming",
         "DirectReturn",
         "EagerStringFormatting",
