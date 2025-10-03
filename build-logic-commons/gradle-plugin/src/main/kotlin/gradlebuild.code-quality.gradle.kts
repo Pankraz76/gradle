@@ -104,6 +104,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "NonEmptyMono",
         "NonFinalStaticField",
         "NonStaticImport",
+        "InconsistentOverloads",
         "OptionalOrElseGet",
         "PrimitiveComparison",
         "PrivateConstructorForUtilityClass",
