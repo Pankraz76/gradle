@@ -95,6 +95,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "JUnitValueSource",
         "Java8ApiChecker",
         "LexicographicalAnnotationListing",
+        "MethodCanBeStatic",
         "MockitoMockClassReference",
         "MockitoStubbing",
         "MongoDBTextFilterUsage",
