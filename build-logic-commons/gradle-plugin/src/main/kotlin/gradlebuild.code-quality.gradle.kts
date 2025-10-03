@@ -101,6 +101,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "MockitoStubbing",
         "MongoDBTextFilterUsage",
         "NestedOptionals",
+        "PreferredInterfaceType",
         "NestedPublishers",
         "NonEmptyMono",
         "NonFinalStaticField",
@@ -193,8 +194,8 @@ project.plugins.withType<JavaBasePlugin> {
         // don't forget to update the version in distributions-dependencies/build.gradle.kts
         addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0")
         addErrorProneDependency("com.uber.nullaway:nullaway:0.12.10")
-//        addErrorProneDependency("tech.picnic.error-prone-support:error-prone-contrib:0.25.0")
-//        addErrorProneDependency("tech.picnic.error-prone-support:refaster-runner:0.25.0")
+        addErrorProneDependency("tech.picnic.error-prone-support:error-prone-contrib:0.25.0")
+        addErrorProneDependency("tech.picnic.error-prone-support:refaster-runner:0.25.0")
 
         project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
             options.errorprone {
@@ -222,7 +223,7 @@ tasks.withType<JavaCompile>().configureEach {
         // errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:PreconditionsRules")
         // errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:StringJoining")
         errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:UnusedMethod")
-//        errorproneArgs.add("-XepOpt:Refaster:NamePattern=^(?!.*Rules\\\$).*")
+        errorproneArgs.add("-XepOpt:Refaster:NamePattern=^(?!.*Rules\\\$).*")
     }
 }
 
