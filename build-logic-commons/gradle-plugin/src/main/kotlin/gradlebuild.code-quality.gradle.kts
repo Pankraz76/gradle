@@ -121,6 +121,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "StringJoining",
         "SuppressWarningsWithoutExplanation",
         "SystemOut",
+        "AvoidObjectArrays",
         "ThrowSpecificExceptions",
         "TimeZoneUsage",
         "UngroupedOverloads",
