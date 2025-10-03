@@ -61,77 +61,6 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "JavaxInjectOnAbstractMethod", // We use abstract injection as a pattern
         "MissingSummary", // We have another mechanism to check Javadocs on public API
         "StringSplitter", // We are fine with using String.split() as is
-
-        // picnic https://error-prone.picnic.tech
-        "AmbiguousJsonCreator",
-        "AndroidJdkLibsChecker",
-        "AnnotationPosition",
-        "AssertJNullnessAssertion",
-        "AutowiredConstructor",
-        "AvoidObjectArrays",
-        "CanIgnoreReturnValueSuggester",
-        "CanonicalAnnotationSyntax",
-        "CatchAndPrintStackTrace",
-        "ClassCastLambdaUsage",
-        "CollectorMutability",
-        "ConstantNaming",
-        "DefaultLocale",
-        "DirectReturn",
-        "EagerStringFormatting",
-        "EmptyMethod",
-        "EmptyMonoZip",
-        "EqualsMissingNullable",
-        "ExplicitArgumentEnumeration",
-        "ExplicitEnumOrdering",
-        "FluxFlatMapUsage",
-        "FluxImplicitBlock",
-        "FormatStringConcatenation",
-        "IdentifierName",
-        "IdentityConversion",
-        "ImmutablesSortedSetComparator",
-        "InconsistentOverloads",
-        "InterruptedExceptionSwallowed",
-        "IsInstanceLambdaUsage",
-        "JUnitClassModifiers",
-        "JUnitMethodDeclaration",
-        "JUnitNullaryParameterizedTestDeclaration",
-        "JUnitValueSource",
-        "Java8ApiChecker",
-        "LexicographicalAnnotationAttributeListing",
-        "LexicographicalAnnotationListing",
-        "MethodCanBeStatic",
-        "MockitoMockClassReference",
-        "MockitoStubbing",
-        "MongoDBTextFilterUsage",
-        "NestedOptionals",
-        "NestedPublishers",
-        "NonEmptyMono",
-        "NonFinalStaticField",
-        "NonStaticImport",
-        "OptionalOrElseGet",
-        "PreferredInterfaceType",
-        "PrimitiveComparison",
-        "PrivateConstructorForUtilityClass",
-        "RedundantStringConversion",
-        "RedundantStringEscape",
-        "RequestMappingAnnotation",
-        "RequestParamType",
-        "Slf4jLogStatement",
-        "Slf4jLoggerDeclaration",
-        "StaticImport",
-        "StringJoin",
-        "StringJoining",
-        "SuppressWarningsWithoutExplanation",
-        "SystemOut",
-        "ThrowSpecificExceptions",
-        "TimeZoneUsage",
-        "UngroupedOverloads",
-        "UnnecessarilyFullyQualified",
-        "UnnecessaryFinal",
-        "UnusedException",
-        "Var",
-        "Varifier",
-        "YodaCondition",
     )
 
     nullawayEnabled.convention(false)
@@ -196,8 +125,6 @@ project.plugins.withType<JavaBasePlugin> {
         // don't forget to update the version in distributions-dependencies/build.gradle.kts
         addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0")
         addErrorProneDependency("com.uber.nullaway:nullaway:0.12.10")
-        addErrorProneDependency("tech.picnic.error-prone-support:error-prone-contrib:0.25.0")
-        addErrorProneDependency("tech.picnic.error-prone-support:refaster-runner:0.25.0")
 
         project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
             options.errorprone {
