@@ -221,7 +221,7 @@ tasks.withType<JavaCompile>().configureEach {
         // errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:PreconditionsRules")
         // errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:StringJoining")
         errorproneArgs.add("-XepPatchLocation:IN_PLACE,-XepPatchChecks:UnusedMethod")
-        errorproneArgs.add("-XepOpt:Refaster:NamePattern=^(?!.*Rules\\\$).*")
+//        errorproneArgs.add("-XepOpt:Refaster:NamePattern=^(?!.*Rules\\\$).*")
     }
 }
 
