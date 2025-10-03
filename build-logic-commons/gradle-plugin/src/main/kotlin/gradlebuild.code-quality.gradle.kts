@@ -66,6 +66,10 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "AndroidJdkLibsChecker",
         "AssertJNullnessAssertion",
         "AutowiredConstructor",
+        "ThrowSpecificExceptions",
+        "SystemOut",
+        "NonFinalStaticField",
+        "DefaultLocale",
         "CanonicalAnnotationSyntax",
         "ClassCastLambdaUsage",
         "CollectorMutability",
@@ -107,6 +111,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "StaticImport",
         "StringJoin",
         "TimeZoneUsage",
+        "Varifier",
         "Var",
     )
 
