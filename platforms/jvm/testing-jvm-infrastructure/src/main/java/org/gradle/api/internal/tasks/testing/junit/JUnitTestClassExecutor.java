@@ -16,8 +16,8 @@
 
 package org.gradle.api.internal.tasks.testing.junit;
 
-import org.gradle.api.Action;
 import org.gradle.api.GradleException;
+import org.gradle.api.internal.tasks.testing.TestClassConsumer;
 import org.gradle.api.internal.tasks.testing.TestResultProcessor;
 import org.gradle.api.internal.tasks.testing.filter.TestFilterSpec;
 import org.gradle.api.internal.tasks.testing.filter.TestSelectionMatcher;
@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class JUnitTestClassExecutor implements Action<String> {
+public class JUnitTestClassExecutor implements TestClassConsumer {
     private final ClassLoader applicationClassLoader;
     private final JUnitSpec spec;
     private final TestClassExecutionListener executionListener;
@@ -71,30 +71,49 @@ public class JUnitTestClassExecutor implements Action<String> {
     }
 
     @Override
-    public void execute(String testClassName) {
-        executionListener.testClassStarted(testClassName);
+    public void consumeClass(String testClassName) {
+        boolean started = false;
         try {
-            maybeRunTestClass(testClassName);
+            Request request = shouldRunTestClass(testClassName);
+            if (request == null) {
+                return;
+            }
+
+            executionListener.testClassStarted(testClassName);
+            started = true;
+            runRequest(request);
+            started = false;
             executionListener.testClassFinished(null);
         } catch (Throwable throwable) {
-            executionListener.testClassFinished(TestFailure.fromTestFrameworkFailure(throwable));
+            if (started) {
+                executionListener.testClassFinished(TestFailure.fromTestFrameworkFailure(throwable));
+            } else {
+                // If we haven't even started to run the request, this is a Gradle problem, so propagate it
+                throw new GradleException("Failed to execute test class: '" + testClassName + "'.", throwable);
+            }
+
+            // Don't ever swallow Errors, as they likely indicate JVM problems that should always propagate
+            if (throwable instanceof Error) {
+                throw (Error) throwable;
+            }
         }
     }
 
-    private void maybeRunTestClass(String testClassName) throws ClassNotFoundException {
+    @Nullable
+    private Request shouldRunTestClass(String testClassName) throws ClassNotFoundException {
         final Class<?> testClass = Class.forName(testClassName, false, applicationClassLoader);
         if (isNestedClassInsideEnclosedRunner(testClass)) {
-            return;
+            return null;
         }
 
         // See if there is anything left to run after applying filters, as we could filter
         // out every method on this class, or even the entire class itself.
         Request filteredRequest = buildFilteredRequest(testClass);
         if (filteredRequest == null) {
-            return;
+            return null;
         }
 
-        runRequest(filteredRequest);
+        return filteredRequest;
     }
 
     /**
@@ -141,7 +160,6 @@ public class JUnitTestClassExecutor implements Action<String> {
             || !filterSpec.getIncludedTestsCommandLine().isEmpty()
             || !filterSpec.getExcludedTests().isEmpty()) {
             TestSelectionMatcher matcher = new TestSelectionMatcher(filterSpec);
-
             // For test suites (including suite-like custom Runners), if the test suite class
             // matches the filter, run the entire suite instead of filtering away its contents.
             if (!filteredRunner.getDescription().isSuite() || !matcher.matchesTest(testClassName, null)) {
