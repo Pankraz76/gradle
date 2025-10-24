@@ -21,6 +21,7 @@ import org.gradle.internal.operations.BuildOperationRunner;
 import org.gradle.internal.operations.CallableBuildOperation;
 import org.gradle.internal.operations.BuildOperationDescriptor;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.Collection;
 
@@ -38,7 +39,7 @@ public class IncrementalCompileProcessor {
     public IncrementalCompilation processSourceFiles(final Collection<File> sourceFiles) {
         return buildOperationExecutor.call(new CallableBuildOperation<IncrementalCompilation>() {
             @Override
-            public IncrementalCompilation call(BuildOperationContext context) {
+            public IncrementalCompilation call(@Nonnull BuildOperationContext context) {
                 CompilationState previousCompileState = previousCompileStateCache.get();
                 IncrementalCompileSourceProcessor processor = incrementalCompileFilesFactory.files(previousCompileState);
                 for (File sourceFile : sourceFiles) {
@@ -47,12 +48,12 @@ public class IncrementalCompileProcessor {
                 return processor.getResult();
             }
 
+            @Nonnull
             @Override
             public BuildOperationDescriptor.Builder description() {
-                ProcessSourceFilesDetails operationDetails = new ProcessSourceFilesDetails(sourceFiles.size());
                 return BuildOperationDescriptor
                     .displayName("Processing source files")
-                    .details(operationDetails);
+                    .details(new ProcessSourceFilesDetails(sourceFiles.size()));
             }
 
             class ProcessSourceFilesDetails {
@@ -62,6 +63,7 @@ public class IncrementalCompileProcessor {
                     this.sourceFileCount = sourceFileCount;
                 }
 
+                @SuppressWarnings("unused") // needed for serialization?
                 public int getSourceFileCount() {
                     return sourceFileCount;
                 }
