@@ -173,12 +173,12 @@ project.plugins.withType<JavaBasePlugin> {
 //                    "UnnecessaryTypeArgument",
 //                    "WildcardImport",
                 )
-                if (!getenv().containsKey('CI') && getenv('IN_PLACE')?.toBoolean()) {
+                if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
                     errorproneArgs.addAll(
-                        '-XepPatchLocation:IN_PLACE',
+                        "-XepPatchLocation:IN_PLACE",
                         // remove XepPatchChecks once conform.
-                        '-XepPatchChecks:' +
-                            'UnnecessaryParentheses'
+                        "-XepPatchChecks:" +
+                            "UnnecessaryParentheses"
                     )
                 }
                 nullaway {
