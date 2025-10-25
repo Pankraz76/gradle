@@ -43,6 +43,7 @@ public class ConfigureByMapAction<T> implements Action<T> {
     }
 
     @Override
+    @SuppressWarnings("UndefinedEquals") // We're fine with having weak contract of Iterable/Collection.equals.
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -56,11 +57,7 @@ public class ConfigureByMapAction<T> implements Action<T> {
         if (!mandatoryProperties.equals(that.mandatoryProperties)) {
             return false;
         }
-        if (!properties.equals(that.properties)) {
-            return false;
-        }
-
-        return true;
+        return properties.equals(that.properties);
     }
 
     @Override
