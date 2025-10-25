@@ -176,9 +176,9 @@ project.plugins.withType<JavaBasePlugin> {
                 if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
                     errorproneArgs.addAll(
                         "-XepPatchLocation:IN_PLACE",
-                        // remove XepPatchChecks once conform.
+                        // remove -XepPatchChecks once conform.
                         "-XepPatchChecks:" +
-                            "UnnecessaryParentheses"
+                            "UnnecessarilyFullyQualified"
                     )
                 }
                 nullaway {
