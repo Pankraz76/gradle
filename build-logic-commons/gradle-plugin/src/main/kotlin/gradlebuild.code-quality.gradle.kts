@@ -63,13 +63,53 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "StringSplitter", // We are fine with using String.split() as is
     )
 
-    nullawayEnabled.convention(false)
-}
+    error(
+        "AmbiguousJsonCreator",
+        "AssertJNullnessAssertion",
+        "AutowiredConstructor",
+        "CanonicalAnnotationSyntax",
+        "CollectorMutability",
+        "ConstantNaming",
+        "DirectReturn",
+        "EmptyMethod",
+        "ExplicitArgumentEnumeration",
+        "ExplicitEnumOrdering",
+        "IdentityConversion",
+        "ImmutablesSortedSetComparator",
+        "IsInstanceLambdaUsage",
+        "MockitoMockClassReference",
+        "MockitoStubbing",
+        "NestedOptionals",
+        "PrimitiveComparison",
+        "RedundantStringConversion",
+        "RedundantStringEscape",
+        "ReturnValueIgnored",
+        "SelfAssignment",
+        "StringJoin",
+        "StringJoining",
+        "UnnecessarilyFullyQualified",
+        "UnnecessaryAssignment",
+        "UnnecessaryBoxedAssignment",
+        "UnnecessaryBoxedVariable",
+        "UnnecessaryBreakInSwitch",
+        "UnnecessaryCheckNotNull",
+        "UnnecessaryCopy",
+        "UnnecessaryDefaultInEnumSwitch",
+        "UnnecessaryLambda",
+        "UnnecessaryLongToIntConversion",
+        "UnnecessaryMethodInvocationMatcher",
+        "UnnecessaryMethodReference",
+        "UnnecessaryParentheses",
+        "UnnecessaryQualifier",
+        "UnnecessarySetDefault",
+        "UnnecessaryStaticImport",
+        "UnnecessaryStringBuilder",
+        "UnnecessaryTestMethodPrefix",
+        "UnnecessaryTypeArgument",
+        "WildcardImport",
+    )
 
-nullaway {
-    // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
-    // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
-    annotatedPackages.add("org.gradle")
+    nullawayEnabled.convention(false)
 }
 
 dependencies {
@@ -122,8 +162,7 @@ project.plugins.withType<JavaBasePlugin> {
             )
         }
 
-        // don't forget to update the version in distributions-dependencies/build.gradle.kts
-        addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0")
+        addErrorProneDependency("com.google.errorprone:error_prone_core:2.43.0") // don't forget to update the version in distributions-dependencies/build.gradle.kts:L:85
         addErrorProneDependency("com.uber.nullaway:nullaway:0.12.10")
 
         project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
@@ -132,8 +171,56 @@ project.plugins.withType<JavaBasePlugin> {
                 checks = errorproneExtension.disabledChecks.map {
                     it.associateWith { CheckSeverity.OFF }
                 }
+                error(
+                    "AmbiguousJsonCreator",
+                    "AssertJNullnessAssertion",
+                    "AutowiredConstructor",
+                    "CanonicalAnnotationSyntax",
+                    "CollectorMutability",
+                    "ConstantNaming",
+                    "DirectReturn",
+                    "EmptyMethod",
+                    "ExplicitArgumentEnumeration",
+                    "ExplicitEnumOrdering",
+                    "IdentityConversion",
+                    "ImmutablesSortedSetComparator",
+                    "IsInstanceLambdaUsage",
+                    "MockitoMockClassReference",
+                    "MockitoStubbing",
+                    "NestedOptionals",
+                    "PrimitiveComparison",
+                    "RedundantStringConversion",
+                    "RedundantStringEscape",
+                    "ReturnValueIgnored",
+                    "SelfAssignment",
+                    "StringJoin",
+                    "StringJoining",
+                    "UnnecessarilyFullyQualified",
+                    "UnnecessaryAssignment",
+                    "UnnecessaryBoxedAssignment",
+                    "UnnecessaryBoxedVariable",
+                    "UnnecessaryBreakInSwitch",
+                    "UnnecessaryCheckNotNull",
+                    "UnnecessaryCopy",
+                    "UnnecessaryDefaultInEnumSwitch",
+                    "UnnecessaryLambda",
+                    "UnnecessaryLongToIntConversion",
+                    "UnnecessaryMethodInvocationMatcher",
+                    "UnnecessaryMethodReference",
+                    "UnnecessaryParentheses",
+                    "UnnecessaryQualifier",
+                    "UnnecessarySetDefault",
+                    "UnnecessaryStaticImport",
+                    "UnnecessaryStringBuilder",
+                    "UnnecessaryTestMethodPrefix",
+                    "UnnecessaryTypeArgument",
+                    "WildcardImport",
+                )
 
                 nullaway {
+                    // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
+                    // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
+                    annotatedPackages.add("org.gradle")
                     checkContracts = true
                     isJSpecifyMode = true
                     severity = errorproneExtension.nullawayEnabled.map { if (it) CheckSeverity.ERROR else CheckSeverity.OFF }
