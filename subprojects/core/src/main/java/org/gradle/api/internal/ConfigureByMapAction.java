@@ -51,13 +51,9 @@ public class ConfigureByMapAction<T> implements Action<T> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
         ConfigureByMapAction that = (ConfigureByMapAction) o;
-
-        if (!mandatoryProperties.equals(that.mandatoryProperties)) {
-            return false;
-        }
-        return properties.equals(that.properties);
+        return !mandatoryProperties.equals(that.mandatoryProperties)
+            && properties.equals(that.properties);
     }
 
     @Override
