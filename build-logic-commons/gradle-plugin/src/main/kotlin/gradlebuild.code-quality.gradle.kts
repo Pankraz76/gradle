@@ -7,6 +7,7 @@ import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
 import org.gradle.util.internal.VersionNumber
+import java.lang.System.getenv
 
 /*
  * Copyright 2022 the original author or authors.
@@ -172,6 +173,14 @@ project.plugins.withType<JavaBasePlugin> {
 //                    "UnnecessaryTypeArgument",
 //                    "WildcardImport",
                 )
+                if (!getenv().containsKey('CI') && getenv('IN_PLACE')?.toBoolean()) {
+                    errorproneArgs.addAll(
+                        '-XepPatchLocation:IN_PLACE',
+                        // remove XepPatchChecks once conform.
+                        '-XepPatchChecks:' +
+                            'UnnecessaryParentheses'
+                    )
+                }
                 nullaway {
                     // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
                     // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
