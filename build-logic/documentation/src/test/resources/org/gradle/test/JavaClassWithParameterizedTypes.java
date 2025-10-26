@@ -1,6 +1,8 @@
 package org.gradle.test;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class JavaClassWithParameterizedTypes {
     Set<CombinedInterface> getSetProp() { return null; }

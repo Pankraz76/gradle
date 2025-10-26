@@ -18,7 +18,12 @@ package org.gradle.tooling.model.internal;
 import org.gradle.tooling.model.DomainObjectSet;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ImmutableDomainObjectSet<T> extends AbstractSet<T> implements DomainObjectSet<T>, Serializable {
     private final Set<T> elements = new LinkedHashSet<T>();

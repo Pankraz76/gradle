@@ -18,7 +18,7 @@ package org.gradle.api.internal.tasks.testing.logging;
 
 import org.gradle.api.tasks.testing.TestDescriptor;
 
-import java.util.*;
+import java.util.List;
 
 public interface TestExceptionFormatter {
     String format(TestDescriptor descriptor, List<Throwable> exceptions);

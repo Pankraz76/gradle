@@ -46,30 +46,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
     objects.listProperty<String>(),
     objects.property<Boolean>()
 ).apply {
-    disabledChecks.addAll(
-        // DISCUSS
-        "EnumOrdinal", // This violation is ubiquitous, though most are benign.
-        "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals()
-        "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
-
-        // NEVER
-        "AssignmentExpression", // Not using it is more a matter of taste.
-        "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
-        "InjectOnConstructorOfAbstractClass", // We use abstract injection as a pattern
-        "InlineMeSuggester", // Only suppression seems to actually "fix" this, so make it global
-        "JavaUtilDate", // We are fine with using Date
-        "JavaxInjectOnAbstractMethod", // We use abstract injection as a pattern
-        "MissingSummary", // We have another mechanism to check Javadocs on public API
-        "StringSplitter", // We are fine with using String.split() as is
-    )
-
     nullawayEnabled.convention(false)
-}
-
-nullaway {
-    // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
-    // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
-    annotatedPackages.add("org.gradle")
 }
 
 dependencies {
@@ -122,8 +99,7 @@ project.plugins.withType<JavaBasePlugin> {
             )
         }
 
-        // don't forget to update the version in distributions-dependencies/build.gradle.kts
-        addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0")
+        addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0") // don't forget to update the version in distributions-dependencies/build.gradle.kts:L:85
         addErrorProneDependency("com.uber.nullaway:nullaway:0.12.10")
 
         project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
@@ -132,8 +108,10 @@ project.plugins.withType<JavaBasePlugin> {
                 checks = errorproneExtension.disabledChecks.map {
                     it.associateWith { CheckSeverity.OFF }
                 }
-
                 nullaway {
+                    // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
+                    // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
+                    annotatedPackages.add("org.gradle")
                     checkContracts = true
                     isJSpecifyMode = true
                     severity = errorproneExtension.nullawayEnabled.map { if (it) CheckSeverity.ERROR else CheckSeverity.OFF }
@@ -147,6 +125,50 @@ tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
         disableWarningsInGeneratedCode = true
         allErrorsAsWarnings = true
+        disable(
+            // DISCUSS
+            "EnumOrdinal", // This violation is ubiquitous, though most are benign.
+            "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals().
+            "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason.
+            // NEVER
+            "AssignmentExpression", // Not using it is more a matter of taste.
+            "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
+            "InjectOnConstructorOfAbstractClass", // We use abstract injection as a pattern.
+            "InlineMeSuggester", // Only suppression seems to actually "fix" this, so make it global.
+            "JavaUtilDate", // We are fine with using Date.
+            "JavaxInjectOnAbstractMethod", // We use abstract injection as a pattern.
+            "MissingSummary", // We have another mechanism to check Javadocs on public API.
+            "StringSplitter", // We are fine with using String.split() as is.
+            // "DirectReturn", // https://github.com/gradle/gradle/pull/35201#issuecomment-3364620578
+        )
+        error(
+            "NestedOptionals",
+            "PrimitiveComparison",
+            "ReturnValueIgnored",
+            "SelfAssignment",
+            "StringJoin",
+            "StringJoining",
+            "UnnecessarilyFullyQualified",
+            "UnnecessaryAssignment",
+            "UnnecessaryBoxedAssignment",
+            "UnnecessaryBoxedVariable",
+            "UnnecessaryBreakInSwitch",
+            "UnnecessaryCheckNotNull",
+            "UnnecessaryCopy",
+            "UnnecessaryDefaultInEnumSwitch",
+            "UnnecessaryLambda",
+            "UnnecessaryLongToIntConversion",
+            "UnnecessaryMethodInvocationMatcher",
+            "UnnecessaryMethodReference",
+            "UnnecessaryParentheses",
+            "UnnecessaryQualifier",
+            "UnnecessarySetDefault",
+            "UnnecessaryStaticImport",
+            "UnnecessaryStringBuilder",
+            "UnnecessaryTestMethodPrefix",
+            "UnnecessaryTypeArgument",
+            "WildcardImport",
+        )
     }
 }
 
