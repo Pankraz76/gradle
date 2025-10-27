@@ -20,7 +20,7 @@ import java.math.RoundingMode;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static org.gradle.api.tasks.testing.TestResult.ResultType;
+import org.gradle.api.tasks.testing.TestResult.ResultType;
 
 /**
  * @deprecated Only present for compatibility with cashapp/paparazzi. No replacement.

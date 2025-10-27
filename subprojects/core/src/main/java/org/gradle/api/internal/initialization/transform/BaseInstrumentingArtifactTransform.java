@@ -41,7 +41,7 @@ import org.gradle.work.DisableCachingByDefault;
 import javax.inject.Inject;
 import java.io.File;
 
-import static org.gradle.api.internal.initialization.transform.BaseInstrumentingArtifactTransform.Parameters;
+import org.gradle.api.internal.initialization.transform.BaseInstrumentingArtifactTransform.Parameters;
 import static org.gradle.api.internal.initialization.transform.utils.InstrumentationTransformUtils.createInstrumentationClasspathMarker;
 import static org.gradle.api.internal.initialization.transform.utils.InstrumentationTransformUtils.createNewFile;
 import static org.gradle.internal.classpath.TransformedClassPath.FileMarker.AGENT_INSTRUMENTATION_MARKER;

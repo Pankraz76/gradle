@@ -54,7 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static org.gradle.api.internal.artifacts.ivyservice.ivyresolve.parser.PomDomParser.AddDTDFilterInputStream;
+import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.parser.PomDomParser.AddDTDFilterInputStream;
 import static org.gradle.api.internal.artifacts.ivyservice.ivyresolve.parser.PomDomParser.getAllChilds;
 import static org.gradle.api.internal.artifacts.ivyservice.ivyresolve.parser.PomDomParser.getFirstChildElement;
 import static org.gradle.api.internal.artifacts.ivyservice.ivyresolve.parser.PomDomParser.getFirstChildText;
