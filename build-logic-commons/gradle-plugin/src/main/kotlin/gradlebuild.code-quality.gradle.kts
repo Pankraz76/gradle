@@ -142,8 +142,6 @@ tasks.withType<JavaCompile>().configureEach {
             // "DirectReturn", // https://github.com/gradle/gradle/pull/35201#issuecomment-3364620578
         )
         error(
-            "NestedOptionals",
-            "PrimitiveComparison",
             "ReturnValueIgnored",
             "SelfAssignment",
             "StringJoin",
