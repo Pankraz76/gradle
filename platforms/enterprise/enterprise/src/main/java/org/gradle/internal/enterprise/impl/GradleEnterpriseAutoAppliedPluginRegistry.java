@@ -34,7 +34,7 @@ import org.gradle.plugin.management.internal.PluginRequests;
 import org.gradle.plugin.management.internal.autoapply.AutoAppliedDevelocityPlugin;
 import org.gradle.plugin.management.internal.autoapply.AutoAppliedPluginRegistry;
 
-import static org.gradle.initialization.StartParameterBuildOptions.BuildScanOption;
+import org.gradle.initialization.StartParameterBuildOptions.BuildScanOption;
 import static org.gradle.plugin.management.internal.PluginRequestInternal.Origin.AUTO_APPLIED;
 
 @ServiceScope(Scope.BuildTree.class)

@@ -26,8 +26,8 @@ import org.gradle.internal.operations.CallableBuildOperation;
 
 import java.io.File;
 
-import static org.gradle.initialization.EvaluateSettingsBuildOperationType.Details;
-import static org.gradle.initialization.EvaluateSettingsBuildOperationType.Result;
+import org.gradle.initialization.EvaluateSettingsBuildOperationType.Details;
+import org.gradle.initialization.EvaluateSettingsBuildOperationType.Result;
 
 public class BuildOperationSettingsProcessor implements SettingsProcessor {
     private static final Result RESULT = new Result() {

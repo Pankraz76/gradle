@@ -40,10 +40,10 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.Details;
-import static org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.PlannedNode;
-import static org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.PlannedTask;
-import static org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.Result;
+import org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.Details;
+import org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.PlannedNode;
+import org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.PlannedTask;
+import org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.Result;
 
 @NullMarked
 public class BuildOperationFiringBuildWorkPreparer implements BuildWorkPreparer {

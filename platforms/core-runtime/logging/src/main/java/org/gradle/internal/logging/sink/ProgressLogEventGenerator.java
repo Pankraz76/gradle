@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static org.gradle.internal.logging.text.StyledTextOutput.Style;
+import org.gradle.internal.logging.text.StyledTextOutput.Style;
 
 /**
  * An {@code org.gradle.logging.internal.OutputEventListener} implementation which generates output events to log the

@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static org.fusesource.jansi.Ansi.Attribute;
+import org.fusesource.jansi.Ansi.Attribute;
 import static org.fusesource.jansi.Ansi.Color.DEFAULT;
 import static org.gradle.internal.logging.text.StyledTextOutput.Style.Description;
 import static org.gradle.internal.logging.text.StyledTextOutput.Style.Error;
