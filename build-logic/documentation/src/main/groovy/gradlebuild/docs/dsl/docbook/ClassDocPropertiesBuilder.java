@@ -26,7 +26,12 @@ import org.w3c.dom.Text;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class ClassDocPropertiesBuilder extends ModelBuilderSupport {
     private final JavadocConverter javadocConverter;

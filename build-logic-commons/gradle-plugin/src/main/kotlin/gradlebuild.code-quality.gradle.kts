@@ -7,6 +7,7 @@ import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
 import org.gradle.util.internal.VersionNumber
+import java.lang.System.getenv
 
 /*
  * Copyright 2022 the original author or authors.
@@ -46,30 +47,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
     objects.listProperty<String>(),
     objects.property<Boolean>()
 ).apply {
-    disabledChecks.addAll(
-        // DISCUSS
-        "EnumOrdinal", // This violation is ubiquitous, though most are benign.
-        "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals()
-        "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
-
-        // NEVER
-        "AssignmentExpression", // Not using it is more a matter of taste.
-        "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
-        "InjectOnConstructorOfAbstractClass", // We use abstract injection as a pattern
-        "InlineMeSuggester", // Only suppression seems to actually "fix" this, so make it global
-        "JavaUtilDate", // We are fine with using Date
-        "JavaxInjectOnAbstractMethod", // We use abstract injection as a pattern
-        "MissingSummary", // We have another mechanism to check Javadocs on public API
-        "StringSplitter", // We are fine with using String.split() as is
-    )
-
     nullawayEnabled.convention(false)
-}
-
-nullaway {
-    // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
-    // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
-    annotatedPackages.add("org.gradle")
 }
 
 dependencies {
@@ -89,18 +67,18 @@ project.plugins.withType<JavaBasePlugin> {
             project.objects.property<Boolean>()
         ).apply {
             // Enable it only for the main source set by default, as incremental Groovy
-            // joint-compilation doesn't work with the Error Prone annotation processor
+            // joint-compilation doesn"t work with the Error Prone annotation processor
             enabled.convention(isMainSourceSet)
         }
 
         if (isMainSourceSet) {
             val nullawayAttributeValue = errorproneExtension.nullawayEnabled.map { if (it) NullawayState.ENABLED else NullawayState.DISABLED }
 
-            // We don't care about nullaway in test fixtures or tests, they're written in Groovy anyway.
+            // We don"t care about nullaway in test fixtures or tests, they"re written in Groovy anyway.
             NullawayAttributes.addToConfiguration(configurations.named(compileClasspathConfigurationName), nullawayAttributeValue)
 
             project.plugins.withType<JavaLibraryPlugin> {
-                // Kotlin-only projects do not hit this, so they don't have nullaway attributes on the outgoing variants.
+                // Kotlin-only projects do not hit this, so they don"t have nullaway attributes on the outgoing variants.
                 // Java project can in turn depend on Kotlin projects even if they have nullaway enabled.
                 NullawayAttributes.addToConfiguration(configurations.named(apiElementsConfigurationName), nullawayAttributeValue)
                 NullawayAttributes.addToConfiguration(configurations.named(runtimeElementsConfigurationName), nullawayAttributeValue)
@@ -122,8 +100,7 @@ project.plugins.withType<JavaBasePlugin> {
             )
         }
 
-        // don't forget to update the version in distributions-dependencies/build.gradle.kts
-        addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0")
+        addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0") // don"t forget to update the version in distributions-dependencies/build.gradle.kts:L:85
         addErrorProneDependency("com.uber.nullaway:nullaway:0.12.10")
 
         project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
@@ -132,8 +109,10 @@ project.plugins.withType<JavaBasePlugin> {
                 checks = errorproneExtension.disabledChecks.map {
                     it.associateWith { CheckSeverity.OFF }
                 }
-
                 nullaway {
+                    // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
+                    // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
+                    annotatedPackages.add("org.gradle")
                     checkContracts = true
                     isJSpecifyMode = true
                     severity = errorproneExtension.nullawayEnabled.map { if (it) CheckSeverity.ERROR else CheckSeverity.OFF }
@@ -147,6 +126,54 @@ tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
         disableWarningsInGeneratedCode = true
         allErrorsAsWarnings = true
+        disable(
+            // DISCUSS
+            "EnumOrdinal", // This violation is ubiquitous, though most are benign.
+            "EqualsGetClass", // Let"s agree if we want to adopt Error Prone"s idea of valid equals().
+            "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason.
+//            "UnnecessarilyFullyQualified",
+//            "UnnecessaryStaticImport",
+            // NEVER
+            "AssignmentExpression", // Not using it is more a matter of taste.
+            "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn"t enforced.
+            "InjectOnConstructorOfAbstractClass", // We use abstract injection as a pattern.
+            "InlineMeSuggester", // Only suppression seems to actually "fix" this, so make it global.
+            "JavaUtilDate", // We are fine with using Date.
+            "JavaxInjectOnAbstractMethod", // We use abstract injection as a pattern.
+            "MissingSummary", // We have another mechanism to check Javadocs on public API.
+            "StringSplitter", // We are fine with using String.split() as is.
+            // "DirectReturn", // https://github.com/gradle/gradle/pull/35201#issuecomment-3364620578
+        )
+        error(
+            "ReturnValueIgnored",
+            "SelfAssignment",
+            "UnnecessaryAssignment",
+            "UnnecessaryBoxedAssignment",
+            "UnnecessaryBoxedVariable",
+            "UnnecessaryBreakInSwitch",
+            "UnnecessaryCheckNotNull",
+            "UnnecessaryCopy",
+            "UnnecessaryDefaultInEnumSwitch",
+            "UnnecessaryLambda",
+            "UnnecessaryLongToIntConversion",
+            "UnnecessaryMethodInvocationMatcher",
+            "UnnecessaryMethodReference",
+            "UnnecessaryParentheses",
+            "UnnecessaryQualifier",
+            "UnnecessarySetDefault",
+            "UnnecessaryStringBuilder",
+            "UnnecessaryTestMethodPrefix",
+            "UnnecessaryTypeArgument",
+            "WildcardImport",
+        )
+        if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
+            errorproneArgs.addAll(
+                "-XepPatchLocation:IN_PLACE",
+                // remove XepPatchChecks once conform.
+                "-XepPatchChecks:" +
+                    "UnnecessaryStaticImport,UnnecessaryParentheses"
+            )
+        }
     }
 }
 
@@ -171,7 +198,7 @@ val rules by configurations.creating {
     }
 }
 
-val groovyVersion = GroovySystem.getVersion()
+val groovyVersion: String? = GroovySystem.getVersion()
 val isAtLeastGroovy4 = VersionNumber.parse(groovyVersion).major >= 4
 val codenarcVersion = if (isAtLeastGroovy4) "3.6.0-groovy-4.0" else "3.6.0"
 

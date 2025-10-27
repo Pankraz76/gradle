@@ -33,7 +33,7 @@ import org.gradle.work.DisableCachingByDefault;
 import java.io.File;
 import java.util.Optional;
 
-import static org.gradle.api.internal.initialization.transform.ProjectDependencyInstrumentingArtifactTransform.Parameters;
+import org.gradle.api.internal.initialization.transform.ProjectDependencyInstrumentingArtifactTransform.Parameters;
 
 /**
  * Artifact transform that instruments project based artifacts with Gradle instrumentation.

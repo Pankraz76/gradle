@@ -71,16 +71,16 @@ import org.gradle.internal.state.ManagedFactoryRegistry;
 import org.gradle.internal.time.Clock;
 import org.gradle.internal.time.Time;
 
-import static org.gradle.api.internal.file.ManagedFactories.DirectoryManagedFactory;
-import static org.gradle.api.internal.file.ManagedFactories.DirectoryPropertyManagedFactory;
-import static org.gradle.api.internal.file.ManagedFactories.RegularFileManagedFactory;
-import static org.gradle.api.internal.file.ManagedFactories.RegularFilePropertyManagedFactory;
-import static org.gradle.api.internal.file.collections.ManagedFactories.ConfigurableFileCollectionManagedFactory;
-import static org.gradle.api.internal.provider.ManagedFactories.ListPropertyManagedFactory;
-import static org.gradle.api.internal.provider.ManagedFactories.MapPropertyManagedFactory;
-import static org.gradle.api.internal.provider.ManagedFactories.PropertyManagedFactory;
-import static org.gradle.api.internal.provider.ManagedFactories.ProviderManagedFactory;
-import static org.gradle.api.internal.provider.ManagedFactories.SetPropertyManagedFactory;
+import org.gradle.api.internal.file.ManagedFactories.DirectoryManagedFactory;
+import org.gradle.api.internal.file.ManagedFactories.DirectoryPropertyManagedFactory;
+import org.gradle.api.internal.file.ManagedFactories.RegularFileManagedFactory;
+import org.gradle.api.internal.file.ManagedFactories.RegularFilePropertyManagedFactory;
+import org.gradle.api.internal.file.collections.ManagedFactories.ConfigurableFileCollectionManagedFactory;
+import org.gradle.api.internal.provider.ManagedFactories.ListPropertyManagedFactory;
+import org.gradle.api.internal.provider.ManagedFactories.MapPropertyManagedFactory;
+import org.gradle.api.internal.provider.ManagedFactories.PropertyManagedFactory;
+import org.gradle.api.internal.provider.ManagedFactories.ProviderManagedFactory;
+import org.gradle.api.internal.provider.ManagedFactories.SetPropertyManagedFactory;
 
 public class WorkerSharedGlobalScopeServices extends BasicGlobalScopeServices {
 
