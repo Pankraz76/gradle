@@ -7,6 +7,7 @@ import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
 import org.gradle.util.internal.VersionNumber
+import java.lang.System.getenv
 
 /*
  * Copyright 2022 the original author or authors.
@@ -66,18 +67,18 @@ project.plugins.withType<JavaBasePlugin> {
             project.objects.property<Boolean>()
         ).apply {
             // Enable it only for the main source set by default, as incremental Groovy
-            // joint-compilation doesn't work with the Error Prone annotation processor
+            // joint-compilation doesn"t work with the Error Prone annotation processor
             enabled.convention(isMainSourceSet)
         }
 
         if (isMainSourceSet) {
             val nullawayAttributeValue = errorproneExtension.nullawayEnabled.map { if (it) NullawayState.ENABLED else NullawayState.DISABLED }
 
-            // We don't care about nullaway in test fixtures or tests, they're written in Groovy anyway.
+            // We don"t care about nullaway in test fixtures or tests, they"re written in Groovy anyway.
             NullawayAttributes.addToConfiguration(configurations.named(compileClasspathConfigurationName), nullawayAttributeValue)
 
             project.plugins.withType<JavaLibraryPlugin> {
-                // Kotlin-only projects do not hit this, so they don't have nullaway attributes on the outgoing variants.
+                // Kotlin-only projects do not hit this, so they don"t have nullaway attributes on the outgoing variants.
                 // Java project can in turn depend on Kotlin projects even if they have nullaway enabled.
                 NullawayAttributes.addToConfiguration(configurations.named(apiElementsConfigurationName), nullawayAttributeValue)
                 NullawayAttributes.addToConfiguration(configurations.named(runtimeElementsConfigurationName), nullawayAttributeValue)
@@ -99,7 +100,7 @@ project.plugins.withType<JavaBasePlugin> {
             )
         }
 
-        addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0") // don't forget to update the version in distributions-dependencies/build.gradle.kts:L:85
+        addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0") // don"t forget to update the version in distributions-dependencies/build.gradle.kts:L:85
         addErrorProneDependency("com.uber.nullaway:nullaway:0.12.10")
 
         project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
@@ -128,11 +129,12 @@ tasks.withType<JavaCompile>().configureEach {
         disable(
             // DISCUSS
             "EnumOrdinal", // This violation is ubiquitous, though most are benign.
-            "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals().
+            "EqualsGetClass", // Let"s agree if we want to adopt Error Prone"s idea of valid equals().
             "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason.
+            "UnnecessarilyFullyQualified",
             // NEVER
             "AssignmentExpression", // Not using it is more a matter of taste.
-            "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
+            "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn"t enforced.
             "InjectOnConstructorOfAbstractClass", // We use abstract injection as a pattern.
             "InlineMeSuggester", // Only suppression seems to actually "fix" this, so make it global.
             "JavaUtilDate", // We are fine with using Date.
@@ -144,9 +146,6 @@ tasks.withType<JavaCompile>().configureEach {
         error(
             "ReturnValueIgnored",
             "SelfAssignment",
-            "StringJoin",
-            "StringJoining",
-            "UnnecessarilyFullyQualified",
             "UnnecessaryAssignment",
             "UnnecessaryBoxedAssignment",
             "UnnecessaryBoxedVariable",
@@ -167,6 +166,14 @@ tasks.withType<JavaCompile>().configureEach {
             "UnnecessaryTypeArgument",
             "WildcardImport",
         )
+        if (!getenv().containsKey("CI") && getenv("IN_PLACE_").toBoolean()) {
+            errorproneArgs.addAll(
+                "-XepPatchLocation:IN_PLACE",
+                // remove XepPatchChecks once conform.
+                "-XepPatchChecks:" +
+                    "UnnecessarilyFullyQualified"
+            )
+        }
     }
 }
 
