@@ -132,6 +132,7 @@ tasks.withType<JavaCompile>().configureEach {
             "EqualsGetClass", // Let"s agree if we want to adopt Error Prone"s idea of valid equals().
             "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason.
             "UnnecessarilyFullyQualified",
+            "UnnecessaryStaticImport",
             // NEVER
             "AssignmentExpression", // Not using it is more a matter of taste.
             "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn"t enforced.
@@ -160,7 +161,6 @@ tasks.withType<JavaCompile>().configureEach {
             "UnnecessaryParentheses",
             "UnnecessaryQualifier",
             "UnnecessarySetDefault",
-            "UnnecessaryStaticImport",
             "UnnecessaryStringBuilder",
             "UnnecessaryTestMethodPrefix",
             "UnnecessaryTypeArgument",
