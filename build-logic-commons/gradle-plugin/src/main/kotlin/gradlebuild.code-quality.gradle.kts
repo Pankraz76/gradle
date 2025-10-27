@@ -129,7 +129,7 @@ tasks.withType<JavaCompile>().configureEach {
         disable(
             // DISCUSS
             "EnumOrdinal", // This violation is ubiquitous, though most are benign.
-            "EqualsGetClass", // Let"s agree if we want to adopt Error Prone"s idea of valid equals().
+            "EqualsGetClass", // Let´s agree if we want to adopt Error Prone´s idea of valid equals().
             "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason.
 //            "UnnecessarilyFullyQualified",
 //            "UnnecessaryStaticImport",
