@@ -39,8 +39,7 @@ public class IncrementalCompileProcessor {
         return buildOperationExecutor.call(new CallableBuildOperation<IncrementalCompilation>() {
             @Override
             public IncrementalCompilation call(BuildOperationContext context) {
-                CompilationState previousCompileState = previousCompileStateCache.get();
-                IncrementalCompileSourceProcessor processor = incrementalCompileFilesFactory.files(previousCompileState);
+                IncrementalCompileSourceProcessor processor = incrementalCompileFilesFactory.files(previousCompileStateCache.get());
                 for (File sourceFile : sourceFiles) {
                     processor.processSource(sourceFile);
                 }
