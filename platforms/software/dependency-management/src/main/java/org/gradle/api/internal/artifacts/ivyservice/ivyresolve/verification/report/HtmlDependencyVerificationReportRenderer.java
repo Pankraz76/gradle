@@ -437,6 +437,10 @@ class HtmlDependencyVerificationReportRenderer implements DependencyVerification
             currentArtifact = artifactErrors;
         }
 
+        public String getTitle() {
+            return title;
+        }
+
     }
 
     private static class ArtifactErrors {

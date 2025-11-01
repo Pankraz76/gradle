@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package com.example;
+package org.gradlebuild.nonnullapi.notinpackage;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.NullUnmarked;
 
-import org.junit.Test;
-
-public class LumberJackTest {
-    @Test
-    public void singsTheSong() {
-        LumberJack jack = new LumberJack();
-        jack.sing();
-    }
+@NullMarked
+public interface NullUnmarkedApiMethod {
+    @NullUnmarked
+    String calculateSomeString();
 }
