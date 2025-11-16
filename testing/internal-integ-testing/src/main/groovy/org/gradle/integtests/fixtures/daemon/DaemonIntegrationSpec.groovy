@@ -17,7 +17,7 @@
 package org.gradle.integtests.fixtures.daemon
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleHandle
+import org.gradle.integtests.fixtures.executor.GradleHandle
 import org.gradle.test.fixtures.ConcurrentTestUtil
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
@@ -25,29 +25,29 @@ import org.gradle.test.preconditions.IntegTestPreconditions
 @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicitly requests a daemon")
 abstract class DaemonIntegrationSpec extends AbstractIntegrationSpec {
     def setup() {
-        executer.requireDaemon()
-        executer.requireIsolatedDaemons()
+        executor.requireDaemon()
+        executor.requireIsolatedDaemons()
     }
 
     void stopDaemonsNow() {
-        result = executer.withArguments("--stop", "--info").run()
+        result = executor.withArguments("--stop", "--info").run()
     }
 
     void buildSucceeds() {
-        result = executer.withArguments("--info").run()
+        result = executor.withArguments("--info").run()
     }
 
     DaemonsFixture getDaemons() {
-        new DaemonLogsAnalyzer(executer.daemonBaseDir)
+        new DaemonLogsAnalyzer(executor.daemonBaseDir)
     }
 
     DaemonsFixture daemons(String gradleVersion) {
-        new DaemonLogsAnalyzer(executer.daemonBaseDir, gradleVersion)
+        new DaemonLogsAnalyzer(executor.daemonBaseDir, gradleVersion)
     }
 
     GradleHandle startAForegroundDaemon() {
         int currentSize = daemons.getRegistry().getAll().size()
-        def daemon = executer.withArgument("--foreground").start()
+        def daemon = executor.withArgument("--foreground").start()
         // Wait for foreground daemon to be ready
         ConcurrentTestUtil.poll() { assert daemons.getRegistry().getAll().size() == (currentSize + 1) }
         return daemon

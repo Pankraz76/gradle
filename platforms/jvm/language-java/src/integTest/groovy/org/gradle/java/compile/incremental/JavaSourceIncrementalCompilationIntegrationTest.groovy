@@ -88,8 +88,8 @@ class JavaSourceIncrementalCompilationIntegrationTest extends BaseJavaSourceIncr
     @Issue("https://github.com/gradle/gradle/issues/9202")
     def "source mapping file works with symlinks"() {
         // Daemon cleans up symlinks in VFS
-        executer.requireDaemon()
-        executer.requireIsolatedDaemons()
+        executor.requireDaemon()
+        executor.requireIsolatedDaemons()
 
         given:
         buildFile << """

@@ -16,7 +16,7 @@
 
 package org.gradle.smoketests
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.util.GradleVersion
 
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
@@ -59,7 +59,7 @@ class GradleVersionsPluginSmokeTest extends AbstractPluginValidatingSmokeTest {
 
         // with CC, these are reported as config cache problems only
         runner.expectDeprecationWarningIf(
-            GradleContextualExecuter.isNotConfigCache(),
+            GradleContextualExecutor.isNotConfigCache(),
             "Invocation of Task.project at execution time has been deprecated. " +
                 "This will fail with an error in Gradle 10. " +
                 "This API is incompatible with the configuration cache, which will become the only mode supported by Gradle in a future release. " +

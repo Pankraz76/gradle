@@ -50,13 +50,13 @@ class WrapperPluginAutoApplyActionIntegTest extends AbstractIntegrationSpec {
         TestFile subprojectsDir = file("moduleA").createDir()
 
         when:
-        executer.inDirectory(subprojectsDir)
+        executor.inDirectory(subprojectsDir)
         run 'tasks'
         then:
         !output.contains("wrapper - Generates Gradle wrapper files.")
 
         when:
-        executer.inDirectory(subprojectsDir)
+        executor.inDirectory(subprojectsDir)
         then:
         fails("wrapper")
     }

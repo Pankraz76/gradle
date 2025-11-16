@@ -129,7 +129,7 @@ model {
         """
 
         when:
-        executer.inDirectory(buildDir)
+        executor.inDirectory(buildDir)
         run "model"
 
         then:

@@ -20,8 +20,8 @@ import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.integtests.fixtures.ToBeFixedForIsolatedProjects
 import org.gradle.integtests.fixtures.UnsupportedWithConfigurationCache
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
-import org.gradle.integtests.fixtures.executer.ProjectLifecycleFixture
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.ProjectLifecycleFixture
 import org.gradle.integtests.fixtures.extensions.FluidDependenciesResolveTest
 import org.gradle.integtests.fixtures.timeout.IntegrationTestTimeout
 import org.gradle.test.precondition.Requires
@@ -33,7 +33,7 @@ import spock.lang.Issue
 class ConfigurationOnDemandIntegrationTest extends AbstractIntegrationSpec {
 
     @Rule
-    ProjectLifecycleFixture fixture = new ProjectLifecycleFixture(executer, temporaryFolder)
+    ProjectLifecycleFixture fixture = new ProjectLifecycleFixture(executor, temporaryFolder)
 
     def setup() {
         file("gradle.properties") << "org.gradle.configureondemand=true"
@@ -461,7 +461,7 @@ allprojects {
         fixture.assertProjectsConfigured(":", ":a")
 
         when:
-        executer.usingProjectDirectory(file('a'))
+        executor.usingProjectDirectory(file('a'))
         run(":a:one", "-x", "two", "-x", "three")
 
         then:
@@ -469,7 +469,7 @@ allprojects {
         fixture.assertProjectsConfigured(":", ":a")
 
         when:
-        executer.usingProjectDirectory(file('b'))
+        executor.usingProjectDirectory(file('b'))
         run(":a:one", "-x", "two", "-x", "three")
 
         then:
@@ -500,7 +500,7 @@ project(':b') {
         fixture.assertProjectsConfigured(":", ":a")
 
         when:
-        executer.usingProjectDirectory(file("c"))
+        executor.usingProjectDirectory(file("c"))
         runAndFail(":a:one", "-x", "two")
 
         then:
@@ -529,7 +529,7 @@ allprojects {
         fixture.assertProjectsConfigured(":", ":a", ":b", ":c", ":c:child")
 
         when:
-        executer.usingProjectDirectory(file("c"))
+        executor.usingProjectDirectory(file("c"))
         runAndFail(":a:one", "-x", "two")
 
         then:
@@ -558,7 +558,7 @@ allprojects {
         fixture.assertProjectsConfigured(":", ":a", ":b", ":c", ":b:child")
 
         when:
-        executer.usingProjectDirectory(file('b'))
+        executor.usingProjectDirectory(file('b'))
         run(":a:one", "-x", "tw")
 
         then:

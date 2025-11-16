@@ -147,7 +147,7 @@ class CachedScalaCompileIntegrationTest extends AbstractCachedCompileIntegration
         classes.classDependingOnBasicClassSource.change()
 
         when:
-        executer.inDirectory(warmupDir)
+        executor.inDirectory(warmupDir)
         withBuildCache().run compilationTask
 
         then:

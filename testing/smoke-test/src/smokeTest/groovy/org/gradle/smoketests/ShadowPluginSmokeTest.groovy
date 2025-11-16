@@ -16,7 +16,7 @@
 
 package org.gradle.smoketests
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.test.fixtures.maven.MavenFileRepository
 import spock.lang.Issue
 
@@ -102,7 +102,7 @@ class ShadowPluginSmokeTest extends AbstractPluginValidatingSmokeTest {
         result.task(':shadowJar').outcome == SUCCESS
 
         and:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateStored()
         }
 
@@ -114,7 +114,7 @@ class ShadowPluginSmokeTest extends AbstractPluginValidatingSmokeTest {
         result.task(':shadowJar').outcome == SUCCESS
 
         and:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateLoaded()
         }
     }

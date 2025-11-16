@@ -69,7 +69,7 @@ class ResolvePOMIntegrationTest extends AbstractIntegrationSpec {
             version=0.1.0-SNAPSHOT
         """
 
-        executer.inDirectory(mainProjectDir)
+        executor.inDirectory(mainProjectDir)
     }
 
     def "resolving a @pom artifact from an included build replacing an external library fails the build"() {

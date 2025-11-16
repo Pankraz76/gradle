@@ -22,12 +22,12 @@ import org.gradle.internal.scripts.CompileScriptBuildOperationType
 
 class GroovyCompileScriptBuildOperationIntegrationTest extends AbstractIntegrationSpec {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
     final static String CLASSPATH = "CLASSPATH"
     final static String BODY = "BODY"
 
     def setup() {
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
     }
 
     def "captures script compilation build operations"() {
@@ -112,7 +112,7 @@ class GroovyCompileScriptBuildOperationIntegrationTest extends AbstractIntegrati
         when: // already compiled shared script
         file('otherBuild/settings.gradle').touch()
         file('otherBuild/build.gradle') << "apply from: '../shared.gradle'"
-        executer.usingProjectDirectory(file('otherBuild'))
+        executor.usingProjectDirectory(file('otherBuild'))
         succeeds 'help'
         def scriptCompiles = operations.all(CompileScriptBuildOperationType)
 
@@ -145,7 +145,7 @@ class GroovyCompileScriptBuildOperationIntegrationTest extends AbstractIntegrati
         class Thing{}"""
 
         file('otherBuild/build.gradle') << "apply from: '../shared.gradle'"
-        executer.usingProjectDirectory(file('otherBuild'))
+        executor.usingProjectDirectory(file('otherBuild'))
         succeeds 'help'
         def scriptCompiles = operations.all(CompileScriptBuildOperationType)
 

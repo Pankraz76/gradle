@@ -458,14 +458,14 @@ class ExecIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer
+        executor
             .requireDaemon()
             .requireIsolatedDaemons()
             .withStackTraceChecksDisabled()
         // Needed to get client pid
             .withArgument("--debug")
             .withTasks("appStart")
-        def client = new DaemonClientFixture(executer.start())
+        def client = new DaemonClientFixture(executor.start())
 
         then:
         long port = waitForHttpServerPort()

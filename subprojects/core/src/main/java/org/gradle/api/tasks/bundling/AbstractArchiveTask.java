@@ -23,7 +23,7 @@ import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileSystemOperations;
 import org.gradle.api.file.RegularFile;
 import org.gradle.api.file.RegularFileProperty;
-import org.gradle.api.internal.file.copy.CopyActionExecuter;
+import org.gradle.api.internal.file.copy.CopyActionExecutor;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
@@ -343,10 +343,10 @@ public abstract class AbstractArchiveTask extends AbstractCopyTask {
     }
 
     @Override
-    protected CopyActionExecuter createCopyActionExecuter() {
+    protected CopyActionExecutor createCopyActionExecutor() {
         Instantiator instantiator = getInstantiator();
         FileSystem fileSystem = getFileSystem();
 
-        return new CopyActionExecuter(instantiator, getPropertyFactory(), fileSystem, isReproducibleFileOrder(), getDocumentationRegistry());
+        return new CopyActionExecutor(instantiator, getPropertyFactory(), fileSystem, isReproducibleFileOrder(), getDocumentationRegistry());
     }
 }

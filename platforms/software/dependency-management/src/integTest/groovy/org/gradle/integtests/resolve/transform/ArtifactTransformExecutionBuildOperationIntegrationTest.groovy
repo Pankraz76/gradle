@@ -41,9 +41,9 @@ import static org.gradle.internal.service.scopes.DefaultGradleUserHomeScopeServi
 
 class ArtifactTransformExecutionBuildOperationIntegrationTest extends AbstractIntegrationSpec implements ArtifactTransformTestFixture, DirectoryBuildCacheFixture {
 
-    def buildOperations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def buildOperations = new BuildOperationsFixture(executor, testDirectoryProvider)
     @Rule
-    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(executer, temporaryFolder)
+    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(executor, temporaryFolder)
 
     def setup() {
         requireOwnGradleUserHomeDir("Artifact transforms should run every time and not be shared between tests")
@@ -920,9 +920,9 @@ class ArtifactTransformExecutionBuildOperationIntegrationTest extends AbstractIn
 
     void enableIdentityCache() {
         // So we don't get a daemon from another test
-        executer.requireIsolatedDaemons()
-        executer.beforeExecute {
-            executer.withArgument("-D$REUSE_USER_HOME_SERVICES=true")
+        executor.requireIsolatedDaemons()
+        executor.beforeExecute {
+            executor.withArgument("-D$REUSE_USER_HOME_SERVICES=true")
         }
     }
 

@@ -256,7 +256,7 @@ class CheckstylePluginVersionIntegrationTest extends MultiVersionIntegrationSpec
         succeeds("checkstyleMain")
         executedAndNotSkipped(":checkstyleMain")
 
-        executer.withArgument("-i")
+        executor.withArgument("-i")
         succeeds("checkstyleMain")
         skipped(":checkstyleMain")
 
@@ -509,7 +509,7 @@ class CheckstylePluginVersionIntegrationTest extends MultiVersionIntegrationSpec
     }
 
     private void defaultLanguage(String defaultLanguage) {
-        executer.withDefaultLocale(new Locale(defaultLanguage))
+        executor.withDefaultLocale(new Locale(defaultLanguage))
     }
 
     private void writeBuildFile() {

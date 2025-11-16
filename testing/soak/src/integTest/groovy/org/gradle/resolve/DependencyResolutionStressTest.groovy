@@ -23,11 +23,11 @@ import org.eclipse.jetty.server.ServerConnector
 import org.eclipse.jetty.server.handler.AbstractHandler
 import org.eclipse.jetty.server.handler.HandlerCollection
 import org.gradle.integtests.fixtures.daemon.DaemonLogsAnalyzer
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.GradleExecuter
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
-import org.gradle.integtests.fixtures.executer.NoDaemonGradleExecuter
-import org.gradle.integtests.fixtures.executer.UnderDevelopmentGradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleExecutor
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.NoDaemonGradleExecutor
+import org.gradle.integtests.fixtures.executor.UnderDevelopmentGradleDistribution
 import org.gradle.test.fixtures.ConcurrentTestUtil
 import org.gradle.test.fixtures.file.TestNameTestDirectoryProvider
 import org.junit.Rule
@@ -92,11 +92,11 @@ task check {
 }
         """
 
-                GradleExecuter executer = new NoDaemonGradleExecuter(distribution, workspace, IntegrationTestBuildContext.INSTANCE).
+                GradleExecutor executor = new NoDaemonGradleExecutor(distribution, workspace, IntegrationTestBuildContext.INSTANCE).
                         requireDaemon().requireIsolatedDaemons().
                         withGradleUserHomeDir(workspace.file("user-home"))
                 8.times {
-                    executer.inDirectory(buildDir).withArgument("--refresh-dependencies").withTasks('check').run()
+                    executor.inDirectory(buildDir).withArgument("--refresh-dependencies").withTasks('check').run()
                 }
             }
         }

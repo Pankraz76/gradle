@@ -30,7 +30,7 @@ import org.gradle.test.preconditions.IntegTestPreconditions
 class CommandLineOutputIntegrationTest extends AbstractIntegrationSpec implements DaemonJvmPropertiesFixture {
     def setup() {
         // forces the tests to fork and not run in-process
-        executer.requireDaemon().requireIsolatedDaemons()
+        executor.requireDaemon().requireIsolatedDaemons()
     }
 
     def "displays version message appropriately for daemon JVM with no configuration"() {

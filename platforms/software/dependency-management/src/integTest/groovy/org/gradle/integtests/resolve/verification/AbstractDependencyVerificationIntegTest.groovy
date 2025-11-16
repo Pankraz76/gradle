@@ -21,8 +21,8 @@ import org.gradle.api.internal.DocumentationRegistry
 import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.verification.report.DependencyVerificationReportWriter
 import org.gradle.api.internal.artifacts.verification.DependencyVerificationFixture
 import org.gradle.integtests.fixtures.AbstractHttpDependencyResolutionTest
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.test.fixtures.plugin.PluginBuilder
 import org.gradle.test.fixtures.server.http.MavenHttpModule
 import org.gradle.test.fixtures.server.http.MavenHttpPluginRepository
@@ -35,7 +35,7 @@ abstract class AbstractDependencyVerificationIntegTest extends AbstractHttpDepen
     )
 
     @Rule
-    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     def setup() {
         settingsFile << """
@@ -44,8 +44,8 @@ abstract class AbstractDependencyVerificationIntegTest extends AbstractHttpDepen
         println("Test running in ${testDirectory}")
     }
 
-    protected GradleExecuter writeVerificationMetadata(String checksums = "sha1,sha512") {
-        executer.withArguments("--write-verification-metadata", checksums)
+    protected GradleExecutor writeVerificationMetadata(String checksums = "sha1,sha512") {
+        executor.withArguments("--write-verification-metadata", checksums)
     }
 
     protected void javaLibrary(File f = buildFile) {
@@ -88,7 +88,7 @@ abstract class AbstractDependencyVerificationIntegTest extends AbstractHttpDepen
     protected void addPlugin() {
         def pluginBuilder = new PluginBuilder(file("some-plugin"))
         pluginBuilder.addPlugin("println 'Hello, Gradle!'")
-        pluginBuilder.publishAs("com", "myplugin", "1.0", pluginRepo, executer).allowAll()
+        pluginBuilder.publishAs("com", "myplugin", "1.0", pluginRepo, executor).allowAll()
     }
 
     static String getDocsUrl() {
@@ -103,7 +103,7 @@ abstract class AbstractDependencyVerificationIntegTest extends AbstractHttpDepen
     }
 
     protected void assertConfigCacheDiscarded() {
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             failure.assertOutputContains("Configuration cache entry discarded")
         }
     }

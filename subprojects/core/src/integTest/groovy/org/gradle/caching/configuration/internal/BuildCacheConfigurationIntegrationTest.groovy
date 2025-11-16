@@ -19,7 +19,7 @@ package org.gradle.caching.configuration.internal
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.TestBuildCache
 
-import static org.gradle.integtests.fixtures.executer.GradleContextualExecuter.isConfigCache
+import static org.gradle.integtests.fixtures.executor.GradleContextualExecutor.isConfigCache
 
 class BuildCacheConfigurationIntegrationTest extends AbstractIntegrationSpec {
     String cacheDir = temporaryFolder.file("cache-dir").createDir().absoluteFile.toURI().toString()
@@ -37,7 +37,7 @@ class BuildCacheConfigurationIntegrationTest extends AbstractIntegrationSpec {
         buildFile << customTaskCode()
 
         expect:
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
         succeeds("customTask")
         !localBuildCache.empty
     }
@@ -72,7 +72,7 @@ class BuildCacheConfigurationIntegrationTest extends AbstractIntegrationSpec {
         buildFile << customTaskCode()
 
         expect:
-        executer.withBuildCacheEnabled().usingInitScript(initScript)
+        executor.withBuildCacheEnabled().usingInitScript(initScript)
         succeeds("customTask")
         !localBuildCache.empty
     }
@@ -91,7 +91,7 @@ class BuildCacheConfigurationIntegrationTest extends AbstractIntegrationSpec {
         buildFile << customTaskCode()
 
         expect:
-        executer.usingInitScript(initScript)
+        executor.usingInitScript(initScript)
         succeeds("customTask")
         !localBuildCache.empty
     }
@@ -116,7 +116,7 @@ class BuildCacheConfigurationIntegrationTest extends AbstractIntegrationSpec {
         buildFile << customTaskCode()
 
         expect:
-        executer.withBuildCacheEnabled().usingInitScript(initScript)
+        executor.withBuildCacheEnabled().usingInitScript(initScript)
         succeeds("customTask")
         !localBuildCache.empty
     }
@@ -206,7 +206,7 @@ class BuildCacheConfigurationIntegrationTest extends AbstractIntegrationSpec {
 
     def "emits a useful message when using the build cache"() {
         when:
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
         succeeds("help", "--info")
         then:
         outputContains("Using local directory build cache")
@@ -216,7 +216,7 @@ class BuildCacheConfigurationIntegrationTest extends AbstractIntegrationSpec {
         file("gradle.properties") << """
             org.gradle.caching=true
         """
-        executer.withArgument("--no-build-cache")
+        executor.withArgument("--no-build-cache")
         when:
         succeeds("help", "--info")
         then:
@@ -227,7 +227,7 @@ class BuildCacheConfigurationIntegrationTest extends AbstractIntegrationSpec {
         file("gradle.properties") << """
             org.gradle.caching=false
         """
-        executer.withArgument("--build-cache")
+        executor.withArgument("--build-cache")
         when:
         succeeds("help", "--info")
         then:
@@ -247,7 +247,7 @@ class BuildCacheConfigurationIntegrationTest extends AbstractIntegrationSpec {
                 }
             }
         """
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
         succeeds("customTask")
         then:
         outputContains("Using the build cache is enabled, but no build caches are configured or enabled.")
@@ -269,7 +269,7 @@ class BuildCacheConfigurationIntegrationTest extends AbstractIntegrationSpec {
                 }
             }
         """
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
         succeeds("customTask", "--info")
 
         then:

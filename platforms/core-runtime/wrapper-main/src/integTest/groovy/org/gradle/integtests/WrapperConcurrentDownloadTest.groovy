@@ -38,7 +38,7 @@ class WrapperConcurrentDownloadTest extends AbstractWrapperIntegrationSpec {
         prepareWrapper(server.uri("gradle-bin.zip"))
 
         when:
-        def results = [1..4].collect { wrapperExecuter.start() }*.waitForFinish()
+        def results = [1..4].collect { wrapperExecutor.start() }*.waitForFinish()
 
         then:
         results.findAll { it.output.contains("Downloading") }.size() == 1

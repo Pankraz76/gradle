@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 public class OutputScrapingExecutionResult implements ExecutionResult {
     // This monster is to find lines in our logs that look like stack traces
     // We want to match lines that contain just packages and classes:
-    // at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:145)
+    // at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecutor.lambda$executeIfValid$1(ExecuteActionsTaskExecutor.java:145)
     // and with module names:
     // at java.base/java.lang.Thread.dumpStack(Thread.java:1383)
     static final Pattern STACK_TRACE_ELEMENT = Pattern.compile("\\s+(at\\s+)?([\\w.$_]+/)?[a-zA-Z_][\\w.$]+\\.[\\w$_ =+'-<>]+\\(.+?\\)(\\x1B\\[0K)?");

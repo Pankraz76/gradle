@@ -21,7 +21,7 @@ import org.gradle.api.tasks.WorkResult;
 
 import java.util.Arrays;
 
-public class CopyActionExecuterUtil {
+public class CopyActionExecutorUtil {
 
     public static WorkResult visit(CopyAction visitor, final Iterable<FileCopyDetailsInternal> details) {
         return visitor.execute(new CopyActionProcessingStream() {

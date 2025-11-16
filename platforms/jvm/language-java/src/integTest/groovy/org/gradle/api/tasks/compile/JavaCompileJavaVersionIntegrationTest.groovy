@@ -60,7 +60,7 @@ class JavaCompileJavaVersionIntegrationTest extends AbstractIntegrationSpec impl
         assertCompiledWith(Jvm.current())
 
         when:
-        executer.withJvm(otherJdk)
+        executor.withJvm(otherJdk)
         succeeds "compileJava", "--info"
 
         then:
@@ -126,7 +126,7 @@ class JavaCompileJavaVersionIntegrationTest extends AbstractIntegrationSpec impl
 
     void compileWith(Jvm jvm) {
         withInstallations(jvm)
-        executer.withArgument("-DcompileJavaVersion=${jvm.javaVersionMajor}")
+        executor.withArgument("-DcompileJavaVersion=${jvm.javaVersionMajor}")
     }
 
     void assertCompiledWith(Jvm jvm) {

@@ -227,7 +227,7 @@ class ApplyPluginIntegSpec extends AbstractIntegrationSpec {
     }
 
     private String getGradleUserHome() {
-        normalisedPathOf(executer.gradleUserHomeDir)
+        normalisedPathOf(executor.gradleUserHomeDir)
     }
 
     static String normalisedPathOf(File file) {

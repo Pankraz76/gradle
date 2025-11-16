@@ -256,7 +256,7 @@ class CppLibraryPublishingIntegrationTest extends AbstractCppPublishingIntegrati
 """
         app.main.writeToProject(consumer)
 
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("assemble")
 
         then:
@@ -289,7 +289,7 @@ class CppLibraryPublishingIntegrationTest extends AbstractCppPublishingIntegrati
 """
         app.card.writeToProject(producer.file('card'))
         app.shuffle.writeToProject(producer.file('shuffle'))
-        executer.inDirectory(producer)
+        executor.inDirectory(producer)
         run('publish')
 
         settingsFile << "rootProject.name = 'deck'"
@@ -370,7 +370,7 @@ class CppLibraryPublishingIntegrationTest extends AbstractCppPublishingIntegrati
 """
         app.main.writeToProject(consumer)
 
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("assemble")
 
         then:
@@ -483,7 +483,7 @@ class CppLibraryPublishingIntegrationTest extends AbstractCppPublishingIntegrati
 """
         app.main.writeToProject(consumer)
 
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("assemble")
 
         then:
@@ -558,7 +558,7 @@ dependencies { implementation 'some.group:testlib:1.2' }
 """
 
         when:
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         fails("compileDebugCpp")
 
         then:
@@ -572,7 +572,7 @@ library.publicHeaders.from 'src/main/public', 'src/main/headers'
         run('publish')
 
         then:
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         succeeds("compileDebugCpp")
     }
 
@@ -615,7 +615,7 @@ dependencies { implementation 'some.group:greeter:1.2' }
 """
 
         when:
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         fails("compileDebugCpp")
 
         then:
@@ -626,7 +626,7 @@ dependencies { implementation 'some.group:greeter:1.2' }
         run('publish')
 
         then:
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         succeeds("compileDebugCpp")
     }
 
@@ -653,7 +653,7 @@ dependencies { implementation 'some.group:greeter:1.2' }
         """
         app.greeterLib.writeToProject(file(producer))
 
-        executer.inDirectory(producer)
+        executor.inDirectory(producer)
         run('publish')
 
         def consumer = file("consumer").createDir()
@@ -669,7 +669,7 @@ dependencies { implementation 'some.group:greeter:1.2' }
         app.main.writeToProject(consumer)
 
         when:
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("installDebug")
 
         then:
@@ -680,7 +680,7 @@ dependencies { implementation 'some.group:greeter:1.2' }
         sharedLibrary(consumer.file("build/install/main/debug/lib/greeting")).file.assertIsCopyOf(debugLib.file)
 
         when:
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("installRelease")
 
         then:
@@ -802,7 +802,7 @@ dependencies { implementation 'some.group:greeter:1.2' }
         """
         app.main.writeToProject(consumer)
 
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("assemble")
 
         then:
@@ -872,7 +872,7 @@ dependencies { implementation 'some.group:greeter:1.2' }
         """
         app.main.writeToProject(consumer)
 
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("assemble")
 
         then:
@@ -933,7 +933,7 @@ dependencies { implementation 'some.group:greeter:1.2' }
         """
         app.main.writeToProject(consumer)
 
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         fails("assemble")
 
         then:

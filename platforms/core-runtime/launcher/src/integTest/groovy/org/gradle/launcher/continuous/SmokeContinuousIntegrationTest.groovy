@@ -17,7 +17,7 @@
 package org.gradle.launcher.continuous
 
 import org.gradle.integtests.fixtures.AbstractContinuousIntegrationTest
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.environment.GradleBuildEnvironment
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.test.precondition.Requires
@@ -217,7 +217,7 @@ class SmokeContinuousIntegrationTest extends AbstractContinuousIntegrationTest {
         """
 
         then:
-        executer.withArgument("-q")
+        executor.withArgument("-q")
         succeeds("myTask")
         output.contains "value: original"
 
@@ -648,7 +648,7 @@ class SmokeContinuousIntegrationTest extends AbstractContinuousIntegrationTest {
     }
 
     private void exitsContinuousBuildSinceNotWatchingAnyLocationsExceptForConfigCache() {
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             // When using the configuration cache, the build files are stored in the VFS, so we start watching.
             // That means for hierarchical watchers, we'll also detect the change above.
             // For Linux though, the reason why we don't detect the change still apply.

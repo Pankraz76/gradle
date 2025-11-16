@@ -26,42 +26,42 @@ class IncrementalJavaProjectBuildIntegrationTest extends AbstractIntegrationTest
         file('build.gradle') << 'apply plugin: \'java\''
         file('src/main/resources/org/gradle/resource.txt').createFile()
 
-        executer.withTasks('classes').run()
+        executor.withTasks('classes').run()
         file('build/resources/main').assertHasDescendants('org/gradle/resource.txt')
 
         file('src/main/resources/org/gradle/resource.txt').assertIsFile().delete()
         file('src/main/resources/org/gradle/resource2.txt').createFile()
 
-        executer.withTasks('classes').run()
+        executor.withTasks('classes').run()
         file('build/resources/main').assertHasDescendants('org/gradle/resource2.txt')
     }
 
     @Test
     public void doesNotRebuildJarIfSourceHasNotChanged() {
         // Use own home dir so we don't blast the shared one when we run with -C rebuild
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
 
         file("src/main/java/BuildClass.java") << 'public class BuildClass { }'
         file("build.gradle") << "apply plugin: 'java'"
         file("settings.gradle") << "rootProject.name = 'project'"
 
-        executer.withTasks("jar").run();
+        executor.withTasks("jar").run();
 
         TestFile jar = file("build/libs/project.jar");
         jar.assertIsFile();
         TestFile.Snapshot snapshot = jar.snapshot();
 
-        executer.withTasks("jar").run();
+        executor.withTasks("jar").run();
 
         jar.assertHasNotChangedSince(snapshot);
 
         sleep 1000 // Some filesystems (ext3) have one-second granularity for lastModified, so bump the time to ensure we can detect a regenerated file
-        executer.withArguments("--rerun-tasks").withTasks("jar").run();
+        executor.withArguments("--rerun-tasks").withTasks("jar").run();
 
         jar.assertHasChangedSince(snapshot);
         snapshot = jar.snapshot();
 
-        executer.withTasks("jar").run();
+        executor.withTasks("jar").run();
         jar.assertHasNotChangedSince(snapshot);
     }
 }

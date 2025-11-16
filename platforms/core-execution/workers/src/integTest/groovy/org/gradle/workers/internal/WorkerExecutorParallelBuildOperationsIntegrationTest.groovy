@@ -32,7 +32,7 @@ import java.time.Instant
 class WorkerExecutorParallelBuildOperationsIntegrationTest extends AbstractWorkerExecutorIntegrationTest {
     @Rule
     BlockingHttpServer blockingHttpServer = new BlockingHttpServer()
-    def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+    def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
     WorkerExecutorFixture.WorkParameterClass parallelParameterType
     WorkerExecutorFixture.WorkActionClass parallelWorkAction
 

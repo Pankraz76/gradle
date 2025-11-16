@@ -37,8 +37,8 @@ abstract class AbstractCompilerDaemonReuseIntegrationTest extends AbstractIntegr
     abstract TestJvmComponent getComponent()
 
     def setup() {
-        executer.withWorkerDaemonsExpirationDisabled()
-        executer.requireDaemon().requireIsolatedDaemons()
+        executor.withWorkerDaemonsExpirationDisabled()
+        executor.requireDaemon().requireIsolatedDaemons()
         buildFile << """
             import org.gradle.workers.internal.WorkerDaemonClientsManager
             import org.gradle.workers.internal.DaemonForkOptions

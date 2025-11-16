@@ -40,7 +40,7 @@ class ScalaDocRelocationIntegrationTest extends AbstractTaskRelocationIntegratio
     @Override
     protected void setupProjectInOriginalLocation() {
         classes.scalaVersion = ScalaCoverage.latestSupportedScala2Version
-        executer.beforeExecute {
+        executor.beforeExecute {
             // Scaladoc leaks file handles if this is not activated: https://github.com/scala/scala/pull/5592
             // This requires Scala 2.12.2
             args '-Dscala.classpath.closeZip=true'
@@ -55,7 +55,7 @@ class ScalaDocRelocationIntegrationTest extends AbstractTaskRelocationIntegratio
         classes.sourceDir = 'src/main/new-scala'
         buildFile(classes.buildScript())
         // Move scala library dependency around on disk
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
     }
 
     @Override

@@ -29,7 +29,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.BuildOperationsFixture
 import org.gradle.integtests.fixtures.DirectoryBuildCacheFixture
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.operations.trace.BuildOperationRecord
 import org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType
 import org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.PlannedNode
@@ -86,7 +86,7 @@ class ArtifactTransformBuildOperationIntegrationTest extends AbstractIntegration
     static final String TASK = NodeIdentity.NodeType.TASK.name()
     static final String TRANSFORM_STEP = NodeIdentity.NodeType.TRANSFORM_STEP.name()
 
-    def buildOperations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def buildOperations = new BuildOperationsFixture(executor, testDirectoryProvider)
 
     def setup() {
         requireOwnGradleUserHomeDir("Artifact transforms should run every time and not be shared between tests")
@@ -1602,7 +1602,7 @@ class ArtifactTransformBuildOperationIntegrationTest extends AbstractIntegration
         def ops = buildOperations.all(CalculateTaskGraphBuildOperationType)
             .findAll { it.details.buildPath == buildPath }
         assert !ops.empty
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             assert ops.size() == 2
         } else {
             assert ops.size() == 1

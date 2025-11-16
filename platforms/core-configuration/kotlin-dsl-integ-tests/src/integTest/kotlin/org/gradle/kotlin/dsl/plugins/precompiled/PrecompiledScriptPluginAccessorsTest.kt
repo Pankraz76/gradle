@@ -20,7 +20,7 @@ import org.codehaus.groovy.runtime.StringGroovyMethods
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.PluginManager
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
 import org.gradle.kotlin.dsl.fixtures.FoldersDsl
 import org.gradle.kotlin.dsl.fixtures.bytecode.InternalName
 import org.gradle.kotlin.dsl.fixtures.bytecode.RETURN
@@ -668,12 +668,12 @@ class PrecompiledScriptPluginAccessorsTest : AbstractPrecompiledScriptPluginTest
             """
         )
 
-        executer.expectDocumentedDeprecationWarning(
+        executor.expectDocumentedDeprecationWarning(
             "Properties should be assigned using the 'propName = value' syntax. Setting a property via the Gradle-generated 'propName value' or 'propName(value)' syntax in Groovy DSL has been deprecated. " +
                 "This is scheduled to be removed in Gradle 10. Use assignment ('group = <value>') instead. " +
                 "Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#groovy_space_assignment_syntax"
         )
-        executer.expectDocumentedDeprecationWarning(
+        executor.expectDocumentedDeprecationWarning(
             "Properties should be assigned using the 'propName = value' syntax. Setting a property via the Gradle-generated 'propName value' or 'propName(value)' syntax in Groovy DSL has been deprecated. " +
                 "This is scheduled to be removed in Gradle 10. Use assignment ('description = <value>') instead. " +
                 "Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#groovy_space_assignment_syntax"
@@ -699,7 +699,7 @@ class PrecompiledScriptPluginAccessorsTest : AbstractPrecompiledScriptPluginTest
             }
         }
 
-        gradleExecuterFor(arrayOf("classes"))
+        gradleExecutorFor(arrayOf("classes"))
             .withStackTraceChecksDisabled()
             .runWithFailure()
             .assertions()

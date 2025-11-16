@@ -28,15 +28,15 @@ import org.gradle.test.preconditions.IntegTestPreconditions
 class ContinuousBuildFileWatchingIntegrationTest extends AbstractContinuousIntegrationTest implements FileSystemWatchingFixture {
 
     def setup() {
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
     }
 
     def "file system watching picks up changes causing a continuous build to rebuild"() {
         given:
         // Do not drop the VFS in the first build, since there is only one continuous build invocation.
         // FileSystemWatchingFixture automatically sets the argument for the first build.
-        executer.withArgument(FileSystemWatchingHelper.getDropVfsArgument(false))
-        executer.beforeExecute {
+        executor.withArgument(FileSystemWatchingHelper.getDropVfsArgument(false))
+        executor.beforeExecute {
             withWatchFs()
         }
 

@@ -351,7 +351,7 @@ class NestedInputIntegrationTest extends AbstractIntegrationSpec implements Dire
         }
 
         def runTask() {
-            result = executer.withTasks(task, '-PfirstInput=' + inputProperties.first, '-PsecondInput=' + inputProperties.second).run()
+            result = executor.withTasks(task, '-PfirstInput=' + inputProperties.first, '-PsecondInput=' + inputProperties.second).run()
         }
 
         String taskWithNestedProperty() {
@@ -1201,7 +1201,7 @@ class NestedInputIntegrationTest extends AbstractIntegrationSpec implements Dire
         }
 
         when:
-        executer.inDirectory(project1)
+        executor.inDirectory(project1)
         withBuildCache().run 'myTask'
 
         then:
@@ -1209,7 +1209,7 @@ class NestedInputIntegrationTest extends AbstractIntegrationSpec implements Dire
         project1.file('build/tmp/myTask/output.txt').text == "hello"
 
         when:
-        executer.inDirectory(project2)
+        executor.inDirectory(project2)
         withBuildCache().run 'myTask'
 
         then:

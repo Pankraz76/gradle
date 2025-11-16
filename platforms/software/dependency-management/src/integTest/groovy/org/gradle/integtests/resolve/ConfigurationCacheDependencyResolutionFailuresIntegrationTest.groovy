@@ -57,7 +57,7 @@ class ConfigurationCacheDependencyResolutionFailuresIntegrationTest extends Abst
         '''
 
         when:
-        executer.withConfigurationCacheEnabled()
+        executor.withConfigurationCacheEnabled()
         fails 'test'
 
         then:

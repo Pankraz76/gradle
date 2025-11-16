@@ -26,7 +26,7 @@ import spock.lang.Issue
  */
 class HtmlDependencyReportTaskIntegrationTest extends AbstractIntegrationSpec {
     def setup() {
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
     }
 
     def "renders graph"() {

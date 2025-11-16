@@ -35,7 +35,7 @@ import org.junit.Assume
 class CodeNarcPluginToolchainsIntegrationTest extends MultiVersionIntegrationSpec implements JavaToolchainFixture {
 
     def setup() {
-        executer.withArgument("--info")
+        executor.withArgument("--info")
     }
 
     def "uses jdk from toolchains set through java plugin"() {

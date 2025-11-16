@@ -143,7 +143,7 @@ task showMissing {
         succeeds("showMissing")
 
         when:
-        executer.withArgument("--refresh-dependencies")
+        executor.withArgument("--refresh-dependencies")
         moduleInRepo1.ivy.expectHead()
         moduleInRepo1.ivy.sha1.expectGet()
         moduleInRepo1.jar.expectHead()

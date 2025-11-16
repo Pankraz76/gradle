@@ -68,7 +68,7 @@ class JavadocCachingIntegrationTest extends AbstractIntegrationSpec implements D
         setupProjectInDirectory(remoteProjectDir)
 
         when:
-        executer.inDirectory(remoteProjectDir)
+        executor.inDirectory(remoteProjectDir)
         withBuildCache().run "javadoc"
         then:
         taskIsNotCached()
@@ -79,7 +79,7 @@ class JavadocCachingIntegrationTest extends AbstractIntegrationSpec implements D
 
         when:
         // Move the dependencies around by using a new Gradle user home
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         withBuildCache().run "javadoc"
         then:
         taskIsCached()

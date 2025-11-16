@@ -17,7 +17,7 @@
 package org.gradle.performance.fixture
 
 import groovy.transform.CompileStatic
-import org.gradle.integtests.fixtures.executer.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleDistribution
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.util.internal.GFileUtils
 

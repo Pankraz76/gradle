@@ -19,11 +19,11 @@ package org.gradle.smoketests
 import org.gradle.integtests.fixtures.BuildOperationTreeFixture
 import org.gradle.integtests.fixtures.BuildOperationTreeQueries
 import org.gradle.integtests.fixtures.configurationcache.ConfigurationCacheBuildOperationsFixture
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.ExpectedDeprecationWarning
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult
-import org.gradle.integtests.fixtures.executer.ResultAssertion
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExpectedDeprecationWarning
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult
+import org.gradle.integtests.fixtures.executor.ResultAssertion
 import org.gradle.internal.jvm.SupportedJavaVersionsExpectations
 import org.gradle.internal.operations.trace.BuildOperationTrace
 import org.gradle.testkit.runner.BuildResult

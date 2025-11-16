@@ -39,7 +39,7 @@ allprojects {
 }
 '''
         when:
-        executer.withArgument("--profile")
+        executor.withArgument("--profile")
         succeeds("build", "fooTask", "-x", "barTask")
 
         then:
@@ -69,7 +69,7 @@ allprojects {
             }
         """)
         def pluginJar = file("plugin.jar")
-        pluginBuilder.publishTo(executer, pluginJar)
+        pluginBuilder.publishTo(executor, pluginJar)
 
         initScriptFile """
             initscript {
@@ -84,8 +84,8 @@ allprojects {
 
         settingsFile.touch()
 
-        executer.usingInitScript(initScriptFile)
-        executer.withArgument("--profile")
+        executor.usingInitScript(initScriptFile)
+        executor.withArgument("--profile")
 
         when:
         succeeds 'help'

@@ -32,9 +32,9 @@ import org.gradle.test.preconditions.UnitTestPreconditions
 class SupportedBuildJvmVersionIntegrationTest extends AbstractIntegrationSpec implements DaemonJvmPropertiesFixture, JavaToolchainFixture {
 
     def setup() {
-        executer.disableDaemonJavaVersionDeprecationFiltering()
-        executer.requireDaemon() // For non-daemon executors, tests single-use daemon mode
-        executer.requireIsolatedDaemons() // Because we check which JVM the daemon uses, and we don't want to pick a compatible JVM from another test but with different java home.
+        executor.disableDaemonJavaVersionDeprecationFiltering()
+        executor.requireDaemon() // For non-daemon executors, tests single-use daemon mode
+        executor.requireIsolatedDaemons() // Because we check which JVM the daemon uses, and we don't want to pick a compatible JVM from another test but with different java home.
     }
 
     @Requires(
@@ -43,7 +43,7 @@ class SupportedBuildJvmVersionIntegrationTest extends AbstractIntegrationSpec im
     )
     def "provides reasonable failure message when attempting to run under java #jdk.javaVersion"() {
         given:
-        executer.withJvm(jdk)
+        executor.withJvm(jdk)
 
         expect:
         fails("help")
@@ -62,7 +62,7 @@ class SupportedBuildJvmVersionIntegrationTest extends AbstractIntegrationSpec im
     def "running a build with an unsupported JVM emits a failure"() {
         given:
         def unsupportedJdk = AvailableJavaHomes.unsupportedDaemonJdk
-        executer.withJvm(unsupportedJdk)
+        executor.withJvm(unsupportedJdk)
 
         expect:
         fails(["help"] + (noDaemon ? ["--no-daemon"] : []))
@@ -75,7 +75,7 @@ class SupportedBuildJvmVersionIntegrationTest extends AbstractIntegrationSpec im
     @Requires(UnitTestPreconditions.DeprecatedDaemonJdkVersion)
     def "running a build with a deprecated JVM is deprecated"() {
         expect:
-        executer.expectDocumentedDeprecationWarning(SupportedJavaVersionsExpectations.expectedDaemonDeprecationWarning)
+        executor.expectDocumentedDeprecationWarning(SupportedJavaVersionsExpectations.expectedDaemonDeprecationWarning)
         succeeds(["help"] + (noDaemon ? ["--no-daemon"] : []))
 
         where:
@@ -118,7 +118,7 @@ class SupportedBuildJvmVersionIntegrationTest extends AbstractIntegrationSpec im
         captureJavaHome()
 
         when:
-        executer.expectDocumentedDeprecationWarning(SupportedJavaVersionsExpectations.expectedDaemonDeprecationWarning)
+        executor.expectDocumentedDeprecationWarning(SupportedJavaVersionsExpectations.expectedDaemonDeprecationWarning)
         succeeds(["help"] + (noDaemon ? ["--no-daemon"] : []))
 
         then:
@@ -173,7 +173,7 @@ class SupportedBuildJvmVersionIntegrationTest extends AbstractIntegrationSpec im
         captureJavaHome()
 
         when:
-        executer.expectDocumentedDeprecationWarning(SupportedJavaVersionsExpectations.expectedDaemonDeprecationWarning)
+        executor.expectDocumentedDeprecationWarning(SupportedJavaVersionsExpectations.expectedDaemonDeprecationWarning)
         succeeds(["help"] + (noDaemon ? ["--no-daemon"] : []))
 
         then:

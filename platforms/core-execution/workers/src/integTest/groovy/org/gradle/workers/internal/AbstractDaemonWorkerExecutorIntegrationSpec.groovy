@@ -18,32 +18,32 @@ package org.gradle.workers.internal
 
 import org.gradle.integtests.fixtures.daemon.DaemonLogsAnalyzer
 import org.gradle.integtests.fixtures.daemon.DaemonsFixture
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
 
 @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicitly requests a daemon")
 abstract class AbstractDaemonWorkerExecutorIntegrationSpec extends AbstractWorkerExecutorIntegrationTest {
     def setup() {
-        executer.requireDaemon()
-        executer.requireIsolatedDaemons()
+        executor.requireDaemon()
+        executor.requireIsolatedDaemons()
     }
 
     @Override
     protected ExecutionResult succeeds(String... tasks) {
-        executer.withWorkerDaemonsExpirationDisabled()
+        executor.withWorkerDaemonsExpirationDisabled()
         return super.succeeds(tasks)
     }
 
     void stopDaemonsNow() {
-        result = executer.withArguments("--stop", "--info").run()
+        result = executor.withArguments("--stop", "--info").run()
     }
 
     DaemonsFixture getDaemons() {
-        new DaemonLogsAnalyzer(executer.daemonBaseDir)
+        new DaemonLogsAnalyzer(executor.daemonBaseDir)
     }
 
     DaemonsFixture daemons(String gradleVersion) {
-        new DaemonLogsAnalyzer(executer.daemonBaseDir, gradleVersion)
+        new DaemonLogsAnalyzer(executor.daemonBaseDir, gradleVersion)
     }
 }

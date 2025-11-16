@@ -18,7 +18,7 @@ package org.gradle.play.integtest.fixtures.external
 
 import org.gradle.api.JavaVersion
 import org.gradle.integtests.fixtures.AbstractContinuousIntegrationTest
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.test.fixtures.file.TestFile
 
 abstract class AbstractPlayExternalContinuousBuildIntegrationTest extends AbstractContinuousIntegrationTest {

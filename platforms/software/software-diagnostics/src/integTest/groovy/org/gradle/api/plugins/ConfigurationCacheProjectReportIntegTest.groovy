@@ -25,9 +25,9 @@ import org.gradle.test.preconditions.IntegTestPreconditions
 class ConfigurationCacheProjectReportIntegTest extends AbstractIntegrationSpec {
 
     @Override
-    void setupExecuter() {
-        super.setupExecuter()
-        executer.withConfigurationCacheEnabled()
+    void setupExecutor() {
+        super.setupExecutor()
+        executor.withConfigurationCacheEnabled()
     }
 
     def setup() {

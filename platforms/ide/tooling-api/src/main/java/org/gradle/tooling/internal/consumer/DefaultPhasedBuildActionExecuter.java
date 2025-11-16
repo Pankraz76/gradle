@@ -16,7 +16,7 @@
 
 package org.gradle.tooling.internal.consumer;
 
-import org.gradle.tooling.BuildActionExecuter;
+import org.gradle.tooling.BuildActionExecutor;
 import org.gradle.tooling.GradleConnectionException;
 import org.gradle.tooling.ResultHandler;
 import org.gradle.tooling.StreamedValueListener;
@@ -28,19 +28,19 @@ import org.gradle.util.internal.CollectionUtils;
 
 import java.util.Arrays;
 
-public class DefaultPhasedBuildActionExecuter extends AbstractLongRunningOperation<DefaultPhasedBuildActionExecuter> implements BuildActionExecuter<Void> {
+public class DefaultPhasedBuildActionExecutor extends AbstractLongRunningOperation<DefaultPhasedBuildActionExecutor> implements BuildActionExecutor<Void> {
     private final PhasedBuildAction phasedBuildAction;
     private final AsyncConsumerActionExecutor connection;
 
-    DefaultPhasedBuildActionExecuter(PhasedBuildAction phasedBuildAction, AsyncConsumerActionExecutor connection, ConnectionParameters parameters) {
+    DefaultPhasedBuildActionExecutor(PhasedBuildAction phasedBuildAction, AsyncConsumerActionExecutor connection, ConnectionParameters parameters) {
         super(parameters);
-        operationParamsBuilder.setEntryPoint("PhasedBuildActionExecuter API");
+        operationParamsBuilder.setEntryPoint("PhasedBuildActionExecutor API");
         this.phasedBuildAction = phasedBuildAction;
         this.connection = connection;
     }
 
     @Override
-    protected DefaultPhasedBuildActionExecuter getThis() {
+    protected DefaultPhasedBuildActionExecutor getThis() {
         return this;
     }
 
@@ -50,13 +50,13 @@ public class DefaultPhasedBuildActionExecuter extends AbstractLongRunningOperati
     }
 
     @Override
-    public BuildActionExecuter<Void> forTasks(String... tasks) {
+    public BuildActionExecutor<Void> forTasks(String... tasks) {
         operationParamsBuilder.setTasks(tasks != null ? Arrays.asList(tasks) : null);
         return getThis();
     }
 
     @Override
-    public BuildActionExecuter<Void> forTasks(Iterable<String> tasks) {
+    public BuildActionExecutor<Void> forTasks(Iterable<String> tasks) {
         operationParamsBuilder.setTasks(tasks != null ? CollectionUtils.toList(tasks) : null);
         return getThis();
     }

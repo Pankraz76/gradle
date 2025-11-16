@@ -79,7 +79,7 @@ class ScriptClassloadingIntegrationTest extends AbstractIntegrationSpec {
             }
         }
 
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
 
         expect:
         succeeds('doStringOp')

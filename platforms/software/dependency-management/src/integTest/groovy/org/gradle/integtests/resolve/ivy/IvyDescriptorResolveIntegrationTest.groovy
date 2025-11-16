@@ -63,7 +63,7 @@ task check {
 """
 
         when:
-        executer.withArgument("-Dsys_prop=111")
+        executor.withArgument("-Dsys_prop=111")
         run "checkDeps"
 
         then:

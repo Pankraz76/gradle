@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import org.apache.commons.io.output.TeeOutputStream;
 import org.gradle.BuildResult;
@@ -107,7 +107,7 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
-import static org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult.flattenTaskPaths;
+import static org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult.flattenTaskPaths;
 import static org.gradle.internal.hash.Hashing.hashString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -124,7 +124,7 @@ import static org.junit.Assert.assertNull;
  * There is some initialization happening in {@link InProcessGradleExecutorInitialization}, so that the global services
  * are correctly in place.
  */
-public class InProcessGradleExecuter extends DaemonGradleExecuter {
+public class InProcessGradleExecutor extends DaemonGradleExecutor {
 
     protected static final ServiceRegistry GLOBAL_SERVICES = new BuildProcessState(
         true,
@@ -147,11 +147,11 @@ public class InProcessGradleExecuter extends DaemonGradleExecuter {
         GLOBAL_SERVICES.get(AgentInitializer.class).maybeConfigureInstrumentationAgent();
     }
 
-    public InProcessGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider) {
+    public InProcessGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider) {
         super(distribution, testDirectoryProvider);
     }
 
-    public InProcessGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, GradleVersion gradleVersion, IntegrationTestBuildContext buildContext) {
+    public InProcessGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, GradleVersion gradleVersion, IntegrationTestBuildContext buildContext) {
         super(distribution, testDirectoryProvider, gradleVersion, buildContext);
         waitForChangesToBePickedUpBeforeExecution();
     }
@@ -173,7 +173,7 @@ public class InProcessGradleExecuter extends DaemonGradleExecuter {
 
     private void waitForChangesToBePickedUpBeforeExecution() {
         // File system watching is now on by default, so we need to wait for changes to be picked up before each execution.
-        beforeExecute(executer -> {
+        beforeExecute(executor -> {
             try {
                 FileSystemWatchingHelper.waitForChangesToBePickedUp();
             } catch (InterruptedException e) {
@@ -183,7 +183,7 @@ public class InProcessGradleExecuter extends DaemonGradleExecuter {
     }
 
     @Override
-    public GradleExecuter reset() {
+    public GradleExecutor reset() {
         DeprecationLogger.reset();
         IncubationLogger.reset();
         return super.reset();
@@ -398,7 +398,7 @@ public class InProcessGradleExecuter extends DaemonGradleExecuter {
         buildEnvironmentConfigurationConverter.configure(parser);
         Parameters parameters = buildEnvironmentConfigurationConverter.convertParameters(parser.parse(getAllArgs()), getWorkingDir());
 
-        BuildActionExecutor<BuildActionParameters, BuildRequestContext> actionExecuter = GLOBAL_SERVICES.get(BuildActionExecutor.class);
+        BuildActionExecutor<BuildActionParameters, BuildRequestContext> actionExecutor = GLOBAL_SERVICES.get(BuildActionExecutor.class);
 
         ListenerManager listenerManager = GLOBAL_SERVICES.get(ListenerManager.class);
         listenerManager.addListener(listener);
@@ -416,7 +416,7 @@ public class InProcessGradleExecuter extends DaemonGradleExecuter {
             try {
                 startMeasurement();
                 try {
-                    BuildActionResult result = actionExecuter.execute(action, buildActionParameters, buildRequestContext);
+                    BuildActionResult result = actionExecutor.execute(action, buildActionParameters, buildRequestContext);
                     if (result.getException() != null) {
                         return new BuildResult(null, result.getException());
                     }
@@ -469,12 +469,12 @@ public class InProcessGradleExecuter extends DaemonGradleExecuter {
     }
 
     @Override
-    public GradleExecuter withTestConsoleAttached() {
+    public GradleExecutor withTestConsoleAttached() {
         return withTestConsoleAttached(ConsoleAttachment.ATTACHED);
     }
 
     @Override
-    public GradleExecuter withTestConsoleAttached(ConsoleAttachment consoleAttachment) {
+    public GradleExecutor withTestConsoleAttached(ConsoleAttachment consoleAttachment) {
         this.consoleAttachment = consoleAttachment;
         return this;
     }

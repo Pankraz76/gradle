@@ -109,7 +109,7 @@ settings.gradle.beforeProject { org.gradle.api.Project project ->
         """
 
         when:
-        executer.usingInitScript(initScript)
+        executor.usingInitScript(initScript)
         succeeds 'help'
 
         then:
@@ -163,9 +163,9 @@ pluginManagement {
     def "settings plugin can contribute to plugin management"() {
         when:
         pluginBuilder.addSettingsPlugin("settings.pluginManagement.plugins.id('com.test').version('1.0')", "com.test-settings")
-        pluginBuilder.publishAs("g", "settings-plugin", "1.0", pluginRepo, executer).allowAll()
+        pluginBuilder.publishAs("g", "settings-plugin", "1.0", pluginRepo, executor).allowAll()
         pluginBuilder.addPlugin("project.tasks.create('pluginTask')", "com.test")
-        pluginBuilder.publishAs("g", "project-plugin", "1.0", pluginRepo, executer).allowAll()
+        pluginBuilder.publishAs("g", "project-plugin", "1.0", pluginRepo, executor).allowAll()
 
         file("settings.gradle") << """
 pluginManagement {

@@ -308,7 +308,7 @@ class IncrementalInputsIntegrationTest extends AbstractIntegrationSpec {
         previousExecution()
 
         when:
-        executer.withArgument("--rerun-tasks")
+        executor.withArgument("--rerun-tasks")
 
         then:
         executesNonIncrementally()
@@ -809,9 +809,9 @@ class IncrementalInputsIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def failedExecution() {
-        executer.withArgument("-DforceFail=yep")
+        executor.withArgument("-DforceFail=yep")
         assert fails("incremental")
-        executer.withArguments()
+        executor.withArguments()
     }
 
     void executesIncrementally(Map changes) {

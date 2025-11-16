@@ -1,1 +1,1 @@
-org.gradle.integtests.fixtures.executer.InProcessGradleExecutorInitialization
+org.gradle.integtests.fixtures.executor.InProcessGradleExecutorInitialization

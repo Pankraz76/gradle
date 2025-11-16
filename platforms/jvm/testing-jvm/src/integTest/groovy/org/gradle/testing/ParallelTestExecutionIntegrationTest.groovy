@@ -65,14 +65,14 @@ class ParallelTestExecutionIntegrationTest extends AbstractIntegrationSpec {
         run("testClasses")
 
         and:
-        executer.withArgument "--max-workers=$maxWorkers"
+        executor.withArgument "--max-workers=$maxWorkers"
 
         and:
         def calls = testIndices(testCount).collect { "test_$it" } as String[]
         def handler = blockingServer.expectConcurrentAndBlock(maxConcurrency, calls)
 
         when:
-        def gradle = executer.withArgument("-i").withTasks('test').start()
+        def gradle = executor.withArgument("-i").withTasks('test').start()
 
         then:
         handler.waitForAllPendingCalls()
@@ -122,7 +122,7 @@ class ParallelTestExecutionIntegrationTest extends AbstractIntegrationSpec {
         }
 
         when:
-        executer.withArguments("--parallel", "--max-workers=2")
+        executor.withArguments("--parallel", "--max-workers=2")
         run('test')
 
         then:
@@ -158,7 +158,7 @@ class ParallelTestExecutionIntegrationTest extends AbstractIntegrationSpec {
         blockingServer.expectInAnyOrder(tests)
 
         when:
-        executer.withArguments("--parallel", "--max-workers=4")
+        executor.withArguments("--parallel", "--max-workers=4")
         run('test', 'other')
 
         then:
@@ -195,7 +195,7 @@ class ParallelTestExecutionIntegrationTest extends AbstractIntegrationSpec {
         blockingServer.expectInAnyOrder(tests, other)
 
         when:
-        executer.withArguments("--parallel", "--max-workers=4")
+        executor.withArguments("--parallel", "--max-workers=4")
         run('test', 'other')
 
         then:

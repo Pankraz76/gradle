@@ -34,7 +34,7 @@ class HttpProxyScriptPluginIntegrationSpec extends AbstractIntegrationSpec {
         settingsFile << "rootProject.name = 'project'"
         server.expectUserAgent(UserAgentMatcher.matchesNameAndVersion("Gradle", GradleVersion.current().getVersion()))
         server.start()
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
     }
 
     def "uses #type proxy to access remote build script plugin"() {
@@ -56,7 +56,7 @@ class HttpProxyScriptPluginIntegrationSpec extends AbstractIntegrationSpec {
 """
 
         when:
-        testProxyServer.configureProxy(executer,"http", userName, password)
+        testProxyServer.configureProxy(executor,"http", userName, password)
         succeeds()
 
         then:
@@ -81,7 +81,7 @@ class HttpProxyScriptPluginIntegrationSpec extends AbstractIntegrationSpec {
         """
 
         when:
-        testProxyServer.configureProxy(executer,"http", "proxyUser", "proxyPassword")
+        testProxyServer.configureProxy(executor,"http", "proxyUser", "proxyPassword")
         succeeds()
 
         then:
@@ -102,7 +102,7 @@ class HttpProxyScriptPluginIntegrationSpec extends AbstractIntegrationSpec {
 """
 
         when:
-        testProxyServer.configureProxy(executer, "http")
+        testProxyServer.configureProxy(executor, "http")
 
         then:
         fails()
@@ -123,7 +123,7 @@ class HttpProxyScriptPluginIntegrationSpec extends AbstractIntegrationSpec {
 """
 
         when:
-        testProxyServer.configureProxy(executer, "http", "proxyUser", "wrongPassword")
+        testProxyServer.configureProxy(executor, "http", "proxyUser", "wrongPassword")
 
         then:
         fails()

@@ -124,7 +124,7 @@ class GradleImplDepsConcurrencyIntegrationTest extends BaseGradleImplDepsIntegra
     private void concurrentBuildSucceed(int projectCount, String... taskNames) {
         def handles = []
         (1..projectCount).each { count ->
-            handles << executer.inDirectory(file(createProjectName(count))).withTasks(taskNames).start()
+            handles << executor.inDirectory(file(createProjectName(count))).withTasks(taskNames).start()
         }
         handles.each { handle ->
             handle.waitForFinish()
@@ -132,7 +132,7 @@ class GradleImplDepsConcurrencyIntegrationTest extends BaseGradleImplDepsIntegra
     }
 
     private void parallelBuildSucceeds(String... taskNames) {
-        executer.withBuildJvmOpts('-Xmx1024m')
+        executor.withBuildJvmOpts('-Xmx1024m')
         args('--parallel')
         succeeds taskNames
     }

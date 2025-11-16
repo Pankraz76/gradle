@@ -20,15 +20,15 @@ import com.google.common.base.Predicate
 import com.google.common.collect.Sets
 import groovy.transform.CompileStatic
 import org.gradle.integtests.fixtures.BuildOperationsFixture
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 import org.jspecify.annotations.Nullable
 
 @CompileStatic
 class BuildOperationNotificationFixture extends BuildOperationsFixture {
 
-    BuildOperationNotificationFixture(GradleExecuter executer, TestDirectoryProvider projectDir) {
-        super(executer, projectDir)
+    BuildOperationNotificationFixture(GradleExecutor executor, TestDirectoryProvider projectDir) {
+        super(executor, projectDir)
     }
 
     def op(Class<?> detailsClass, Map<String, String> details = [:]) {

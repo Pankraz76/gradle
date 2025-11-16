@@ -28,7 +28,7 @@ class WrapperLoggingIntegrationTest extends AbstractWrapperIntegrationSpec {
 
     def setup() {
         file("build.gradle") << "task emptyTask"
-        executer.beforeExecute {
+        executor.beforeExecute {
             withWelcomeMessageEnabled()
         }
     }
@@ -39,7 +39,7 @@ class WrapperLoggingIntegrationTest extends AbstractWrapperIntegrationSpec {
 
         when:
         args '-q'
-        result = wrapperExecuter.withTasks("emptyTask").run()
+        result = wrapperExecutor.withTasks("emptyTask").run()
 
         then:
         result.output.empty
@@ -50,16 +50,16 @@ class WrapperLoggingIntegrationTest extends AbstractWrapperIntegrationSpec {
         prepareWrapper()
 
         when:
-        result = wrapperExecuter.withTasks("emptyTask").run()
+        result = wrapperExecutor.withTasks("emptyTask").run()
 
         then:
-        outputContains("Welcome to Gradle $wrapperExecuter.distribution.version.version!")
+        outputContains("Welcome to Gradle $wrapperExecutor.distribution.version.version!")
 
         when:
-        result = wrapperExecuter.withTasks("emptyTask").run()
+        result = wrapperExecutor.withTasks("emptyTask").run()
 
         then:
-        outputDoesNotContain("Welcome to Gradle $wrapperExecuter.distribution.version.version!")
+        outputDoesNotContain("Welcome to Gradle $wrapperExecutor.distribution.version.version!")
     }
 
     def "wrapper renders welcome message when executed the first time after being executed in quiet mode"() {
@@ -68,16 +68,16 @@ class WrapperLoggingIntegrationTest extends AbstractWrapperIntegrationSpec {
 
         when:
         args '-q'
-        result = wrapperExecuter.withTasks("emptyTask").run()
+        result = wrapperExecutor.withTasks("emptyTask").run()
 
         then:
         result.output.empty
 
         when:
-        result = wrapperExecuter.withTasks("emptyTask").run()
+        result = wrapperExecutor.withTasks("emptyTask").run()
 
         then:
-        outputContains("Welcome to Gradle $wrapperExecuter.distribution.version.version!")
+        outputContains("Welcome to Gradle $wrapperExecutor.distribution.version.version!")
     }
 
     @Requires(UnitTestPreconditions.NotWindows)
@@ -93,7 +93,7 @@ class WrapperLoggingIntegrationTest extends AbstractWrapperIntegrationSpec {
         prepareWrapper(malformedDistZip.toURI())
 
         when:
-        result = wrapperExecuter
+        result = wrapperExecutor
             .withTasks("emptyTask")
             .run()
 
@@ -108,7 +108,7 @@ class WrapperLoggingIntegrationTest extends AbstractWrapperIntegrationSpec {
         prepareWrapper(malformedDistZip.toURI())
 
         when:
-        failure = wrapperExecuter
+        failure = wrapperExecutor
             .withTasks("emptyTask")
             .withStackTraceChecksDisabled()
             .runWithFailure()
@@ -123,7 +123,7 @@ class WrapperLoggingIntegrationTest extends AbstractWrapperIntegrationSpec {
         prepareWrapper()
 
         when:
-        result = wrapperExecuter.run()
+        result = wrapperExecutor.run()
 
         then:
         result.getOutputLineThatContains("10%").replaceAll("\\.+", "|") == '|10%|20%|30%|40%|50%|60%|70%|80%|90%|100%'
@@ -135,7 +135,7 @@ class WrapperLoggingIntegrationTest extends AbstractWrapperIntegrationSpec {
         prepareWrapper()
 
         expect:
-        wrapperExecuter
+        wrapperExecutor
             .withCommandLineGradleOpts("-Dorg.gradle.logging.level=lifecycle", "-Duser.country=TR", "-Duser.language=tr")
             .withTasks("help")
             .run()

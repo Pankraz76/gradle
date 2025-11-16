@@ -33,7 +33,7 @@ class FixedSharedModeCrossProcessCacheAccessIntegrationTest extends AbstractInte
     def "parallel initialization attempt of a shared cache does not timeout one of the processes"() {
         given:
         server.start()
-        executer.requireOwnGradleUserHomeDir().withDaemonBaseDir(file("daemon")).requireDaemon()
+        executor.requireOwnGradleUserHomeDir().withDaemonBaseDir(file("daemon")).requireDaemon()
         buildFile << """
             import org.gradle.workers.WorkParameters
 
@@ -55,7 +55,7 @@ class FixedSharedModeCrossProcessCacheAccessIntegrationTest extends AbstractInte
         when:
         // start a build with a IsolationMode.PROCESS worker that will initialize the worker classpath cache and wait until the cache was initialized
         def block = server.expectAndBlock("waiting")
-        def build = executer.withTasks("doWork").start()
+        def build = executor.withTasks("doWork").start()
         block.waitForAllPendingCalls()
 
         // simulate another "build" that tries to initialize the cache as well before recognizing that it has been done already

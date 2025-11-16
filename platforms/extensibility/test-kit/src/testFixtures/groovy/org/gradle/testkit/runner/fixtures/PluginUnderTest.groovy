@@ -16,9 +16,9 @@
 
 package org.gradle.testkit.runner.fixtures
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
-import org.gradle.integtests.fixtures.executer.UnderDevelopmentGradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.UnderDevelopmentGradleDistribution
 import org.gradle.internal.classpath.DefaultClassPath
 import org.gradle.internal.jvm.Jvm
 import org.gradle.test.fixtures.file.TestDirectoryProvider
@@ -91,16 +91,16 @@ class PluginUnderTest {
         // That way we can run tests that use PluginUnderTest in more scenarios
         def distribution = new UnderDevelopmentGradleDistribution()
         Assume.assumeTrue("PluginUnderTest is compatible with the current JVM", distribution.daemonWorksWith(Jvm.current().javaVersionMajor))
-        def executer = new GradleContextualExecuter(distribution, testDirectoryProvider, IntegrationTestBuildContext.INSTANCE)
+        def executor = new GradleContextualExecutor(distribution, testDirectoryProvider, IntegrationTestBuildContext.INSTANCE)
 
         try {
-            executer
+            executor
                 .usingProjectDirectory(projectDir)
                 .withArguments('classes')
                 .withWarningMode(null)
                 .run()
         } finally {
-            executer.stop()
+            executor.stop()
         }
         this
     }

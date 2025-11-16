@@ -24,7 +24,7 @@ import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.BuildOperationsFixture
 import org.gradle.integtests.fixtures.ToBeFixedForIsolatedProjects
 import org.gradle.integtests.fixtures.build.BuildTestFixture
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.logging.events.LogEvent
 import org.gradle.internal.operations.BuildOperationType
 import org.gradle.internal.operations.trace.BuildOperationRecord
@@ -37,7 +37,7 @@ import static java.util.stream.Collectors.mapping
 
 class TaskCreationBuildOperationIntegrationTest extends AbstractIntegrationSpec {
 
-    def buildOperations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def buildOperations = new BuildOperationsFixture(executor, testDirectoryProvider)
 
     def "configure actions for eager creation are nested in realization build op"() {
         buildFile << """
@@ -310,7 +310,7 @@ class TaskCreationBuildOperationIntegrationTest extends AbstractIntegrationSpec 
     private <T extends BuildOperationType<?, ?>> BuildOperationRecord verifyTaskDetails(Map<String, ?> expectedDetails, Class<T> type, Spec<? super BuildOperationRecord> spec) {
         def ops = buildOperations.all(type, spec)
         assert !ops.empty
-        if (type == RealizeTaskBuildOperationType && GradleContextualExecuter.configCache) {
+        if (type == RealizeTaskBuildOperationType && GradleContextualExecutor.configCache) {
             // When using load after store, the task will be realized twice:
             //  - at configuration time
             //  - after loading from the configuration cache

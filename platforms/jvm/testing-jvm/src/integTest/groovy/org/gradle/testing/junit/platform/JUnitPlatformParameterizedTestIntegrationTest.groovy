@@ -128,7 +128,7 @@ class JUnitPlatformParameterizedTestIntegrationTest extends JUnitPlatformIntegra
         def testExecution = server.expectConcurrentAndBlock('failingTest', 'enabledParameterizedTest')
 
         when:
-        def gradle = executer.withTasks('test', '--fail-fast').start()
+        def gradle = executor.withTasks('test', '--fail-fast').start()
 
         then:
         testExecution.waitForAllPendingCalls()

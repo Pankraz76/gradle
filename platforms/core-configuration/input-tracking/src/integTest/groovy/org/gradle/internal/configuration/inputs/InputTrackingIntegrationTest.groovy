@@ -46,14 +46,14 @@ class InputTrackingIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.withEnvironmentVars(SOME_PROPERTY: "FIRST_VALUE")
+        executor.withEnvironmentVars(SOME_PROPERTY: "FIRST_VALUE")
         run "-DSOME_PROPERTY=FIRST_VALUE", "printEnv"
 
         then:
         outputContains(expectedFirstResult)
 
         when:
-        executer.withEnvironmentVars(SOME_PROPERTY: "SECOND_VALUE")
+        executor.withEnvironmentVars(SOME_PROPERTY: "SECOND_VALUE")
         run "-DSOME_PROPERTY=SECOND_VALUE", "printEnv"
 
         then:

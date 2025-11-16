@@ -414,7 +414,7 @@ class ConfigurationCacheIntegrationTest extends AbstractConfigurationCacheIntegr
     }
 
     private def expectStartParameterIsConfigurationCacheRequestedWarning() {
-        executer.expectDocumentedDeprecationWarning(
+        executor.expectDocumentedDeprecationWarning(
             "The StartParameter.isConfigurationCacheRequested property has been deprecated. " +
                 "This is scheduled to be removed in Gradle 10. " +
                 "Please use 'configurationCache.requested' property on 'BuildFeatures' service instead. " +

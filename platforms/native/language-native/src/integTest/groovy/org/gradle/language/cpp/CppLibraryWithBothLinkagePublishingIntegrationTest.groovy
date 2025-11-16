@@ -180,7 +180,7 @@ class CppLibraryWithBothLinkagePublishingIntegrationTest extends AbstractInstall
         """
         app.greeterLib.writeToProject(file(producer))
 
-        executer.inDirectory(producer)
+        executor.inDirectory(producer)
         run('publish')
 
         def consumer = file("consumer").createDir()
@@ -198,7 +198,7 @@ class CppLibraryWithBothLinkagePublishingIntegrationTest extends AbstractInstall
         app.main.writeToProject(consumer)
 
         when:
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("installDebug")
 
         then:
@@ -209,7 +209,7 @@ class CppLibraryWithBothLinkagePublishingIntegrationTest extends AbstractInstall
         sharedLibrary(consumer.file("build/install/main/debug/lib/greeting")).file.assertIsCopyOf(debugLib.file)
 
         when:
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("installRelease")
 
         then:

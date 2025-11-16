@@ -27,9 +27,9 @@ class ConfigurationCacheGroovyIntegrationTest extends AbstractIntegrationSpec {
     def configurationCache = newConfigurationCacheFixture()
 
     @Override
-    void setupExecuter() {
-        super.setupExecuter()
-        executer.withConfigurationCacheEnabled()
+    void setupExecutor() {
+        super.setupExecutor()
+        executor.withConfigurationCacheEnabled()
     }
 
     def "build on Groovy project with JUnit tests"() {

@@ -80,7 +80,7 @@ if (System.getProperty('explicitDeps')) {
         }
 
         when:
-        executer.withArgument("-DexplicitDeps=yes")
+        executor.withArgument("-DexplicitDeps=yes")
         run "checkConf"
 
         then:
@@ -166,7 +166,7 @@ project.status = 'foo'
         """
 
         when:
-        executer.withArgument("-DexplicitDeps=yes")
+        executor.withArgument("-DexplicitDeps=yes")
         run ":consumer:checkDeps"
 
         then:
@@ -247,7 +247,7 @@ project.status = 'foo'
     }
 
     def "defaultDependencies deprecations are properly attributed to source plugin"() {
-        BuildOperationsFixture buildOps = new BuildOperationsFixture(executer, temporaryFolder)
+        BuildOperationsFixture buildOps = new BuildOperationsFixture(executor, temporaryFolder)
 
         settingsFile << """
             includeBuild("plugin")
@@ -308,7 +308,7 @@ project.status = 'foo'
         """
 
         when:
-        executer.expectDocumentedDeprecationWarning("foo has been deprecated. This will fail with an error in Gradle ${GradleVersion.current().majorVersion + 1}. For more information, please refer to https://docs.gradle.org/current/userguide/feature_lifecycle.html#sec:deprecated in the Gradle documentation.")
+        executor.expectDocumentedDeprecationWarning("foo has been deprecated. This will fail with an error in Gradle ${GradleVersion.current().majorVersion + 1}. For more information, please refer to https://docs.gradle.org/current/userguide/feature_lifecycle.html#sec:deprecated in the Gradle documentation.")
         succeeds("resolve")
 
         then:

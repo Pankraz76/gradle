@@ -17,7 +17,7 @@ package org.gradle.groovy.compile
 
 import org.gradle.integtests.fixtures.AbstractIntegrationTest
 import org.gradle.integtests.fixtures.TestResources
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
 import org.junit.Rule
 import org.junit.Test
 
@@ -27,43 +27,43 @@ class IncrementalGroovyCompileIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     void recompilesSourceWhenPropertiesChange() {
-        executer.withTasks('compileGroovy').run().assertTasksSkipped(':compileJava')
+        executor.withTasks('compileGroovy').run().assertTasksSkipped(':compileJava')
 
         file('build.gradle').text += '''
             compileGroovy.options.debug = false
 '''
 
-        executer.withTasks('compileGroovy').run().assertTasksSkipped(':compileJava')
+        executor.withTasks('compileGroovy').run().assertTasksSkipped(':compileJava')
 
-        executer.withTasks('compileGroovy').run().assertTasksSkipped(':compileJava', ':compileGroovy')
+        executor.withTasks('compileGroovy').run().assertTasksSkipped(':compileJava', ':compileGroovy')
     }
 
     @Test
     void recompilesDependentClasses() {
-        executer.withTasks("classes").run();
+        executor.withTasks("classes").run();
 
         // Update interface, compile should fail
         file('src/main/groovy/IPerson.groovy').assertIsFile().copyFrom(file('NewIPerson.groovy'))
 
-        ExecutionFailure failure = executer.withTasks("classes").runWithFailure();
+        ExecutionFailure failure = executor.withTasks("classes").runWithFailure();
         failure.assertHasDescription("Execution failed for task ':compileGroovy'.");
     }
 
     @Test
     void failsCompilationWhenConfigScriptIsUpdated() {
         // compilation passes with a config script that does nothing
-        executer.withTasks('compileGroovy').run().assertTasksScheduledInOrder(":compileJava",":compileGroovy")
+        executor.withTasks('compileGroovy').run().assertTasksScheduledInOrder(":compileJava",":compileGroovy")
 
         // make sure it fails if the config script applies type checking
         file('groovycompilerconfig.groovy').assertIsFile().copyFrom(file('newgroovycompilerconfig.groovy'))
 
-        ExecutionFailure failure = executer.withTasks("compileGroovy").runWithFailure();
+        ExecutionFailure failure = executor.withTasks("compileGroovy").runWithFailure();
         failure.assertHasCause('Compilation failed; see the compiler error output for details')
 
         // and eventually make sure it passes again if no config script is applied whatsoever
         file('build.gradle').assertIsFile().copyFrom(file('newbuild.gradle'))
 
-        executer.withTasks('compileGroovy').run().assertTasksScheduledInOrder(':compileJava',':compileGroovy').assertTaskSkipped(':compileJava')
+        executor.withTasks('compileGroovy').run().assertTasksScheduledInOrder(':compileJava',':compileGroovy').assertTaskSkipped(':compileJava')
 
     }
 }

@@ -126,7 +126,7 @@ class MavenPublishCustomComponentIntegTest extends AbstractMavenPublishIntegTest
                 }
             }
 """
-        executer.inDirectory(file('consumer'))
+        executor.inDirectory(file('consumer'))
 
         and:
         succeeds 'resolve'

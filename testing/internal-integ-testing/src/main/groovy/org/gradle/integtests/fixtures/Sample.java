@@ -17,7 +17,7 @@
 package org.gradle.integtests.fixtures;
 
 import com.google.common.annotations.VisibleForTesting;
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext;
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext;
 import org.gradle.test.fixtures.dsl.GradleDsl;
 import org.gradle.test.fixtures.file.TestDirectoryProvider;
 import org.gradle.test.fixtures.file.TestFile;

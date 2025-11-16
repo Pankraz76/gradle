@@ -21,8 +21,8 @@ import org.gradle.integtests.fixtures.AbstractContinuousIntegrationTest
 abstract class AbstractCompilerContinuousIntegrationTest extends AbstractContinuousIntegrationTest {
 
     def setup() {
-        executer.withWorkerDaemonsExpirationDisabled()
-        executer.requireIsolatedDaemons()
+        executor.withWorkerDaemonsExpirationDisabled()
+        executor.requireIsolatedDaemons()
     }
 
     abstract String getCompileTaskName()

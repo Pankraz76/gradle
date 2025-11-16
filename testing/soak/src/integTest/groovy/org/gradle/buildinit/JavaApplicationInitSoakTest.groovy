@@ -23,7 +23,7 @@ class JavaApplicationInitSoakTest extends AbstractIntegrationSpec {
     def "toolchain auto-provisioning works"() {
         given:
         useTestDirectoryThatIsNotEmbeddedInAnotherBuild()
-        executer.beforeExecute {
+        executor.beforeExecute {
             requireOwnGradleUserHomeDir()
         }
 
@@ -31,7 +31,7 @@ class JavaApplicationInitSoakTest extends AbstractIntegrationSpec {
         succeeds('init', '--type', 'java-application', '--dsl', 'groovy')
 
         and:
-        executer.withToolchainDownloadEnabled()
+        executor.withToolchainDownloadEnabled()
         succeeds('run')
 
         then:

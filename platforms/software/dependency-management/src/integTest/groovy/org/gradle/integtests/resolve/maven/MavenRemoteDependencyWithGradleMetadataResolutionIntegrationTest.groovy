@@ -95,7 +95,7 @@ class MavenRemoteDependencyWithGradleMetadataResolutionIntegrationTest extends A
         m.moduleMetadata.expectHead()
         m.artifact.expectHead()
 
-        executer.withArgument("--refresh-dependencies")
+        executor.withArgument("--refresh-dependencies")
         run("checkDeps")
 
         then:
@@ -157,7 +157,7 @@ class MavenRemoteDependencyWithGradleMetadataResolutionIntegrationTest extends A
         m.pom.expectHead()
         m.artifact.expectHead()
 
-        executer.withArgument("--refresh-dependencies")
+        executor.withArgument("--refresh-dependencies")
         run("checkDeps")
 
         then:
@@ -338,7 +338,7 @@ task checkRelease {
         b.pom.expectHead()
         b.artifact.expectHead()
 
-        executer.withArgument("--refresh-dependencies")
+        executor.withArgument("--refresh-dependencies")
         succeeds("checkDebug")
     }
 
@@ -407,7 +407,7 @@ task checkDebug {
         a.getArtifact(type: 'zip').expectHead()
         a.getArtifact(classifier: 'extra').expectHead()
 
-        executer.withArgument("--refresh-dependencies")
+        executor.withArgument("--refresh-dependencies")
         succeeds("checkDebug")
     }
 
@@ -485,7 +485,7 @@ task checkDebug {
         a.getArtifact("child/file4.jar").expectHead()
         a.getArtifact("../../../a-1.2-5.jar").expectHead()
 
-        executer.withArgument("--refresh-dependencies")
+        executor.withArgument("--refresh-dependencies")
         succeeds("checkDebug")
     }
 

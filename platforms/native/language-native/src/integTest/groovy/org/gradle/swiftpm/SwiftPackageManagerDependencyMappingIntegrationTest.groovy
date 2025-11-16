@@ -103,7 +103,7 @@ class SwiftPackageManagerDependencyMappingIntegrationTest extends AbstractSwiftP
                 public class func thing() { }
             }
 """
-        executer.inDirectory(lib1Repo.workTree).withTasks("generateSwiftPmManifest").run()
+        executor.inDirectory(lib1Repo.workTree).withTasks("generateSwiftPmManifest").run()
         lib1Repo.commit("v1")
         lib1Repo.createLightWeightTag("1.0.0")
 
@@ -121,7 +121,7 @@ class SwiftPackageManagerDependencyMappingIntegrationTest extends AbstractSwiftP
                 public class func thing() { }
             }
         """
-        executer.inDirectory(lib2Repo.workTree).withTasks("generateSwiftPmManifest").run()
+        executor.inDirectory(lib2Repo.workTree).withTasks("generateSwiftPmManifest").run()
         lib2Repo.commit("v2")
         lib2Repo.createLightWeightTag("2.0.0")
 
@@ -219,7 +219,7 @@ let package = Package(
                 public class func thing() { }
             }
 """
-        executer.inDirectory(lib1Repo.workTree).withTasks("generateSwiftPmManifest").run()
+        executor.inDirectory(lib1Repo.workTree).withTasks("generateSwiftPmManifest").run()
         lib1Repo.commit("v1")
         lib1Repo.createLightWeightTag("1.0.0")
         lib1Repo.commit("v2")
@@ -238,7 +238,7 @@ let package = Package(
                 public class func thing() { }
             }
         """
-        executer.inDirectory(lib2Repo.workTree).withTasks("generateSwiftPmManifest").run()
+        executor.inDirectory(lib2Repo.workTree).withTasks("generateSwiftPmManifest").run()
         lib2Repo.commit("v2")
         lib2Repo.createLightWeightTag("2.0.0")
         lib2Repo.commit("v3")
@@ -340,7 +340,7 @@ let package = Package(
                 public class func thing() { }
             }
 """
-        executer.inDirectory(lib1Repo.workTree).withTasks("generateSwiftPmManifest").run()
+        executor.inDirectory(lib1Repo.workTree).withTasks("generateSwiftPmManifest").run()
         lib1Repo.commit("v1")
         lib1Repo.createLightWeightTag("1.2.0")
 
@@ -452,7 +452,7 @@ let package = Package(
                 public class func thing() { }
             }
 """
-        executer.inDirectory(lib1Repo.workTree).withTasks("generateSwiftPmManifest").run()
+        executor.inDirectory(lib1Repo.workTree).withTasks("generateSwiftPmManifest").run()
         lib1Repo.commit("v1")
 
         settingsFile << """
@@ -517,7 +517,7 @@ let package = Package(
         lib1Repo.commit("v1")
         lib1Repo.createBranch("release")
         lib1Repo.checkout("release")
-        executer.inDirectory(lib1Repo.workTree).withTasks("generateSwiftPmManifest").run()
+        executor.inDirectory(lib1Repo.workTree).withTasks("generateSwiftPmManifest").run()
         lib1Repo.commit("v2")
 
         settingsFile << """

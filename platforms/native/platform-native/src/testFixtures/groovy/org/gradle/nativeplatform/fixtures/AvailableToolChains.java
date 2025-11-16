@@ -23,7 +23,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import org.gradle.api.internal.file.TestFiles;
 import org.gradle.integtests.fixtures.VersionedTool;
-import org.gradle.integtests.fixtures.executer.GradleExecuter;
+import org.gradle.integtests.fixtures.executor.GradleExecutor;
 import org.gradle.internal.nativeintegration.ProcessEnvironment;
 import org.gradle.internal.os.OperatingSystem;
 import org.gradle.language.swift.SwiftVersion;
@@ -475,7 +475,7 @@ public class AvailableToolChains {
             return "";
         }
 
-        public void configureExecuter(GradleExecuter executer) {
+        public void configureExecutor(GradleExecutor executor) {
             // Toolchains should be using default configuration
         }
     }
@@ -792,8 +792,8 @@ public class AvailableToolChains {
             }
         }
 
-        private void configureExecuter(GradleExecuter executer) {
-            executer.withEnvironmentVars(ImmutableMap.of("DEVELOPER_DIR", xcodeDir.getAbsolutePath()));
+        private void configureExecutor(GradleExecutor executor) {
+            executor.withEnvironmentVars(ImmutableMap.of("DEVELOPER_DIR", xcodeDir.getAbsolutePath()));
         }
 
         public Optional<InstalledToolChain> getSwiftc() {
@@ -826,9 +826,9 @@ public class AvailableToolChains {
                 }
 
                 @Override
-                public void configureExecuter(GradleExecuter executer) {
-                    super.configureExecuter(executer);
-                    InstalledXcode.this.configureExecuter(executer);
+                public void configureExecutor(GradleExecutor executor) {
+                    super.configureExecutor(executor);
+                    InstalledXcode.this.configureExecutor(executor);
                 }
             });
         }
@@ -863,9 +863,9 @@ public class AvailableToolChains {
                 }
 
                 @Override
-                public void configureExecuter(GradleExecuter executer) {
-                    super.configureExecuter(executer);
-                    InstalledXcode.this.configureExecuter(executer);
+                public void configureExecutor(GradleExecutor executor) {
+                    super.configureExecutor(executor);
+                    InstalledXcode.this.configureExecutor(executor);
                 }
 
                 @Override

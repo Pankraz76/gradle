@@ -56,7 +56,7 @@ class GradleRunnerMiscEndUserIntegrationTest extends BaseTestKitEndUserIntegrati
     @NoDebug
     def "fails appropriately if runner is loaded from a JAR that is not part of the distribution and no explicit version set"() {
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         def jarsDir = file('jars').createDir()
 
         new File(distribution.gradleHomeDir, 'lib').eachFileRecurse(FileType.FILES) { f ->

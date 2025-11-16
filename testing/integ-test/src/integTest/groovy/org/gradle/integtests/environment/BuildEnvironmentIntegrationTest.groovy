@@ -18,7 +18,7 @@ package org.gradle.integtests.environment
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.AvailableJavaHomes
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.jvm.Jvm
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
@@ -33,7 +33,7 @@ class BuildEnvironmentIntegrationTest extends AbstractIntegrationSpec {
 
         when:
         def relativeDir = new File(testDirectory, 'java/multiproject/../quickstart')
-        executer.inDirectory(relativeDir).run()
+        executor.inDirectory(relativeDir).run()
 
         then:
         noExceptionThrown()
@@ -45,7 +45,7 @@ class BuildEnvironmentIntegrationTest extends AbstractIntegrationSpec {
 
         when:
         def mixedCaseDir = new File(testDirectory, "JAVA/QuickStart")
-        executer.inDirectory(mixedCaseDir).run()
+        executor.inDirectory(mixedCaseDir).run()
 
         then:
         noExceptionThrown()
@@ -57,7 +57,7 @@ class BuildEnvironmentIntegrationTest extends AbstractIntegrationSpec {
 
         when:
         def shortDir = new File(testDirectory, 'java/QUICKS~1')
-        executer.inDirectory(shortDir).run()
+        executor.inDirectory(shortDir).run()
 
         then:
         noExceptionThrown()
@@ -74,13 +74,13 @@ class BuildEnvironmentIntegrationTest extends AbstractIntegrationSpec {
         file('build.gradle') << "println providers.environmentVariable('foo').orNull"
 
         when:
-        def out = executer.withEnvironmentVars(foo: "gradle rocks!").run().output
+        def out = executor.withEnvironmentVars(foo: "gradle rocks!").run().output
 
         then:
         out.contains("gradle rocks!")
 
         when:
-        out = executer.withEnvironmentVars(foo: "and will be even better").run().output
+        out = executor.withEnvironmentVars(foo: "and will be even better").run().output
 
         then:
         out.contains("and will be even better")
@@ -112,8 +112,8 @@ assert classesDir.directory
 """
 
         when:
-        executer.inDirectory(project1).run()
-        executer.inDirectory(project2).run()
+        executor.inDirectory(project1).run()
+        executor.inDirectory(project2).run()
 
         then:
         noExceptionThrown()
@@ -128,7 +128,7 @@ assert classesDir.directory
                 }
             }
         """
-        if (!GradleContextualExecuter.configCache) {
+        if (!GradleContextualExecutor.configCache) {
             buildFile << """
                 println('prop2=' + System.getProperty('prop2'))
             """
@@ -139,7 +139,7 @@ assert classesDir.directory
         }
 
         when:
-        executer.withArguments("-Dprop1=some-value")
+        executor.withArguments("-Dprop1=some-value")
         run("show")
 
         then:
@@ -147,7 +147,7 @@ assert classesDir.directory
         outputContains("prop2=null")
 
         when:
-        executer.withArguments("-Dprop1=new-value", "-Dprop2=other-value")
+        executor.withArguments("-Dprop1=new-value", "-Dprop2=other-value")
         run("show")
 
         then:
@@ -171,13 +171,13 @@ assert classesDir.directory
         """
 
         when:
-        def out = executer.withTasks('printJavaHome').run().output
+        def out = executor.withTasks('printJavaHome').run().output
 
         then:
         out.contains("javaHome=" + Jvm.current().javaHome.canonicalPath)
 
         when:
-        out = executer.withJvm(alternateJdk).withTasks('printJavaHome').run().output
+        out = executor.withJvm(alternateJdk).withTasks('printJavaHome').run().output
 
         then:
         out.contains("javaHome=" + alternateJdk.javaHome.canonicalPath)
@@ -194,7 +194,7 @@ org.gradle.java.home=${TextUtil.escapeString(alternateJavaHome.canonicalPath)}
         file('build.gradle') << "println 'javaHome=' + org.gradle.internal.jvm.Jvm.current().javaHome.absolutePath"
 
         when:
-        def out = executer.useOnlyRequestedJvmOpts().run().output
+        def out = executor.useOnlyRequestedJvmOpts().run().output
 
         then:
         out.contains("javaHome=" + alternateJavaHome.canonicalPath)
@@ -212,7 +212,7 @@ org.gradle.java.home=${TextUtil.escapeString(alternateJavaHome.canonicalPath)}
                 }
             }
         """
-        if (!GradleContextualExecuter.configCache) {
+        if (!GradleContextualExecutor.configCache) {
             buildFile << """
                 println('prop2=' + System.getProperty('prop2'))
             """
@@ -223,7 +223,7 @@ org.gradle.java.home=${TextUtil.escapeString(alternateJavaHome.canonicalPath)}
         }
 
         when:
-        executer.useOnlyRequestedJvmOpts()
+        executor.useOnlyRequestedJvmOpts()
         run("show")
 
         then:
@@ -232,7 +232,7 @@ org.gradle.java.home=${TextUtil.escapeString(alternateJavaHome.canonicalPath)}
 
         when:
         file('gradle.properties').text = "org.gradle.jvmargs=-Xmx52m -Dprop1=new-value -Dprop2=other-value"
-        executer.useOnlyRequestedJvmOpts()
+        executor.useOnlyRequestedJvmOpts()
         run("show")
 
         then:

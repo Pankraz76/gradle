@@ -181,7 +181,7 @@ class BuildServiceParallelExecutionIntegrationTest extends AbstractIntegrationSp
     }
 
     void withParallelThreads(int threadCount) {
-        executer.beforeExecute {
+        executor.beforeExecute {
             withArguments("--max-workers=$threadCount", "--parallel")
         }
     }

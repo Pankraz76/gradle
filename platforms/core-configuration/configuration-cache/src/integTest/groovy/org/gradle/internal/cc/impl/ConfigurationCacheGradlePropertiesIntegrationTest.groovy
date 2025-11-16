@@ -98,7 +98,7 @@ class ConfigurationCacheGradlePropertiesIntegrationTest extends AbstractConfigur
         """
 
         when:
-        executer.withEnvironmentVars([
+        executor.withEnvironmentVars([
             (ENV_PROJECT_PROPERTIES_PREFIX + 'gradleProp'): 1
         ])
         configurationCacheRun "help"
@@ -108,7 +108,7 @@ class ConfigurationCacheGradlePropertiesIntegrationTest extends AbstractConfigur
         configurationCache.assertStateStored()
 
         when:
-        executer.withEnvironmentVars([
+        executor.withEnvironmentVars([
             (ENV_PROJECT_PROPERTIES_PREFIX + 'gradleProp'): 1
         ])
         configurationCacheRun "help"
@@ -118,7 +118,7 @@ class ConfigurationCacheGradlePropertiesIntegrationTest extends AbstractConfigur
         configurationCache.assertStateLoaded()
 
         when:
-        executer.withEnvironmentVars([
+        executor.withEnvironmentVars([
             (ENV_PROJECT_PROPERTIES_PREFIX + 'gradleProp'): 2
         ])
         configurationCacheRun "help"
@@ -129,7 +129,7 @@ class ConfigurationCacheGradlePropertiesIntegrationTest extends AbstractConfigur
         configurationCache.assertStateStored()
 
         when: 'the set of prefixed environment variables changes'
-        executer.withEnvironmentVars([
+        executor.withEnvironmentVars([
             (ENV_PROJECT_PROPERTIES_PREFIX + 'unused'): 1,
             (ENV_PROJECT_PROPERTIES_PREFIX + 'gradleProp'): 2
         ])
@@ -557,7 +557,7 @@ class ConfigurationCacheGradlePropertiesIntegrationTest extends AbstractConfigur
         settingsFile.touch()
         switch (source) {
             case 'command-line':
-                executer.beforeExecute {
+                executor.beforeExecute {
                     withArgument "-D${StartParameterBuildOptions.ConfigurationCacheFineGrainedPropertyTracking.PROPERTY_NAME}=false"
                 }
                 break

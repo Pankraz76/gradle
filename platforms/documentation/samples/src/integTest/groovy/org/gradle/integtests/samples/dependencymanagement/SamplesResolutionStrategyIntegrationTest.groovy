@@ -30,7 +30,7 @@ class SamplesResolutionStrategyIntegrationTest extends AbstractIntegrationSpec {
     @UsesSample("dependencyManagement/customizingResolution-resolutionStrategy")
     def "can resolve dependencies in #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         mavenRepo.module("org", "foo").publish()
         mavenRepo.module("org", "bar").publish()

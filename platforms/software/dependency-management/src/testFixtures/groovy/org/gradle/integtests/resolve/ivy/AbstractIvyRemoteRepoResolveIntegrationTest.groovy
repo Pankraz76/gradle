@@ -18,7 +18,7 @@ package org.gradle.integtests.resolve.ivy
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
-import org.gradle.integtests.fixtures.executer.ProgressLoggingFixture
+import org.gradle.integtests.fixtures.executor.ProgressLoggingFixture
 import org.gradle.test.fixtures.file.LeaksFileHandles
 import org.gradle.test.fixtures.server.RepositoryServer
 import org.junit.Rule
@@ -33,7 +33,7 @@ abstract class AbstractIvyRemoteRepoResolveIntegrationTest extends AbstractInteg
     }
 
     @Rule
-    ProgressLoggingFixture progressLogger = new ProgressLoggingFixture(executer, temporaryFolder)
+    ProgressLoggingFixture progressLogger = new ProgressLoggingFixture(executor, temporaryFolder)
 
     void "can resolve dependencies from a remote Ivy repository with #layout layout"() {
         given:
@@ -410,7 +410,7 @@ abstract class AbstractIvyRemoteRepoResolveIntegrationTest extends AbstractInteg
         server.remoteIvyRepo.directoryList('org', 'projectB').expectDownload()
         moduleB16.ivy.expectDownload()
         moduleB16.jar.expectDownload()
-        executer.withArguments("-PuseDynamicResolve=true")
+        executor.withArguments("-PuseDynamicResolve=true")
         run 'retrieve'
 
         then:
@@ -425,7 +425,7 @@ abstract class AbstractIvyRemoteRepoResolveIntegrationTest extends AbstractInteg
 
         when:
         server.resetExpectations()
-        executer.withArguments("-PuseDynamicResolve=true")
+        executor.withArguments("-PuseDynamicResolve=true")
         run 'retrieve'
 
         then:

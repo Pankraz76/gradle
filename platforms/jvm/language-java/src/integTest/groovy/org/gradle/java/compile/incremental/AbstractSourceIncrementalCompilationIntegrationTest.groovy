@@ -254,7 +254,7 @@ sourceSets {
 
         when:
         source("class B { String change; }")
-        executer.withArgument "--info"
+        executor.withArgument "--info"
         run language.compileTaskName
 
         then:
@@ -276,7 +276,7 @@ sourceSets {
 
         when:
         toBeRemoved.deleteDir()
-        executer.withArgument "--info"
+        executor.withArgument "--info"
         run language.compileTaskName
 
         then:

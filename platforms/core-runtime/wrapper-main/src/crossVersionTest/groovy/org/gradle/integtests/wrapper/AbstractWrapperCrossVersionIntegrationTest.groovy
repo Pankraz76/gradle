@@ -17,8 +17,8 @@
 package org.gradle.integtests.wrapper
 
 import org.gradle.integtests.fixtures.CrossVersionIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
 
@@ -28,7 +28,7 @@ abstract class AbstractWrapperCrossVersionIntegrationTest extends CrossVersionIn
         requireOwnGradleUserHomeDir()
     }
 
-    protected GradleExecuter prepareWrapperExecuter(GradleDistribution wrapperVersion, GradleDistribution executionVersion) {
+    protected GradleExecutor prepareWrapperExecutor(GradleDistribution wrapperVersion, GradleDistribution executionVersion) {
         buildFile << """
 task wrapper (type: Wrapper, overwrite: true) {
     gradleVersion = '$executionVersion.version.version'
@@ -48,15 +48,15 @@ task hello {
         settingsFile << "rootProject.name = 'wrapper'"
         version(wrapperVersion).withTasks('wrapper').run()
 
-        wrapperExecuter(executionVersion)
+        wrapperExecutor(executionVersion)
     }
 
-    private GradleExecuter wrapperExecuter(GradleDistribution wrapper) {
-        def executer = super.version(wrapper)
+    private GradleExecutor wrapperExecutor(GradleDistribution wrapper) {
+        def executor = super.version(wrapper)
         // Use isolated daemons in order to verify that using the installed distro works, and so that the daemons aren't visible to other tests, because
         // the installed distro is deleted at the end of this test
-        executer.requireIsolatedDaemons()
-        executer.usingExecutable('gradlew')
-        return executer
+        executor.requireIsolatedDaemons()
+        executor.usingExecutable('gradlew')
+        return executor
     }
 }

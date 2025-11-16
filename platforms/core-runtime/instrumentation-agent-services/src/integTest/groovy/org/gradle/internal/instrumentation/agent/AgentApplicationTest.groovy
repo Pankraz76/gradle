@@ -19,7 +19,7 @@ package org.gradle.internal.instrumentation.agent
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.configurationcache.ConfigurationCacheFixture
 import org.gradle.integtests.fixtures.daemon.DaemonLogsAnalyzer
-import org.gradle.integtests.fixtures.executer.GradleHandle
+import org.gradle.integtests.fixtures.executor.GradleHandle
 import org.gradle.launcher.daemon.configuration.DaemonBuildOptions
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
@@ -131,7 +131,7 @@ class AgentApplicationTest extends AbstractIntegrationSpec {
     )
     def "daemon with the same agent status is reused"() {
         given:
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
         withDumpAgentStatusTask()
 
         when:
@@ -164,8 +164,8 @@ class AgentApplicationTest extends AbstractIntegrationSpec {
     )
     def "daemon spawned from embedded runner has agent enabled"() {
         given:
-        executer.tap {
-            // Force a separate daemon spawned by the InProcessGradleExecuter
+        executor.tap {
+            // Force a separate daemon spawned by the InProcessGradleExecutor
             requireDaemon()
             requireIsolatedDaemons()
         }
@@ -185,7 +185,7 @@ class AgentApplicationTest extends AbstractIntegrationSpec {
     )
     def "foreground daemon respects the feature flag"() {
         given:
-        executer.tap {
+        executor.tap {
             requireDaemon()
             requireIsolatedDaemons()
         }
@@ -256,7 +256,7 @@ class AgentApplicationTest extends AbstractIntegrationSpec {
     }
 
     private void withAgentApplied(boolean shouldApply) {
-        executer.withArgument("-D${DaemonBuildOptions.ApplyInstrumentationAgentOption.GRADLE_PROPERTY}=$shouldApply")
+        executor.withArgument("-D${DaemonBuildOptions.ApplyInstrumentationAgentOption.GRADLE_PROPERTY}=$shouldApply")
     }
 
     private void withoutAgent() {
@@ -264,7 +264,7 @@ class AgentApplicationTest extends AbstractIntegrationSpec {
     }
 
     DaemonLogsAnalyzer getDaemons() {
-        new DaemonLogsAnalyzer(executer.daemonBaseDir)
+        new DaemonLogsAnalyzer(executor.daemonBaseDir)
     }
 
     GradleHandle startAForegroundDaemon(Boolean shouldApplyAgent = null) {
@@ -272,7 +272,7 @@ class AgentApplicationTest extends AbstractIntegrationSpec {
         if (shouldApplyAgent != null) {
             withAgentApplied(shouldApplyAgent)
         }
-        def daemon = executer.noExtraLogging().withArgument("--foreground").start()
+        def daemon = executor.noExtraLogging().withArgument("--foreground").start()
         // Wait for foreground daemon to be ready
         poll() { assert daemons.getRegistry().getAll().size() == (currentSize + 1) }
         return daemon

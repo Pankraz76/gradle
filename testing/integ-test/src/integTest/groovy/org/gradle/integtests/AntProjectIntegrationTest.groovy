@@ -16,12 +16,12 @@
 package org.gradle.integtests
 
 import org.gradle.integtests.fixtures.AbstractIntegrationTest
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
 import org.gradle.test.fixtures.file.TestFile
 import org.junit.Test
 
-import static org.gradle.integtests.fixtures.executer.TaskOrderSpecs.any
-import static org.gradle.integtests.fixtures.executer.TaskOrderSpecs.exact
+import static org.gradle.integtests.fixtures.executor.TaskOrderSpecs.any
+import static org.gradle.integtests.fixtures.executor.TaskOrderSpecs.exact
 import static org.hamcrest.CoreMatchers.startsWith
 
 class AntProjectIntegrationTest extends AbstractIntegrationTest {

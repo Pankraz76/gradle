@@ -34,17 +34,17 @@ class WorkerExecutorLoggingIntegrationTest extends AbstractWorkerExecutorIntegra
                 Logging.getLogger(getClass()).info("info message");
                 Logging.getLogger(getClass()).debug("debug message");
                 Logging.getLogger(getClass()).error("error message");
-                
+
                 org.slf4j.LoggerFactory.getLogger(getClass()).warn("slf4j warn");
                 org.slf4j.LoggerFactory.getLogger(getClass()).info("slf4j info");
                 org.slf4j.LoggerFactory.getLogger(getClass()).debug("slf4j debug message");
                 org.slf4j.LoggerFactory.getLogger(getClass()).error("slf4j error");
-                
+
                 java.util.logging.Logger.getLogger("worker").warning("jul warn");
                 java.util.logging.Logger.getLogger("worker").warning("jul info");
                 java.util.logging.Logger.getLogger("worker").fine("jul debug message");
                 java.util.logging.Logger.getLogger("worker").severe("jul error");
-                
+
                 System.out.println("stdout message");
                 System.err.println("stderr message");
             """
@@ -62,7 +62,7 @@ class WorkerExecutorLoggingIntegrationTest extends AbstractWorkerExecutorIntegra
 
         when:
         args("--debug")
-        def gradle = executer.withTasks("runInWorker").start()
+        def gradle = executor.withTasks("runInWorker").start()
 
         then:
         gradle.waitForFinish()

@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.fixtures.logging
 
-import org.gradle.integtests.fixtures.executer.LogContent
+import org.gradle.integtests.fixtures.executor.LogContent
 import org.gradle.integtests.fixtures.logging.GroupedWorkOutputFixture.ComparisonFailureFormat
 import org.gradle.integtests.fixtures.logging.comparison.LineSearchFailures
 import org.gradle.integtests.fixtures.logging.comparison.LineSearchFailures.PotentialMatchesExistComparisonFailure

@@ -21,7 +21,7 @@ import org.gradle.integtests.fixtures.UnsupportedWithConfigurationCache
 
 class AntBuilderLoggingIntegrationTest extends AbstractIntegrationSpec {
     def setup() {
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
         buildFile """
             ant.saveStreams = false
             task antTest {

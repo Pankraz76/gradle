@@ -134,7 +134,7 @@ tasks {
 
     register<SmokeTest>("configCacheSmokeTest") {
         description = "Runs Smoke tests with the configuration cache"
-        systemProperty("org.gradle.integtest.executer", "configCache")
+        systemProperty("org.gradle.integtest.executor", "configCache")
         configureForSmokeTest(excludes = listOf(gradleBuildTestPattern, androidProjectTestPattern))
     }
 
@@ -162,7 +162,7 @@ tasks {
         configureForSmokeTest(androidProject, includes = listOf(androidProjectTestPattern))
         maxParallelForks = 1 // those tests are pretty expensive, we shouldn't execute them concurrently
         jvmArgs("-Xmx700m")
-        systemProperty("org.gradle.integtest.executer", "configCache")
+        systemProperty("org.gradle.integtest.executor", "configCache")
     }
 }
 

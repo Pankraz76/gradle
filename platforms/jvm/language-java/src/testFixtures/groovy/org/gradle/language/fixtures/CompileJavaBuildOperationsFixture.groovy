@@ -19,15 +19,15 @@ package org.gradle.language.fixtures
 import org.gradle.api.internal.tasks.compile.CompileJavaBuildOperationType
 import org.gradle.api.internal.tasks.execution.ExecuteTaskBuildOperationType
 import org.gradle.integtests.fixtures.BuildOperationsFixture
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.internal.operations.trace.BuildOperationRecord
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 
 class CompileJavaBuildOperationsFixture {
     private BuildOperationsFixture operations
 
-    CompileJavaBuildOperationsFixture(GradleExecuter executer, TestDirectoryProvider projectDir) {
-        operations = new BuildOperationsFixture(executer, projectDir)
+    CompileJavaBuildOperationsFixture(GradleExecutor executor, TestDirectoryProvider projectDir) {
+        operations = new BuildOperationsFixture(executor, projectDir)
     }
 
     BuildOperationRecord getAt(String taskPath) {

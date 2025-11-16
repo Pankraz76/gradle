@@ -29,7 +29,7 @@ import org.gradle.launcher.daemon.protocol.Failure;
 import org.gradle.launcher.daemon.protocol.Message;
 import org.gradle.launcher.daemon.server.api.DaemonConnection;
 import org.gradle.launcher.daemon.server.api.DaemonStateControl;
-import org.gradle.launcher.daemon.server.exec.DaemonCommandExecuter;
+import org.gradle.launcher.daemon.server.exec.DaemonCommandExecutor;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -44,15 +44,15 @@ public class DefaultIncomingConnectionHandler implements IncomingConnectionHandl
     private final ManagedExecutor workers;
     private final byte[] token;
     private final DaemonContext daemonContext;
-    private final DaemonCommandExecuter commandExecuter;
+    private final DaemonCommandExecutor commandExecutor;
     private final DaemonStateControl daemonStateControl;
     private final ExecutorFactory executorFactory;
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
     private final Set<SynchronizedDispatchConnection<Message>> inProgress = new HashSet<>();
 
-    public DefaultIncomingConnectionHandler(DaemonCommandExecuter commandExecuter, DaemonContext daemonContext, DaemonStateControl daemonStateControl, ExecutorFactory executorFactory, byte[] token) {
-        this.commandExecuter = commandExecuter;
+    public DefaultIncomingConnectionHandler(DaemonCommandExecutor commandExecutor, DaemonContext daemonContext, DaemonStateControl daemonStateControl, ExecutorFactory executorFactory, byte[] token) {
+        this.commandExecutor = commandExecutor;
         this.daemonContext = daemonContext;
         this.daemonStateControl = daemonStateControl;
         this.executorFactory = executorFactory;
@@ -158,7 +158,7 @@ public class DefaultIncomingConnectionHandler implements IncomingConnectionHandl
                 if (!Arrays.equals(command.getToken(), token)) {
                     throw new BadlyFormedRequestException(String.format("Unexpected authentication token in command %s received from %s", command, connection));
                 }
-                commandExecuter.executeCommand(daemonConnection, command, daemonContext, daemonStateControl);
+                commandExecutor.executeCommand(daemonConnection, command, daemonContext, daemonStateControl);
             } catch (Throwable e) {
                 LOGGER.warn(String.format("Unable to execute command %s from %s. Dispatching the failure to the daemon client", command, connection), e);
                 daemonConnection.completed(new Failure(e));

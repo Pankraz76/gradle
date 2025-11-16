@@ -16,7 +16,7 @@
 package org.gradle.performance.fixture
 
 import groovy.transform.CompileStatic
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.internal.jvm.Jvm
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.performance.results.DataReporter

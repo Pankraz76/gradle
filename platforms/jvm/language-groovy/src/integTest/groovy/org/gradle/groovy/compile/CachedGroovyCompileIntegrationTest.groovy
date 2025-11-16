@@ -58,7 +58,7 @@ class CachedGroovyCompileIntegrationTest extends AbstractCachedCompileIntegratio
         given:
         populateCache()
 
-        executer.requireOwnGradleUserHomeDir() // dependency will be downloaded into a different directory
+        executor.requireOwnGradleUserHomeDir() // dependency will be downloaded into a different directory
 
         when:
         withBuildCache().run compilationTask

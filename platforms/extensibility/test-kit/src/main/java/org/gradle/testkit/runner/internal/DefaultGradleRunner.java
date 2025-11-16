@@ -402,7 +402,7 @@ public class DefaultGradleRunner extends GradleRunner {
     private static GradleProvider findGradleInstallFromGradleRunner() {
         GradleInstallation gradleInstallation = CurrentGradleInstallation.get();
         if (gradleInstallation == null) {
-            if ("embedded".equals(System.getProperty("org.gradle.integtest.executer"))) {
+            if ("embedded".equals(System.getProperty("org.gradle.integtest.executor"))) {
                 return GradleProvider.embedded();
             }
             String messagePrefix = "Could not find a Gradle installation to use based on the location of the GradleRunner class";

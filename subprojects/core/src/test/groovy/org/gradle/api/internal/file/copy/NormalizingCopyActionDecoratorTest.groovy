@@ -25,7 +25,7 @@ import org.hamcrest.Matcher
 import spock.lang.Specification
 
 import static org.gradle.api.internal.file.TestFiles.fileSystem
-import static org.gradle.api.internal.file.copy.CopyActionExecuterUtil.visit
+import static org.gradle.api.internal.file.copy.CopyActionExecutorUtil.visit
 
 class NormalizingCopyActionDecoratorTest extends Specification {
     def delegateAction = Mock(CopyActionProcessingStreamAction)

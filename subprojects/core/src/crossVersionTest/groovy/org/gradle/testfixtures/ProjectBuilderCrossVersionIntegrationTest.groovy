@@ -18,9 +18,9 @@ package org.gradle.testfixtures
 
 import org.gradle.integtests.fixtures.MultiVersionIntegrationSpec
 import org.gradle.integtests.fixtures.TargetVersions
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.GradleExecuter
-import org.gradle.integtests.fixtures.executer.NoDaemonGradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleExecutor
+import org.gradle.integtests.fixtures.executor.NoDaemonGradleExecutor
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
@@ -37,10 +37,10 @@ class ProjectBuilderCrossVersionIntegrationTest extends MultiVersionIntegrationS
 
     public static final String TEST_TASK_NAME = 'test'
 
-    private final List<GradleExecuter> executers = []
+    private final List<GradleExecutor> executors = []
 
     def cleanup() {
-        executers.each { it.cleanup() }
+        executors.each { it.cleanup() }
     }
 
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "Requires a Gradle distribution on the test-under-test classpath, but gradleApi() does not offer the full distribution")
@@ -161,12 +161,12 @@ class ProjectBuilderCrossVersionIntegrationTest extends MultiVersionIntegrationS
         """
     }
 
-    private GradleExecuter createGradleExecutor(String gradleVersion, File projectDir = testDirectory, String... tasks) {
+    private GradleExecutor createGradleExecutor(String gradleVersion, File projectDir = testDirectory, String... tasks) {
         GradleDistribution distribution = buildContext.distribution(gradleVersion)
-        def executer = new NoDaemonGradleExecuter(distribution, temporaryFolder, buildContext)
-        executer.inDirectory(projectDir)
-        executer.withTasks(tasks)
-        executers << executer
-        executer
+        def executor = new NoDaemonGradleExecutor(distribution, temporaryFolder, buildContext)
+        executor.inDirectory(projectDir)
+        executor.withTasks(tasks)
+        executors << executor
+        executor
     }
 }

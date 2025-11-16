@@ -232,7 +232,7 @@ class KotlinBuildScriptDependenciesResolver internal constructor(
         environment.gradleHome?.let(GradleInstallation::Local)
             ?: environment.gradleUri?.let(GradleInstallation::Remote)
             ?: environment.gradleVersion?.let(GradleInstallation::Version)
-            ?: if ("embedded" == System.getProperty("org.gradle.integtest.executer")) {
+            ?: if ("embedded" == System.getProperty("org.gradle.integtest.executor")) {
                 GradleInstallation.Embedded
             } else {
                 GradleInstallation.Wrapper

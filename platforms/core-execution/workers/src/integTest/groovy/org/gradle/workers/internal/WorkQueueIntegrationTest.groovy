@@ -79,7 +79,7 @@ class WorkQueueIntegrationTest extends AbstractWorkerExecutorIntegrationTest {
         def finished = blockingHttpServer.expectConcurrentAndBlock("finished")
 
         when:
-        def gradle = executer.withTasks("runWork").start()
+        def gradle = executor.withTasks("runWork").start()
 
         then:
         started.waitForAllPendingCalls()
@@ -130,7 +130,7 @@ class WorkQueueIntegrationTest extends AbstractWorkerExecutorIntegrationTest {
         def finished = blockingHttpServer.expectConcurrentAndBlock("finished")
 
         when:
-        def gradle = executer.withTasks("runWork").start()
+        def gradle = executor.withTasks("runWork").start()
 
         then:
         started.waitForAllPendingCalls()
@@ -184,7 +184,7 @@ class WorkQueueIntegrationTest extends AbstractWorkerExecutorIntegrationTest {
         def finished = blockingHttpServer.expectConcurrentAndBlock("finished")
 
         when:
-        def gradle = executer.withTasks("runWork").start()
+        def gradle = executor.withTasks("runWork").start()
 
         then:
         started.waitForAllPendingCalls()

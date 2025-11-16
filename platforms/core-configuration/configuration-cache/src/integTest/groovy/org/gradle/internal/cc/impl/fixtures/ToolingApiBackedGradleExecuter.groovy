@@ -18,12 +18,12 @@ package org.gradle.internal.cc.impl.fixtures
 
 import org.apache.tools.ant.util.TeeOutputStream
 import org.gradle.api.Action
-import org.gradle.integtests.fixtures.executer.AbstractGradleExecuter
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult
+import org.gradle.integtests.fixtures.executor.AbstractGradleExecutor
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult
 import org.gradle.integtests.tooling.fixture.ToolingApi
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 import org.gradle.tooling.ProjectConnection
@@ -31,10 +31,10 @@ import org.gradle.util.DebugUtil
 
 import java.util.function.Function
 
-class ToolingApiBackedGradleExecuter extends AbstractGradleExecuter {
+class ToolingApiBackedGradleExecutor extends AbstractGradleExecutor {
     private final jvmArgs = []
 
-    ToolingApiBackedGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider) {
+    ToolingApiBackedGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider) {
         super(distribution, testDirectoryProvider)
     }
 

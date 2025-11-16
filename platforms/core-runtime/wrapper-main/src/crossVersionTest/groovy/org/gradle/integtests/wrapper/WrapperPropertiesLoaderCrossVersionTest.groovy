@@ -18,8 +18,8 @@ package org.gradle.integtests.wrapper
 import org.gradle.integtests.fixtures.CrossVersionIntegrationSpec
 import org.gradle.integtests.fixtures.TargetVersions
 import org.gradle.integtests.fixtures.daemon.DaemonLogsAnalyzer
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.UnitTestPreconditions
 import org.gradle.util.GradleVersion
@@ -84,8 +84,8 @@ class WrapperPropertiesLoaderCrossVersionTest extends CrossVersionIntegrationSpe
         version(wrapperVersion).withTasks('wrapper').run()
 
         when:
-        GradleExecuter executer = version(wrapperVersion).requireIsolatedDaemons()
-        String output = executer.usingExecutable('gradlew').withTasks('hello').run().output
+        GradleExecutor executor = version(wrapperVersion).requireIsolatedDaemons()
+        String output = executor.usingExecutable('gradlew').withTasks('hello').run().output
 
         then:
         output.contains('system_property_available in buildSrc:                 true')
@@ -104,10 +104,10 @@ class WrapperPropertiesLoaderCrossVersionTest extends CrossVersionIntegrationSpe
         output.contains('system_property_available in included settings.gradle: true')
 
         cleanup:
-        cleanupDaemons(executer, executionVersion)
+        cleanupDaemons(executor, executionVersion)
     }
 
-    static void cleanupDaemons(GradleExecuter executer, GradleDistribution executionVersion) {
-        new DaemonLogsAnalyzer(executer.daemonBaseDir, executionVersion.version.version).killAll()
+    static void cleanupDaemons(GradleExecutor executor, GradleDistribution executionVersion) {
+        new DaemonLogsAnalyzer(executor.daemonBaseDir, executionVersion.version.version).killAll()
     }
 }

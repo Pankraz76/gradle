@@ -23,8 +23,8 @@ import org.gradle.initialization.StartParameterBuildOptions.ConfigurationCacheOp
 import org.gradle.initialization.StartParameterBuildOptions.ConfigurationCacheProblemsOption
 import org.gradle.integtests.fixtures.AvailableJavaHomes
 import org.gradle.integtests.fixtures.RepoScriptBlockUtil
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.integtests.fixtures.versions.AndroidGradlePluginVersions
 import org.gradle.integtests.fixtures.versions.KotlinGradlePluginVersions
 import org.gradle.integtests.fixtures.versions.SmokeTestedPluginVersions
@@ -173,7 +173,7 @@ abstract class AbstractSmokeTest extends Specification {
 
     private List<String> configurationCacheParameters() {
         List<String> parameters = []
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             def maxProblems = maxConfigurationCacheProblems()
             parameters += [
                 "--${ConfigurationCacheOption.LONG_OPTION}".toString(),

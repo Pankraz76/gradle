@@ -22,7 +22,7 @@ import org.gradle.testing.junit.AbstractJUnitIgnoreClassIntegrationTest
 abstract class AbstractJUnit4IgnoreClassIntegrationTest extends AbstractJUnitIgnoreClassIntegrationTest {
     def "can handle class level ignored tests with custom runner"() {
         given:
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         file ('src/test/java/org/gradle/CustomIgnoredTest.java') << """
             package org.gradle;
 

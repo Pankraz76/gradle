@@ -16,8 +16,8 @@
 
 package org.gradle.integtests.fixtures
 
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 
 interface HasGradleExecutor {
-    GradleExecuter getExecuter()
+    GradleExecutor getExecutor()
 }

@@ -36,7 +36,7 @@ class DaemonStartupMessageIntegrationTest extends DaemonIntegrationSpec {
 
     def "the message is not shown when quiet log level is requested"() {
         given:
-        executer.withArgument("-q")
+        executor.withArgument("-q")
 
         when:
         succeeds()

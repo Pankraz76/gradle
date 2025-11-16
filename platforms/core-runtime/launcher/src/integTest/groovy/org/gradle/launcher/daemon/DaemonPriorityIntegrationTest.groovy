@@ -37,7 +37,7 @@ class DaemonPriorityIntegrationTest extends DaemonIntegrationSpec {
         daemons.daemons.size() == 1
 
         when:
-        executer.withArguments("--priority", "low")
+        executor.withArguments("--priority", "low")
         run("help")
 
         then:

@@ -16,7 +16,7 @@
 
 package org.gradle.smoketests
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.integtests.fixtures.versions.KotlinGradlePluginVersions
 import org.gradle.util.GradleVersion
 import org.gradle.util.internal.VersionNumber
@@ -163,7 +163,7 @@ class KotlinPluginSmokeTest extends AbstractKotlinPluginSmokeTest {
         // With config cache enabled, for some reason, the `checkKotlinGradlePluginConfigurationErrors`
         // task may appear out of order in the task list
         def tasks = result.tasks.collect { it.path }
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             assert tasks.contains(":checkKotlinGradlePluginConfigurationErrors")
             assert tasks.findAll { it != ":checkKotlinGradlePluginConfigurationErrors" } == [':compileGroovy', ':compileKotlin', ':compileJava']
         } else {

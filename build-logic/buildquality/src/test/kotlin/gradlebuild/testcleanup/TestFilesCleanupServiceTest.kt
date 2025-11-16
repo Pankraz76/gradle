@@ -76,7 +76,7 @@ class TestFilesCleanupServiceTest {
             """
             import org.gradle.build.event.BuildEventsListenerRegistry
             import org.gradle.api.internal.project.ProjectInternal
-            import org.gradle.api.internal.tasks.testing.TestExecuter
+            import org.gradle.api.internal.tasks.testing.TestExecutor
             import org.gradle.api.internal.tasks.testing.TestExecutionSpec
             import org.gradle.api.internal.tasks.testing.TestResultProcessor
 
@@ -140,7 +140,7 @@ class TestFilesCleanupServiceTest {
                         throw IllegalStateException()
                     }
                 }
-                protected override fun createTestExecuter() = object: TestExecuter<TestExecutionSpec> {
+                protected override fun createTestExecutor() = object: TestExecutor<TestExecutionSpec> {
                     override fun execute(s:TestExecutionSpec, t: TestResultProcessor) {}
                     override fun stopNow() {}
                 }

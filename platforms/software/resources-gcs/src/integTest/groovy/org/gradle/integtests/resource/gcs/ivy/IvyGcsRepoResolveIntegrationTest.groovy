@@ -17,7 +17,7 @@
 package org.gradle.integtests.resource.gcs.ivy
 
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.integtests.resolve.ivy.AbstractIvyRemoteRepoResolveIntegrationTest
 import org.gradle.integtests.resource.gcs.fixtures.GcsServer
 import org.gradle.test.fixtures.server.RepositoryServer
@@ -38,10 +38,10 @@ class IvyGcsRepoResolveIntegrationTest extends AbstractIvyRemoteRepoResolveInteg
     }
 
     protected ExecutionResult succeeds(String... tasks) {
-        executer.withArgument("-D${GCS_ENDPOINT_PROPERTY}=${server.uri}")
-        executer.withArgument("-D${GCS_SERVICE_PATH_PROPERTY}=/")
-        executer.withArgument("-D${GCS_DISABLE_AUTH_PROPERTY}=true")
-        result = executer.withTasks(*tasks).run()
+        executor.withArgument("-D${GCS_ENDPOINT_PROPERTY}=${server.uri}")
+        executor.withArgument("-D${GCS_SERVICE_PATH_PROPERTY}=/")
+        executor.withArgument("-D${GCS_DISABLE_AUTH_PROPERTY}=true")
+        result = executor.withTasks(*tasks).run()
     }
 
     @ToBeFixedForConfigurationCache(skip = ToBeFixedForConfigurationCache.Skip.FAILS_TO_CLEANUP)

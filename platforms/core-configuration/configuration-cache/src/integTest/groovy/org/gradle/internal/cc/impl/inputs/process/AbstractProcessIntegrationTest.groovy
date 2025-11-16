@@ -24,6 +24,6 @@ abstract class AbstractProcessIntegrationTest extends AbstractConfigurationCache
 
     @Override
     def setup() {
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
     }
 }

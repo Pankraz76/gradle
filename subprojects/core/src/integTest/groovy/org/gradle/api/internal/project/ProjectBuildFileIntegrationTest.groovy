@@ -28,10 +28,10 @@ class ProjectBuildFileIntegrationTest extends AbstractIntegrationSpec {
         createDirs("child")
         settingsFile << "include 'child'"
         def initScript = file("init.gradle") << """
-            rootProject { 
+            rootProject {
                 assert buildFile.canonicalPath == '${buildFile.canonicalPath.replace("\\", "\\\\")}'
                 assert project(":child").buildFile.canonicalPath == '${file("child/build.gradle").canonicalPath.replace("\\", "\\\\")}'
-                println "init script applied" 
+                println "init script applied"
             }
         """
 
@@ -42,18 +42,18 @@ class ProjectBuildFileIntegrationTest extends AbstractIntegrationSpec {
 
     def "buildSrc project.buildFile is non null when does not exist"() {
         given:
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         file("buildSrc/settings.gradle").createFile()
 
         expect:
         !buildFile.exists()
 
         when:
-        executer.gradleUserHomeDir.file("init.d/init.gradle") << """
-            rootProject { 
+        executor.gradleUserHomeDir.file("init.d/init.gradle") << """
+            rootProject {
                 if (project.gradle.parent != null) { // is buildSrc build
                     assert buildFile.canonicalPath == '${file("buildSrc/build.gradle").canonicalPath.replace("\\", "\\\\")}'
-                    println "init script applied" 
+                    println "init script applied"
                 }
             }
         """

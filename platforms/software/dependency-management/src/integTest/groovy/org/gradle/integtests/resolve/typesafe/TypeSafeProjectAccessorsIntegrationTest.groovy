@@ -17,7 +17,7 @@
 package org.gradle.integtests.resolve.typesafe
 
 import org.gradle.integtests.fixtures.FeaturePreviewsFixture
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 
 class TypeSafeProjectAccessorsIntegrationTest extends AbstractTypeSafeProjectAccessorsIntegrationTest {
     def setup() {
@@ -206,7 +206,7 @@ class TypeSafeProjectAccessorsIntegrationTest extends AbstractTypeSafeProjectAcc
         inDirectory 'project'
         run 'help'
         then:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             outputDoesNotContain 'Project accessors enabled, but root project name not explicitly set for \'project\'.'
         } else {
             outputContains 'Project accessors enabled, but root project name not explicitly set for \'project\'.'

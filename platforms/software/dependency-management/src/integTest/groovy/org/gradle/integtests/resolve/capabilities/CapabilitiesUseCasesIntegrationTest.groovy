@@ -25,7 +25,7 @@ class CapabilitiesUseCasesIntegrationTest extends AbstractModuleDependencyResolv
         buildFile << """
             configurations { conf }
         """
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
     }
 
     /**

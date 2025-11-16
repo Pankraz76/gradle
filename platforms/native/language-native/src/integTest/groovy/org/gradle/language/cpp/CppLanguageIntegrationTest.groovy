@@ -73,7 +73,7 @@ model {
         """
 
         when:
-        executer.withArgument("--info")
+        executor.withArgument("--info")
         run 'mainSharedLibrary'
 
         then:

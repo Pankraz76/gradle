@@ -29,7 +29,7 @@ class SamplesJavaCustomizedLayoutIntegrationTest extends AbstractSampleIntegrati
     Sample sample = new Sample(testDirectoryProvider)
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     @UsesSample('java/customizedLayout')
@@ -37,7 +37,7 @@ class SamplesJavaCustomizedLayoutIntegrationTest extends AbstractSampleIntegrati
         TestFile javaprojectDir = sample.dir.file(dsl)
 
         // Build and test projects
-        executer.inDirectory(javaprojectDir).withTasks('clean', 'build').run()
+        executor.inDirectory(javaprojectDir).withTasks('clean', 'build').run()
 
         // Check tests have run
         def result = new DefaultTestExecutionResult(javaprojectDir)

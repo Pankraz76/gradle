@@ -18,7 +18,7 @@ package org.gradle.integtests.resolve.verification
 
 import org.bouncycastle.openpgp.PGPPublicKey
 import org.gradle.integtests.fixtures.cache.CachingIntegrationFixture
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.security.fixtures.KeyServer
 import org.gradle.security.fixtures.SigningFixtures
 import org.gradle.security.fixtures.SimpleKeyRing
@@ -67,7 +67,7 @@ abstract class AbstractSignatureVerificationIntegrationTest extends AbstractDepe
         createSimpleKeyRingFromResource(publicKeyResource, secretKeyResource)
     }
 
-    protected GradleExecuter writeVerificationMetadata(String checksums = "sha256,pgp") {
-        executer.withArguments("--write-verification-metadata", checksums)
+    protected GradleExecutor writeVerificationMetadata(String checksums = "sha256,pgp") {
+        executor.withArguments("--write-verification-metadata", checksums)
     }
 }

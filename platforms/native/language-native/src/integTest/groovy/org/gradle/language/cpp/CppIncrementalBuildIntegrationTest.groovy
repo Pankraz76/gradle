@@ -17,7 +17,7 @@
 package org.gradle.language.cpp
 
 import org.gradle.integtests.fixtures.CompilationOutputsFixture
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.nativeplatform.fixtures.AbstractInstalledToolChainIntegrationSpec
 import org.gradle.nativeplatform.fixtures.AvailableToolChains
 import org.gradle.test.fixtures.file.TestFile
@@ -645,7 +645,7 @@ class CppIncrementalBuildIntegrationTest extends AbstractInstalledToolChainInteg
         """
 
         then:
-        executer.withArgument("-i")
+        executor.withArgument("-i")
         succeeds installApp
         output.contains("Cannot locate header file for '#include $include' in source file 'main.cpp'. Assuming changed.")
         install.exec().out == "hello"
@@ -658,7 +658,7 @@ class CppIncrementalBuildIntegrationTest extends AbstractInstalledToolChainInteg
         libObjects.snapshot()
 
         then:
-        executer.withArgument("-i")
+        executor.withArgument("-i")
         succeeds installApp
 
         and:
@@ -676,7 +676,7 @@ class CppIncrementalBuildIntegrationTest extends AbstractInstalledToolChainInteg
         libObjects.snapshot()
 
         then:
-        executer.withArgument("-i")
+        executor.withArgument("-i")
         succeeds installApp
 
         and:
@@ -832,11 +832,11 @@ class CppIncrementalBuildIntegrationTest extends AbstractInstalledToolChainInteg
         libObjects.noneRecompiled()
     }
 
-    private GradleExecuter disableTransitiveUnresolvedHeaderDetection() {
-        executer.beforeExecute {
+    private GradleExecutor disableTransitiveUnresolvedHeaderDetection() {
+        executor.beforeExecute {
             withArgument("-Dorg.gradle.internal.native.headers.unresolved.dependencies.ignore=true")
         }
-        return executer
+        return executor
     }
 
     def "can have a cycle between header files"() {

@@ -43,7 +43,7 @@ class ProcessCrashHandlingIntegrationTest extends DaemonIntegrationSpec {
 
         when:
         def block = server.expectAndBlock("block")
-        def client = new DaemonClientFixture(executer.withArgument("--debug").withTasks("block").start())
+        def client = new DaemonClientFixture(executor.withArgument("--debug").withTasks("block").start())
         block.waitForAllPendingCalls()
         daemons.daemon.assertBusy()
         client.kill()
@@ -66,7 +66,7 @@ class ProcessCrashHandlingIntegrationTest extends DaemonIntegrationSpec {
 
         when:
         def block = server.expectAndBlock("block")
-        def client = new DaemonClientFixture(executer.withArgument("--debug").withTasks("block").start())
+        def client = new DaemonClientFixture(executor.withArgument("--debug").withTasks("block").start())
         block.waitForAllPendingCalls()
         daemons.daemon.assertBusy()
         client.kill()
@@ -105,7 +105,7 @@ class ProcessCrashHandlingIntegrationTest extends DaemonIntegrationSpec {
 
         when:
         def block = server.expectAndBlock("block")
-        DaemonClientFixture client = new DaemonClientFixture(executer.withArgument("--debug").withTasks("block").start())
+        DaemonClientFixture client = new DaemonClientFixture(executor.withArgument("--debug").withTasks("block").start())
         block.waitForAllPendingCalls()
         daemons.daemon.assertBusy()
 
@@ -142,7 +142,7 @@ class ProcessCrashHandlingIntegrationTest extends DaemonIntegrationSpec {
 
         when:
         def block = server.expectAndBlock("block")
-        executer.withTasks("block").start()
+        executor.withTasks("block").start()
         block.waitForAllPendingCalls()
         daemons.daemon.assertBusy()
 
@@ -163,9 +163,9 @@ class ProcessCrashHandlingIntegrationTest extends DaemonIntegrationSpec {
         """
 
         when:
-        executer.withStackTraceChecksDisabled() // daemon log may contain stack traces
+        executor.withStackTraceChecksDisabled() // daemon log may contain stack traces
         def block = server.expectAndBlock("block")
-        def build = executer.withTasks("block").start()
+        def build = executor.withTasks("block").start()
         block.waitForAllPendingCalls()
         daemons.daemon.kill()
         def failure = build.waitForFailure()
@@ -188,10 +188,10 @@ class ProcessCrashHandlingIntegrationTest extends DaemonIntegrationSpec {
         """
 
         when:
-        executer.withStackTraceChecksDisabled() // daemon log may contain stack traces
-        executer.noDaemonCrashChecks()
+        executor.withStackTraceChecksDisabled() // daemon log may contain stack traces
+        executor.noDaemonCrashChecks()
         def block = server.expectAndBlock("block")
-        def build = executer.withTasks("block").start()
+        def build = executor.withTasks("block").start()
         block.waitForAllPendingCalls()
         block.releaseAll()
         def failure = build.waitForFailure()
@@ -206,8 +206,8 @@ class ProcessCrashHandlingIntegrationTest extends DaemonIntegrationSpec {
         file("build.gradle") << "System.exit(0)"
 
         when:
-        executer.withStackTraceChecksDisabled() // daemon log may contain stack traces
-        def failure = executer.runWithFailure()
+        executor.withStackTraceChecksDisabled() // daemon log may contain stack traces
+        def failure = executor.runWithFailure()
 
         then:
         failure.assertHasErrorOutput("----- Last 20 lines from daemon log file")

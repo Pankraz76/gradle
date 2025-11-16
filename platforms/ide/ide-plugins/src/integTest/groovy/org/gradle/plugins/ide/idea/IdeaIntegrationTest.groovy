@@ -24,7 +24,7 @@ import org.custommonkey.xmlunit.XMLAssert
 import org.gradle.api.internal.artifacts.ivyservice.CacheLayout
 import org.gradle.integtests.fixtures.StableConfigurationCacheDeprecations
 import org.gradle.integtests.fixtures.TestResources
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.plugins.ide.AbstractIdeIntegrationTest
 import org.gradle.test.fixtures.file.TestFile
 import org.junit.ComparisonFailure
@@ -51,11 +51,11 @@ class IdeaIntegrationTest extends AbstractIdeIntegrationTest implements StableCo
         """
 
         //given
-        executer.withTasks('idea').run()
+        executor.withTasks('idea').run()
         def projectContent = getFile([:], 'master.ipr').text
         def moduleContent = getFile([:], 'master.iml').text
 
-        executer.withTasks('idea').run()
+        executor.withTasks('idea').run()
         def projectContentAfterMerge = getFile([:], 'master.ipr').text
         def moduleContentAfterMerge = getFile([:], 'master.iml').text
 
@@ -66,22 +66,22 @@ class IdeaIntegrationTest extends AbstractIdeIntegrationTest implements StableCo
 
     @Test
     void canCreateAndDeleteMetaData() {
-        executer.withTasks('idea').run()
+        executor.withTasks('idea').run()
 
         assertHasExpectedContents('root.ipr')
         assertHasExpectedContents('root.iws')
         assertHasExpectedContents('root.iml')
         assertHasExpectedContents('api/api.iml')
         assertHasExpectedContents('webservice/webservice.iml')
-        if (!GradleContextualExecuter.isConfigCache()) {
+        if (!GradleContextualExecutor.isConfigCache()) {
             expectTaskGetProjectDeprecations(3)
         }
-        executer.withTasks('cleanIdea').run()
+        executor.withTasks('cleanIdea').run()
     }
 
     @Test
     void worksWithAnEmptyProject() {
-        executer.withTasks('idea').run()
+        executor.withTasks('idea').run()
 
         assertHasExpectedContents('root.ipr')
         assertHasExpectedContents('root.iml')
@@ -90,7 +90,7 @@ class IdeaIntegrationTest extends AbstractIdeIntegrationTest implements StableCo
     @Test
     void worksWithASubProjectThatDoesNotHaveTheIdeaPluginApplied() {
         createDirs("a", "b")
-        executer.withTasks('idea').run()
+        executor.withTasks('idea').run()
 
         assertHasExpectedContents('root.ipr')
     }
@@ -98,7 +98,7 @@ class IdeaIntegrationTest extends AbstractIdeIntegrationTest implements StableCo
     @Test
     void worksWithNonStandardLayout() {
         createDirs("a child project")
-        executer.inDirectory(testDirectory.file('root')).withTasks('idea').run()
+        executor.inDirectory(testDirectory.file('root')).withTasks('idea').run()
 
         assertHasExpectedContents('root/root.ipr')
         assertHasExpectedContents('root/root.iml')
@@ -107,14 +107,14 @@ class IdeaIntegrationTest extends AbstractIdeIntegrationTest implements StableCo
 
     @Test
     void overwritesExistingDependencies() {
-        executer.withTasks('idea').run()
+        executor.withTasks('idea').run()
 
         assertHasExpectedContents('root.iml')
     }
 
     @Test
     void addsScalaSdkAndCompilerLibraries() {
-        executer.withTasks('idea').run()
+        executor.withTasks('idea').run()
 
         hasProjectLibrary('root.ipr', 'scala-sdk-2.10.0', [], [], [], ['compiler-bridge_2.10', 'scala-library-2.10.0', 'scala-compiler-2.10.0', 'scala-reflect-2.10.0', 'compiler-interface', 'util-interface'])
         hasProjectLibrary('root.ipr', 'scala-sdk-2.11.2', [], [], [], ['compiler-bridge_2.11', 'scala-library-2.11.2', 'scala-compiler-2.11.2', 'scala-reflect-2.11.2', 'scala-xml_2.11-1.0.2', 'scala-parser-combinators_2.11-1.0.2', 'compiler-interface', 'util-interface'])
@@ -139,7 +139,7 @@ class IdeaIntegrationTest extends AbstractIdeIntegrationTest implements StableCo
 
     @Test
     void addsScalaFacetAndCompilerLibraries() {
-        executer.withTasks('idea').run()
+        executor.withTasks('idea').run()
 
         hasProjectLibrary('root.ipr', 'scala-compiler-2.10.0', ['compiler-bridge_2.10', 'scala-compiler-2.10.0', 'scala-library-2.10.0', 'scala-reflect-2.10.0', 'compiler-interface', 'util-interface'], [], [], [])
         hasProjectLibrary('root.ipr', 'scala-compiler-2.11.2', ['compiler-bridge_2.11', 'scala-library-2.11.2', 'scala-compiler-2.11.2', 'scala-reflect-2.11.2', 'scala-xml_2.11-1.0.2', 'scala-parser-combinators_2.11-1.0.2', 'compiler-interface', 'util-interface'], [], [], [])
@@ -398,7 +398,7 @@ apply plugin: "idea"
         file('settings.gradle') << 'rootProject.name = "root"'
 
         //when
-        def failure = executer.withTasks('idea').runWithFailure()
+        def failure = executor.withTasks('idea').runWithFailure()
 
         //then
         failure.output.contains("Perhaps this file was tinkered with?")
@@ -413,7 +413,7 @@ apply plugin: "idea"
         file('settings.gradle') << 'rootProject.name = "root"'
 
         //when
-        executer.withTasks('idea').run()
+        executor.withTasks('idea').run()
 
         //then
         assertProjectLanguageLevel("root.ipr", "JDK_1_6")
@@ -450,7 +450,7 @@ idea.project {
 
         def expectedXml = expectedFile.text
 
-        def homeDir = executer.gradleUserHomeDir.absolutePath.replace(File.separator, '/')
+        def homeDir = executor.gradleUserHomeDir.absolutePath.replace(File.separator, '/')
         def pattern = Pattern.compile(Pattern.quote(homeDir) + "/caches/${CacheLayout.MODULES.getKey()}/${CacheLayout.FILE_STORE.getKey()}/([^/]+/[^/]+/[^/]+)/[a-z0-9]+/")
         def actualXml = actualFile.text.replaceAll(pattern, '@CACHE_DIR@/$1/@SHA1@/')
 

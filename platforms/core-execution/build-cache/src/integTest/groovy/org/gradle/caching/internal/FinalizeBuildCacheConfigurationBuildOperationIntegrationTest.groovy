@@ -21,7 +21,7 @@ import org.gradle.integtests.fixtures.BuildOperationsFixture
 
 class FinalizeBuildCacheConfigurationBuildOperationIntegrationTest extends AbstractIntegrationSpec {
 
-    def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+    def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "local build cache configuration is exposed"() {
         given:
@@ -35,7 +35,7 @@ class FinalizeBuildCacheConfigurationBuildOperationIntegrationTest extends Abstr
                 }
             }
         """
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
 
         when:
         succeeds("help")
@@ -64,7 +64,7 @@ class FinalizeBuildCacheConfigurationBuildOperationIntegrationTest extends Abstr
                 }
             }
         """
-        executer.usingInitScript(initScriptFile)
+        executor.usingInitScript(initScriptFile)
 
         def cacheDir = temporaryFolder.file("cache-dir").createDir()
         settingsFile << """
@@ -76,7 +76,7 @@ class FinalizeBuildCacheConfigurationBuildOperationIntegrationTest extends Abstr
                 }
             }
         """
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
 
         when:
         succeeds("help")
@@ -106,7 +106,7 @@ class FinalizeBuildCacheConfigurationBuildOperationIntegrationTest extends Abstr
                 }
             }
         """
-        executer.usingInitScript(initScriptFile)
+        executor.usingInitScript(initScriptFile)
 
         def cacheDir = temporaryFolder.file("cache-dir").createDir()
         settingsFile << """
@@ -118,7 +118,7 @@ class FinalizeBuildCacheConfigurationBuildOperationIntegrationTest extends Abstr
                 }
             }
         """
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
 
         when:
         succeeds("help")
@@ -163,7 +163,7 @@ class FinalizeBuildCacheConfigurationBuildOperationIntegrationTest extends Abstr
                 remote(CustomBuildCache)
             }
         """
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
 
         when:
         succeeds("help")
@@ -246,7 +246,7 @@ class FinalizeBuildCacheConfigurationBuildOperationIntegrationTest extends Abstr
                 }
             }
         """
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
 
         when:
         succeeds("help")

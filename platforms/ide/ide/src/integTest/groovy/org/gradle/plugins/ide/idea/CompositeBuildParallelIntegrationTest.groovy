@@ -62,8 +62,8 @@ class CompositeBuildParallelIntegrationTest extends AbstractIntegrationSpec {
         server.expectConcurrent(included)
 
         expect:
-        executer.withArguments("--max-workers=4")
-        executer.inDirectory(buildA)
+        executor.withArguments("--max-workers=4")
+        executor.inDirectory(buildA)
         succeeds(":idea")
     }
 }

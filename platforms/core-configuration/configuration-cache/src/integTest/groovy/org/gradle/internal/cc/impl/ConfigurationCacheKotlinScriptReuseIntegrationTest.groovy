@@ -61,7 +61,7 @@ class ConfigurationCacheKotlinScriptReuseIntegrationTest extends AbstractConfigu
         }
 
         when:
-        executer.withEagerClassLoaderCreationCheckDisabled()
+        executor.withEagerClassLoaderCreationCheckDisabled()
 
         and:
         configurationCacheRun 'ok'

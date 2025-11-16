@@ -27,12 +27,12 @@ import org.gradle.tooling.internal.consumer.parameters.ConsumerOperationParamete
 import org.gradle.tooling.internal.protocol.ResultHandlerVersion1
 import org.gradle.tooling.model.GradleProject
 
-class DefaultBuildActionExecuterTest extends ConcurrentSpec {
+class DefaultBuildActionExecutorTest extends ConcurrentSpec {
     def asyncConnection = Mock(AsyncConsumerActionExecutor)
     def connection = Mock(ConsumerConnection)
     def parameters = Mock(ConnectionParameters)
     def action = Mock(BuildAction)
-    def executer = new DefaultBuildActionExecuter(action, asyncConnection, parameters)
+    def executor = new DefaultBuildActionExecutor(action, asyncConnection, parameters)
 
     def "delegates to connection to run action"() {
         ResultHandlerVersion1<GradleProject> adaptedHandler
@@ -40,7 +40,7 @@ class DefaultBuildActionExecuterTest extends ConcurrentSpec {
         GradleProject result = Mock()
 
         when:
-        executer.run(handler)
+        executor.run(handler)
 
         then:
         1 * asyncConnection.run(!null, !null) >> {args ->
@@ -67,7 +67,7 @@ class DefaultBuildActionExecuterTest extends ConcurrentSpec {
         GradleConnectionException wrappedFailure
 
         when:
-        executer.run(handler)
+        executor.run(handler)
 
         then:
         1 * asyncConnection.run(!null, !null) >> {args ->
@@ -102,7 +102,7 @@ class DefaultBuildActionExecuterTest extends ConcurrentSpec {
 
         when:
         async {
-            executer.run(handler)
+            executor.run(handler)
             instant.dispatched
             thread.blockUntil.resultReceived
         }
@@ -128,7 +128,7 @@ class DefaultBuildActionExecuterTest extends ConcurrentSpec {
         when:
         def model
         operation.fetchResult {
-            model = executer.run()
+            model = executor.run()
         }
 
         then:
@@ -153,7 +153,7 @@ class DefaultBuildActionExecuterTest extends ConcurrentSpec {
 
         when:
         operation.fetchResult {
-            executer.run()
+            executor.run()
         }
 
         then:
@@ -170,7 +170,7 @@ class DefaultBuildActionExecuterTest extends ConcurrentSpec {
         GradleProject result = Mock()
 
         when:
-        executer.forTasks('a', 'b').run(handler)
+        executor.forTasks('a', 'b').run(handler)
 
         then:
         1 * asyncConnection.run(!null, !null) >> {args ->
@@ -185,7 +185,7 @@ class DefaultBuildActionExecuterTest extends ConcurrentSpec {
         }
 
         when:
-        executer.forTasks(Collections.singleton("a")).run(handler)
+        executor.forTasks(Collections.singleton("a")).run(handler)
 
         then:
         1 * asyncConnection.run(!null, !null) >> {args ->

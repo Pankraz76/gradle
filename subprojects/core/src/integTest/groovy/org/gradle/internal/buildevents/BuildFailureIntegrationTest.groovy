@@ -25,8 +25,8 @@ class BuildFailureIntegrationTest extends AbstractIntegrationSpec {
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicitly requests a daemon")
     def "still prints errors when exception misbehaves"() {
         // When running in-process, the NPE propagates out of the test fixtures
-        executer.requireIsolatedDaemons()
-        executer.requireDaemon()
+        executor.requireIsolatedDaemons()
+        executor.requireDaemon()
 
         buildFile << """
 class BadException extends Exception {

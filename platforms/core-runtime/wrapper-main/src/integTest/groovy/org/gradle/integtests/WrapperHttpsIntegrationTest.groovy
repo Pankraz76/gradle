@@ -18,7 +18,7 @@ package org.gradle.integtests
 
 import org.gradle.testdistribution.LocalOnly
 import org.gradle.integtests.fixtures.TestResources
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.test.fixtures.keystore.TestKeyStore
 import org.gradle.test.fixtures.server.http.BlockingHttpsServer
 import org.gradle.test.fixtures.server.http.TestProxyServer
@@ -33,7 +33,7 @@ import static org.gradle.test.matchers.UserAgentMatcher.matchesNameAndVersion
 import static org.hamcrest.CoreMatchers.containsString
 import static org.hamcrest.MatcherAssert.assertThat
 
-// wrapperExecuter requires a real distribution
+// wrapperExecutor requires a real distribution
 @Requires(IntegTestPreconditions.NotEmbeddedExecutor)
 @LocalOnly(because = "https://github.com/gradle/gradle-private/issues/3799")
 class WrapperHttpsIntegrationTest extends AbstractWrapperIntegrationSpec {
@@ -51,7 +51,7 @@ class WrapperHttpsIntegrationTest extends AbstractWrapperIntegrationSpec {
         keyStore = TestKeyStore.init(resources.dir)
         // We need to set the SSL properties as arguments here even for non-embedded test mode
         // because we want them to be set on the wrapper client JVM, not the daemon one
-        wrapperExecuter.withArguments(keyStore.getTrustStoreArguments())
+        wrapperExecutor.withArguments(keyStore.getTrustStoreArguments())
         server.configure(keyStore)
         server.withBasicAuthentication(DEFAULT_USER, DEFAULT_PASSWORD)
         server.start()
@@ -84,7 +84,7 @@ class WrapperHttpsIntegrationTest extends AbstractWrapperIntegrationSpec {
             .sendFile(distribution.binDistribution))
 
         when:
-        result = wrapperExecuter.withTasks('hello').run()
+        result = wrapperExecutor.withTasks('hello').run()
 
         then:
         outputDoesNotContain('WARNING Using HTTP Basic Authentication over an insecure connection to download the Gradle distribution. Please consider using HTTPS.')
@@ -105,7 +105,7 @@ class WrapperHttpsIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.expect(server.get("/$TEST_DISTRIBUTION_URL").sendFile(distribution.binDistribution))
 
         when:
-        def result = wrapperExecuter.withTasks('hello').run()
+        def result = wrapperExecutor.withTasks('hello').run()
 
         then:
         assertThat(result.output, containsString('hello'))
@@ -135,7 +135,7 @@ class WrapperHttpsIntegrationTest extends AbstractWrapperIntegrationSpec {
 """
 
         when:
-        def result = wrapperExecuter.withTasks('hello').run()
+        def result = wrapperExecutor.withTasks('hello').run()
 
         then:
         assertThat(result.output, containsString('hello'))
@@ -194,7 +194,7 @@ class WrapperHttpsIntegrationTest extends AbstractWrapperIntegrationSpec {
     private ExecutionResult runWithVersion(String baseUrl, String version) {
         def jvmOpts = ["-Dorg.gradle.internal.services.base.url=$baseUrl".toString()]
         jvmOpts.addAll(keyStore.getTrustStoreArguments())
-        result = wrapperExecuter.withCommandLineGradleOpts(jvmOpts)
+        result = wrapperExecutor.withCommandLineGradleOpts(jvmOpts)
             .withArguments("wrapper", "--gradle-version", version)
             .run()
     }

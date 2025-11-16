@@ -234,7 +234,7 @@ class KotlinDslPluginTest : AbstractKotlinIntegrationTest() {
                     // and:
                     val runner = GradleRunner.create()
                         .withGradleInstallation(File("${distribution.gradleHomeDir.normalisedPath}"))
-                        .withTestKitDir(File("${executer.gradleUserHomeDir.normalisedPath}"))
+                        .withTestKitDir(File("${executor.gradleUserHomeDir.normalisedPath}"))
                         .withProjectDir(projectRoot)
                         .withPluginClasspath()
                         .forwardOutput()

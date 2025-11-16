@@ -16,7 +16,7 @@
 package org.gradle.execution.commandline
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
 import org.gradle.internal.jvm.Jvm
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.test.fixtures.file.TestFile
@@ -35,7 +35,7 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def "has non zero exit code on build failure"() {
-        ExecutionFailure failure = executer.withTasks('unknown').runWithFailure()
+        ExecutionFailure failure = executor.withTasks('unknown').runWithFailure()
         failure.assertHasDescription("Task 'unknown' not found in root project 'commandLine'.")
     }
 
@@ -77,20 +77,20 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
 
         then:
         // Handle JAVA_HOME specified
-        executer.withJavaHome(javaHome).withArguments(expectedJavaHome).withTasks('checkJavaHome').run()
+        executor.withJavaHome(javaHome).withArguments(expectedJavaHome).withTasks('checkJavaHome').run()
 
         // Handle JAVA_HOME with trailing separator
-        executer.withJavaHome(javaHome + File.separator).withArguments(expectedJavaHome).withTasks('checkJavaHome').run()
+        executor.withJavaHome(javaHome + File.separator).withArguments(expectedJavaHome).withTasks('checkJavaHome').run()
 
         if (!OperatingSystem.current().isWindows()) {
             return
         }
 
         // Handle JAVA_HOME wrapped in quotes
-        executer.withJavaHome("\"$javaHome\"").withArguments(expectedJavaHome).withTasks('checkJavaHome').run()
+        executor.withJavaHome("\"$javaHome\"").withArguments(expectedJavaHome).withTasks('checkJavaHome').run()
 
         // Handle JAVA_HOME with slash separators. This is allowed by the JVM
-        executer.withJavaHome(javaHome.replace(File.separator, '/')).withArguments(expectedJavaHome).withTasks('checkJavaHome').run()
+        executor.withJavaHome(javaHome.replace(File.separator, '/')).withArguments(expectedJavaHome).withTasks('checkJavaHome').run()
     }
 
     @Requires(IntegTestPreconditions.NotEmbeddedExecutor)
@@ -104,13 +104,13 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
         String path = String.format('%s%s%s', jvm.javaExecutable.parentFile.canonicalPath, File.pathSeparator, System.getenv('PATH'))
 
         then:
-        executer.withEnvironmentVars('PATH': path).withJavaHome('').withArguments(expectedJavaHome).withTasks('checkJavaHome').run()
+        executor.withEnvironmentVars('PATH': path).withJavaHome('').withArguments(expectedJavaHome).withTasks('checkJavaHome').run()
     }
 
     @Requires(IntegTestPreconditions.NotEmbeddedExecutor)
     def "fails when java home does not point to a java installation"() {
         when:
-        def failure = executer.withJavaHome(testDirectory.absolutePath).withTasks('checkJavaHome').runWithFailure()
+        def failure = executor.withJavaHome(testDirectory.absolutePath).withTasks('checkJavaHome').runWithFailure()
 
         then:
         failure.error.contains('ERROR: JAVA_HOME is set to an invalid directory')
@@ -132,7 +132,7 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
             path = binDir.absolutePath
         }
 
-        def failure = executer.withEnvironmentVars('PATH': path).withJavaHome('').withTasks('checkJavaHome').runWithFailure()
+        def failure = executor.withEnvironmentVars('PATH': path).withJavaHome('').withTasks('checkJavaHome').runWithFailure()
         failure.error.contains("ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.")
 
         cleanup:
@@ -167,7 +167,7 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
         File gradleUserHomeDir = file('customUserHome')
 
         then:
-        executer
+        executor
             .withOwnUserHomeServices()
             .withGradleUserHomeDir(null)
             .withEnvironmentVars('GRADLE_USER_HOME': gradleUserHomeDir.absolutePath)
@@ -191,7 +191,7 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
         when:
         // the actual testing is done in the build script.
         File userHome = file('customUserHome')
-        executer
+        executor
             .withOwnUserHomeServices()
             .withUserHomeDir(userHome)
             .withGradleUserHomeDir(null)
@@ -207,7 +207,7 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
         createProject()
         // the actual testing is done in the build script.
         then:
-        executer.withTasks("checkSystemProperty").withArguments('-DcustomProp1=custom-value', '-DcustomProp2=custom value').run();
+        executor.withTasks("checkSystemProperty").withArguments('-DcustomProp1=custom-value', '-DcustomProp2=custom value').run();
     }
 
     @Requires(IntegTestPreconditions.NotEmbeddedExecutor)
@@ -217,7 +217,7 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
 
         then:
         // the actual testing is done in the build script.
-        executer.withTasks("checkSystemProperty").withEnvironmentVars("GRADLE_OPTS": '-DcustomProp1=custom-value "-DcustomProp2=custom value"').run();
+        executor.withTasks("checkSystemProperty").withEnvironmentVars("GRADLE_OPTS": '-DcustomProp1=custom-value "-DcustomProp2=custom value"').run();
     }
 
     @Requires([UnitTestPreconditions.Unix, IntegTestPreconditions.NotEmbeddedExecutor])
@@ -227,7 +227,7 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
 
         then:
         // the actual testing is done in the build script.
-        executer.withTasks("checkSystemProperty").withEnvironmentVars("GRADLE_OPTS": """
+        executor.withTasks("checkSystemProperty").withEnvironmentVars("GRADLE_OPTS": """
             -DcustomProp1=custom-value
             "-DcustomProp2=custom value"
         """).run();
@@ -240,7 +240,7 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
 
         then:
         // the actual testing is done in the build script.
-        executer.withTasks("checkSystemProperty").withEnvironmentVars("JAVA_OPTS": '-DcustomProp1=custom-value "-DcustomProp2=custom value"').run();
+        executor.withTasks("checkSystemProperty").withEnvironmentVars("JAVA_OPTS": '-DcustomProp1=custom-value "-DcustomProp2=custom value"').run();
     }
 
     def "allows reconfiguring project cache dir with relative directory"() {
@@ -248,7 +248,7 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
         buildFile "task foo { outputs.file file('out'); doLast { } }"
 
         when:
-        executer.withTasks("foo").withArguments("--project-cache-dir", ".foo").run()
+        executor.withTasks("foo").withArguments("--project-cache-dir", ".foo").run()
 
         then:
         assert file(".foo").exists()
@@ -261,7 +261,7 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
         assert someAbsoluteDir.absolute
 
         when:
-        executer.withTasks("foo").withArguments("--project-cache-dir", someAbsoluteDir.toString()).run()
+        executor.withTasks("foo").withArguments("--project-cache-dir", someAbsoluteDir.toString()).run()
 
         then:
         someAbsoluteDir.exists()
@@ -285,7 +285,7 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
         File systemPropGradleUserHomeDir = file("systemPropCustomUserHome")
 
         then:
-        executer
+        executor
             .withOwnUserHomeServices()
             .withGradleUserHomeDir(null)
             .withArguments("-Dgradle.user.home=" + systemPropGradleUserHomeDir.absolutePath)
@@ -301,7 +301,7 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
         script.parentFile.createDir()
         script.createLink(distribution.gradleHomeDir.file('bin/gradle'))
 
-        def result = executer.usingExecutable(script.absolutePath).withTasks("help").run()
+        def result = executor.usingExecutable(script.absolutePath).withTasks("help").run()
 
         then:
         result.output.contains("my app")
@@ -320,7 +320,7 @@ class CommandLineIntegrationTest extends AbstractIntegrationSpec {
         newScript.permissions = 'rwx------'
 
         then:
-        def result = executer.usingExecutable(newScript.absolutePath).withTasks("help").run()
+        def result = executor.usingExecutable(newScript.absolutePath).withTasks("help").run()
         result.output.contains("my app")
 
         cleanup:

@@ -29,7 +29,7 @@ class VersionedPluginUseIntegrationTest extends AbstractIntegrationSpec {
     def pluginBuilder = new PluginBuilder(file(ARTIFACT))
 
     @Rule
-    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     def setup() {
         /*
@@ -42,7 +42,7 @@ class VersionedPluginUseIntegrationTest extends AbstractIntegrationSpec {
         That's why these kind of resolution tests need requireOwnGradleUserHomeDir().
 
          */
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         publishPlugin("1.0")
         publishPlugin("2.0")
     }
@@ -160,6 +160,6 @@ class VersionedPluginUseIntegrationTest extends AbstractIntegrationSpec {
 
     void publishPlugin(String impl, String version) {
         pluginBuilder.addPlugin(impl, PLUGIN_ID, "TestPlugin${version.replace('.', '_')}")
-        pluginBuilder.publishAs(GROUP, ARTIFACT, version, pluginRepo, executer).allowAll()
+        pluginBuilder.publishAs(GROUP, ARTIFACT, version, pluginRepo, executor).allowAll()
     }
 }

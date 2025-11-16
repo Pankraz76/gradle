@@ -19,8 +19,8 @@ package org.gradle.api
 
 import org.gradle.integtests.fixtures.AbstractIntegrationTest
 import org.gradle.integtests.fixtures.ToBeFixedForIsolatedProjects
-import org.gradle.integtests.fixtures.executer.ArtifactBuilder
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ArtifactBuilder
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.fixtures.server.http.HttpServer
 import org.gradle.test.matchers.UserAgentMatcher
@@ -140,7 +140,7 @@ assert 'value' == doStuff.someProp
 
     @Test
     void canFetchScriptViaHttp() {
-        executer.requireOwnGradleUserHomeDir() //we need an empty external resource cache
+        executor.requireOwnGradleUserHomeDir() //we need an empty external resource cache
 
         TestFile script = testFile('external.gradle')
         server.expectUserAgent(UserAgentMatcher.matchesNameAndVersion("Gradle", GradleVersion.current().getVersion()))

@@ -35,7 +35,7 @@ class GroovyParametersMetadataIntegrationTest extends MultiVersionIntegrationSpe
         supportedJvm = GroovyCoverage.ALL_VERSIONS_JVMS[version]
         Assume.assumeNotNull(supportedJvm)
 
-        executer.beforeExecute {
+        executor.beforeExecute {
             withInstallations(supportedJvm)
         }
 

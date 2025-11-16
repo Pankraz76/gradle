@@ -57,8 +57,8 @@ task listJars {
 }
 """
         proxyServer.start()
-        proxyServer.configureProxy(executer)
-        keyStore.configureServerAndClientCerts(executer)
+        proxyServer.configureProxy(executor)
+        keyStore.configureServerAndClientCerts(executor)
     }
 
     def "gives a proper error message when SOCKS proxy is not available"() {

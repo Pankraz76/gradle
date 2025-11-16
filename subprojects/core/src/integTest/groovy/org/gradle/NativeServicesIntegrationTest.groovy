@@ -37,7 +37,7 @@ class NativeServicesIntegrationTest extends AbstractIntegrationSpec {
     @Rule
     final TestNameTestDirectoryProvider tmpDir = new TestNameTestDirectoryProvider(getClass())
 
-    def nativeDir = new File(executer.gradleUserHomeDir, 'native')
+    def nativeDir = new File(executor.gradleUserHomeDir, 'native')
     def library
 
     def setup() {
@@ -48,7 +48,7 @@ class NativeServicesIntegrationTest extends AbstractIntegrationSpec {
 
     def "native services libs are unpacked to gradle user home dir"() {
         given:
-        executer.withArguments('-q')
+        executor.withArguments('-q')
 
         when:
         succeeds("help")
@@ -63,9 +63,9 @@ class NativeServicesIntegrationTest extends AbstractIntegrationSpec {
         given:
         // We set Gradle User Home to a different temporary directory that is outside
         // a project dir to avoid file lock issues on Windows due to native services being loaded
-        executer.withGradleUserHomeDir(tmpDir.testDirectory).withNoExplicitNativeServicesDir()
-        nativeDir = new File(executer.gradleUserHomeDir, 'native')
-        executer.withArguments(systemProperties.collect { it.toString() })
+        executor.withGradleUserHomeDir(tmpDir.testDirectory).withNoExplicitNativeServicesDir()
+        nativeDir = new File(executor.gradleUserHomeDir, 'native')
+        executor.withArguments(systemProperties.collect { it.toString() })
         buildFile << """
             import org.gradle.workers.WorkParameters
 
@@ -104,7 +104,7 @@ class NativeServicesIntegrationTest extends AbstractIntegrationSpec {
     @ToBeImplemented("https://github.com/gradle/gradle/issues/28203")
     def "native services flag should be passed to the daemon and to the worker"() {
         given:
-        executer.withArguments(systemProperties.collect { it.toString() })
+        executor.withArguments(systemProperties.collect { it.toString() })
         buildFile("""
             import org.gradle.workers.WorkParameters
             import org.gradle.internal.nativeintegration.services.NativeServices
@@ -234,18 +234,18 @@ class NativeServicesIntegrationTest extends AbstractIntegrationSpec {
 
     def "daemon with different native services flag is not reused"() {
         given:
-        executer.requireDaemon()
-        executer.requireIsolatedDaemons()
+        executor.requireDaemon()
+        executor.requireIsolatedDaemons()
 
         when:
-        executer.withArguments("-D$NATIVE_SERVICES_OPTION=$firstRunNativeServicesOption")
+        executor.withArguments("-D$NATIVE_SERVICES_OPTION=$firstRunNativeServicesOption")
         succeeds()
 
         then:
         daemons.daemon.becomesIdle()
 
         when:
-        executer.withArguments("-D$NATIVE_SERVICES_OPTION=$secondRunNativeServicesOption")
+        executor.withArguments("-D$NATIVE_SERVICES_OPTION=$secondRunNativeServicesOption")
         succeeds()
 
         then:
@@ -263,7 +263,7 @@ class NativeServicesIntegrationTest extends AbstractIntegrationSpec {
     def "jansi library is unpacked to gradle user home dir and isn't overwritten if existing"() {
         def tempDir = tmpDir.testDirectory.createDir("temp-dir")
         String vmOpt = "-Djava.io.${tempDir}.absolutePath"
-        executer.withBuildJvmOpts(vmOpt)
+        executor.withBuildJvmOpts(vmOpt)
 
         when:
         succeeds("help")
@@ -287,6 +287,6 @@ class NativeServicesIntegrationTest extends AbstractIntegrationSpec {
     }
 
     private DaemonLogsAnalyzer getDaemons() {
-        new DaemonLogsAnalyzer(executer.daemonBaseDir)
+        new DaemonLogsAnalyzer(executor.daemonBaseDir)
     }
 }

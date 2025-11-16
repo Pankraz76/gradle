@@ -17,8 +17,8 @@
 package org.gradle.api.internal.tasks.execution;
 
 import org.gradle.api.internal.TaskInternal;
-import org.gradle.api.internal.tasks.TaskExecuter;
-import org.gradle.api.internal.tasks.TaskExecuterResult;
+import org.gradle.api.internal.tasks.TaskExecutor;
+import org.gradle.api.internal.tasks.TaskExecutorResult;
 import org.gradle.api.internal.tasks.TaskExecutionContext;
 import org.gradle.api.internal.tasks.TaskStateInternal;
 import org.gradle.api.logging.Logger;
@@ -33,14 +33,14 @@ import org.gradle.internal.operations.BuildOperationRunner;
 import org.gradle.internal.operations.CallableBuildOperation;
 
 @SuppressWarnings("deprecation")
-public class EventFiringTaskExecuter implements TaskExecuter {
+public class EventFiringTaskExecutor implements TaskExecutor {
 
     private final BuildOperationRunner buildOperationRunner;
     private final org.gradle.api.execution.TaskExecutionListener taskExecutionListener;
     private final TaskListenerInternal taskListener;
-    private final TaskExecuter delegate;
+    private final TaskExecutor delegate;
 
-    public EventFiringTaskExecuter(BuildOperationRunner buildOperationRunner, org.gradle.api.execution.TaskExecutionListener taskExecutionListener, TaskListenerInternal taskListener, TaskExecuter delegate) {
+    public EventFiringTaskExecutor(BuildOperationRunner buildOperationRunner, org.gradle.api.execution.TaskExecutionListener taskExecutionListener, TaskListenerInternal taskListener, TaskExecutor delegate) {
         this.buildOperationRunner = buildOperationRunner;
         this.taskExecutionListener = taskExecutionListener;
         this.taskListener = taskListener;
@@ -48,17 +48,17 @@ public class EventFiringTaskExecuter implements TaskExecuter {
     }
 
     @Override
-    public TaskExecuterResult execute(final TaskInternal task, final TaskStateInternal state, final TaskExecutionContext context) {
-        return buildOperationRunner.call(new CallableBuildOperation<TaskExecuterResult>() {
+    public TaskExecutorResult execute(final TaskInternal task, final TaskStateInternal state, final TaskExecutionContext context) {
+        return buildOperationRunner.call(new CallableBuildOperation<TaskExecutorResult>() {
             @Override
-            public TaskExecuterResult call(BuildOperationContext operationContext) {
-                TaskExecuterResult result = executeTask(operationContext);
+            public TaskExecutorResult call(BuildOperationContext operationContext) {
+                TaskExecutorResult result = executeTask(operationContext);
                 operationContext.setStatus(state.getFailure() != null ? "FAILED" : state.getSkipMessage());
                 operationContext.failed(state.getFailure());
                 return result;
             }
 
-            private TaskExecuterResult executeTask(BuildOperationContext operationContext) {
+            private TaskExecutorResult executeTask(BuildOperationContext operationContext) {
                 Logger logger = task.getLogger();
                 ContextAwareTaskLogger contextAwareTaskLogger = null;
                 try {
@@ -71,10 +71,10 @@ public class EventFiringTaskExecuter implements TaskExecuter {
                     }
                 } catch (Throwable t) {
                     state.setOutcome(new TaskExecutionException(task, t));
-                    return TaskExecuterResult.WITHOUT_OUTPUTS;
+                    return TaskExecutorResult.WITHOUT_OUTPUTS;
                 }
 
-                TaskExecuterResult result = delegate.execute(task, state, context);
+                TaskExecutorResult result = delegate.execute(task, state, context);
 
                 if (contextAwareTaskLogger != null) {
                     contextAwareTaskLogger.setFallbackBuildOperationId(null);

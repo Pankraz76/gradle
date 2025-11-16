@@ -126,7 +126,7 @@ class UserInputHandlingIntegrationTest extends AbstractUserInputHandlerIntegrati
         interactiveExecution()
 
         when:
-        def gradleHandle = executer.withTasks("askYesNo").start()
+        def gradleHandle = executor.withTasks("askYesNo").start()
 
         then:
         poll(INTERACTIVE_WAIT_TIME_SECONDS) {
@@ -199,7 +199,7 @@ class UserInputHandlingIntegrationTest extends AbstractUserInputHandlerIntegrati
         interactiveExecution()
 
         when:
-        def gradleHandle = executer.withTasks("askBoolean").start()
+        def gradleHandle = executor.withTasks("askBoolean").start()
 
         then:
         poll(INTERACTIVE_WAIT_TIME_SECONDS) {
@@ -304,7 +304,7 @@ class UserInputHandlingIntegrationTest extends AbstractUserInputHandlerIntegrati
         interactiveExecution()
 
         when:
-        def gradleHandle = executer.withTasks("selectOption").start()
+        def gradleHandle = executor.withTasks("selectOption").start()
 
         then:
         poll(INTERACTIVE_WAIT_TIME_SECONDS) {
@@ -455,7 +455,7 @@ class UserInputHandlingIntegrationTest extends AbstractUserInputHandlerIntegrati
 
     void runWithInput(String task, String prompt, String input) {
         interactiveExecution()
-        def gradleHandle = executer.withTasks(task).start()
+        def gradleHandle = executor.withTasks(task).start()
         poll(INTERACTIVE_WAIT_TIME_SECONDS) {
             assert gradleHandle.standardOutput.contains(prompt)
         }
@@ -466,7 +466,7 @@ class UserInputHandlingIntegrationTest extends AbstractUserInputHandlerIntegrati
 
     void runWithInterruptedInput(String task) {
         interactiveExecution()
-        def gradleHandle = executer.withTasks(task).start()
+        def gradleHandle = executor.withTasks(task).start()
         writeToStdInAndClose(gradleHandle, EOF)
         result = gradleHandle.waitForFinish()
     }

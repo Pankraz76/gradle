@@ -24,7 +24,7 @@ import static org.gradle.testing.fixture.JUnitCoverage.LATEST_JUPITER_VERSION
 
 class JUnitPlatformIntegrationSpec extends AbstractIntegrationSpec implements VerifiesGenericTestReportResults {
     def setup() {
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         buildScriptWithJupiterDependencies("""
             test {
                 useJUnitPlatform()

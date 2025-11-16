@@ -23,10 +23,10 @@ import spock.lang.Issue
 
 class BuildInitializationBuildOperationsIntegrationTest extends AbstractIntegrationSpec {
 
-    final buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+    final buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
     @SuppressWarnings("GroovyUnusedDeclaration")
-    final operationNotificationsFixture = new BuildOperationNotificationsFixture(executer, temporaryFolder)
+    final operationNotificationsFixture = new BuildOperationNotificationsFixture(executor, temporaryFolder)
 
     def "build operations are fired and build path is exposed"() {
         buildFile << """
@@ -323,7 +323,7 @@ class BuildInitializationBuildOperationsIntegrationTest extends AbstractIntegrat
                 }
             }
         """
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         expect:
         succeeds('foo', "--debug")
     }

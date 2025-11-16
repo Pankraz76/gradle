@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.fixtures
 
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.internal.operations.notify.BuildOperationFinishedNotification
 import org.gradle.internal.operations.notify.BuildOperationNotificationListener
 import org.gradle.internal.operations.notify.BuildOperationNotificationListenerRegistrar
@@ -40,10 +40,10 @@ class BuildOperationNotificationsFixture {
     public static final String FIXTURE_SCRIPT_NAME = "injectBuildOpFixture.gradle"
     private final File initScript
 
-    BuildOperationNotificationsFixture(GradleExecuter executer, TestDirectoryProvider projectDir) {
+    BuildOperationNotificationsFixture(GradleExecutor executor, TestDirectoryProvider projectDir) {
         this.initScript = projectDir.testDirectory.file(FIXTURE_SCRIPT_NAME)
         this.initScript.text = injectNotificationListenerBuildLogic()
-        executer.beforeExecute {
+        executor.beforeExecute {
             it.usingInitScript(this.initScript)
         }
     }

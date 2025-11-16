@@ -17,7 +17,7 @@
 package org.gradle.integtests
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.UnexpectedBuildFailure
+import org.gradle.integtests.fixtures.executor.UnexpectedBuildFailure
 import org.gradle.internal.hash.HashCode
 import org.gradle.internal.hash.Hashing
 import org.gradle.test.fixtures.ConcurrentTestUtil
@@ -96,8 +96,8 @@ class WrapperGenerationIntegrationTest extends AbstractIntegrationSpec {
     // Otherwise, investigate.
     def "generated wrapper files are reproducible"() {
         when:
-        executer.inDirectory(file("first")).withTasks("wrapper").run()
-        executer.inDirectory(file("second")).withTasks("wrapper").run()
+        executor.inDirectory(file("first")).withTasks("wrapper").run()
+        executor.inDirectory(file("second")).withTasks("wrapper").run()
 
         then: "the checksum should be constant (unless there are code changes)"
         Hashing.sha256().hashFile(file("first/gradle/wrapper/gradle-wrapper.jar")) == EXPECTED_WRAPPER_JAR_HASH

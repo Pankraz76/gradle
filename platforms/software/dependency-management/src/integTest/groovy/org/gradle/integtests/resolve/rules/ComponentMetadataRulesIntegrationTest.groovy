@@ -317,7 +317,7 @@ dependencies {
         }
 
         then:
-        executer.expectDocumentedDeprecationWarning("The ComponentMetadataHandler.all(Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
+        executor.expectDocumentedDeprecationWarning("The ComponentMetadataHandler.all(Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
         succeeds 'resolve'
     }
 
@@ -401,8 +401,8 @@ dependencies {
         }
 
         then:
-        executer.expectDocumentedDeprecationWarning("The ComponentMetadataHandler.withModule(Object,Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
-        executer.expectDocumentedDeprecationWarning("The ComponentMetadataHandler.withModule(Object,Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
+        executor.expectDocumentedDeprecationWarning("The ComponentMetadataHandler.withModule(Object,Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
+        executor.expectDocumentedDeprecationWarning("The ComponentMetadataHandler.withModule(Object,Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
 
         succeeds 'resolve'
     }
@@ -422,11 +422,11 @@ dependencies {
         """
 
         when:
-        executer.expectDocumentedDeprecationWarning("The ComponentMetadataHandler.all(Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
+        executor.expectDocumentedDeprecationWarning("The ComponentMetadataHandler.all(Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
         fails "resolve"
 
         then:
-        executer.expectDocumentedDeprecationWarning("The ComponentMetadataHandler.all(Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
+        executor.expectDocumentedDeprecationWarning("The ComponentMetadataHandler.all(Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
         fails 'resolveConf'
         failureDescriptionStartsWith("A problem occurred evaluating root project")
         failure.assertHasCause("""Type BadRuleSource is not a valid rule source:

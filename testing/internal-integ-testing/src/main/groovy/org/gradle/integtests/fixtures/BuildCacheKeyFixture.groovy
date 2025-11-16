@@ -21,8 +21,8 @@ import org.gradle.api.internal.tasks.SnapshotTaskInputsBuildOperationType
 import org.gradle.api.internal.tasks.execution.ExecuteTaskBuildOperationType
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
-import org.gradle.integtests.fixtures.executer.GradleExecuter
-import org.gradle.integtests.fixtures.executer.UserInitScriptExecuterFixture
+import org.gradle.integtests.fixtures.executor.GradleExecutor
+import org.gradle.integtests.fixtures.executor.UserInitScriptExecutorFixture
 import org.gradle.internal.build.event.BuildEventListenerRegistryInternal
 import org.gradle.internal.hash.HashCode
 import org.gradle.internal.operations.BuildOperationDescriptor
@@ -35,12 +35,12 @@ import org.gradle.test.fixtures.file.TestDirectoryProvider
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.util.internal.TextUtil
 
-class BuildCacheKeyFixture extends UserInitScriptExecuterFixture {
+class BuildCacheKeyFixture extends UserInitScriptExecutorFixture {
 
     Map<String, HashCode> buildCacheKeys = [:]
 
-    BuildCacheKeyFixture(GradleExecuter executer, TestDirectoryProvider testDir) {
-        super(executer, testDir)
+    BuildCacheKeyFixture(GradleExecutor executor, TestDirectoryProvider testDir) {
+        super(executor, testDir)
     }
 
     private TestFile getFile() {

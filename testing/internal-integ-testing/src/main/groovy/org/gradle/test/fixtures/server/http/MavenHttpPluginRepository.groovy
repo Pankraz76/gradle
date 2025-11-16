@@ -17,7 +17,7 @@ package org.gradle.test.fixtures.server.http
 
 import org.gradle.api.Action
 import org.gradle.api.internal.artifacts.BaseRepositoryFactory
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.test.fixtures.maven.MavenFileRepository
 import org.gradle.util.internal.ConfigureUtil
 import org.junit.rules.TestRule
@@ -32,9 +32,9 @@ import static org.gradle.test.fixtures.plugin.PluginBuilder.PLUGIN_MARKER_SUFFIX
 class MavenHttpPluginRepository extends MavenHttpRepository implements HttpPluginRepository, TestRule {
     public static final String PLUGIN_PORTAL_OVERRIDE_URL_PROPERTY = BaseRepositoryFactory.PLUGIN_PORTAL_OVERRIDE_URL_PROPERTY
 
-    static MavenHttpPluginRepository asGradlePluginPortal(GradleExecuter executer, MavenFileRepository backingRepository) {
+    static MavenHttpPluginRepository asGradlePluginPortal(GradleExecutor executor, MavenFileRepository backingRepository) {
         MavenHttpPluginRepository pluginRepo = new MavenHttpPluginRepository(backingRepository)
-        pluginRepo.configure(executer)
+        pluginRepo.configure(executor)
         return pluginRepo
     }
 
@@ -42,15 +42,15 @@ class MavenHttpPluginRepository extends MavenHttpRepository implements HttpPlugi
         super(new HttpServer(), "/m2", backingRepository)
     }
 
-    public <T extends GradleExecuter> T configure(T executer) {
-        executer.beforeExecute(new Action<GradleExecuter>() {
-            void execute(GradleExecuter e) {
+    public <T extends GradleExecutor> T configure(T executor) {
+        executor.beforeExecute(new Action<GradleExecutor>() {
+            void execute(GradleExecutor e) {
                 if (server.running) {
                     e.withArgument("-D${PLUGIN_PORTAL_OVERRIDE_URL_PROPERTY}=${uri.toString()}")
                 }
             }
         })
-        executer
+        executor
     }
 
 

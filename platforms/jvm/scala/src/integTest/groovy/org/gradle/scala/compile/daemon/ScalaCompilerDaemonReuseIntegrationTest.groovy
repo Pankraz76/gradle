@@ -66,7 +66,7 @@ class ScalaCompilerDaemonReuseIntegrationTest extends AbstractCompilerDaemonReus
         assertOneCompilerDaemonIsRunning()
 
         when:
-        executer.withWorkerDaemonsExpirationDisabled()
+        executor.withWorkerDaemonsExpirationDisabled()
         succeeds("clean", "compileAll")
 
         then:
@@ -93,7 +93,7 @@ class ScalaCompilerDaemonReuseIntegrationTest extends AbstractCompilerDaemonReus
         assertOneCompilerDaemonIsRunning()
 
         when:
-        executer.withWorkerDaemonsExpirationDisabled()
+        executor.withWorkerDaemonsExpirationDisabled()
         succeeds("clean", "compileAll")
 
         then:
@@ -122,7 +122,7 @@ class ScalaCompilerDaemonReuseIntegrationTest extends AbstractCompilerDaemonReus
         assertOneCompilerDaemonIsRunning()
 
         when:
-        executer.withWorkerDaemonsExpirationDisabled()
+        executor.withWorkerDaemonsExpirationDisabled()
         succeeds("clean", "child:clean", "compileAll")
 
         then:
@@ -140,7 +140,7 @@ class ScalaCompilerDaemonReuseIntegrationTest extends AbstractCompilerDaemonReus
         withPersistentScalaCompilerDaemons()
 
         when:
-        executer.withEnvironmentVars(['JAVA_MAIN_CLASS_1234': '1234'])
+        executor.withEnvironmentVars(['JAVA_MAIN_CLASS_1234': '1234'])
         succeeds("compileAll")
 
         then:
@@ -150,8 +150,8 @@ class ScalaCompilerDaemonReuseIntegrationTest extends AbstractCompilerDaemonReus
         assertOneCompilerDaemonIsRunning()
 
         when:
-        executer.withWorkerDaemonsExpirationDisabled()
-        executer.withEnvironmentVars(['JAVA_MAIN_CLASS_1234': '5678'])
+        executor.withWorkerDaemonsExpirationDisabled()
+        executor.withEnvironmentVars(['JAVA_MAIN_CLASS_1234': '5678'])
         succeeds("clean", "compileAll")
 
         then:

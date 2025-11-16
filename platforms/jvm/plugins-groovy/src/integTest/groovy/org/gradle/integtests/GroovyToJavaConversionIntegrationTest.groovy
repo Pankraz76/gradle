@@ -41,7 +41,7 @@ class GroovyToJavaConversionIntegrationTest extends AbstractIntegrationSpec {
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "requires to fork a daemon for Class-Decoration")
     def "For every boolean is getter there is a get Getter"() {
         given:
-        executer.requireDaemon().requireIsolatedDaemons() // We need to fork - if we do not fork Class-Decoration does not happen
+        executor.requireDaemon().requireIsolatedDaemons() // We need to fork - if we do not fork Class-Decoration does not happen
 
         when:
         def convertedClasses = this.getClass().getResource( '/org/gradle/initialization/converted-types.txt' ).readLines()

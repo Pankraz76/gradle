@@ -274,7 +274,7 @@ abstract class AbstractPropertyLanguageInterOpIntegrationTest extends AbstractLa
         def otherDir = file("buildSrc/other")
         usesKotlin(file(otherDir))
         // This is because the Kotlin compiler is run in-process (to avoid issues with the Kotlin compiler daemon) and also keeps jars open
-        executer.requireDaemon().requireIsolatedDaemons()
+        executor.requireDaemon().requireIsolatedDaemons()
         otherDir.file("build.gradle.kts") << """
             dependencies {
                 implementation(project(":plugin"))
@@ -306,7 +306,7 @@ abstract class AbstractPropertyLanguageInterOpIntegrationTest extends AbstractLa
 
         when:
         // Due to exception logged by Kotlin plugin
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         run("someTask")
 
         then:

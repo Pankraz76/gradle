@@ -67,7 +67,7 @@ class ResolvingFromMultipleCustomPluginRepositorySpec extends AbstractDependency
         def message = "from ${idSegments.last()} fetched from ${repository.uri}/"
         def taskName = idSegments.last()
         pluginBuilder.addPluginWithPrintlnTask(taskName, message, pluginId, idSegments.last().capitalize())
-        pluginBuilder.publishAs(coordinates, repository, executer)
+        pluginBuilder.publishAs(coordinates, repository, executor)
     }
 
     private def use(Repository... repositories) {

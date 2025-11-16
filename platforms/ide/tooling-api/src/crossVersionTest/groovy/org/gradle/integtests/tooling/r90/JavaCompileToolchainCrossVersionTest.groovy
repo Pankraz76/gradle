@@ -50,7 +50,7 @@ class JavaCompileToolchainCrossVersionTest extends ToolingApiSpecification imple
         when:
         withConnection {
             // To modify environment variables for crossVersion tests is a must to use real daemon processes and not embedded,
-            // otherwise, those are going to be ignored being this different than properties which uses SystemPropertySetterExecuter
+            // otherwise, those are going to be ignored being this different than properties which uses SystemPropertySetterExecutor
             // Also, keeping the whole environment is needed as we play with weird encodings on CI
             it.newBuild().setEnvironmentVariables(System.getenv() + ["OTHER_JAVA_HOME": otherJvm.javaHome.absolutePath])
                 .forTasks(":compileJava").withArguments(

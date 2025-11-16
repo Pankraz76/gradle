@@ -17,8 +17,8 @@ package org.gradle.integtests.resolve.maven
 
 import org.gradle.api.credentials.PasswordCredentials
 import org.gradle.integtests.fixtures.AbstractHttpDependencyResolutionTest
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
-import org.gradle.integtests.fixtures.executer.ProgressLoggingFixture
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
+import org.gradle.integtests.fixtures.executor.ProgressLoggingFixture
 import org.gradle.test.fixtures.encoding.Identifier
 import org.gradle.test.fixtures.server.http.HttpServer
 import org.junit.Rule
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse
 
 class MavenHttpRepoResolveIntegrationTest extends AbstractHttpDependencyResolutionTest {
     @Rule
-    ProgressLoggingFixture progressLogging = new ProgressLoggingFixture(executer, temporaryFolder)
+    ProgressLoggingFixture progressLogging = new ProgressLoggingFixture(executor, temporaryFolder)
 
     def "can resolve and cache dependencies from HTTP Maven repository"() {
         given:
@@ -349,7 +349,7 @@ task retrieve(type: Sync) {
         projectB.artifact.expectGet()
 
         and:
-        executer.withEnvironmentVars(M2_HOME: m2Home.absolutePath)
+        executor.withEnvironmentVars(M2_HOME: m2Home.absolutePath)
         run 'retrieve'
 
         then:
@@ -392,7 +392,7 @@ task retrieve(type: Sync) {
         fails 'retrieve'
 
         then:
-        GradleContextualExecuter.configCache || failure.assertHasDescription("Execution failed for task ':retrieve'.")
+        GradleContextualExecutor.configCache || failure.assertHasDescription("Execution failed for task ':retrieve'.")
         failure.assertHasCause("Could not resolve all files for configuration ':compile'.")
         failure.assertHasCause("Could not resolve org.group.name:projectA:1.2.")
         failure.assertHasCause("Credentials must be an instance of: ${PasswordCredentials.canonicalName}")

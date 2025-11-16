@@ -38,7 +38,7 @@ import org.gradle.test.fixtures.file.TestFile
 
 class ExecuteUserLifecycleListenerBuildOperationIntegrationTest extends AbstractIntegrationSpec {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def initFile = file('init.gradle')
     def subBuildFile = file('sub/build.gradle')

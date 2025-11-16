@@ -23,7 +23,7 @@ import org.gradle.integtests.fixtures.UnsupportedWithConfigurationCache
 
 class ExecuteTaskBuildOperationTypeIntegrationTest extends AbstractIntegrationSpec {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "emits operation for task execution"() {
         when:

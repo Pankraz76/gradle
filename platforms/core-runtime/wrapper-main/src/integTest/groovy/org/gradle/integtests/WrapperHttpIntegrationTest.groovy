@@ -70,7 +70,7 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         if (!userHomeDists.exists() || !userHomeDists.isDirectory()) {
             return false
         }
-        
+
         // Check if there's an actual distribution file (zip or extracted directory with marker)
         def foundDistribution = false
         userHomeDists.eachFileRecurse { file ->
@@ -89,14 +89,14 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.expect(server.get("/$TEST_DISTRIBUTION_URL").sendFile(distribution.binDistribution))
 
         when:
-        def result = wrapperExecuter.withTasks('hello').run()
+        def result = wrapperExecutor.withTasks('hello').run()
 
         then:
         assertThat(result.output, containsString('hello'))
         verifyDistributionDownloaded()
 
         when:
-        result = wrapperExecuter.withTasks('hello').run()
+        result = wrapperExecutor.withTasks('hello').run()
 
         then:
         assertThat(result.output, containsString('hello'))
@@ -110,8 +110,8 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.expect(server.get("/$TEST_DISTRIBUTION_URL").broken())
 
         when:
-        wrapperExecuter.withStackTraceChecksDisabled()
-        def failure = wrapperExecuter.runWithFailure()
+        wrapperExecutor.withStackTraceChecksDisabled()
+        def failure = wrapperExecutor.runWithFailure()
 
         then:
         failure.error.contains('Server returned HTTP response code: 500')
@@ -120,7 +120,7 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.expect(server.get("/$TEST_DISTRIBUTION_URL").sendFile(distribution.binDistribution))
 
         and:
-        wrapperExecuter.run()
+        wrapperExecutor.run()
 
         then:
         noExceptionThrown()
@@ -134,8 +134,8 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.expect(server.get("/$TEST_DISTRIBUTION_URL").missing())
 
         when:
-        wrapperExecuter.withStackTraceChecksDisabled()
-        def failure = wrapperExecuter.runWithFailure()
+        wrapperExecutor.withStackTraceChecksDisabled()
+        def failure = wrapperExecutor.runWithFailure()
 
         then:
         failure.error.contains('Server returned HTTP response code: 404')
@@ -150,8 +150,8 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.expectAndBlock(server.get("/$TEST_DISTRIBUTION_URL"))
 
         when:
-        wrapperExecuter.withStackTraceChecksDisabled()
-        def failure = wrapperExecuter.runWithFailure()
+        wrapperExecutor.withStackTraceChecksDisabled()
+        def failure = wrapperExecutor.runWithFailure()
 
         then:
         failure.assertHasErrorOutput("Downloading from ${getDefaultBaseUrl()}/$TEST_DISTRIBUTION_URL failed: timeout (10000ms)")
@@ -166,8 +166,8 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.expectAndBlock(server.get("/$TEST_DISTRIBUTION_URL"))
 
         when:
-        wrapperExecuter.withStackTraceChecksDisabled()
-        def failure = wrapperExecuter.runWithFailure()
+        wrapperExecutor.withStackTraceChecksDisabled()
+        def failure = wrapperExecutor.runWithFailure()
 
         then:
         failure.assertHasErrorOutput("Downloading from http://localhost:${server.port}/$TEST_DISTRIBUTION_URL failed: timeout (10000ms)")
@@ -186,8 +186,8 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         file('gradle/wrapper/gradle-wrapper.properties') << "networkTimeout=5000"
 
         when:
-        wrapperExecuter.withStackTraceChecksDisabled()
-        def failure = wrapperExecuter.runWithFailure()
+        wrapperExecutor.withStackTraceChecksDisabled()
+        def failure = wrapperExecutor.runWithFailure()
 
         then:
         failure.assertHasErrorOutput("Downloading from http://localhost:${server.port}/$TEST_DISTRIBUTION_URL failed: timeout (5000ms)")
@@ -208,7 +208,7 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
     systemProp.http.nonProxyHosts=
 """
         when:
-        def result = wrapperExecuter.withTasks('hello').run()
+        def result = wrapperExecutor.withTasks('hello').run()
 
         then:
         assertThat(result.output, containsString('hello'))
@@ -234,7 +234,7 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
     systemProp.http.proxyPassword=my_password
 """
         when:
-        def result = wrapperExecuter.withTasks('hello').run()
+        def result = wrapperExecutor.withTasks('hello').run()
 
         then:
         assertThat(result.output, containsString('hello'))
@@ -251,13 +251,13 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.expect(server.get("/$TEST_DISTRIBUTION_URL").sendFile(distribution.binDistribution))
 
         when:
-        result = wrapperExecuter.withTasks('hello').run()
+        result = wrapperExecutor.withTasks('hello').run()
 
         then:
         outputContains('hello')
 
         when:
-        result = wrapperExecuter.withTasks('hello').run()
+        result = wrapperExecutor.withTasks('hello').run()
 
         then:
         outputContains('hello')
@@ -277,7 +277,7 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.expect(server.get("/$TEST_DISTRIBUTION_URL").sendFile(distribution.binDistribution))
 
         when:
-        result = wrapperExecuter.withTasks('hello').run()
+        result = wrapperExecutor.withTasks('hello').run()
 
         then:
         outputContains('hello')
@@ -291,7 +291,7 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.expect(server.get("/$TEST_DISTRIBUTION_URL").sendFile(distribution.binDistribution))
 
         when:
-        result = wrapperExecuter.withTasks('hello').run()
+        result = wrapperExecutor.withTasks('hello').run()
 
         then:
         outputContains('Please consider using HTTPS')
@@ -305,7 +305,7 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.expect(server.get("/$TEST_DISTRIBUTION_URL").sendFile(distribution.binDistribution))
 
         when:
-        def result = wrapperExecuter.withTasks('hello').run()
+        def result = wrapperExecutor.withTasks('hello').run()
 
         then:
         result.assertNotOutput('changeit')
@@ -318,7 +318,7 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.expect(server.get("/$TEST_DISTRIBUTION_URL").broken())
 
         when:
-        wrapperExecuter.withTasks('hello').run()
+        wrapperExecutor.withTasks('hello').run()
 
         then:
         def exception = thrown(Exception)
@@ -345,7 +345,7 @@ class WrapperHttpIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.expect(server.get("/$TEST_DISTRIBUTION_URL").sendFile(distribution.binDistribution))
 
         when:
-        result = wrapperExecuter.withTasks('hello').run()
+        result = wrapperExecutor.withTasks('hello').run()
 
         then:
         outputContains('hello')

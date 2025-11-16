@@ -33,7 +33,7 @@ class SamplesMixedJavaAndScalaIntegrationTest extends AbstractIntegrationSpec {
     @Rule public final Sample sample = new Sample(testDirectoryProvider, 'scala/mixedJavaAndScala')
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     def "can build jar"() {
@@ -41,7 +41,7 @@ class SamplesMixedJavaAndScalaIntegrationTest extends AbstractIntegrationSpec {
 
         // Build and test projects
         when:
-        executer.inDirectory(projectDir).withTasks('clean', 'build').run()
+        executor.inDirectory(projectDir).withTasks('clean', 'build').run()
 
         // Check tests have run
         then:
@@ -65,7 +65,7 @@ class SamplesMixedJavaAndScalaIntegrationTest extends AbstractIntegrationSpec {
         TestFile projectDir = sample.dir.file('groovy')
 
         when:
-        executer.inDirectory(projectDir).withTasks('clean', 'javadoc', 'scaladoc').run()
+        executor.inDirectory(projectDir).withTasks('clean', 'javadoc', 'scaladoc').run()
 
         then:
         TestFile javadocsDir = projectDir.file("build/docs/javadoc")

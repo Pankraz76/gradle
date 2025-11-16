@@ -17,8 +17,8 @@
 package org.gradle.api.internal.tasks.execution;
 
 import org.gradle.api.internal.TaskInternal;
-import org.gradle.api.internal.tasks.TaskExecuter;
-import org.gradle.api.internal.tasks.TaskExecuterResult;
+import org.gradle.api.internal.tasks.TaskExecutor;
+import org.gradle.api.internal.tasks.TaskExecutorResult;
 import org.gradle.api.internal.tasks.TaskExecutionContext;
 import org.gradle.api.internal.tasks.TaskStateInternal;
 import org.gradle.api.internal.tasks.properties.LifecycleAwareValue;
@@ -29,21 +29,21 @@ import org.gradle.api.internal.tasks.properties.TaskProperties;
  *
  * Currently, this is applied prior to validation, so that all properties are finalized before their value is validated, however we should finalize and validate any property whose value is used to finalize the value of another property.
  */
-public class FinalizePropertiesTaskExecuter implements TaskExecuter {
-    private final TaskExecuter taskExecuter;
+public class FinalizePropertiesTaskExecutor implements TaskExecutor {
+    private final TaskExecutor taskExecutor;
 
-    public FinalizePropertiesTaskExecuter(TaskExecuter taskExecuter) {
-        this.taskExecuter = taskExecuter;
+    public FinalizePropertiesTaskExecutor(TaskExecutor taskExecutor) {
+        this.taskExecutor = taskExecutor;
     }
 
     @Override
-    public TaskExecuterResult execute(TaskInternal task, TaskStateInternal state, TaskExecutionContext context) {
+    public TaskExecutorResult execute(TaskInternal task, TaskStateInternal state, TaskExecutionContext context) {
         TaskProperties properties = context.getTaskProperties();
         for (LifecycleAwareValue value : properties.getLifecycleAwareValues()) {
             value.prepareValue();
         }
         try {
-            return taskExecuter.execute(task, state, context);
+            return taskExecutor.execute(task, state, context);
         } finally {
             for (LifecycleAwareValue value : properties.getLifecycleAwareValues()) {
                 value.cleanupValue();

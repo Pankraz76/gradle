@@ -32,13 +32,13 @@ abstract class EnvVariableInjection extends BuildInputInjection {
 
             @Override
             void setup(AbstractConfigurationCacheIntegrationTest test) {
-                test.executer.withEnvironmentVars(variables)
+                test.executor.withEnvironmentVars(variables)
             }
         }
     }
 
     static void checkEnvironmentVariableUnset(String key) {
-        // We can't "unset" the variable with the API executer provides, but it isn't necessary, thanks to the filtering in
+        // We can't "unset" the variable with the API executor provides, but it isn't necessary, thanks to the filtering in
         // build-logic/jvm/src/main/kotlin/gradlebuild/propagated-env-variables.kt
         if (System.getenv().containsKey(key)) {
             throw new IllegalStateException("Environment variable $key is present for this process and may affect tests")

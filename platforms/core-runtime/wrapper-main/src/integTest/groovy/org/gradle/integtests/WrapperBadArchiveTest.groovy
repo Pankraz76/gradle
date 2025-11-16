@@ -16,7 +16,7 @@
 
 package org.gradle.integtests
 
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
 import org.gradle.test.precondition.Requires
@@ -50,7 +50,7 @@ class WrapperBadArchiveTest extends AbstractWrapperIntegrationSpec {
         prepareWrapperWithGradleBin()
 
         when:
-        def success = wrapperExecuter.run()
+        def success = wrapperExecutor.run()
 
         then:
         assertSucces(success)
@@ -72,7 +72,7 @@ class WrapperBadArchiveTest extends AbstractWrapperIntegrationSpec {
         prepareWrapperWithGradleBin()
 
         when:
-        def success = wrapperExecuter.run()
+        def success = wrapperExecutor.run()
 
         then:
         assertSucces(success)
@@ -94,7 +94,7 @@ class WrapperBadArchiveTest extends AbstractWrapperIntegrationSpec {
         prepareWrapperWithGradleBin()
 
         when:
-        def failure = wrapperExecuter
+        def failure = wrapperExecutor
             .withStackTraceChecksDisabled()
             .runWithFailure()
 
@@ -113,7 +113,7 @@ class WrapperBadArchiveTest extends AbstractWrapperIntegrationSpec {
         prepareWrapperWithGradleBin()
 
         when:
-        def success = wrapperExecuter.run()
+        def success = wrapperExecutor.run()
 
         then:
         assertSucces(success)

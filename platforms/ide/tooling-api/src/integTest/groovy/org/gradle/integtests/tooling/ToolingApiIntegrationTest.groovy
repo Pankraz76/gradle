@@ -19,7 +19,7 @@ import org.gradle.api.logging.LogLevel
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.RepoScriptBlockUtil
 import org.gradle.integtests.fixtures.OtherGradleVersionFixture
-import org.gradle.integtests.fixtures.executer.GradleHandle
+import org.gradle.integtests.fixtures.executor.GradleHandle
 import org.gradle.integtests.tooling.fixture.TextUtil
 import org.gradle.integtests.tooling.fixture.ToolingApi
 import org.gradle.internal.time.CountdownTimer
@@ -128,7 +128,7 @@ class ToolingApiIntegrationTest extends AbstractIntegrationSpec implements Other
             }
         }"""
         otherVersion.binDistribution.makeReadable()
-        executer.withTasks('wrapper').run()
+        executor.withTasks('wrapper').run()
 
         when:
         toolingApi.withConnector { connector ->
@@ -150,7 +150,7 @@ class ToolingApiIntegrationTest extends AbstractIntegrationSpec implements Other
         """
         projectDir.file('child').createDir()
         otherVersion.binDistribution.makeReadable()
-        executer.withTasks('wrapper').run()
+        executor.withTasks('wrapper').run()
 
         when:
         toolingApi.withConnector { connector ->
@@ -212,7 +212,7 @@ class ToolingApiIntegrationTest extends AbstractIntegrationSpec implements Other
         def stopTimeoutMs = 10000
         def retryIntervalMs = 500
 
-        def gradleUserHomeDirPath = executer.gradleUserHomeDir.absolutePath
+        def gradleUserHomeDirPath = executor.gradleUserHomeDir.absolutePath
         def gradleHomeDirPath = otherVersion.gradleHomeDir.absolutePath
 
         buildFile << """
@@ -311,7 +311,7 @@ class ToolingApiIntegrationTest extends AbstractIntegrationSpec implements Other
         """
 
         when:
-        GradleHandle handle = executer.inDirectory(projectDir)
+        GradleHandle handle = executor.inDirectory(projectDir)
             .withTasks('run')
             .start()
 

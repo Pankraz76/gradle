@@ -67,12 +67,12 @@ class JavaToolchainDownloadSoakTest extends AbstractIntegrationSpec {
 
         file("src/main/java/Foo.java") << "public class Foo {}"
 
-        executer.requireOwnGradleUserHomeDir("needs to test toolchain download functionality")
+        executor.requireOwnGradleUserHomeDir("needs to test toolchain download functionality")
                 .withToolchainDownloadEnabled()
     }
 
     def cleanup() {
-        executer.gradleUserHomeDir.file("jdks").deleteDir()
+        executor.gradleUserHomeDir.file("jdks").deleteDir()
     }
 
     def "can download missing jdk automatically"() {
@@ -93,7 +93,7 @@ class JavaToolchainDownloadSoakTest extends AbstractIntegrationSpec {
 
         when: "the marker file of the auto-provisioned JDK is deleted, making the JDK not detectable"
         //delete marker file to make the previously downloaded installation undetectable
-        def markerFile = findMarkerFile(executer.gradleUserHomeDir.file("jdks"))
+        def markerFile = findMarkerFile(executor.gradleUserHomeDir.file("jdks"))
         markerFile.delete()
         assert !markerFile.exists()
 
@@ -118,14 +118,14 @@ class JavaToolchainDownloadSoakTest extends AbstractIntegrationSpec {
 
         then: "build runs again, uses previously auto-provisioned toolchain and warns about toolchain repositories not being configured"
         def toolchainName = AvailableJavaHomes.getJvmInstallationMetadata(EXPECTED_JVM).displayName
-        executer.expectDocumentedDeprecationWarning("Using toolchain '${toolchainName}' installed via auto-provisioning without toolchain repositories. This behavior has been deprecated. This will fail with an error in Gradle 10. Builds may fail when this toolchain is not available in other environments. Add toolchain repositories to this build. For more information, please refer to https://docs.gradle.org/current/userguide/toolchains.html#sub:download_repositories in the Gradle documentation.")
+        executor.expectDocumentedDeprecationWarning("Using toolchain '${toolchainName}' installed via auto-provisioning without toolchain repositories. This behavior has been deprecated. This will fail with an error in Gradle 10. Builds may fail when this toolchain is not available in other environments. Add toolchain repositories to this build. For more information, please refer to https://docs.gradle.org/current/userguide/toolchains.html#sub:download_repositories in the Gradle documentation.")
         succeeds("compileJava", "-Dorg.gradle.java.installations.auto-detect=false", "-Dorg.gradle.java.installations.auto-download=true")
     }
 
     @Requires(value = [IntegTestPreconditions.JavaHomeWithDifferentVersionAvailable])
     def "toolchain download can handle different jvms with the same archive name"() {
         when:
-        executer.requireOwnGradleUserHomeDir("needs to test toolchain download functionality").withToolchainDownloadEnabled()
+        executor.requireOwnGradleUserHomeDir("needs to test toolchain download functionality").withToolchainDownloadEnabled()
         succeeds("compileJava")
 
         then: "suitable JDK gets auto-provisioned"
@@ -148,7 +148,7 @@ class JavaToolchainDownloadSoakTest extends AbstractIntegrationSpec {
         """
 
         and:
-        executer.requireOwnGradleUserHomeDir("needs to test toolchain download functionality").withToolchainDownloadEnabled()
+        executor.requireOwnGradleUserHomeDir("needs to test toolchain download functionality").withToolchainDownloadEnabled()
         succeeds("compileJava")
 
         then: "another suitable JDK gets auto-provisioned"
@@ -161,19 +161,19 @@ class JavaToolchainDownloadSoakTest extends AbstractIntegrationSpec {
     @Requires(value = [IntegTestPreconditions.JavaHomeWithDifferentVersionAvailable])
     def "toolchain download can handle corrupted archive"() {
         when:
-        executer.requireOwnGradleUserHomeDir("needs to test toolchain download functionality").withToolchainDownloadEnabled()
+        executor.requireOwnGradleUserHomeDir("needs to test toolchain download functionality").withToolchainDownloadEnabled()
         succeeds("compileJava")
 
         then: "suitable JDK gets auto-provisioned"
         assertJdkWasDownloaded()
 
         when:
-        executer.gradleUserHomeDir.file("jdks")
+        executor.gradleUserHomeDir.file("jdks")
             .listFiles({ file -> file.name.endsWith(".zip") } as FileFilter)
             .each { it.text = "corrupted data" }
 
         // delete unpacked JDKs
-        executer.gradleUserHomeDir.file("jdks")
+        executor.gradleUserHomeDir.file("jdks")
             .listFiles({ file -> file.isDirectory() } as FileFilter)
             .each { it.deleteDir() }
 
@@ -183,10 +183,10 @@ class JavaToolchainDownloadSoakTest extends AbstractIntegrationSpec {
         file("src/main/java/Bar.java") << "public class Bar {}"
 
         and:
-        executer
+        executor
             .requireOwnGradleUserHomeDir("needs to test toolchain download functionality")
             .withToolchainDownloadEnabled()
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         succeeds("compileJava", "--info")
 
         then:
@@ -196,7 +196,7 @@ class JavaToolchainDownloadSoakTest extends AbstractIntegrationSpec {
     }
 
     private void assertJdkWasDownloaded(Jvm jvm = EXPECTED_JVM) {
-        assert executer.gradleUserHomeDir.file("jdks").listFiles({ file ->
+        assert executor.gradleUserHomeDir.file("jdks").listFiles({ file ->
             file.name.contains("-${jvm.javaVersion.majorVersion}-")
         } as FileFilter)
     }

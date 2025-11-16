@@ -30,7 +30,7 @@ class SamplesAntImportIntegrationTest extends AbstractSampleIntegrationTest {
     def "can import an Ant build and reconfigure its tasks (#dsl)"() {
         given: "A sample project with an Ant build"
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         def result = succeeds('clean', 'assemble')
@@ -50,7 +50,7 @@ class SamplesAntImportIntegrationTest extends AbstractSampleIntegrationTest {
     def "can copy file and flatDir dependencies (#dsl)"() {
         given: "A sample Java project with file and flatDir dependencies"
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('retrieveRuntimeDependencies')
@@ -68,7 +68,7 @@ class SamplesAntImportIntegrationTest extends AbstractSampleIntegrationTest {
     def "can use task properties to link tasks (#dsl)"() {
         given: "A sample Java project"
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('javadocJar', 'unpackJavadocs')
@@ -84,7 +84,7 @@ class SamplesAntImportIntegrationTest extends AbstractSampleIntegrationTest {
     def "can link projects in a multi-project build via task dependencies (#dsl)"() {
         given: "A sample multi-project build"
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         def result = succeeds(':web:build')

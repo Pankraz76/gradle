@@ -19,10 +19,10 @@ package org.gradle.tooling;
 /**
  * Used to execute a {@link BuildAction} in the build process.
  *
- * @param <T> The type of result produced by this executer.
+ * @param <T> The type of result produced by this executor.
  * @since 1.8
  */
-public interface BuildActionExecuter<T> extends ConfigurableLauncher<BuildActionExecuter<T>> {
+public interface BuildActionExecutor<T> extends ConfigurableLauncher<BuildActionExecutor<T>> {
     /**
      * Builder for a build action that hooks into different phases of the build.
      *
@@ -61,11 +61,11 @@ public interface BuildActionExecuter<T> extends ConfigurableLauncher<BuildAction
         <T> Builder buildFinished(BuildAction<T> buildAction, IntermediateResultHandler<? super T> handler) throws IllegalArgumentException;
 
         /**
-         * Builds the executer from the added actions.
+         * Builds the executor from the added actions.
          *
-         * @return The executer.
+         * @return The executor.
          */
-        BuildActionExecuter<Void> build();
+        BuildActionExecutor<Void> build();
     }
 
     /**
@@ -88,7 +88,7 @@ public interface BuildActionExecuter<T> extends ConfigurableLauncher<BuildAction
      * @return this
      * @since 3.5
      */
-    BuildActionExecuter<T> forTasks(String... tasks);
+    BuildActionExecutor<T> forTasks(String... tasks);
 
     /**
      * <p>Specifies the tasks to execute before executing the BuildAction.</p>
@@ -102,7 +102,7 @@ public interface BuildActionExecuter<T> extends ConfigurableLauncher<BuildAction
      * @return this
      * @since 3.5
      */
-    BuildActionExecuter<T> forTasks(Iterable<String> tasks);
+    BuildActionExecutor<T> forTasks(Iterable<String> tasks);
 
     /**
      * Runs the action, blocking until its result is available.

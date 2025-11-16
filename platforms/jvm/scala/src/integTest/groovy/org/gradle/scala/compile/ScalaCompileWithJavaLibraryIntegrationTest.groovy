@@ -28,7 +28,7 @@ class ScalaCompileWithJavaLibraryIntegrationTest extends AbstractIntegrationSpec
     @Rule TestResources resources = new TestResources(temporaryFolder)
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     def javaLibraryCanDependOnScalaLibraryProject() {

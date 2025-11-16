@@ -16,7 +16,7 @@
 
 
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 import org.gradle.integtests.fixtures.logging.ArtifactResolutionOmittingOutputNormalizer
 import org.gradle.internal.SystemProperties

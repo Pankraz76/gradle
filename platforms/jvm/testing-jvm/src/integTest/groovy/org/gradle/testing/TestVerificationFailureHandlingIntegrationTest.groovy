@@ -123,7 +123,7 @@ class TestVerificationFailureHandlingIntegrationTest extends AbstractIntegration
      * Cause the test VM to fail at startup by providing an invalid JVM argument.
      */
     def withFatalTestExecutionError() {
-        executer.withStackTraceChecksDisabled() // ignore additional ST
+        executor.withStackTraceChecksDisabled() // ignore additional ST
         withPassingTest()
         buildFile << '''
             tasks.named('test', Test).configure {

@@ -26,8 +26,8 @@ class JavaExecWithLongCommandLineIntegrationTest extends AbstractIntegrationSpec
     def veryLongFileNames = getLongCommandLine()
 
     def setup() {
-        executer.requireIsolatedDaemons()
-        executer.requireOwnGradleUserHomeDir("It generates {GRADLE_USER_HOME}/.tmp/gradle-javaexec-classpathXXXX.jar (https://github.com/gradle/gradle-private/issues/4587)")
+        executor.requireIsolatedDaemons()
+        executor.requireOwnGradleUserHomeDir("It generates {GRADLE_USER_HOME}/.tmp/gradle-javaexec-classpathXXXX.jar (https://github.com/gradle/gradle-private/issues/4587)")
 
         file("src/main/java/Driver.java") << """
             package driver;

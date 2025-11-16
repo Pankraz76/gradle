@@ -16,8 +16,8 @@
 
 package org.gradle.internal.cc.impl
 
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
 import org.gradle.test.preconditions.UnitTestPreconditions
@@ -111,7 +111,7 @@ class ConfigurationCacheTestKitIntegrationTest extends AbstractConfigurationCach
         settingsFile << """rootProject.name = 'root'"""
 
         when:
-        executer.inDirectory(file("included")).withTasks("jar").run()
+        executor.inDirectory(file("included")).withTasks("jar").run()
         def runner = GradleRunner.create()
             .withDebug(true)
             .withArguments("--configuration-cache", "-Dmy.property=my.value", "-i")

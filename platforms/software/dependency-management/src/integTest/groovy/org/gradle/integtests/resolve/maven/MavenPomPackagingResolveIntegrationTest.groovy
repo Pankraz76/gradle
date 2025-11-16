@@ -146,7 +146,7 @@ if (project.hasProperty('skipCache')) {
         snapshotA.artifact.expectGet()
 
         and:
-        executer.withArgument('-PskipCache')
+        executor.withArgument('-PskipCache')
         run 'retrieve'
 
         then:
@@ -161,7 +161,7 @@ if (project.hasProperty('skipCache')) {
         snapshotA.artifact.expectHeadMissing()
 
         and:
-        executer.withArgument('-PskipCache')
+        executor.withArgument('-PskipCache')
         run 'retrieve'
 
         then:

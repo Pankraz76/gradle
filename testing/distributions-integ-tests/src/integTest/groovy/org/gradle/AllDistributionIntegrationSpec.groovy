@@ -28,7 +28,7 @@ class AllDistributionIntegrationSpec extends DistributionIntegrationSpec {
     @Shared String version = buildContext.distZipVersion.version
 
     def setup() {
-        executer.requireOwnGradleUserHomeDir().requireIsolatedDaemons()
+        executor.requireOwnGradleUserHomeDir().requireIsolatedDaemons()
     }
 
     @Override

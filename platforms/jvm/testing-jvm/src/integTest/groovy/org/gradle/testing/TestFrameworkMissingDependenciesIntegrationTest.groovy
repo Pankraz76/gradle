@@ -145,7 +145,7 @@ class TestFrameworkMissingDependenciesIntegrationTest extends AbstractIntegratio
             }
         """
 
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
 
         when:
         fails('test')
@@ -200,6 +200,6 @@ class TestFrameworkMissingDependenciesIntegrationTest extends AbstractIntegratio
 
     def setup() {
         // To support testing on Windows, where additional (irrelevant) stack traces may be generated from worker failures
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
     }
 }

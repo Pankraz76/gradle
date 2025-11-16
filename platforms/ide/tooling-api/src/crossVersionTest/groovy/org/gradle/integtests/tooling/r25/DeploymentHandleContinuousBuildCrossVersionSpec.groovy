@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.tooling.r25
 
-import org.gradle.integtests.fixtures.executer.GradleVersions
+import org.gradle.integtests.fixtures.executor.GradleVersions
 import org.gradle.integtests.tooling.fixture.ContinuousBuildToolingApiSpecification
 import org.gradle.integtests.tooling.fixture.TargetGradleVersion
 import org.gradle.test.fixtures.TestDeploymentFixture

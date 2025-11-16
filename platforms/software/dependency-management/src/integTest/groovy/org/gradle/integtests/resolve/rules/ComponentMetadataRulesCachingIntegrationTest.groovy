@@ -36,7 +36,7 @@ task resolve(type: Sync) {
     into 'libs'
 }
 """
-        executer.withArgument("-Ddebug.modulesource=true")
+        executor.withArgument("-Ddebug.modulesource=true")
     }
 
     def "rule is cached across builds"() {

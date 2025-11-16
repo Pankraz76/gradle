@@ -181,7 +181,7 @@ repositories {
         module.ivy.expectGet()
 
         then:
-        executer.withArgument(execArg)
+        executor.withArgument(execArg)
         succeeds("verify")
 
         where:

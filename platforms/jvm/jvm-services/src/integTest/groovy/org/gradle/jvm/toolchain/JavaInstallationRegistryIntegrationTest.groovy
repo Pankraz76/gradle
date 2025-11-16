@@ -72,7 +72,7 @@ class JavaInstallationRegistryIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        result = executer
+        result = executor
             .withEnvironmentVars([JDK1: new File("/unknown/env").absolutePath, JDK2: firstJavaHome])
             .withArgument("-Dorg.gradle.java.installations.paths=${new File("/unknown/path").absolutePath}," + secondJavaHome)
             .withArgument("-Dorg.gradle.java.installations.fromEnv=JDK1,JDK2")
@@ -86,7 +86,7 @@ class JavaInstallationRegistryIntegrationTest extends AbstractIntegrationSpec {
         outputContains(secondJavaHome)
 
         when:
-        result = executer
+        result = executor
             .withEnvironmentVars([JDK1: new File("/unknown/env").absolutePath, JDK2: firstJavaHome])
             .withArgument("-Dorg.gradle.java.installations.paths=${new File("/other/path").absolutePath}," + secondJavaHome)
             .withArgument("-Dorg.gradle.java.installations.fromEnv=JDK1,JDK2")
@@ -122,7 +122,7 @@ class JavaInstallationRegistryIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        result = executer
+        result = executor
             .withArguments("-Dorg.gradle.java.home=$currentJvm", "--info")
             .withEnvironmentVarsIncludingJavaHome([JAVA_HOME: otherJvm])
             .withTasks("show")
@@ -162,7 +162,7 @@ class JavaInstallationRegistryIntegrationTest extends AbstractIntegrationSpec {
         }
 
         when:
-        result = executer
+        result = executor
                 .withArgument("-Dorg.gradle.java.installations.paths=" + relativePath(rootProject, javaHome))
                 .withTasks("show")
                 .inDirectory(new File(rootProject, subproject))

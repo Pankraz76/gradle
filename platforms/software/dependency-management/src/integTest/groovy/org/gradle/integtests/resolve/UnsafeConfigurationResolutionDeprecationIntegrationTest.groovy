@@ -17,7 +17,7 @@
 package org.gradle.integtests.resolve
 
 import org.gradle.integtests.fixtures.AbstractDependencyResolutionTest
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.util.GradleVersion
 import org.spockframework.lang.Wildcard
 
@@ -56,7 +56,7 @@ class UnsafeConfigurationResolutionDeprecationIntegrationTest extends AbstractDe
 
         """
 
-        executer.withArgument("--parallel")
+        executor.withArgument("--parallel")
 
         expect:
         fails(":resolve")
@@ -183,14 +183,14 @@ class UnsafeConfigurationResolutionDeprecationIntegrationTest extends AbstractDe
 
         when:
         if (expression == "files { true }") {
-            executer.expectDocumentedDeprecationWarning("The Configuration.files(Closure) method has been deprecated. This is scheduled to be removed in Gradle 9.0. Use Configuration.getIncoming().artifactView(Action) with a componentFilter instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#deprecate_filtered_configuration_file_and_filecollection_methods")
+            executor.expectDocumentedDeprecationWarning("The Configuration.files(Closure) method has been deprecated. This is scheduled to be removed in Gradle 9.0. Use Configuration.getIncoming().artifactView(Action) with a componentFilter instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#deprecate_filtered_configuration_file_and_filecollection_methods")
         } else if (expression == "fileCollection { true }.files") {
-            executer.expectDocumentedDeprecationWarning("The Configuration.fileCollection(Closure) method has been deprecated. This is scheduled to be removed in Gradle 9.0. Use Configuration.getIncoming().artifactView(Action) with a componentFilter instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#deprecate_filtered_configuration_file_and_filecollection_methods")
+            executor.expectDocumentedDeprecationWarning("The Configuration.fileCollection(Closure) method has been deprecated. This is scheduled to be removed in Gradle 9.0. Use Configuration.getIncoming().artifactView(Action) with a componentFilter instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#deprecate_filtered_configuration_file_and_filecollection_methods")
         } else if (expression == "resolvedConfiguration.files") {
-            executer.expectDocumentedDeprecationWarning("The ResolvedConfiguration.getFiles() method has been deprecated. This is scheduled to be removed in Gradle 9.0. Use Configuration#getFiles instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#deprecate_legacy_configuration_get_files")
+            executor.expectDocumentedDeprecationWarning("The ResolvedConfiguration.getFiles() method has been deprecated. This is scheduled to be removed in Gradle 9.0. Use Configuration#getFiles instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#deprecate_legacy_configuration_get_files")
         }
 
-        def shouldSucceed = ccMessage instanceof Wildcard || !GradleContextualExecuter.isConfigCache()
+        def shouldSucceed = ccMessage instanceof Wildcard || !GradleContextualExecutor.isConfigCache()
         if (shouldSucceed) {
             run(":resolve")
         } else {
@@ -293,7 +293,7 @@ class UnsafeConfigurationResolutionDeprecationIntegrationTest extends AbstractDe
             println project(':baz').configurations.baz.files
         """
 
-        executer.withArgument("--parallel")
+        executor.withArgument("--parallel")
 
         fails(":bar:help")
         failure.assertHasDescription("A problem occurred evaluating project ':bar'.")
@@ -327,7 +327,7 @@ class UnsafeConfigurationResolutionDeprecationIntegrationTest extends AbstractDe
         file("bar/build.gradle") << ""
 
         expect:
-        executer.withArgument("--parallel")
+        executor.withArgument("--parallel")
         succeeds(":bar:help")
     }
 
@@ -357,7 +357,7 @@ class UnsafeConfigurationResolutionDeprecationIntegrationTest extends AbstractDe
         """
 
         expect:
-        executer.withArgument("--parallel")
+        executor.withArgument("--parallel")
         succeeds(":help")
     }
 
@@ -389,7 +389,7 @@ class UnsafeConfigurationResolutionDeprecationIntegrationTest extends AbstractDe
         """
 
         expect:
-        executer.withArguments("--parallel", "-I", "init-script.gradle")
+        executor.withArguments("--parallel", "-I", "init-script.gradle")
         succeeds(":help")
     }
 
@@ -419,7 +419,7 @@ class UnsafeConfigurationResolutionDeprecationIntegrationTest extends AbstractDe
         """
 
         expect:
-        executer.withArguments("--parallel", "-I", "init-script.gradle")
+        executor.withArguments("--parallel", "-I", "init-script.gradle")
         succeeds(":help")
     }
 }

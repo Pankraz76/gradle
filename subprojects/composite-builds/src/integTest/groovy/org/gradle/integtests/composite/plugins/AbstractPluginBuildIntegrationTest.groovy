@@ -175,7 +175,7 @@ abstract class AbstractPluginBuildIntegrationTest extends AbstractIntegrationSpe
             }
         """
 
-        executer.inDirectory(file("plugin")).withTasks("publish").run()
+        executor.inDirectory(file("plugin")).withTasks("publish").run()
 
         file("plugin").forceDeleteDir()
         mavenRepo.module("com.example", "plugin", "1.0").assertPublished()

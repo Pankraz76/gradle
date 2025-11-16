@@ -19,8 +19,8 @@ package org.gradle.cache
 import org.gradle.cache.internal.locklistener.FileLockPacketPayload
 import org.gradle.cache.internal.locklistener.FileLockPacketType
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.NoDaemonGradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.NoDaemonGradleExecutor
 import org.gradle.integtests.fixtures.timeout.IntegrationTestTimeout
 import org.gradle.internal.remote.internal.inet.InetAddressFactory
 import org.gradle.test.fixtures.file.TestFile
@@ -31,7 +31,7 @@ class LockCommunicationSoakTest extends AbstractIntegrationSpec {
     private final BlockingHttpServer blockingServer = new BlockingHttpServer()
     private final TestFile oldBuild = file("old-build").createDir()
     private final GradleDistribution oldDistribution = buildContext.distribution("8.12")
-    private final oldExecuter = new NoDaemonGradleExecuter(oldDistribution, temporaryFolder, buildContext).usingProjectDirectory(oldBuild)
+    private final oldExecutor = new NoDaemonGradleExecutor(oldDistribution, temporaryFolder, buildContext).usingProjectDirectory(oldBuild)
 
     def setup() {
         blockingServer.start()
@@ -134,7 +134,7 @@ class LockCommunicationSoakTest extends AbstractIntegrationSpec {
         def complete = blockingServer.expectAndBlock("old-close")
 
         expect:
-        def newHandle = executer.withTasks('lock').start()
+        def newHandle = executor.withTasks('lock').start()
 
         // wait for new Gradle to start the task
         aboutToLock.waitForAllPendingCalls()
@@ -144,7 +144,7 @@ class LockCommunicationSoakTest extends AbstractIntegrationSpec {
         releaseLock.waitForAllPendingCalls()
 
         // Start the old Gradle to request the same lock
-        def oldHandle = oldExecuter.withTasks('lock').start()
+        def oldHandle = oldExecutor.withTasks('lock').start()
         // wait for old Gradle to start the task
         aboutToRequest.waitForAllPendingCalls()
 
@@ -177,7 +177,7 @@ class LockCommunicationSoakTest extends AbstractIntegrationSpec {
         def complete = blockingServer.expectAndBlock("new-close")
 
         expect:
-        def oldHandle = oldExecuter.withTasks('lock').start()
+        def oldHandle = oldExecutor.withTasks('lock').start()
 
         // wait for old Gradle to start the task
         aboutToLock.waitForAllPendingCalls()
@@ -187,7 +187,7 @@ class LockCommunicationSoakTest extends AbstractIntegrationSpec {
         releaseLock.waitForAllPendingCalls()
 
         // Start the new Gradle to request the same lock
-        def newHandle = executer.withTasks('lock').start()
+        def newHandle = executor.withTasks('lock').start()
         // wait for new Gradle to start the task
         aboutToRequest.waitForAllPendingCalls()
 
@@ -220,7 +220,7 @@ class LockCommunicationSoakTest extends AbstractIntegrationSpec {
         def complete = blockingServer.expectAndBlock("old-close")
 
         expect:
-        def newHandle = executer.withTasks('lock').start()
+        def newHandle = executor.withTasks('lock').start()
 
         // wait for new Gradle to start the task
         aboutToLock.waitForAllPendingCalls()
@@ -230,7 +230,7 @@ class LockCommunicationSoakTest extends AbstractIntegrationSpec {
         releaseLock.waitForAllPendingCalls()
 
         // Start the old Gradle to request the same lock
-        def oldHandle = oldExecuter.withTasks('lock').start()
+        def oldHandle = oldExecutor.withTasks('lock').start()
         // wait for old Gradle to start the task
         aboutToRequest.waitForAllPendingCalls()
 
@@ -264,7 +264,7 @@ class LockCommunicationSoakTest extends AbstractIntegrationSpec {
         def complete = blockingServer.expectConcurrentAndBlock("old-close")
 
         expect:
-        def oldHandle = oldExecuter.withStackTraceChecksDisabled().withTasks('lock').start()
+        def oldHandle = oldExecutor.withStackTraceChecksDisabled().withTasks('lock').start()
 
         // wait for old Gradle to start the task
         aboutToLock.waitForAllPendingCalls()
@@ -274,7 +274,7 @@ class LockCommunicationSoakTest extends AbstractIntegrationSpec {
         releaseLock.waitForAllPendingCalls()
 
         // Start the new Gradle to request the same lock
-        def newHandle = executer.withTasks('lock').start()
+        def newHandle = executor.withTasks('lock').start()
         // wait for new Gradle to start the task
         aboutToRequest.waitForAllPendingCalls()
 
@@ -305,7 +305,7 @@ class LockCommunicationSoakTest extends AbstractIntegrationSpec {
         def complete = blockingServer.expectAndBlock("new-close")
 
         expect:
-        def newHandle = executer.requireIsolatedDaemons().withStackTraceChecksDisabled().withTasks('lock').start()
+        def newHandle = executor.requireIsolatedDaemons().withStackTraceChecksDisabled().withTasks('lock').start()
 
         aboutToLock.waitForAllPendingCalls()
         aboutToLock.releaseAll()

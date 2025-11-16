@@ -47,6 +47,6 @@ class HttpsProxyResolveIntegrationTest extends AbstractProxyResolveIntegrationTe
     void setupServer() {
         keyStore = TestKeyStore.init(resources.dir)
         keyStore.enableSslWithServerCert(server)
-        keyStore.configureServerCert(executer)
+        keyStore.configureServerCert(executor)
     }
 }

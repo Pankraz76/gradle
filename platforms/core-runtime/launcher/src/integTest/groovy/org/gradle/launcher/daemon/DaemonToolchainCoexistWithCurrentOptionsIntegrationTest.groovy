@@ -30,7 +30,7 @@ import org.gradle.test.preconditions.IntegTestPreconditions
 )
 class DaemonToolchainCoexistWithCurrentOptionsIntegrationTest extends AbstractIntegrationSpec implements DaemonJvmPropertiesFixture, JavaToolchainFixture {
     def setup() {
-        executer.requireDaemon().requireIsolatedDaemons() // Prevent addition of Java 9 JPMS args to the launcher and potentially daemon process which could be Java 8
+        executor.requireDaemon().requireIsolatedDaemons() // Prevent addition of Java 9 JPMS args to the launcher and potentially daemon process which could be Java 8
     }
 
     @Requires(IntegTestPreconditions.JavaHomeWithDifferentVersionAvailable)
@@ -39,7 +39,7 @@ class DaemonToolchainCoexistWithCurrentOptionsIntegrationTest extends AbstractIn
         def otherJvm = AvailableJavaHomes.differentVersion
         writeJvmCriteria(otherJvm)
         captureJavaHome()
-        executer.withArgument("-Dorg.gradle.java.installations.auto-detect=false")
+        executor.withArgument("-Dorg.gradle.java.installations.auto-detect=false")
 
         expect:
         withInstallations(otherJvm).succeeds("help")
@@ -65,7 +65,7 @@ class DaemonToolchainCoexistWithCurrentOptionsIntegrationTest extends AbstractIn
         def otherJvm = AvailableJavaHomes.differentVersion
         def otherJvmMetadata = AvailableJavaHomes.getJvmInstallationMetadata(otherJvm)
         captureJavaHome()
-        executer
+        executor
             .withArgument("-PtoolchainVersion=$otherJvmMetadata.javaVersion")
             .withArgument("-PtoolchainVendor=$otherJvmMetadata.vendor.knownVendor")
 

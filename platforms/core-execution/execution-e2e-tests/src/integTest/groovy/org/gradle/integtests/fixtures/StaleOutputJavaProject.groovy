@@ -17,7 +17,7 @@
 package org.gradle.integtests.fixtures
 
 import com.google.common.io.Files
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.test.fixtures.archive.JarTestFixture
 import org.gradle.test.fixtures.file.TestFile
 

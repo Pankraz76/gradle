@@ -36,28 +36,28 @@ task thing(type: SomeTask) {
 """
 
         when:
-        executer.withArgument("-Dprop=123")
+        executor.withArgument("-Dprop=123")
         run("thing")
 
         then:
         executedAndNotSkipped(":thing")
 
         when:
-        executer.withArgument("-Dprop=123")
+        executor.withArgument("-Dprop=123")
         run("thing")
 
         then:
         skipped(":thing")
 
         when:
-        executer.withArgument("-Dprop=abc")
+        executor.withArgument("-Dprop=abc")
         run("thing")
 
         then:
         executedAndNotSkipped(":thing")
 
         when:
-        executer.withArgument("-Dprop=abc")
+        executor.withArgument("-Dprop=abc")
         run("thing")
 
         then:
@@ -438,7 +438,7 @@ assert custom.prop.get() == "value 4"
 
         expect:
         ["first", "FIRST", "second", "third", "forth"].each {
-            executer.expectDocumentedDeprecationWarning("Assigning String value '$it' to property of enum type 'MyEnumOptions'. This behavior has been deprecated. This will fail with an error in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#deprecated_string_to_enum_coercion_for_rich_properties")
+            executor.expectDocumentedDeprecationWarning("Assigning String value '$it' to property of enum type 'MyEnumOptions'. This behavior has been deprecated. This will fail with an error in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#deprecated_string_to_enum_coercion_for_rich_properties")
         }
         succeeds()
     }

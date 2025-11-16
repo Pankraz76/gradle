@@ -85,7 +85,7 @@ task printSystemProp {
     @Requires(IntegTestPreconditions.NotEmbeddedExecutor) // needs to run Gradle from command line
     def "build property set on command line takes precedence over jvm args"() {
         when:
-        executer.withEnvironmentVars 'GRADLE_OPTS': '-Dorg.gradle.configureondemand=true'
+        executor.withEnvironmentVars 'GRADLE_OPTS': '-Dorg.gradle.configureondemand=true'
 
         buildFile """
             def codStatus = provider { gradle.startParameter.configureOnDemand }
@@ -115,7 +115,7 @@ task printSystemProp {
     @Requires(IntegTestPreconditions.NotEmbeddedExecutor) // needs to run Gradle from command line
     def "system property set on command line takes precedence over jvm args"() {
         given:
-        executer.withEnvironmentVars 'GRADLE_OPTS': '-DmySystemProp=jvmarg'
+        executor.withEnvironmentVars 'GRADLE_OPTS': '-DmySystemProp=jvmarg'
 
         buildFile << """
 task printSystemProp {
@@ -159,7 +159,7 @@ task printSystemProp {
         """
 
         when:
-        executer.withEnvironmentVars(ORG_GRADLE_PROJECT_myProp: 'fromEnv')
+        executor.withEnvironmentVars(ORG_GRADLE_PROJECT_myProp: 'fromEnv')
 
         then:
         succeeds 'printProperty'
@@ -168,7 +168,7 @@ task printSystemProp {
         outputContains("myProp=fromEnv")
 
         when:
-        executer.withEnvironmentVars(ORG_GRADLE_PROJECT_myProp: 'fromEnv2')
+        executor.withEnvironmentVars(ORG_GRADLE_PROJECT_myProp: 'fromEnv2')
 
         then:
         succeeds 'printProperty'
@@ -197,7 +197,7 @@ task printSystemProp {
         outputContains('mySystemProp=properties file')
 
         cleanup:
-        executer.withArguments("--stop", "--info").run()
+        executor.withArguments("--stop", "--info").run()
     }
 
     @Issue("https://github.com/gradle/gradle/issues/12122")

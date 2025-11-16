@@ -328,7 +328,7 @@ class GradleKotlinDslIntegrationTest : AbstractKotlinIntegrationTest() {
 
     @Test
     fun `given an exception thrown during buildscript block execution, its stack trace should contain correct file and line info`() {
-        executer.withStacktraceEnabled()
+        executor.withStacktraceEnabled()
         withBuildScript(
             """ // line 1
             // line 2

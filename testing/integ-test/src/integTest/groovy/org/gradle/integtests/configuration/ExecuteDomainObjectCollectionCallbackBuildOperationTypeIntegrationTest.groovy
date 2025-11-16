@@ -27,7 +27,7 @@ import org.gradle.internal.operations.trace.BuildOperationRecord
 
 class ExecuteDomainObjectCollectionCallbackBuildOperationTypeIntegrationTest extends AbstractIntegrationSpec {
 
-    def ops = new BuildOperationsFixture(executer, temporaryFolder)
+    def ops = new BuildOperationsFixture(executor, temporaryFolder)
 
     private static Closure fooTaskRealizationOpsQuery = { it.only(RealizeTaskBuildOperationType, { it.details.taskPath == ':foo' }) }
     private static Closure addingPluginBuildOpQuery = { it.only(ApplyPluginBuildOperationType, { it.details.pluginClass == 'AddingPlugin' }) }

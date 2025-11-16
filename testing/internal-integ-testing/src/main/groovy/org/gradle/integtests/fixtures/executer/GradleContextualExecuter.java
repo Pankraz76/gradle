@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import org.gradle.integtests.fixtures.timeout.IntegrationTestTimeoutInterceptor;
 import org.gradle.test.fixtures.file.TestDirectoryProvider;
@@ -24,17 +24,17 @@ import java.util.Locale;
 import static org.gradle.integtests.fixtures.timeout.IntegrationTestTimeout.DEFAULT_TIMEOUT_SECONDS;
 
 /**
- * Selects a different executer implementation based on the value of a system property.
+ * Selects a different executor implementation based on the value of a system property.
  *
  * Facilitates running the same test in different execution modes.
  */
-public class GradleContextualExecuter extends AbstractDelegatingGradleExecuter {
+public class GradleContextualExecutor extends AbstractDelegatingGradleExecutor {
 
-    private static final String EXECUTER_SYS_PROP = "org.gradle.integtest.executer";
+    private static final String EXECUTER_SYS_PROP = "org.gradle.integtest.executor";
 
-    private Executer executerType;
+    private Executor executorType;
 
-    private enum Executer {
+    private enum Executor {
         embedded(false),
         forking(true),
         noDaemon(true),
@@ -45,22 +45,22 @@ public class GradleContextualExecuter extends AbstractDelegatingGradleExecuter {
         final public boolean forks;
         final public boolean executeParallel;
 
-        Executer(boolean forks) {
+        Executor(boolean forks) {
             this(forks, false);
         }
 
-        Executer(boolean forks, boolean parallel) {
+        Executor(boolean forks, boolean parallel) {
             this.forks = forks;
             this.executeParallel = parallel;
         }
     }
 
-    private static Executer getSystemPropertyExecuter() {
-        return Executer.valueOf(System.getProperty(EXECUTER_SYS_PROP, Executer.forking.toString()));
+    private static Executor getSystemPropertyExecutor() {
+        return Executor.valueOf(System.getProperty(EXECUTER_SYS_PROP, Executor.forking.toString()));
     }
 
     public static boolean isNoDaemon() {
-        return getSystemPropertyExecuter() == Executer.noDaemon;
+        return getSystemPropertyExecutor() == Executor.noDaemon;
     }
 
     public static boolean isDaemon() {
@@ -72,7 +72,7 @@ public class GradleContextualExecuter extends AbstractDelegatingGradleExecuter {
     }
 
     public static boolean isParallel() {
-        return getSystemPropertyExecuter().executeParallel;
+        return getSystemPropertyExecutor().executeParallel;
     }
 
     public static boolean isNotConfigCache() {
@@ -80,8 +80,8 @@ public class GradleContextualExecuter extends AbstractDelegatingGradleExecuter {
     }
 
     public static boolean isConfigCache() {
-        Executer executer = getSystemPropertyExecuter();
-        return executer == Executer.configCache || executer == Executer.isolatedProjects;
+        Executor executor = getSystemPropertyExecutor();
+        return executor == Executor.configCache || executor == Executor.isolatedProjects;
     }
 
     public static boolean isNotIsolatedProjects() {
@@ -89,97 +89,97 @@ public class GradleContextualExecuter extends AbstractDelegatingGradleExecuter {
     }
 
     public static boolean isIsolatedProjects() {
-        return getSystemPropertyExecuter() == Executer.isolatedProjects;
+        return getSystemPropertyExecutor() == Executor.isolatedProjects;
     }
 
-    private GradleExecuter gradleExecuter;
+    private GradleExecutor gradleExecutor;
 
-    public GradleContextualExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, IntegrationTestBuildContext buildContext) {
+    public GradleContextualExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, IntegrationTestBuildContext buildContext) {
         super(distribution, testDirectoryProvider, buildContext);
-        this.executerType = getSystemPropertyExecuter();
+        this.executorType = getSystemPropertyExecutor();
     }
 
     @Override
-    protected GradleExecuter configureExecuter() {
+    protected GradleExecutor configureExecutor() {
         if (!getClass().desiredAssertionStatus()) {
             throw new RuntimeException("Assertions must be enabled when running integration tests.");
         }
 
-        if (gradleExecuter == null) {
-            gradleExecuter = createExecuter(executerType);
+        if (gradleExecutor == null) {
+            gradleExecutor = createExecutor(executorType);
         } else {
-            gradleExecuter.reset();
+            gradleExecutor.reset();
         }
-        configureExecuter(gradleExecuter);
+        configureExecutor(gradleExecutor);
         try {
-            gradleExecuter.assertCanExecute();
+            gradleExecutor.assertCanExecute();
         } catch (AssertionError assertionError) {
-            if (gradleExecuter instanceof InProcessGradleExecuter) {
+            if (gradleExecutor instanceof InProcessGradleExecutor) {
                 throw new RuntimeException("Running tests with a Gradle distribution in embedded mode is no longer supported.", assertionError);
             }
-            gradleExecuter = new NoDaemonGradleExecuter(getDistribution(), getTestDirectoryProvider());
-            configureExecuter(gradleExecuter);
+            gradleExecutor = new NoDaemonGradleExecutor(getDistribution(), getTestDirectoryProvider());
+            configureExecutor(gradleExecutor);
         }
 
-        return gradleExecuter;
+        return gradleExecutor;
     }
 
-    private void configureExecuter(GradleExecuter gradleExecuter) {
-        copyTo(gradleExecuter);
+    private void configureExecutor(GradleExecutor gradleExecutor) {
+        copyTo(gradleExecutor);
     }
 
-    private GradleExecuter createExecuter(Executer executerType) {
-        switch (executerType) {
+    private GradleExecutor createExecutor(Executor executorType) {
+        switch (executorType) {
             case embedded:
-                return new InProcessGradleExecuter(getDistribution(), getTestDirectoryProvider(), gradleVersion, buildContext);
+                return new InProcessGradleExecutor(getDistribution(), getTestDirectoryProvider(), gradleVersion, buildContext);
             case noDaemon:
-                return new NoDaemonGradleExecuter(getDistribution(), getTestDirectoryProvider(), gradleVersion, buildContext);
+                return new NoDaemonGradleExecutor(getDistribution(), getTestDirectoryProvider(), gradleVersion, buildContext);
             case parallel:
-                return new ParallelForkingGradleExecuter(getDistribution(), getTestDirectoryProvider(), gradleVersion, buildContext);
+                return new ParallelForkingGradleExecutor(getDistribution(), getTestDirectoryProvider(), gradleVersion, buildContext);
             case forking:
-                return new DaemonGradleExecuter(getDistribution(), getTestDirectoryProvider(), gradleVersion, buildContext);
+                return new DaemonGradleExecutor(getDistribution(), getTestDirectoryProvider(), gradleVersion, buildContext);
             case configCache:
-                return new ConfigurationCacheGradleExecuter(getDistribution(), getTestDirectoryProvider(), gradleVersion, buildContext);
+                return new ConfigurationCacheGradleExecutor(getDistribution(), getTestDirectoryProvider(), gradleVersion, buildContext);
             case isolatedProjects:
-                return new IsolatedProjectsGradleExecuter(getDistribution(), getTestDirectoryProvider(), gradleVersion, buildContext);
+                return new IsolatedProjectsGradleExecutor(getDistribution(), getTestDirectoryProvider(), gradleVersion, buildContext);
             default:
-                throw new RuntimeException("Not a supported executer type: " + executerType);
+                throw new RuntimeException("Not a supported executor type: " + executorType);
         }
     }
 
     @Override
     public void cleanup() {
         new IntegrationTestTimeoutInterceptor(DEFAULT_TIMEOUT_SECONDS).intercept(ignored -> {
-            if (gradleExecuter != null) {
-                gradleExecuter.stop();
+            if (gradleExecutor != null) {
+                gradleExecutor.stop();
             }
-            GradleContextualExecuter.super.cleanup();
+            GradleContextualExecutor.super.cleanup();
         });
 
     }
 
     @Override
-    public GradleExecuter ignoreCleanupAssertions() {
-        if (gradleExecuter != null) {
-            gradleExecuter.ignoreCleanupAssertions();
+    public GradleExecutor ignoreCleanupAssertions() {
+        if (gradleExecutor != null) {
+            gradleExecutor.ignoreCleanupAssertions();
         }
         return super.ignoreCleanupAssertions();
     }
 
     @Override
-    public GradleExecuter reset() {
-        if (gradleExecuter != null) {
-            gradleExecuter.reset();
+    public GradleExecutor reset() {
+        if (gradleExecutor != null) {
+            gradleExecutor.reset();
         }
         return super.reset();
     }
 
-    // The following overrides are here instead of in 'InProcessGradleExecuter' due to the way executors are layered+inherited
+    // The following overrides are here instead of in 'InProcessGradleExecutor' due to the way executors are layered+inherited
     // This should be improved as part of https://github.com/gradle/gradle-private/issues/1009
 
     @Override
-    public GradleExecuter withDefaultCharacterEncoding(String defaultCharacterEncoding) {
-        if (executerType == Executer.embedded && !Charset.forName(defaultCharacterEncoding).equals(Charset.defaultCharset())) {
+    public GradleExecutor withDefaultCharacterEncoding(String defaultCharacterEncoding) {
+        if (executorType == Executor.embedded && !Charset.forName(defaultCharacterEncoding).equals(Charset.defaultCharset())) {
             // need to fork to apply the new default character encoding
             requireDaemon().requireIsolatedDaemons();
         }
@@ -187,8 +187,8 @@ public class GradleContextualExecuter extends AbstractDelegatingGradleExecuter {
     }
 
     @Override
-    public GradleExecuter withDefaultLocale(Locale defaultLocale) {
-        if (executerType == Executer.embedded && !defaultLocale.equals(Locale.getDefault())) {
+    public GradleExecutor withDefaultLocale(Locale defaultLocale) {
+        if (executorType == Executor.embedded && !defaultLocale.equals(Locale.getDefault())) {
             // need to fork to apply the new default locale
             requireDaemon().requireIsolatedDaemons();
         }

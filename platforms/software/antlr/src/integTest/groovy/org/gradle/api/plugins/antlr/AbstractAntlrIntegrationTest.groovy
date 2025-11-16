@@ -22,7 +22,7 @@ abstract class AbstractAntlrIntegrationTest extends AbstractIntegrationSpec impl
 
     def setup() {
         // So we can assert on which version of ANTLR is used at runtime
-        executer.withArgument("-i")
+        executor.withArgument("-i")
 
         settingsFile """
             include 'grammar-builder'

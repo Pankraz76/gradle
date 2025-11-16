@@ -20,7 +20,7 @@ import org.gradle.integtests.fixtures.AvailableJavaHomes
 import org.gradle.integtests.fixtures.daemon.DaemonContextParser
 import org.gradle.integtests.fixtures.daemon.DaemonIntegrationSpec
 import org.gradle.integtests.fixtures.daemon.DaemonLogsAnalyzer
-import org.gradle.integtests.fixtures.executer.GradleHandle
+import org.gradle.integtests.fixtures.executor.GradleHandle
 import org.gradle.internal.jvm.Jvm
 import org.gradle.launcher.daemon.context.DaemonContext
 import org.gradle.launcher.daemon.server.DaemonStateCoordinator
@@ -61,16 +61,16 @@ class AbstractDaemonLifecycleSpec extends DaemonIntegrationSpec {
 
     void startBuild(String buildEncoding = null) {
         run {
-            executer.withTasks("watch")
-            executer.withDaemonIdleTimeoutSecs(daemonIdleTimeout)
-            executer.withArguments(
+            executor.withTasks("watch")
+            executor.withDaemonIdleTimeoutSecs(daemonIdleTimeout)
+            executor.withArguments(
                 "-Dorg.gradle.daemon.healthcheckinterval=${periodicCheckInterval * 1000}",
                 "--debug" // Need debug logging so we can extract the `DefaultDaemonContext`
             )
             if (buildEncoding) {
-                executer.withDefaultCharacterEncoding(buildEncoding)
+                executor.withDefaultCharacterEncoding(buildEncoding)
             }
-            executer.usingProjectDirectory buildDirWithScript(builds.size(), """
+            executor.usingProjectDirectory buildDirWithScript(builds.size(), """
                 def stopFile = file("stop")
                 def existsFile = file("exists")
                 task('watch') {
@@ -92,7 +92,7 @@ class AbstractDaemonLifecycleSpec extends DaemonIntegrationSpec {
                     }
                 }
             """)
-            builds << executer.start()
+            builds << executor.start()
         }
         //TODO - rewrite the lifecycle spec so that it uses the TestableDaemon
     }
@@ -136,11 +136,11 @@ class AbstractDaemonLifecycleSpec extends DaemonIntegrationSpec {
     }
 
     void stopDaemonsNow() {
-        executer.withArguments("--stop", "--info")
+        executor.withArguments("--stop", "--info")
         if (jvm) {
-            executer.withJvm(jvm)
+            executor.withJvm(jvm)
         }
-        executer.run()
+        executor.run()
     }
 
     void startForegroundDaemon() {
@@ -157,10 +157,10 @@ class AbstractDaemonLifecycleSpec extends DaemonIntegrationSpec {
 
     void startForegroundDaemonNow() {
         if (jvm) {
-            executer.withJvm(jvm)
+            executor.withJvm(jvm)
         }
-        executer.withArguments("--foreground", "--info", "-Dorg.gradle.daemon.idletimeout=${daemonIdleTimeout * 1000}", "-Dorg.gradle.daemon.healthcheckinterval=${periodicCheckInterval * 1000}",)
-        foregroundDaemons << executer.start()
+        executor.withArguments("--foreground", "--info", "-Dorg.gradle.daemon.idletimeout=${daemonIdleTimeout * 1000}", "-Dorg.gradle.daemon.healthcheckinterval=${periodicCheckInterval * 1000}",)
+        foregroundDaemons << executor.start()
     }
 
     void killBuild(int num = 0) {
@@ -191,7 +191,7 @@ class AbstractDaemonLifecycleSpec extends DaemonIntegrationSpec {
 
     def cleanup() {
         try {
-            def registry = new DaemonLogsAnalyzer(executer.daemonBaseDir).registry
+            def registry = new DaemonLogsAnalyzer(executor.daemonBaseDir).registry
             sequenceBuilder.build(registry).run()
         } finally {
             stopDaemonsNow()

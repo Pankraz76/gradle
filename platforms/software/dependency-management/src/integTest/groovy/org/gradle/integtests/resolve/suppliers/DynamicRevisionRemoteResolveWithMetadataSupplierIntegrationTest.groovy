@@ -181,7 +181,7 @@ abstract class DynamicRevisionRemoteResolveWithMetadataSupplierIntegrationTest e
         repository {
             'group:projectB:2.3'()
         }
-        executer.withArgument('-PrefreshDynamicVersions')
+        executor.withArgument('-PrefreshDynamicVersions')
 
         then:
         repositoryInteractions {
@@ -240,7 +240,7 @@ abstract class DynamicRevisionRemoteResolveWithMetadataSupplierIntegrationTest e
         repository {
             'group:projectB:2.3'()
         }
-        executer.withArgument('-PrefreshDynamicVersions')
+        executor.withArgument('-PrefreshDynamicVersions')
 
         then:
         repositoryInteractions {
@@ -306,7 +306,7 @@ abstract class DynamicRevisionRemoteResolveWithMetadataSupplierIntegrationTest e
 
         when:
         resetExpectations()
-        executer.withArgument('--offline')
+        executor.withArgument('--offline')
 
         then: "will used cached status resources"
         checkResolve "group:projectA:1.+": ["group:projectA:1.2", "didn't match version 2.0"], "group:projectB:latest.release": ["group:projectB:1.1", "didn't match version 2.2"]
@@ -317,7 +317,7 @@ abstract class DynamicRevisionRemoteResolveWithMetadataSupplierIntegrationTest e
         def supplierInteractions = withPerVersionStatusSupplier()
 
         when:
-        executer.withArgument('--offline')
+        executor.withArgument('--offline')
 
         then:
         fails 'checkDeps'
@@ -409,7 +409,7 @@ abstract class DynamicRevisionRemoteResolveWithMetadataSupplierIntegrationTest e
 
         when: "Fails without making network request when offline"
         resetExpectations()
-        executer.withArgument('--offline')
+        executor.withArgument('--offline')
 
         then:
         fails 'checkDeps'
@@ -518,7 +518,7 @@ abstract class DynamicRevisionRemoteResolveWithMetadataSupplierIntegrationTest e
         }
 
         then:
-        executer.withArgument("-Pstatus=integration")
+        executor.withArgument("-Pstatus=integration")
         succeeds 'checkDeps'
     }
 
@@ -548,7 +548,7 @@ abstract class DynamicRevisionRemoteResolveWithMetadataSupplierIntegrationTest e
                 expectVersionListing()
             }
         }
-        executer.withArgument("-Dbroken=true")
+        executor.withArgument("-Dbroken=true")
 
         then:
         fails 'checkDeps'
@@ -729,7 +729,7 @@ group:projectB:2.2;integration
         outputDoesNotContain('Parsing status file call count')
 
         when: "force refresh dependencies"
-        executer.withArgument("-PrefreshDynamicVersions")
+        executor.withArgument("-PrefreshDynamicVersions")
         statusFile.text = '''group:projectA:1.1;release
 group:projectA:1.2;release
 group:projectB:1.1;release
@@ -756,7 +756,7 @@ group:projectB:2.2;release
         }
 
         then: "shouldn't use the cached resource"
-        executer.withArguments('--refresh-dependencies')
+        executor.withArguments('--refresh-dependencies')
         checkResolve "group:projectA:1.+": ["group:projectA:1.2", "didn't match version 2.0"], "group:projectB:latest.release": "group:projectB:2.2"
         outputContains 'Providing metadata for group:projectB:2.2'
         outputDoesNotContain('Providing metadata for group:projectB:1.1')
@@ -797,7 +797,7 @@ group:projectB:2.2;release
         checkResolve "group:projectA:1.+": ["group:projectA:1.2", "didn't match version 2.0"], "group:projectB:latest.release": ["group:projectB:1.1", "didn't match version 2.2"]
 
         when:
-        executer.withArgument('--refresh-dependencies')
+        executor.withArgument('--refresh-dependencies')
 
         then:
         resetExpectations()
@@ -1059,7 +1059,7 @@ group:projectB:2.2;release
         when:
         // bouncycastle has .properties files that are actually binary files
         // see https://github.com/bcgit/bc-java/commit/0aacc38aefe7e79a6d9cca76bd690c24671c3feb
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         run ':checkDeps', ":b:checkDeps", '--debug'
 
         then:
@@ -1130,7 +1130,7 @@ group:projectB:2.2;release
     @ToBeFixedForConfigurationCache
     def "caching is repository aware"() {
         def metadataFile = file("buildSrc/src/main/groovy/MP.groovy")
-        executer.requireIsolatedDaemons() // because we're going to --stop
+        executor.requireIsolatedDaemons() // because we're going to --stop
 
         given:
         def supplierInteractions = withPerVersionStatusSupplier(metadataFile)
@@ -1218,7 +1218,7 @@ group:projectB:2.2;release
 
     def "cross-build caching is resilient to failure"() {
         def metadataFile = file("buildSrc/src/main/groovy/MP.groovy")
-        executer.requireIsolatedDaemons() // because we're going to --stop
+        executor.requireIsolatedDaemons() // because we're going to --stop
 
         given:
         def supplierInteractions = withPerVersionStatusSupplier(metadataFile)

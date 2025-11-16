@@ -46,9 +46,9 @@ allprojects {
     }
 }
 """
-        executer.withArgument('--parallel')
-        executer.withArgument('--max-workers=3') // needs to be set to the maximum number of expectConcurrentExecution() calls
-        executer.withArgument('--info')
+        executor.withArgument('--parallel')
+        executor.withArgument('--max-workers=3') // needs to be set to the maximum number of expectConcurrentExecution() calls
+        executor.withArgument('--info')
     }
 
     def "executes dependency project targets concurrently"() {

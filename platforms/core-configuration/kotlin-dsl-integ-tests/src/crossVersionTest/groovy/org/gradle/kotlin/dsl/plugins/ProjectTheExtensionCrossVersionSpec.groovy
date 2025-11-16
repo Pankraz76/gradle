@@ -18,7 +18,7 @@ package org.gradle.kotlin.dsl.plugins
 
 import org.gradle.integtests.fixtures.CrossVersionIntegrationSpec
 import org.gradle.integtests.fixtures.TargetVersions
-import org.gradle.integtests.fixtures.executer.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleDistribution
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.util.GradleVersion
 

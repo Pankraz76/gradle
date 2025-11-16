@@ -1035,7 +1035,7 @@ All of them match the consumer attributes:
                 }
             }
         }
-        executer.inDirectory(pluginDir)
+        executor.inDirectory(pluginDir)
             .withTasks("publishMavenPublicationToMavenRepository")
             .run()
     }

@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.fixtures
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.spockframework.runtime.extension.IAnnotationDrivenExtension
 import org.spockframework.runtime.model.FeatureInfo
 import org.spockframework.runtime.model.SpecElementInfo
@@ -39,7 +39,7 @@ class ToBeFixedForIsolatedProjectsExtension implements IAnnotationDrivenExtensio
     }
 
     private void visitAnnotation(ToBeFixedForIsolatedProjects annotation, SpecElementInfo specElementInfo) {
-        if (GradleContextualExecuter.isNotIsolatedProjects()) {
+        if (GradleContextualExecutor.isNotIsolatedProjects()) {
             return
         }
 

@@ -25,7 +25,7 @@ class SamplesWebQuickstartIntegrationTest extends AbstractIntegrationSpec {
     @Rule public final Sample sample = new Sample(temporaryFolder, 'webApplication/quickstart/groovy')
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     def "can build a war"() {
@@ -33,7 +33,7 @@ class SamplesWebQuickstartIntegrationTest extends AbstractIntegrationSpec {
         super.sample sample
 
         when:
-        executer.withTasks('clean', 'build').run()
+        executor.withTasks('clean', 'build').run()
 
         then:
         // Check contents of War

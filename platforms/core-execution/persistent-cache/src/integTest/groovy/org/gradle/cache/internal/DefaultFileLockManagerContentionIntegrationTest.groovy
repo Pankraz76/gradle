@@ -27,7 +27,7 @@ import org.gradle.cache.internal.locklistener.FileLockPacketPayload
 import org.gradle.cache.internal.locklistener.FileLockPacketType
 import org.gradle.cache.internal.locklistener.InetAddressProvider
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleHandle
+import org.gradle.integtests.fixtures.executor.GradleHandle
 import org.gradle.internal.concurrent.DefaultExecutorFactory
 import org.gradle.internal.remote.internal.inet.InetAddressFactory
 import org.gradle.internal.time.Time
@@ -48,8 +48,8 @@ class DefaultFileLockManagerContentionIntegrationTest extends AbstractIntegratio
     FileLock receivingLock
 
     def setup() {
-        executer.withArguments("-d")
-        executer.requireOwnGradleUserHomeDir().withDaemonBaseDir(file("daemonsRequestingLock")).requireDaemon()
+        executor.withArguments("-d")
+        executor.requireOwnGradleUserHomeDir().withDaemonBaseDir(file("daemonsRequestingLock")).requireDaemon()
         buildFile """
             import org.gradle.cache.FileLockManager
             import org.gradle.cache.internal.filelock.DefaultLockOptions
@@ -87,7 +87,7 @@ class DefaultFileLockManagerContentionIntegrationTest extends AbstractIntegratio
         communicator.allowCommunication = false
 
         // spin up a client to request the same lock
-        def build = executer.withTasks("lock").start()
+        def build = executor.withTasks("lock").start()
         def timer = Time.startTimer()
 
         // once we've seen a few pings, allow the lock holder to respond
@@ -119,7 +119,7 @@ class DefaultFileLockManagerContentionIntegrationTest extends AbstractIntegratio
         }
 
         when:
-        def build = executer.withTasks("lock").start()
+        def build = executor.withTasks("lock").start()
         poll(120) { assert requestReceived }
 
         // simulate additional requests
@@ -144,7 +144,7 @@ class DefaultFileLockManagerContentionIntegrationTest extends AbstractIntegratio
         setupLockOwner() { requestReceived = true }
 
         when:
-        def build = executer.withTasks("lock").start()
+        def build = executor.withTasks("lock").start()
         poll(120) {
             assert requestReceived
         }
@@ -162,9 +162,9 @@ class DefaultFileLockManagerContentionIntegrationTest extends AbstractIntegratio
 
         when:
         // Debug logging might have logged exceptions from other Gradle systems, e.g. execution engine, so we disable stacktrace checks
-        def build1 = executer.withStackTraceChecksDisabled().withArguments("-d").withTasks("lock").start()
-        def build2 = executer.withStackTraceChecksDisabled().withArguments("-d").withTasks("lock").start()
-        def build3 = executer.withStackTraceChecksDisabled().withArguments("-d").withTasks("lock").start()
+        def build1 = executor.withStackTraceChecksDisabled().withArguments("-d").withTasks("lock").start()
+        def build2 = executor.withStackTraceChecksDisabled().withArguments("-d").withTasks("lock").start()
+        def build3 = executor.withStackTraceChecksDisabled().withArguments("-d").withTasks("lock").start()
         poll(120) {
             assert requestReceived
             assertConfirmationCount(build1)
@@ -191,9 +191,9 @@ class DefaultFileLockManagerContentionIntegrationTest extends AbstractIntegratio
 
         when:
         // Debug logging might have logged exceptions from other Gradle systems, e.g. execution engine, so we disable stacktrace checks
-        def build1 = executer.withStackTraceChecksDisabled().withArguments("-d").withTasks("lock").start()
-        def build2 = executer.withStackTraceChecksDisabled().withArguments("-d").withTasks("lock").start()
-        def build3 = executer.withStackTraceChecksDisabled().withArguments("-d").withTasks("lock").start()
+        def build1 = executor.withStackTraceChecksDisabled().withArguments("-d").withTasks("lock").start()
+        def build2 = executor.withStackTraceChecksDisabled().withArguments("-d").withTasks("lock").start()
+        def build3 = executor.withStackTraceChecksDisabled().withArguments("-d").withTasks("lock").start()
 
         then:
         poll(120) {
@@ -314,7 +314,7 @@ class DefaultFileLockManagerContentionIntegrationTest extends AbstractIntegratio
         """
 
         when:
-        executer.withArguments()
+        executor.withArguments()
 
         then:
         succeeds "doWorkInWorker"

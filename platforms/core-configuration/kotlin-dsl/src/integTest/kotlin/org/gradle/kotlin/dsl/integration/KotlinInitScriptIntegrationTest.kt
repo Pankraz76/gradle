@@ -107,8 +107,8 @@ class KotlinInitScriptIntegrationTest : AbstractKotlinIntegrationTest() {
             """
         )
 
-        executer.withGradleUserHomeDir(guh)
-        executer.requireIsolatedDaemons()
+        executor.withGradleUserHomeDir(guh)
+        executor.requireIsolatedDaemons()
 
         assertThat(
             build().output,

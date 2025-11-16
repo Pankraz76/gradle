@@ -19,7 +19,7 @@ package org.gradle.internal.enterprise
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.execution.RunRootBuildWorkBuildOperationType
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.internal.enterprise.core.GradleEnterprisePluginManager
 import org.gradle.internal.operations.notify.BuildOperationFinishedNotification
 import org.gradle.internal.operations.notify.BuildOperationNotificationListener
@@ -38,7 +38,7 @@ abstract class BaseBuildScanPluginCheckInFixture {
 
     private final TestFile projectDir
     private final MavenFileRepository mavenRepo
-    private final GradleExecuter pluginBuildExecuter
+    private final GradleExecutor pluginBuildExecutor
 
     String runtimeVersion = AutoAppliedDevelocityPlugin.VERSION
     String artifactVersion = AutoAppliedDevelocityPlugin.VERSION
@@ -56,7 +56,7 @@ abstract class BaseBuildScanPluginCheckInFixture {
     BaseBuildScanPluginCheckInFixture(
         TestFile projectDir,
         MavenFileRepository mavenRepo,
-        GradleExecuter pluginBuildExecuter,
+        GradleExecutor pluginBuildExecutor,
         String pluginId,
         String pluginPackageName,
         String pluginSimpleClassName,
@@ -64,7 +64,7 @@ abstract class BaseBuildScanPluginCheckInFixture {
     ) {
         this.projectDir = projectDir
         this.mavenRepo = mavenRepo
-        this.pluginBuildExecuter = pluginBuildExecuter
+        this.pluginBuildExecutor = pluginBuildExecutor
         this.id = pluginId
         this.packageName = pluginPackageName
         this.simpleClassName = pluginSimpleClassName
@@ -88,8 +88,8 @@ abstract class BaseBuildScanPluginCheckInFixture {
         """
     }
 
-    void publishDummyPlugin(GradleExecuter executer) {
-        executer.beforeExecute {
+    void publishDummyPlugin(GradleExecutor executor) {
+        executor.beforeExecute {
             publishDummyPluginNow()
         }
     }
@@ -195,7 +195,7 @@ abstract class BaseBuildScanPluginCheckInFixture {
 
         builder.addPlugin("", "com.gradle.build-scan", 'BuildScanPlugin')
 
-        builder.publishAs("${pluginArtifactGroup}:${pluginArtifactName}:${artifactVersion}", mavenRepo, pluginBuildExecuter)
+        builder.publishAs("${pluginArtifactGroup}:${pluginArtifactName}:${artifactVersion}", mavenRepo, pluginBuildExecutor)
     }
 
     void assertBuildScanRequest(String output, GradleEnterprisePluginConfig.BuildScanRequest buildScanRequest) {

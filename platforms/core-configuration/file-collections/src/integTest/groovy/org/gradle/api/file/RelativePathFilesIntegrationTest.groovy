@@ -163,9 +163,9 @@ class RelativePathFilesIntegrationTest extends AbstractIntegrationSpec {
         when:
         def directoryContents = ['foo.txt', 'bar.txt'].collect { testDirectory.createDir(expectedDir).file(it).touch() }
         file('sub/fooBar.txt') << "subDir/fileContent"
-        executer.withEnvironmentVars([FOO: 'subDir/env'])
-        executer.withArgument("-Dfoo.bar=subDir/sysprop")
-        executer.withArgument("-Pbar=subDir/gradleProp")
+        executor.withEnvironmentVars([FOO: 'subDir/env'])
+        executor.withArgument("-Dfoo.bar=subDir/sysprop")
+        executor.withArgument("-Pbar=subDir/gradleProp")
         run ":sub:foo"
 
         then:
@@ -202,9 +202,9 @@ class RelativePathFilesIntegrationTest extends AbstractIntegrationSpec {
 
         when:
         file('sub/foo.txt') << "subDir/fileContent"
-        executer.withEnvironmentVars([FOO: 'subDir/env'])
-        executer.withArgument("-Dfoo.bar=subDir/sysprop")
-        executer.withArgument("-Pbar=subDir/gradleProp")
+        executor.withEnvironmentVars([FOO: 'subDir/env'])
+        executor.withArgument("-Dfoo.bar=subDir/sysprop")
+        executor.withArgument("-Pbar=subDir/gradleProp")
         run ":sub:foo"
 
         then:

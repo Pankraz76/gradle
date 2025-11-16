@@ -35,7 +35,7 @@ import java.util.regex.Pattern
 class BuildSrcBuildOperationsIntegrationTest extends AbstractIntegrationSpec {
     BuildOperationsFixture ops
     def setup() {
-        ops = new BuildOperationsFixture(executer, temporaryFolder)
+        ops = new BuildOperationsFixture(executor, temporaryFolder)
         file("buildSrc/src/main/java/Thing.java") << "class Thing { }"
     }
 

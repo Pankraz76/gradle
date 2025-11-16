@@ -17,8 +17,8 @@
 package org.gradle.api.internal.tasks.execution;
 
 import org.gradle.api.internal.TaskInternal;
-import org.gradle.api.internal.tasks.TaskExecuter;
-import org.gradle.api.internal.tasks.TaskExecuterResult;
+import org.gradle.api.internal.tasks.TaskExecutor;
+import org.gradle.api.internal.tasks.TaskExecutorResult;
 import org.gradle.api.internal.tasks.TaskExecutionContext;
 import org.gradle.api.internal.tasks.TaskStateInternal;
 import org.gradle.api.problems.internal.ProblemTaskIdentityTracker;
@@ -27,18 +27,18 @@ import org.gradle.api.problems.internal.TaskIdentity;
 /**
  * Notifies the Problems API about which tasks is being executed.
  */
-public class ProblemsTaskPathTrackingTaskExecuter implements TaskExecuter {
-    private final TaskExecuter taskExecuter;
+public class ProblemsTaskPathTrackingTaskExecutor implements TaskExecutor {
+    private final TaskExecutor taskExecutor;
 
-    public ProblemsTaskPathTrackingTaskExecuter(TaskExecuter taskExecuter) {
-        this.taskExecuter = taskExecuter;
+    public ProblemsTaskPathTrackingTaskExecutor(TaskExecutor taskExecutor) {
+        this.taskExecutor = taskExecutor;
     }
 
     @Override
-    public TaskExecuterResult execute(TaskInternal task, TaskStateInternal state, TaskExecutionContext context) {
+    public TaskExecutorResult execute(TaskInternal task, TaskStateInternal state, TaskExecutionContext context) {
         try {
             ProblemTaskIdentityTracker.setTaskIdentity(new TaskIdentity(task.getTaskIdentity().getPath().asString()));
-            return taskExecuter.execute(task, state, context);
+            return taskExecutor.execute(task, state, context);
         } finally {
             ProblemTaskIdentityTracker.clear();
         }

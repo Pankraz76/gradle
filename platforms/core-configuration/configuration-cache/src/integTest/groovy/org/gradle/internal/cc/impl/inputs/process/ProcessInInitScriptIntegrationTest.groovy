@@ -31,7 +31,7 @@ class ProcessInInitScriptIntegrationTest extends AbstractProcessIntegrationTest 
             ${snippets.imports}
             ${snippets.body}
         """
-        executer.usingInitScript(initScriptFile)
+        executor.usingInitScript(initScriptFile)
 
         when:
         configurationCacheFails(":help")

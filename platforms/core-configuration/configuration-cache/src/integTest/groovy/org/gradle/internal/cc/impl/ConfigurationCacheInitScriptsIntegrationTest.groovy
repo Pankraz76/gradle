@@ -254,6 +254,6 @@ class ConfigurationCacheInitScriptsIntegrationTest extends AbstractConfiguration
     }
 
     private File gradleUserHomeDirFile(String path) {
-        executer.gradleUserHomeDir.file(path)
+        executor.gradleUserHomeDir.file(path)
     }
 }

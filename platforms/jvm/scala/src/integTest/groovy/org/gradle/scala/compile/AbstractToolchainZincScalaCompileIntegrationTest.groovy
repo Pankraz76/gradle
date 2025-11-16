@@ -28,7 +28,7 @@ abstract class AbstractToolchainZincScalaCompileIntegrationTest extends BasicZin
     def setup() {
         jdk = computeJdkForTest()
         Assume.assumeNotNull(jdk)
-        executer.beforeExecute {
+        executor.beforeExecute {
             withInstallations(jdk)
         }
 

@@ -72,7 +72,7 @@ abstract class AbstractConsoleVerboseRenderingFunctionalTest extends AbstractCon
         """
 
         when:
-        executer.withArguments("--parallel")
+        executor.withArguments("--parallel")
         succeeds "allTasks"
 
         then:

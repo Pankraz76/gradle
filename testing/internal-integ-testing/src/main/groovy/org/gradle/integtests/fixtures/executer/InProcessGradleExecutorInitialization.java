@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import org.gradle.api.model.ObjectFactory;
 import org.spockframework.runtime.extension.IGlobalExtension;
@@ -31,11 +31,11 @@ import spock.lang.Issue;
 public class InProcessGradleExecutorInitialization implements IGlobalExtension {
     @Override
     public void start() {
-        // Check the property without referencing GradleContextualExecuter to avoid loading InProcessGradleExecuter class.
-        // Loading InProcessGradleExecuter causes some initialization to happen that fails in some test JVMs
-        if (System.getProperty("org.gradle.integtest.executer") != null && IntegrationTestBuildContext.isEmbedded()) {
+        // Check the property without referencing GradleContextualExecutor to avoid loading InProcessGradleExecutor class.
+        // Loading InProcessGradleExecutor causes some initialization to happen that fails in some test JVMs
+        if (System.getProperty("org.gradle.integtest.executor") != null && IntegrationTestBuildContext.isEmbedded()) {
             // We obtain ObjectFactory, since that initializes AsmBackedClassGenerator.GENERATED_CLASSES_CACHES
-            InProcessGradleExecuter.GLOBAL_SERVICES.get(ObjectFactory.class);
+            InProcessGradleExecutor.GLOBAL_SERVICES.get(ObjectFactory.class);
         }
     }
 }

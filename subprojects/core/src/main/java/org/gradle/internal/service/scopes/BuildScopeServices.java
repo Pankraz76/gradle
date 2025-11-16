@@ -860,7 +860,7 @@ public class BuildScopeServices implements ServiceRegistrationProvider {
     }
 
     @Provides
-    BuildWorkExecutor createBuildExecuter(
+    BuildWorkExecutor createBuildExecutor(
         GradleInternal gradle,
         StyledTextOutputFactory textOutputFactory,
         BuildOperationRunner buildOperationRunner,

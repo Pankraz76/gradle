@@ -19,7 +19,7 @@ package org.gradle.launcher.daemon
 trait ToolchainPropertiesDeprecationsFixture {
 
     void expectToolchainPropertyDeprecationFor(String propertyName, String value) {
-        executer.expectDocumentedDeprecationWarning(
+        executor.expectDocumentedDeprecationWarning(
             "Specifying '${propertyName}' as a project property on the command line has been deprecated." +
                 " This is scheduled to be removed in Gradle 10." +
                 " Instead, specify it as a Gradle property: '-D${propertyName}=${value}'." +

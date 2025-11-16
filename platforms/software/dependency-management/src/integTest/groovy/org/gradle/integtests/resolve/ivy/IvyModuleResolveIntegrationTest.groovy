@@ -269,7 +269,7 @@ task retrieve(type: Sync) {
             .publish()
 
         when:
-        executer.withArguments("-PuseDynamicResolve=true")
+        executor.withArguments("-PuseDynamicResolve=true")
         run 'retrieve'
 
         then:

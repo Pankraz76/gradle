@@ -25,7 +25,7 @@ class GradlePluginIntegrationTest extends AbstractIntegrationSpec {
 
     def setup() {
         initFile = temporaryFolder.createFile("initscripts/init.gradle")
-        executer.usingInitScript(initFile);
+        executor.usingInitScript(initFile);
     }
 
     @ToBeFixedForConfigurationCache(because = "Gradle.buildFinished")

@@ -54,7 +54,7 @@ class InitScriptIntegrationTest extends AbstractIntegrationSpec {
         createProject()
         file("init.gradle") << initScript()
 
-        executer.usingInitScript(file('init.gradle'))
+        executor.usingInitScript(file('init.gradle'))
 
         when:
         succeeds 'hello'
@@ -68,8 +68,8 @@ class InitScriptIntegrationTest extends AbstractIntegrationSpec {
         given:
         settingsFile << "rootProject.name = 'hello'"
         createProject()
-        executer.requireOwnGradleUserHomeDir()
-        new TestFile(executer.gradleUserHomeDir, "init.gradle") << initScript()
+        executor.requireOwnGradleUserHomeDir()
+        new TestFile(executor.gradleUserHomeDir, "init.gradle") << initScript()
 
         when:
         succeeds 'hello'
@@ -98,7 +98,7 @@ class InitScriptIntegrationTest extends AbstractIntegrationSpec {
             include "sub2"
         """
 
-        executer.usingInitScript(file('init.gradle'))
+        executor.usingInitScript(file('init.gradle'))
 
         buildFile """
             task info {
@@ -131,7 +131,7 @@ class InitScriptIntegrationTest extends AbstractIntegrationSpec {
             }
         """)
         def pluginJar = file("plugin.jar")
-        pluginBuilder.publishTo(executer, pluginJar)
+        pluginBuilder.publishTo(executor, pluginJar)
 
         file("init.gradle") << """
             initscript {
@@ -153,7 +153,7 @@ class InitScriptIntegrationTest extends AbstractIntegrationSpec {
             include "sub2"
         """
 
-        executer.usingInitScript(file('init.gradle'))
+        executor.usingInitScript(file('init.gradle'))
 
         buildFile """
             task info {

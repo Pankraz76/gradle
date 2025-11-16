@@ -24,8 +24,8 @@ abstract class AbstractDefaultTestOrderingIntegrationTest extends AbstractTestin
     @Rule public final TestResources resources = new TestResources(temporaryFolder)
 
     def setup() {
-        executer.noExtraLogging()
-        executer.withRepositoryMirrors()
+        executor.noExtraLogging()
+        executor.withRepositoryMirrors()
     }
 
     private void addEmptyTestClass(String testName) {

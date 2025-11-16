@@ -453,7 +453,7 @@ class ConfigurationCacheBuildServiceIntegrationTest extends AbstractConfiguratio
                 }
             """
         }
-        executer.inDirectory(file("plugin")).withTasks("publish").run()
+        executor.inDirectory(file("plugin")).withTasks("publish").run()
     }
 
     @Requires(IntegTestPreconditions.NotNoDaemonExecutor)
@@ -581,7 +581,7 @@ class ConfigurationCacheBuildServiceIntegrationTest extends AbstractConfiguratio
 
         and:
         // classloader reuse requires daemon reuse without memory pressure
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
 
         when:
         inDirectory 'root'

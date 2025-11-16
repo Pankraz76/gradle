@@ -27,8 +27,8 @@ class ConcurrentDependencyResolutionIntegrationTest extends AbstractIntegrationS
 
     def setup() {
         requireOwnGradleUserHomeDir()
-        executer.withArgument('--parallel')
-        executer.withArgument('--max-workers=8')
+        executor.withArgument('--parallel')
+        executor.withArgument('--max-workers=8')
     }
 
     @Issue("gradle/performance#502")

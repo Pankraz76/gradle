@@ -65,8 +65,8 @@ class ConfigurationCacheEnablementIntegrationTest extends AbstractConfigurationC
 
     def "can enable with a property in gradle user home gradle.properties"() {
         given:
-        executer.requireOwnGradleUserHomeDir()
-        executer.gradleUserHomeDir.file('gradle.properties') << """
+        executor.requireOwnGradleUserHomeDir()
+        executor.gradleUserHomeDir.file('gradle.properties') << """
             $ENABLE_GRADLE_PROP
         """
 

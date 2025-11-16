@@ -18,7 +18,7 @@ package org.gradle.internal.watch
 
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
 import org.gradle.testdistribution.LocalOnly
 import org.junit.Rule
@@ -32,8 +32,8 @@ class ChangesDuringTheBuildFileSystemWatchingIntegrationTest extends AbstractFil
     VerboseVfsLogAccessor vfsLogs
 
     def setup() {
-        executer.requireDaemon()
-        executer.beforeExecute {
+        executor.requireDaemon()
+        executor.beforeExecute {
             vfsLogs = enableVerboseVfsLogs()
         }
         server.start()
@@ -201,7 +201,7 @@ class ChangesDuringTheBuildFileSystemWatchingIntegrationTest extends AbstractFil
     }
 
     private void assertExpectedProjectFilesInVfs(int expected) {
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             // Cc watches also settings.gradle and build.gradle, so they are added to VFS.
             expected += 2
         }
@@ -209,7 +209,7 @@ class ChangesDuringTheBuildFileSystemWatchingIntegrationTest extends AbstractFil
     }
 
     private void runWithFileSystemWatchingAndMakeChangesWhen(String task, String expectedCall, Closure action) {
-        def handle = withWatchFs().executer.withTasks(task).start()
+        def handle = withWatchFs().executor.withTasks(task).start()
         def userInput = server.expectAndBlock(expectedCall)
         userInput.waitForAllPendingCalls()
         action()

@@ -107,7 +107,7 @@ class WorkerExecutorErrorHandlingIntegrationTest extends AbstractWorkerExecutorI
     }
 
     def "produces a sensible error when there is a failure starting a worker daemon"() {
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         def workAction = fixture.workActionThatCreatesFiles.writeToBuildSrc()
 
         buildFile << """
@@ -278,7 +278,7 @@ class WorkerExecutorErrorHandlingIntegrationTest extends AbstractWorkerExecutorI
         """.stripIndent()
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         fails("runInWorker")
 
         then:
@@ -303,7 +303,7 @@ class WorkerExecutorErrorHandlingIntegrationTest extends AbstractWorkerExecutorI
         """.stripIndent()
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         fails("runInWorker")
 
         then:

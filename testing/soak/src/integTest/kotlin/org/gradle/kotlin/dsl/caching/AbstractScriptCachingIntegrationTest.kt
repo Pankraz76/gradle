@@ -16,8 +16,8 @@
 
 package org.gradle.kotlin.dsl.caching
 
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 
 import org.gradle.kotlin.dsl.fixtures.AbstractKotlinIntegrationTest
 
@@ -29,7 +29,7 @@ abstract class AbstractScriptCachingIntegrationTest : AbstractKotlinIntegrationT
 
     @Before
     fun isolatedDaemons() {
-        executer.apply {
+        executor.apply {
             requireDaemon()
             requireIsolatedDaemons()
         }
@@ -42,17 +42,17 @@ abstract class AbstractScriptCachingIntegrationTest : AbstractKotlinIntegrationT
 
     protected
     fun buildForCacheInspection(vararg arguments: String): ExecutionResult =
-        executerForCacheInspection(*arguments).run()
+        executorForCacheInspection(*arguments).run()
 
     protected
     fun buildWithDaemonHeapSize(heapMb: Int, vararg arguments: String): ExecutionResult =
-        executerForCacheInspection(*arguments)
+        executorForCacheInspection(*arguments)
             .withBuildJvmOpts("-Xms${heapMb}m", "-Xmx${heapMb}m")
             .run()
 
     private
-    fun executerForCacheInspection(vararg arguments: String): GradleExecuter =
-        gradleExecuterFor(
+    fun executorForCacheInspection(vararg arguments: String): GradleExecutor =
+        gradleExecutorFor(
             arrayOf(
                 "--debug", // Required to verify script compilation via log messages
                 "-Dorg.gradle.internal.operations.trace=${newFile("operation-trace")}",

@@ -24,7 +24,7 @@ import org.junit.Rule
 class BuildScanScopeIdsIntegrationTest extends AbstractIntegrationSpec {
 
     @Rule
-    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(executer, temporaryFolder)
+    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(executor, temporaryFolder)
 
     def "exposes scans view of scope IDs"() {
         when:

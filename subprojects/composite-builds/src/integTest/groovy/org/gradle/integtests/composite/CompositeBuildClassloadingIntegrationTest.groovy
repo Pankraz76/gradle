@@ -63,7 +63,7 @@ class CompositeBuildClassloadingIntegrationTest extends AbstractCompositeBuildIn
         buildA.file('version.txt') << '3.3'
         buildB.file('version.txt') << '3.4'
 
-        executer.withGradleUserHomeDir(file('gradle-user-home'))
+        executor.withGradleUserHomeDir(file('gradle-user-home'))
 
         expect:
         execute(buildA, "doStringOp")

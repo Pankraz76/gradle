@@ -36,8 +36,8 @@ class MavenPublishS3IntegrationTest extends AbstractMavenPublishIntegTest {
     def setup() {
         settingsFile << 'rootProject.name = "publishS3Test"'
 
-        executer.withArgument("-Dorg.gradle.s3.endpoint=${server.getUri()}")
-        executer.withStackTraceChecksDisabled()
+        executor.withArgument("-Dorg.gradle.s3.endpoint=${server.getUri()}")
+        executor.withStackTraceChecksDisabled()
     }
 
     def "can publish to a S3 Maven repository bucket=#bucket"() {
@@ -85,8 +85,8 @@ class MavenPublishS3IntegrationTest extends AbstractMavenPublishIntegTest {
         module.rootMetaData.expectDownloadMissing()
         expectPublish(module.rootMetaData)
 
-        executer.withArgument("-PmavenAccessKey=${credentials.accessKey}")
-        executer.withArgument("-PmavenSecretKey=${credentials.secretKey}")
+        executor.withArgument("-PmavenAccessKey=${credentials.accessKey}")
+        executor.withArgument("-PmavenSecretKey=${credentials.secretKey}")
         succeeds 'publish'
 
         then:
@@ -130,7 +130,7 @@ class MavenPublishS3IntegrationTest extends AbstractMavenPublishIntegTest {
         if (TestPrecondition.satisfied(UnitTestPreconditions.MacOsM1)) {
             // FIXME KM M1 support might require aws-sdk-java-v2:2.17.198 and higher; see https://github.com/aws/aws-sdk-java-v2/issues/2942
             //   ...or this is just a harmless ST, see https://github.com/aws/aws-sdk-java/issues/2365
-            executer.withStackTraceChecksDisabled()
+            executor.withStackTraceChecksDisabled()
         }
         succeeds 'publish'
 

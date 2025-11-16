@@ -32,9 +32,9 @@ import org.gradle.api.internal.classpath.ModuleRegistry;
 import org.gradle.api.internal.provider.PropertyFactory;
 import org.gradle.api.internal.tasks.testing.JvmTestExecutionSpec;
 import org.gradle.api.internal.tasks.testing.TestExecutableUtils;
-import org.gradle.api.internal.tasks.testing.TestExecuter;
+import org.gradle.api.internal.tasks.testing.TestExecutor;
 import org.gradle.api.internal.tasks.testing.TestFramework;
-import org.gradle.api.internal.tasks.testing.detection.DefaultTestExecuter;
+import org.gradle.api.internal.tasks.testing.detection.DefaultTestExecutor;
 import org.gradle.api.internal.tasks.testing.filter.DefaultTestFilter;
 import org.gradle.api.internal.tasks.testing.junit.JUnitTestFramework;
 import org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestFramework;
@@ -182,7 +182,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
     private int maxParallelForks = 1;
 
     @Nullable
-    private TestExecuter<JvmTestExecutionSpec> testExecuter;
+    private TestExecutor<JvmTestExecutionSpec> testExecutor;
 
     public Test() {
         ObjectFactory objectFactory = getObjectFactory();
@@ -726,15 +726,15 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
     }
 
     @Override
-    protected TestExecuter<JvmTestExecutionSpec> createTestExecuter() {
-        if (testExecuter == null) {
-            return new DefaultTestExecuter(getProcessBuilderFactory(), getActorFactory(), getModuleRegistry(),
+    protected TestExecutor<JvmTestExecutionSpec> createTestExecutor() {
+        if (testExecutor == null) {
+            return new DefaultTestExecutor(getProcessBuilderFactory(), getActorFactory(), getModuleRegistry(),
                 getServices().get(WorkerLeaseService.class),
                 getServices().get(StartParameter.class).getMaxWorkerCount(),
                 getServices().get(Clock.class),
                 (DefaultTestFilter) getFilter());
         } else {
-            return testExecuter;
+            return testExecutor;
         }
     }
 
@@ -1261,13 +1261,13 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
     }
 
     /**
-     * Sets the testExecuter property.
+     * Sets the testExecutor property.
      *
      * @since 4.2
      */
     @UsedByScanPlugin("test-distribution, test-retry")
-    void setTestExecuter(TestExecuter<JvmTestExecutionSpec> testExecuter) {
-        this.testExecuter = testExecuter;
+    void setTestExecutor(TestExecutor<JvmTestExecutionSpec> testExecutor) {
+        this.testExecutor = testExecutor;
     }
 
     /**

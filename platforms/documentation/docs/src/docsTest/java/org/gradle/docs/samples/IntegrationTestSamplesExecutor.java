@@ -19,13 +19,13 @@ package org.gradle.docs.samples;
 import org.gradle.api.logging.configuration.WarningMode;
 import org.gradle.exemplar.executor.CommandExecutor;
 import org.gradle.integtests.fixtures.AvailableJavaHomes;
-import org.gradle.integtests.fixtures.executer.ExecutionFailure;
-import org.gradle.integtests.fixtures.executer.ExecutionResult;
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter;
-import org.gradle.integtests.fixtures.executer.GradleDistribution;
-import org.gradle.integtests.fixtures.executer.GradleExecuter;
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext;
-import org.gradle.integtests.fixtures.executer.UnderDevelopmentGradleDistribution;
+import org.gradle.integtests.fixtures.executor.ExecutionFailure;
+import org.gradle.integtests.fixtures.executor.ExecutionResult;
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor;
+import org.gradle.integtests.fixtures.executor.GradleDistribution;
+import org.gradle.integtests.fixtures.executor.GradleExecutor;
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext;
+import org.gradle.integtests.fixtures.executor.UnderDevelopmentGradleDistribution;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.jvm.Jvm;
 import org.gradle.test.fixtures.file.TestNameTestDirectoryProvider;
@@ -51,26 +51,26 @@ class IntegrationTestSamplesExecutor extends CommandExecutor {
 
     private final File workingDir;
     private final boolean expectFailure;
-    private final GradleExecuter gradle;
+    private final GradleExecutor gradle;
 
     IntegrationTestSamplesExecutor(File workingDir, boolean expectFailure) {
         this.workingDir = workingDir;
         this.expectFailure = expectFailure;
         GradleDistribution distribution = new UnderDevelopmentGradleDistribution(IntegrationTestBuildContext.INSTANCE);
-        this.gradle = new GradleContextualExecuter(distribution, new TestNameTestDirectoryProvider(IntegrationTestSamplesExecutor.class), IntegrationTestBuildContext.INSTANCE);
+        this.gradle = new GradleContextualExecutor(distribution, new TestNameTestDirectoryProvider(IntegrationTestSamplesExecutor.class), IntegrationTestBuildContext.INSTANCE);
     }
 
     @Override
     protected int run(String executable, List<String> args, List<String> flags, OutputStream outputStream) {
         try {
-            GradleExecuter executer = createExecuter(args, flags);
+            GradleExecutor executor = createExecutor(args, flags);
             if (expectFailure) {
                 // TODO(mlopatkin) sometimes it is still possible to save the configuration cache state in the event of failure.
                 //  We need to figure out how to separate expected failure from the CC store failure.
-                ExecutionFailure result = executer.runWithFailure();
+                ExecutionFailure result = executor.runWithFailure();
                 outputStream.write((result.getOutput() + result.getError()).getBytes());
             } else {
-                ExecutionResult result = executer.run();
+                ExecutionResult result = executor.run();
                 outputStream.write(result.getOutput().getBytes());
             }
             return expectFailure ? 1 : 0;
@@ -79,7 +79,7 @@ class IntegrationTestSamplesExecutor extends CommandExecutor {
         }
     }
 
-    private GradleExecuter createExecuter(List<String> args, List<String> flags) {
+    private GradleExecutor createExecutor(List<String> args, List<String> flags) {
         WarningMode warningMode = flags.stream()
             .filter(it -> it.startsWith(WARNING_MODE_FLAG_PREFIX))
             .map(it -> WarningMode.valueOf(capitalize(it.replace(WARNING_MODE_FLAG_PREFIX, "").toLowerCase())))
@@ -88,7 +88,7 @@ class IntegrationTestSamplesExecutor extends CommandExecutor {
             .filter(it -> !it.startsWith(WARNING_MODE_FLAG_PREFIX) && !it.equals(NO_STACKTRACE_CHECK) && !it.startsWith(SAMPLE_ENV_PREFIX))
             .collect(toCollection(ArrayList::new));
         filteredFlags.add(getAvailableJdksFlag());
-        GradleExecuter executer = gradle.inDirectory(workingDir).ignoreMissingSettingsFile()
+        GradleExecutor executor = gradle.inDirectory(workingDir).ignoreMissingSettingsFile()
             .noDeprecationChecks()
             .withWarningMode(warningMode)
             .withToolchainDetectionEnabled()
@@ -105,11 +105,11 @@ class IntegrationTestSamplesExecutor extends CommandExecutor {
             //    Owner Operation:
             //    Our operation:
             //    Lock file: /mnt/tcagent1/work/b6cfc23ab10332e6/intTestHomeDir/distributions-full/caches/build-cache-1/build-cache-1.lock
-            executer.withGradleUserHomeDir(new File(workingDir, "user-home"));
+            executor.withGradleUserHomeDir(new File(workingDir, "user-home"));
         }
 
         if (flags.stream().anyMatch(NO_STACKTRACE_CHECK::equals)) {
-            executer.withStackTraceChecksDisabled();
+            executor.withStackTraceChecksDisabled();
         }
 
         Map<String, String> env = flags.stream()
@@ -118,9 +118,9 @@ class IntegrationTestSamplesExecutor extends CommandExecutor {
             .filter(it -> it.length == 2)
             .collect(toMap(it -> it[0], it -> it[1]));
         if (!env.isEmpty()) {
-            executer.withEnvironmentVars(env);
+            executor.withEnvironmentVars(env);
         }
-        return executer;
+        return executor;
     }
 
     private String getAvailableJdksFlag() {

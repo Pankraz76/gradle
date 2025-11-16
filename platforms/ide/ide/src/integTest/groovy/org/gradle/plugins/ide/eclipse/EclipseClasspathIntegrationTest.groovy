@@ -18,7 +18,7 @@ package org.gradle.plugins.ide.eclipse
 import org.gradle.api.JavaVersion
 import org.gradle.integtests.fixtures.RepoScriptBlockUtil
 import org.gradle.integtests.fixtures.TestResources
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.junit.Rule
 import org.junit.Test
 import spock.lang.Issue
@@ -361,14 +361,14 @@ configure(project(":b")){
     }
 }
 """
-        executer.withTasks("eclipse").run()
+        executor.withTasks("eclipse").run()
 
         def libs = classpath("a").libs
         assert classpath("a").projects.collect { it.name } == ['b']
         assert libs.size() == 1
         libs[0].assertHasJar(someLib2Jar)
 
-        executer.withArgument("-PstrictDeps=true").withTasks("eclipse").run()
+        executor.withArgument("-PstrictDeps=true").withTasks("eclipse").run()
 
         libs = classpath("a").libs
         assert classpath("a").projects.collect { it.name } == ['b']
@@ -730,14 +730,14 @@ apply plugin: 'eclipse'
         createJavaSourceDirs(buildFile)
 
         when:
-        executer.withTasks('eclipseClasspath').run()
+        executor.withTasks('eclipseClasspath').run()
 
         then:
         assert classpath.entries.size() == 4
         assert classpath.sources.size() == 2
 
         when:
-        executer.withTasks('eclipseClasspath').run()
+        executor.withTasks('eclipseClasspath').run()
 
         then:
         assert classpath.entries.size() == 4
@@ -767,7 +767,7 @@ sourceSets {
         buildFile.parentFile.file("src").createDir()
 
         when:
-        executer.withTasks('eclipseClasspath').run()
+        executor.withTasks('eclipseClasspath').run()
 
         then:
         assert classpath.entries.size() == 3
@@ -793,7 +793,7 @@ sourceSets {
 }
 """
         when:
-        executer.withTasks('cleanEclipseClasspath', 'eclipseClasspath').run()
+        executor.withTasks('cleanEclipseClasspath', 'eclipseClasspath').run()
         then:
         assert classpath.entries.size() == 3
         assert classpath.sources.size() == 1
@@ -823,7 +823,7 @@ sourceSets {
         buildFile.parentFile.file("src").createDir()
 
         when:
-        executer.withTasks('eclipseClasspath').run()
+        executor.withTasks('eclipseClasspath').run()
 
         then:
         assert classpath.entries.size() == 3
@@ -851,7 +851,7 @@ sourceSets {
         buildFile.parentFile.file("src").createDir()
 
         when:
-        executer.withTasks('cleanEclipse', 'eclipseClasspath').run()
+        executor.withTasks('cleanEclipse', 'eclipseClasspath').run()
 
         then:
         assert classpath.entries.size() == 3
@@ -938,7 +938,7 @@ project(':api') {
 }
 """
         //when
-        executer.withTasks('eclipse').run()
+        executor.withTasks('eclipse').run()
 
         //then
         def classpath = getClasspathFile(project: 'api').text

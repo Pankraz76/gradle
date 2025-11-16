@@ -36,7 +36,7 @@ class SamplesScalaCustomizedLayoutIntegrationTest extends AbstractSampleIntegrat
         TestFile projectDir = sample.dir.file(dsl)
 
         // Build and test projects
-        executer.inDirectory(projectDir).withTasks('clean', 'build').run()
+        executor.inDirectory(projectDir).withTasks('clean', 'build').run()
 
         // Check tests have run
         def result = new DefaultTestExecutionResult(projectDir)

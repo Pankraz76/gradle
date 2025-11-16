@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 
 import org.gradle.process.internal.JvmOptions
@@ -26,7 +26,7 @@ import org.junit.Rule
 import spock.lang.Specification
 
 @UsesNativeServices
-class AbstractGradleExecuterTest extends Specification {
+class AbstractGradleExecutorTest extends Specification {
     @Rule
     public final TestNameTestDirectoryProvider testDir = new TestNameTestDirectoryProvider(getClass());
 
@@ -34,7 +34,7 @@ class AbstractGradleExecuterTest extends Specification {
         getVersion() >> GradleVersion.current()
     }
 
-    AbstractGradleExecuter executer = new AbstractGradleExecuter(gradleDistribution, testDir) {
+    AbstractGradleExecutor executor = new AbstractGradleExecutor(gradleDistribution, testDir) {
         @Override
         protected ExecutionResult doRun() {
             return null
@@ -53,8 +53,8 @@ class AbstractGradleExecuterTest extends Specification {
 
     def "when requireDaemon is called, arguments should contain --daemon"() {
         when:
-        executer.requireDaemon()
-        def allArgs = executer.getAllArgs()
+        executor.requireDaemon()
+        def allArgs = executor.getAllArgs()
 
         then:
         allArgs.contains("--daemon")
@@ -63,7 +63,7 @@ class AbstractGradleExecuterTest extends Specification {
 
     def "when requireDaemon is not called, arguments should contain --no-daemon"() {
         when:
-        def allArgs = executer.getAllArgs()
+        def allArgs = executor.getAllArgs()
 
         then:
         !allArgs.contains("--daemon")
@@ -72,8 +72,8 @@ class AbstractGradleExecuterTest extends Specification {
 
     def "when --foreground argument is added, it skips adding --daemon/--no-daemon"() {
         when:
-        executer.withArgument("--foreground")
-        def allArgs = executer.getAllArgs()
+        executor.withArgument("--foreground")
+        def allArgs = executor.getAllArgs()
 
         then:
         !allArgs.contains("--daemon")
@@ -82,9 +82,9 @@ class AbstractGradleExecuterTest extends Specification {
 
     def "when argument is added explicitly, no --daemon argument is added and requireDaemon gets overridden"() {
         when:
-        executer.withArgument(argument)
-        executer.requireDaemon()
-        def allArgs = executer.getAllArgs()
+        executor.withArgument(argument)
+        executor.requireDaemon()
+        def allArgs = executor.getAllArgs()
 
         then:
         !allArgs.contains("--daemon")
@@ -96,7 +96,7 @@ class AbstractGradleExecuterTest extends Specification {
 
     def "toolchain provisioning and discovery disabled by default"() {
         when:
-        def allArgs = executer.getAllArgs()
+        def allArgs = executor.getAllArgs()
 
         then:
         allArgs.contains("-Dorg.gradle.java.installations.auto-detect=false")
@@ -105,8 +105,8 @@ class AbstractGradleExecuterTest extends Specification {
 
     def "toolchain detection can be enabled"() {
         when:
-        executer.withToolchainDetectionEnabled()
-        def allArgs = executer.getAllArgs()
+        executor.withToolchainDetectionEnabled()
+        def allArgs = executor.getAllArgs()
 
         then:
         !allArgs.toString().contains("-Dorg.gradle.java.installations.auto-detect")
@@ -115,8 +115,8 @@ class AbstractGradleExecuterTest extends Specification {
 
     def "toolchain provisioning can be enabled"() {
         when:
-        executer.withToolchainDownloadEnabled()
-        def allArgs = executer.getAllArgs()
+        executor.withToolchainDownloadEnabled()
+        def allArgs = executor.getAllArgs()
 
         then:
         !allArgs.toString().contains("-Dorg.gradle.java.installations.auto-download")
@@ -125,8 +125,8 @@ class AbstractGradleExecuterTest extends Specification {
     def "does not allow you to use startBuildProcessInDebugger on CI"() {
         Assume.assumeTrue(System.getenv().containsKey("CI"))
         when:
-        executer.startBuildProcessInDebugger(true)
-        executer.getAllArgs()
+        executor.startBuildProcessInDebugger(true)
+        executor.getAllArgs()
         then:
         def e = thrown(IllegalArgumentException)
         e.message.contains("Builds cannot be started with the debugger enabled on CI")
@@ -134,25 +134,25 @@ class AbstractGradleExecuterTest extends Specification {
 
     def "start build process in debugger options"() {
         when:
-        executer.startBuildProcessInDebugger { it.server = false }
+        executor.startBuildProcessInDebugger { it.server = false }
 
         then:
         def debugArgument = JvmOptions.getDebugArgument(false, true, "localhost:5005")
-        executer.implicitBuildJvmArgs.contains(debugArgument)
-        executer.buildInvocation().launcherJvmArgs.contains(debugArgument)
+        executor.implicitBuildJvmArgs.contains(debugArgument)
+        executor.buildInvocation().launcherJvmArgs.contains(debugArgument)
     }
 
     def "start launcher process in debugger options"() {
         when:
-        executer.startLauncherInDebugger {
+        executor.startLauncherInDebugger {
             it.server = false
             it.host = "myHost"
         }
 
         then:
-        def launcherArgs = executer.buildInvocation().launcherJvmArgs
+        def launcherArgs = executor.buildInvocation().launcherJvmArgs
         def debugArgument = JvmOptions.getDebugArgument(false, true, "myHost:5006")
         launcherArgs.contains(debugArgument)
-        !executer.implicitBuildJvmArgs.contains(debugArgument)
+        !executor.implicitBuildJvmArgs.contains(debugArgument)
     }
 }

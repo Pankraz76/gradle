@@ -28,9 +28,9 @@ class ConfigurationCacheLifecyclePluginIntegrationTest extends AbstractIntegrati
     def configurationCache = newConfigurationCacheFixture()
 
     @Override
-    void setupExecuter() {
-        super.setupExecuter()
-        executer.withConfigurationCacheEnabled()
+    void setupExecutor() {
+        super.setupExecutor()
+        executor.withConfigurationCacheEnabled()
     }
 
     def 'buildDirectory is finalized when writing to the cache'() {

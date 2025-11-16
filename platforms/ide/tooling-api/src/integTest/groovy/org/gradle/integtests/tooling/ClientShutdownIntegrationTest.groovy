@@ -17,7 +17,7 @@
 package org.gradle.integtests.tooling
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.integtests.tooling.fixture.ToolingApi
 import org.gradle.integtests.tooling.fixture.ToolingApiSpecification
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
@@ -131,8 +131,8 @@ task slow { doLast { ${server.callFromBuild('sync')} } }
         toolingApi.daemons.daemon.assertIdle()
     }
 
-    private GradleExecuter daemonExecutor() {
-        executer
+    private GradleExecutor daemonExecutor() {
+        executor
             .withDaemonBaseDir(toolingApi.daemonBaseDir)
             .withBuildJvmOpts(buildJvmArguments)
             .useOnlyRequestedJvmOpts()

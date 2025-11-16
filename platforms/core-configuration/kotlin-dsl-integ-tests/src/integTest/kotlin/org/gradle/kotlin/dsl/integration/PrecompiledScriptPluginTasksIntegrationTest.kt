@@ -78,7 +78,7 @@ class PrecompiledScriptPluginTasksIntegrationTest : AbstractKotlinIntegrationTes
             """.trimIndent()
         )
 
-        executer.expectDocumentedDeprecationWarning("The ReportingExtension.file(String) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the getBaseDirectory().file(String) or getBaseDirectory().dir(String) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#reporting_extension_file")
+        executor.expectDocumentedDeprecationWarning("The ReportingExtension.file(String) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the getBaseDirectory().file(String) or getBaseDirectory().dir(String) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#reporting_extension_file")
         build("generateScriptPluginAdapters", "detekt")
     }
 
@@ -129,7 +129,7 @@ class PrecompiledScriptPluginTasksIntegrationTest : AbstractKotlinIntegrationTes
         val downstreamKotlinCompileTask = ":compileKotlin"
 
         // TODO: the Kotlin compile tasks check for cacheability using Task.getProject
-        executer.beforeExecute {
+        executor.beforeExecute {
             it.withBuildJvmOpts("-Dorg.gradle.configuration-cache.internal.task-execution-access-pre-stable=true")
         }
 

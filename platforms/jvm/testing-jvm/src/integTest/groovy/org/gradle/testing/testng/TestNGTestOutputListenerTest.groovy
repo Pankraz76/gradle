@@ -44,14 +44,14 @@ class TestNGTestOutputListenerTest extends AbstractTestNGVersionIntegrationTest 
         """.stripIndent()
 
         when: "run with quiet"
-        executer.withArguments("-q")
+        executor.withArguments("-q")
         succeeds('test')
 
         then:
         outputDoesNotContain('output from foo')
 
         when: "run with lifecycle"
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         succeeds('cleanTest', 'test')
 
         then:

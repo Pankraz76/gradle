@@ -27,12 +27,12 @@ class SamplesDeclaringRepositoriesIntegrationTest extends AbstractIntegrationSpe
     Sample sample = new Sample(testDirectoryProvider)
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     @UsesSample("dependencyManagement/declaringRepositories-multipleRepositories")
     def "can declare multiple repositories and resolve binary dependency"() {
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
 
         when:
         succeeds('copyLibs')

@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.fixtures
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.opentest4j.TestAbortedException
 import org.spockframework.runtime.extension.IAnnotationDrivenExtension
 import org.spockframework.runtime.extension.IMethodInterceptor
@@ -32,7 +32,7 @@ class UnsupportedWithConfigurationCacheExtension implements IAnnotationDrivenExt
 
     @Override
     void visitSpecAnnotation(UnsupportedWithConfigurationCache annotation, SpecInfo spec) {
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             if (isAllIterations(annotation.iterationMatchers()) && isEnabledBottomSpec(annotation.bottomSpecs(), { spec.bottomSpec.name == it })) {
                 spec.skipped = true
             } else {
@@ -45,7 +45,7 @@ class UnsupportedWithConfigurationCacheExtension implements IAnnotationDrivenExt
 
     @Override
     void visitFeatureAnnotation(UnsupportedWithConfigurationCache annotation, FeatureInfo feature) {
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             if (isAllIterations(annotation.iterationMatchers()) && isEnabledBottomSpec(annotation.bottomSpecs(), { feature.parent.bottomSpec.name == it })) {
                 feature.skipped = true
             } else {

@@ -213,7 +213,7 @@ model {
         directoryHeader.deleteDir()
         directoryHeader << '#pragma message("NEW directory named header")'
         and:
-        executer.withArgument("--info")
+        executor.withArgument("--info")
         run "mainExecutable"
         then:
         executedAndNotSkipped compileTask

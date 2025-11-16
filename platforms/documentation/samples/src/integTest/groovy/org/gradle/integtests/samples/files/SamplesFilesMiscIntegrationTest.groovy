@@ -32,7 +32,7 @@ class SamplesFilesMiscIntegrationTest extends AbstractIntegrationSpec {
     def "can create a directory with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('ensureDirectory')
@@ -48,7 +48,7 @@ class SamplesFilesMiscIntegrationTest extends AbstractIntegrationSpec {
     def "can move a directory with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
         def reportsDir = dslDir.file('build/reports')
         reportsDir.createDir().file('my-report.pdf').touch()
         reportsDir.file('numbers.csv').touch()
@@ -82,7 +82,7 @@ class SamplesFilesMiscIntegrationTest extends AbstractIntegrationSpec {
             reportsDir.createDir().file('my-report.pdf').touch()
             reportsDir.file('numbers.csv').touch()
 
-            executer.inDirectory(dslDir)
+            executor.inDirectory(dslDir)
             succeeds("moveReports", "--rerun-tasks")
 
             dslDir.file("build/toArchive").deleteDir()
@@ -96,11 +96,11 @@ class SamplesFilesMiscIntegrationTest extends AbstractIntegrationSpec {
     def "can delete a directory with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
         dslDir.file("build").createDir().file("dummy.txt").touch()
 
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         succeeds('myClean')
 
         then:
@@ -114,10 +114,10 @@ class SamplesFilesMiscIntegrationTest extends AbstractIntegrationSpec {
     def "can delete files matching a pattern with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         succeeds('cleanTempFiles')
 
         then:
@@ -135,7 +135,7 @@ class SamplesFilesMiscIntegrationTest extends AbstractIntegrationSpec {
     def "can use the rootDir property in a child project with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         expect:
         succeeds(':project2:checkConfigFile')

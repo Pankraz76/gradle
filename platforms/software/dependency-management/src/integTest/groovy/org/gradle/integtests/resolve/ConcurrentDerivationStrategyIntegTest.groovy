@@ -28,7 +28,7 @@ class ConcurrentDerivationStrategyIntegTest extends AbstractIntegrationSpec {
     @Unroll("consistent resolution using rules=#displayName")
     // If this test becomes flaky it means we broke the code which prevents mutation of in-memory cached module metadata
     def "selected variants are consistent using concurrent resolution of graphs from cache having different derivation strategies"() {
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         settingsFile << """
             include 'app'
             include 'lib'
@@ -118,14 +118,14 @@ class ConcurrentDerivationStrategyIntegTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.withArgument('--parallel')
+        executor.withArgument('--parallel')
         run 'resolve'
 
         then:
         noExceptionThrown()
 
         when: "second build from cache"
-        executer.withArgument('--parallel')
+        executor.withArgument('--parallel')
         run 'resolve'
 
         then:

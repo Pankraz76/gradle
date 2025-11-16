@@ -31,8 +31,8 @@ class NetworkOperationBackOffAndRetryTest extends Specification {
             attempts++
             throw ex
         }
-        NetworkOperationBackOffAndRetry executer = new NetworkOperationBackOffAndRetry(3, 1)
-        executer.withBackoffAndRetry(operation)
+        NetworkOperationBackOffAndRetry executor = new NetworkOperationBackOffAndRetry(3, 1)
+        executor.withBackoffAndRetry(operation)
 
         then:
         attempts == 3
@@ -62,8 +62,8 @@ class NetworkOperationBackOffAndRetryTest extends Specification {
                 throw ex
             }
         }
-        NetworkOperationBackOffAndRetry executer = new NetworkOperationBackOffAndRetry(3, 1)
-        executer.withBackoffAndRetry(operation)
+        NetworkOperationBackOffAndRetry executor = new NetworkOperationBackOffAndRetry(3, 1)
+        executor.withBackoffAndRetry(operation)
 
         then:
         attempts == 3
@@ -86,8 +86,8 @@ class NetworkOperationBackOffAndRetryTest extends Specification {
             attempts++
             throw ex
         }
-        NetworkOperationBackOffAndRetry executer = new NetworkOperationBackOffAndRetry(3, 1)
-        executer.withBackoffAndRetry(operation)
+        NetworkOperationBackOffAndRetry executor = new NetworkOperationBackOffAndRetry(3, 1)
+        executor.withBackoffAndRetry(operation)
 
         then:
         attempts == 1

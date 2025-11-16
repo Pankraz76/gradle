@@ -104,7 +104,7 @@ class ReadOnlyDependencyCacheWithinContainerTest extends AbstractReadOnlyCacheDe
             def testBuildDir = createContainerBuild("build$id")
             newContainer()
                 .withBuildDir(testBuildDir)
-                .withExecuter {
+                .withExecutor {
                     if (daemon) {
                         requireDaemon()
                         requireIsolatedDaemons()
@@ -204,7 +204,7 @@ class ReadOnlyDependencyCacheWithinContainerTest extends AbstractReadOnlyCacheDe
     GradleInContainer newContainer() {
         new GradleInContainer(distribution, testDirectoryProvider)
             .bindReadOnly(roCacheDir, "/dependency-cache")
-            .withExecuter {
+            .withExecutor {
                 withReadOnlyCacheDir("/dependency-cache")
             }
     }

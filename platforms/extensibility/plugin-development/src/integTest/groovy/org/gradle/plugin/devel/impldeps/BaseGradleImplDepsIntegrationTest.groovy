@@ -22,7 +22,7 @@ import org.gradle.integtests.fixtures.JUnitXmlTestExecutionResult
 abstract class BaseGradleImplDepsIntegrationTest extends AbstractIntegrationSpec {
 
     def setup() {
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
     }
 
     static String applyJavaPlugin() {

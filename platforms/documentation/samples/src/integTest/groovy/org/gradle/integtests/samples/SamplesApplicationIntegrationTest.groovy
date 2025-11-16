@@ -17,7 +17,7 @@ package org.gradle.integtests.samples
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.Sample
-import org.gradle.integtests.fixtures.ScriptExecuter
+import org.gradle.integtests.fixtures.ScriptExecutor
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.UnitTestPreconditions
@@ -29,12 +29,12 @@ class SamplesApplicationIntegrationTest extends AbstractIntegrationSpec {
     @Rule Sample sample = new Sample(temporaryFolder, 'java/application')
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     def "can run the application using run task with #dsl dsl"() {
         when:
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
         succeeds('run')
 
         then:
@@ -48,7 +48,7 @@ class SamplesApplicationIntegrationTest extends AbstractIntegrationSpec {
         when:
         def dslDir = sample.dir.file(dsl)
         appendExecutableDir(dslDir, executableDir)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
         succeeds('installDist')
 
         then:
@@ -66,7 +66,7 @@ class SamplesApplicationIntegrationTest extends AbstractIntegrationSpec {
         when:
         def dslDir = sample.dir.file(dsl)
         appendExecutableDir(dslDir, executableDir)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
         succeeds('distZip')
 
         then:
@@ -103,7 +103,7 @@ application {
         installDir.file("${executableDir}/my-app").text.contains("MODULE_PATH=")
         installDir.file("${executableDir}/my-app.bat").text.contains("MODULE_PATH=")
 
-        def builder = new ScriptExecuter()
+        def builder = new ScriptExecutor()
         builder.workingDir = installDir.file(executableDir)
         builder.executable = 'my-app'
         builder.standardOutput = new ByteArrayOutputStream()

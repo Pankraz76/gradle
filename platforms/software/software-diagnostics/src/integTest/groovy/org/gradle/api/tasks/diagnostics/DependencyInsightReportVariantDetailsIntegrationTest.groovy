@@ -28,10 +28,10 @@ import static org.gradle.api.tasks.diagnostics.DependencyInsightReportVariantDet
 
 class DependencyInsightReportVariantDetailsIntegrationTest extends AbstractIntegrationSpec {
     def setup() {
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
 
         // detector confuses attributes with stack traces
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         settingsFile << """
             gradle.lifecycle.beforeProject { project ->
                 project.pluginManager.apply('org.gradle.jvm-ecosystem')

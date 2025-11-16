@@ -16,7 +16,7 @@
 package org.gradle.api.plugins.quality.checkstyle
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.configurationcache.isolated.IsolatedProjectsExecuterFixture
+import org.gradle.integtests.fixtures.configurationcache.isolated.IsolatedProjectsExecutorFixture
 import org.gradle.test.fixtures.file.TestFile
 import org.hamcrest.Matcher
 
@@ -24,7 +24,7 @@ import static org.gradle.util.Matchers.containsLine
 import static org.gradle.util.internal.TextUtil.getPlatformLineSeparator
 import static org.hamcrest.CoreMatchers.containsString
 
-class CheckstylePluginMultiProjectTest extends AbstractIntegrationSpec implements IsolatedProjectsExecuterFixture {
+class CheckstylePluginMultiProjectTest extends AbstractIntegrationSpec implements IsolatedProjectsExecutorFixture {
 
     def "configures checkstyle extension to read config from root project in a single project build"() {
         given:

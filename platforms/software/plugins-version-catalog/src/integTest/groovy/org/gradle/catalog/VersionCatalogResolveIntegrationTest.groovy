@@ -49,7 +49,7 @@ class VersionCatalogResolveIntegrationTest extends AbstractHttpDependencyResolut
                 library('my-lib', 'org.test:lib:1.1')
             }
         '''
-        executer.inDirectory(platformProject).withTasks('publish').run()
+        executor.inDirectory(platformProject).withTasks('publish').run()
 
         settingsFile << """
             dependencyResolutionManagement {
@@ -86,7 +86,7 @@ class VersionCatalogResolveIntegrationTest extends AbstractHttpDependencyResolut
                 library('my-lib-json', 'org.test', 'lib-json').versionRef(v)
             }
         '''
-        executer.inDirectory(platformProject).withTasks('publish').run()
+        executor.inDirectory(platformProject).withTasks('publish').run()
 
         settingsFile << """
             dependencyResolutionManagement {
@@ -125,14 +125,14 @@ class VersionCatalogResolveIntegrationTest extends AbstractHttpDependencyResolut
                 library('my-lib', 'org.test:lib:1.0')
             }
         '''
-        executer.inDirectory(platformProject).withTasks('publish').run()
+        executor.inDirectory(platformProject).withTasks('publish').run()
 
         platformProject = preparePlatformProject '''
             versionCatalog {
                 library('my-lib', 'org.test:lib:1.1')
             }
         ''', '1.1'
-        executer.inDirectory(platformProject).withTasks('publish').run()
+        executor.inDirectory(platformProject).withTasks('publish').run()
 
         settingsFile << """
             dependencyResolutionManagement {
@@ -212,7 +212,7 @@ org.gradle.test:my-platform:1.0=incomingCatalogForLibs0
                 library('my-lib', 'org.test:lib:1.1')
             }
         '''
-        executer.inDirectory(platformProject).withTasks('publish').run()
+        executor.inDirectory(platformProject).withTasks('publish').run()
 
         settingsFile << """
             dependencyResolutionManagement {

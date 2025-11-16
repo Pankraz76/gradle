@@ -22,7 +22,7 @@ import org.gradle.api.file.FileTree;
 import org.gradle.api.file.FileType;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.file.SourceDirectorySet;
-import org.gradle.api.plugins.antlr.internal.AntlrExecuter;
+import org.gradle.api.plugins.antlr.internal.AntlrExecutor;
 import org.gradle.api.plugins.antlr.internal.AntlrResult;
 import org.gradle.api.plugins.antlr.internal.AntlrSourceGenerationException;
 import org.gradle.api.plugins.antlr.internal.AntlrSpec;
@@ -258,7 +258,7 @@ public abstract class AntlrTask extends SourceTask {
 
     private MultiRequestClient<AntlrSpec, AntlrResult> getAntlrWorkerClient(AntlrSpec spec) {
         MultiRequestWorkerProcessBuilder<AntlrSpec, AntlrResult> builder =
-            getWorkerProcessBuilderFactory().multiRequestWorker(AntlrExecuter.class);
+            getWorkerProcessBuilderFactory().multiRequestWorker(AntlrExecutor.class);
 
         builder.setBaseName("Gradle ANTLR Worker");
         builder.applicationClasspath(getAntlrClasspath());

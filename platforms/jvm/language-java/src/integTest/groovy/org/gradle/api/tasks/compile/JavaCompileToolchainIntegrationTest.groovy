@@ -19,7 +19,7 @@ package org.gradle.api.tasks.compile
 import org.gradle.api.JavaVersion
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.AvailableJavaHomes
-import org.gradle.integtests.fixtures.executer.DocumentationUtils
+import org.gradle.integtests.fixtures.executor.DocumentationUtils
 import org.gradle.integtests.fixtures.jvm.JavaToolchainFixture
 import org.gradle.internal.jvm.Jvm
 import org.gradle.internal.os.OperatingSystem
@@ -294,7 +294,7 @@ class JavaCompileToolchainIntegrationTest extends AbstractIntegrationSpec implem
         """
 
         when:
-        failure = executer
+        failure = executor
             .withToolchainDetectionEnabled()
             .withTasks("compileJava")
             .runWithFailure()
@@ -499,7 +499,7 @@ class JavaCompileToolchainIntegrationTest extends AbstractIntegrationSpec implem
             }
         """
 
-        executer.expectExternalDeprecatedMessage("$fileWithDeprecation:5: warning: $deprecationMessage")
+        executor.expectExternalDeprecatedMessage("$fileWithDeprecation:5: warning: $deprecationMessage")
 
         when:
         withInstallations(jdk).run(":compileJava", "--info")

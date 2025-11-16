@@ -32,11 +32,11 @@ class CacheConfigurationsCompositeBuildTest extends AbstractIntegrationSpec impl
 
     @Override
     TestFile getGradleUserHomeDir() {
-        return executer.gradleUserHomeDir
+        return executor.gradleUserHomeDir
     }
 
     def "can configure cache retention with a composite build"() {
-        def initDir = new File(executer.gradleUserHomeDir, "init.d")
+        def initDir = new File(executor.gradleUserHomeDir, "init.d")
         initDir.mkdirs()
         new File(initDir, "cache-settings.gradle") << """
             beforeSettings { settings ->

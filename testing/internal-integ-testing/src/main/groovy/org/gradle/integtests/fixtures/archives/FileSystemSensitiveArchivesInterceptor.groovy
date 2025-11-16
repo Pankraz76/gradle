@@ -63,7 +63,7 @@ class FileSystemSensitiveArchivesInterceptor extends AbstractMultiTestIntercepto
                         }
                     }
                 """.stripIndent()
-                instance.executer.beforeExecute {
+                instance.executor.beforeExecute {
                     usingInitScript(initScript)
                 }
             }

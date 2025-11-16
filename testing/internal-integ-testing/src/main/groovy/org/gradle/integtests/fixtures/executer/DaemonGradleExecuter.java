@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import org.gradle.internal.nativeintegration.services.NativeServices;
 import org.gradle.test.fixtures.file.TestDirectoryProvider;
 import org.gradle.util.DebugUtil;
 import org.gradle.util.GradleVersion;
 
-import static org.gradle.integtests.fixtures.executer.AbstractGradleExecuter.CliDaemonArgument.NO_DAEMON;
+import static org.gradle.integtests.fixtures.executor.AbstractGradleExecutor.CliDaemonArgument.NO_DAEMON;
 
-public class DaemonGradleExecuter extends NoDaemonGradleExecuter {
+public class DaemonGradleExecutor extends NoDaemonGradleExecutor {
 
     private boolean daemonExplicitlyRequired;
 
-    public DaemonGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider) {
+    public DaemonGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider) {
         super(distribution, testDirectoryProvider);
         super.requireDaemon();
     }
 
-    public DaemonGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, GradleVersion gradleVersion, IntegrationTestBuildContext buildContext) {
+    public DaemonGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, GradleVersion gradleVersion, IntegrationTestBuildContext buildContext) {
         super(distribution, testDirectoryProvider, gradleVersion, buildContext);
         super.requireDaemon();
     }
@@ -42,7 +42,7 @@ public class DaemonGradleExecuter extends NoDaemonGradleExecuter {
     }
 
     @Override
-    public GradleExecuter requireDaemon() {
+    public GradleExecutor requireDaemon() {
         daemonExplicitlyRequired = true;
         return super.requireDaemon();
     }
@@ -68,7 +68,7 @@ public class DaemonGradleExecuter extends NoDaemonGradleExecuter {
     }
 
     @Override
-    public GradleExecuter reset() {
+    public GradleExecutor reset() {
         super.reset();
         return this;
     }

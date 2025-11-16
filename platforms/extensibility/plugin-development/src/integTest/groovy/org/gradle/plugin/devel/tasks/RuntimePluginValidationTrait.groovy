@@ -55,7 +55,7 @@ trait RuntimePluginValidationTrait implements CommonPluginValidationTrait{
             .findAll { problem -> problem.severity == ERROR }
 
         expectedDeprecations.forEach { warning ->
-            expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer, warning.message, warning.id, warning.section)
+            expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor, warning.message, warning.id, warning.section)
         }
         if (expectedFailures) {
             fails "run"

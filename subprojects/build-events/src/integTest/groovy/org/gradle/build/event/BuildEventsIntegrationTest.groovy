@@ -194,7 +194,7 @@ class BuildEventsIntegrationTest extends AbstractIntegrationSpec implements Veri
                 doLast { }
             }
         """
-        executer.beforeExecute {
+        executor.beforeExecute {
             withArgument("--configuration-cache")
         }
 
@@ -233,7 +233,7 @@ class BuildEventsIntegrationTest extends AbstractIntegrationSpec implements Veri
         """
 
         when:
-        executer.usingInitScript(initScript)
+        executor.usingInitScript(initScript)
         run("thing")
 
         then:
@@ -243,7 +243,7 @@ class BuildEventsIntegrationTest extends AbstractIntegrationSpec implements Veri
         outputContains("EVENT: finish :thing UP-TO-DATE")
 
         when:
-        executer.usingInitScript(initScript)
+        executor.usingInitScript(initScript)
         run("thing")
 
         then:

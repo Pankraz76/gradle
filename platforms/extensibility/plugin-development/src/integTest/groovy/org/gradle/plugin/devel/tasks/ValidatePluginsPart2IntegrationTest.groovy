@@ -75,7 +75,7 @@ class ValidatePluginsPart2IntegrationTest extends AbstractIntegrationSpec implem
         """
 
         expect:
-        executer.withArgument("-Dorg.gradle.internal.max.validation.errors=7")
+        executor.withArgument("-Dorg.gradle.internal.max.validation.errors=7")
         assertValidationFailsWith([
             error(unsupportedValueTypeConfig { type('MyTask').property('direct').propertyType('URL') }, "validation_problems", "unsupported_value_type"),
             error(unsupportedValueTypeConfig { type('MyTask').property('listPropertyInput').propertyType('ListProperty<URL>') }, "validation_problems", "unsupported_value_type"),
@@ -220,7 +220,7 @@ class ValidatePluginsPart2IntegrationTest extends AbstractIntegrationSpec implem
         """
 
         when:
-        executer.withArgument("-Dorg.gradle.internal.max.validation.errors=7")
+        executor.withArgument("-Dorg.gradle.internal.max.validation.errors=7")
 
         then:
         assertValidationFailsWith([
@@ -424,7 +424,7 @@ class ValidatePluginsPart2IntegrationTest extends AbstractIntegrationSpec implem
         """
 
         expect:
-        executer.withArgument("-Dorg.gradle.internal.max.validation.errors=8")
+        executor.withArgument("-Dorg.gradle.internal.max.validation.errors=8")
         assertValidationFailsWith([
             error(missingAnnotationConfig { type('MyTask').property("doubleIterableOptions${iterableSymbol}${iterableSymbol}.notAnnotated").missingInputOrOutput() }, 'validation_problems', 'missing_annotation'),
             error(missingAnnotationConfig { type('MyTask').property("iterableMappedOptions${iterableSymbol}${getKeySymbolFor("alma")}${iterableSymbol}.notAnnotated").missingInputOrOutput() }, 'validation_problems', 'missing_annotation'),
@@ -642,7 +642,7 @@ class ValidatePluginsPart2IntegrationTest extends AbstractIntegrationSpec implem
         """
 
         expect:
-        executer.withArgument("-Dorg.gradle.internal.max.validation.errors=1")
+        executor.withArgument("-Dorg.gradle.internal.max.validation.errors=1")
         assertValidationFailsWith([
             error(nestedMapUnsupportedKeyTypeConfig { type('MyTask').property("mapWithUnsupportedKey").keyType("java.lang.Boolean") }, 'validation_problems', 'unsupported_key_type_of_nested_map'),
         ])
@@ -824,7 +824,7 @@ class ValidatePluginsPart2IntegrationTest extends AbstractIntegrationSpec implem
             public abstract class MyTask extends DefaultTask {
             }
         """
-        executer.withArgument("-Dorg.gradle.java.installations.paths=" + installationPaths)
+        executor.withArgument("-Dorg.gradle.java.installations.paths=" + installationPaths)
         buildFile << """
             java {
                 toolchain {
@@ -851,11 +851,11 @@ class ValidatePluginsPart2IntegrationTest extends AbstractIntegrationSpec implem
         """
 
         when:
-        executer.inDirectory(file("producer"))
+        executor.inDirectory(file("producer"))
             .withArgument("build")
             .run()
 
-        executer.inDirectory(file("consumer"))
+        executor.inDirectory(file("consumer"))
 
         then:
         fails "validatePlugins"
@@ -896,11 +896,11 @@ class ValidatePluginsPart2IntegrationTest extends AbstractIntegrationSpec implem
 
         when:
 
-        executer.inDirectory(file("producer"))
+        executor.inDirectory(file("producer"))
 
         succeeds("build")
 
-        executer.inDirectory(file("consumer"))
+        executor.inDirectory(file("consumer"))
             .withArgument("-Dorg.gradle.java.installations.paths=" + installationPaths)
 
 

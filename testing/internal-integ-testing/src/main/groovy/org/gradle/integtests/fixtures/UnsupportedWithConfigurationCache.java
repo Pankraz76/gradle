@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.fixtures;
 
-import org.gradle.integtests.fixtures.executer.ConfigurationCacheGradleExecuter;
+import org.gradle.integtests.fixtures.executor.ConfigurationCacheGradleExecutor;
 import org.spockframework.runtime.extension.ExtensionAnnotation;
 
 import java.lang.annotation.ElementType;
@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
  * Denotes a test for a feature that is unsupported with configuration cache.
  * Do not use this for tests for features that are supported by configuration cache but where the test happens to be incompatible.
  *
- * <p>The annotated test will be skipped by the {@link ConfigurationCacheGradleExecuter}.
+ * <p>The annotated test will be skipped by the {@link ConfigurationCacheGradleExecutor}.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})

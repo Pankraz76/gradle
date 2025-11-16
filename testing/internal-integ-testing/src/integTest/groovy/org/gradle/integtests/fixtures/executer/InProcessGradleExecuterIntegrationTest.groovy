@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 import org.gradle.api.logging.configuration.ConsoleOutput
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
@@ -26,13 +26,13 @@ import org.junit.Rule
 import spock.lang.Specification
 
 @Requires(IntegTestPreconditions.IsEmbeddedExecutor)
-class InProcessGradleExecuterIntegrationTest extends Specification {
+class InProcessGradleExecutorIntegrationTest extends Specification {
     @Rule
     RedirectStdOutAndErr outputs = new RedirectStdOutAndErr()
     @Rule
     final TestNameTestDirectoryProvider temporaryFolder = new TestNameTestDirectoryProvider(getClass())
     def distribution = new UnderDevelopmentGradleDistribution(IntegrationTestBuildContext.INSTANCE)
-    def executer = new GradleContextualExecuter(distribution, temporaryFolder, IntegrationTestBuildContext.INSTANCE)
+    def executor = new GradleContextualExecutor(distribution, temporaryFolder, IntegrationTestBuildContext.INSTANCE)
 
     @ToBeFixedForConfigurationCache
     def "can write to System.out and System.err around build invocation with #console console when errors are redirected to stdout"() {
@@ -48,7 +48,7 @@ class InProcessGradleExecuterIntegrationTest extends Specification {
         System.out.println("BEFORE OUT")
         System.err.println("BEFORE ERR")
 
-        def result1 = executer
+        def result1 = executor
             .inDirectory(temporaryFolder.testDirectory)
             .withTasks("help")
             .withTestConsoleAttached()
@@ -58,7 +58,7 @@ class InProcessGradleExecuterIntegrationTest extends Specification {
         System.out.println("AFTER OUT")
         System.err.println("AFTER ERR")
 
-        def result2 = executer
+        def result2 = executor
             .inDirectory(temporaryFolder.testDirectory)
             .withTasks("help")
             .withTestConsoleAttached()
@@ -104,7 +104,7 @@ class InProcessGradleExecuterIntegrationTest extends Specification {
         System.out.println("BEFORE OUT")
         System.err.println("BEFORE ERR")
 
-        def result1 = executer
+        def result1 = executor
             .inDirectory(temporaryFolder.testDirectory)
             .withTasks("help")
             .withTestConsoleAttached()
@@ -114,7 +114,7 @@ class InProcessGradleExecuterIntegrationTest extends Specification {
         System.out.println("AFTER OUT")
         System.err.println("AFTER ERR")
 
-        def result2 = executer
+        def result2 = executor
             .inDirectory(temporaryFolder.testDirectory)
             .withTasks("help")
             .withTestConsoleAttached()
@@ -151,6 +151,6 @@ class InProcessGradleExecuterIntegrationTest extends Specification {
     }
 
     def cleanup() {
-        executer.cleanup()
+        executor.cleanup()
     }
 }

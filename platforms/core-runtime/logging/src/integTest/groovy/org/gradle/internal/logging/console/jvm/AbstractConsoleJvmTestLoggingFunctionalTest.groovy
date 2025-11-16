@@ -18,7 +18,7 @@ package org.gradle.internal.logging.console.jvm
 
 import org.gradle.api.logging.configuration.ConsoleOutput
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 
 abstract class AbstractConsoleJvmTestLoggingFunctionalTest extends AbstractIntegrationSpec {
     private static final String TEST_TASK_NAME = 'test'
@@ -38,7 +38,7 @@ abstract class AbstractConsoleJvmTestLoggingFunctionalTest extends AbstractInteg
         }
 
         when:
-        executer.withConsole(consoleType)
+        executor.withConsole(consoleType)
         fails(TEST_TASK_NAME)
 
         then:
@@ -62,7 +62,7 @@ abstract class AbstractConsoleJvmTestLoggingFunctionalTest extends AbstractInteg
         """
 
         when:
-        executer.withConsole(consoleType)
+        executor.withConsole(consoleType)
         succeeds(TEST_TASK_NAME)
 
         then:
@@ -76,7 +76,7 @@ abstract class AbstractConsoleJvmTestLoggingFunctionalTest extends AbstractInteg
         file(JAVA_TEST_FILE_PATH) << javaTestClass { '' }
 
         when:
-        executer.withConsole(consoleType)
+        executor.withConsole(consoleType)
         succeeds(TEST_TASK_NAME)
 
         then:
@@ -96,7 +96,7 @@ abstract class AbstractConsoleJvmTestLoggingFunctionalTest extends AbstractInteg
         }
 
         when:
-        executer.withConsole(consoleType)
+        executor.withConsole(consoleType)
         succeeds(TEST_TASK_NAME)
 
         then:
@@ -120,7 +120,7 @@ abstract class AbstractConsoleJvmTestLoggingFunctionalTest extends AbstractInteg
         }
 
         when:
-        executer.withConsole(consoleType)
+        executor.withConsole(consoleType)
         fails(TEST_TASK_NAME)
 
         then:
@@ -146,7 +146,7 @@ abstract class AbstractConsoleJvmTestLoggingFunctionalTest extends AbstractInteg
         file(JAVA_TEST_FILE_PATH) << javaTestClass { '' }
 
         when:
-        executer.withConsole(consoleType)
+        executor.withConsole(consoleType)
         succeeds(TEST_TASK_NAME)
 
         then:
@@ -167,7 +167,7 @@ abstract class AbstractConsoleJvmTestLoggingFunctionalTest extends AbstractInteg
         }
 
         when:
-        executer.withConsole(consoleType)
+        executor.withConsole(consoleType)
         succeeds(TEST_TASK_NAME)
 
         then:

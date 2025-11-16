@@ -31,10 +31,10 @@ import org.junit.Test
 
 class ResolveConfigurationDependenciesBuildOperationIntegrationTest extends AbstractHttpDependencyResolutionTest {
     def failedResolve = new ResolveFailureTestFixture(buildFile, "compile")
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     @SuppressWarnings("GroovyUnusedDeclaration")
-    def operationNotificationsFixture = new BuildOperationNotificationsFixture(executer, temporaryFolder)
+    def operationNotificationsFixture = new BuildOperationNotificationsFixture(executor, temporaryFolder)
 
     def "resolved configurations are exposed via build operation"() {
         setup:
@@ -244,7 +244,7 @@ class ResolveConfigurationDependenciesBuildOperationIntegrationTest extends Abst
 
         def initScript = file('init.gradle')
         initScript << ''
-        executer.usingInitScript(initScript)
+        executor.usingInitScript(initScript)
 
         file('scriptPlugin.gradle') << '''
         task foo
@@ -339,7 +339,7 @@ class ResolveConfigurationDependenciesBuildOperationIntegrationTest extends Abst
         """
 
         m1.allowAll()
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
         when:
         run "foo"
 

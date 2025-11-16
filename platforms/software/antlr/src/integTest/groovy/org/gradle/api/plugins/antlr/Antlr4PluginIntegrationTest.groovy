@@ -82,7 +82,7 @@ class Antlr4PluginIntegrationTest extends AbstractAntlrIntegrationTest {
             }
         """
         if (expectDeprecationWarning) {
-            expectPackageArgumentDeprecationWarning(executer)
+            expectPackageArgumentDeprecationWarning(executor)
         }
 
         then:
@@ -112,7 +112,7 @@ class Antlr4PluginIntegrationTest extends AbstractAntlrIntegrationTest {
                 arguments += ['-package', 'org.acme']
             }
         """
-        expectPackageArgumentDeprecationWarning(executer)
+        expectPackageArgumentDeprecationWarning(executor)
 
         then:
         fails("generateGrammarSource")

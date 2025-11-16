@@ -28,7 +28,7 @@ class ReadOnlyCacheValidationTest extends AbstractReadOnlyCacheDependencyResolut
 
     void "reasonable warning if the read-only cache directory doesn't exist"() {
         given:
-        executer.withReadOnlyCacheDir(new File(temporaryFolder.testDirectory, "nope"))
+        executor.withReadOnlyCacheDir(new File(temporaryFolder.testDirectory, "nope"))
 
         when:
         run ":help"
@@ -41,7 +41,7 @@ class ReadOnlyCacheValidationTest extends AbstractReadOnlyCacheDependencyResolut
 
     void "reasonable warning if the read-only cache doesn't have the expected layout"() {
         given:
-        executer.withReadOnlyCacheDir(temporaryFolder.createDir("oh-noes"))
+        executor.withReadOnlyCacheDir(temporaryFolder.createDir("oh-noes"))
 
         when:
         run ":help"

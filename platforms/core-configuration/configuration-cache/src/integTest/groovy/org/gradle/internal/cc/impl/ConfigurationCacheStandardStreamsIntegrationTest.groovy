@@ -170,7 +170,7 @@ class ConfigurationCacheStandardStreamsIntegrationTest extends AbstractConfigura
     }
 
     def withStdInContents(String message) {
-        executer.withStdinPipe(new PipedOutputStream() {
+        executor.withStdinPipe(new PipedOutputStream() {
             @Override
             synchronized void connect(PipedInputStream snk) throws IOException {
                 super.connect(snk)

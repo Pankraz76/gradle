@@ -18,7 +18,7 @@ package org.gradle.integtests.resolve.api
 
 import org.gradle.api.JavaVersion
 import org.gradle.integtests.fixtures.AbstractHttpDependencyResolutionTest
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.integtests.fixtures.extensions.FluidDependenciesResolveInterceptor
 import org.gradle.integtests.fixtures.extensions.FluidDependenciesResolveTest
 
@@ -198,9 +198,9 @@ class Main {
         when:
         succeeds "help"
 
-        if (JavaVersion.current().isJava9Compatible() && GradleContextualExecuter.isConfigCache()) {
+        if (JavaVersion.current().isJava9Compatible() && GradleContextualExecutor.isConfigCache()) {
             // For java.util.concurrent.CopyOnWriteArrayList from DefaultMultiCauseException being serialized reflectively by configuration cache
-            executer.withArgument('-Dorg.gradle.jvmargs=--add-opens java.base/java.util.concurrent=ALL-UNNAMED')
+            executor.withArgument('-Dorg.gradle.jvmargs=--add-opens java.base/java.util.concurrent=ALL-UNNAMED')
         }
         fails "verify"
 

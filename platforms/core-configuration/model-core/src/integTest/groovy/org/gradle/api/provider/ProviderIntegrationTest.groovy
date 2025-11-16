@@ -20,7 +20,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import spock.lang.Issue
 
 class ProviderIntegrationTest extends AbstractIntegrationSpec {
@@ -363,7 +363,7 @@ The value of this provider is derived from:
 
         when:
         run 'bar'
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             file('build').forceDeleteDir()
             run 'bar'
         }

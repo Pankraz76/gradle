@@ -47,7 +47,7 @@ class ProjectIdentityIntegrationTest extends AbstractIntegrationSpec {
     @Requires(IntegTestPreconditions.NotConfigCached)
     def 'a new Project instance is used for each build'() {
         given:
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
         settingsFile """
             rootProject.name = "root"
         """

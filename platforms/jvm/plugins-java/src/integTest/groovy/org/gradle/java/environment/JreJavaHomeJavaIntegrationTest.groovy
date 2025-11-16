@@ -40,7 +40,7 @@ class JreJavaHomeJavaIntegrationTest extends AbstractIntegrationSpec {
         }
         """
         when:
-        executer.withJavaHome(jreJavaHome.absolutePath).withTasks("compileJava").run().output
+        executor.withJavaHome(jreJavaHome.absolutePath).withTasks("compileJava").run().output
         then:
         javaClassFile("org/test/JavaClazz.class").exists()
 
@@ -61,7 +61,7 @@ class JreJavaHomeJavaIntegrationTest extends AbstractIntegrationSpec {
         def envVars = System.getenv().findAll { !(it.key in ['GRADLE_OPTS', 'JAVA_HOME', 'Path']) }
         envVars.put("Path", "C:\\Windows\\System32")
         when:
-        executer.withEnvironmentVars(envVars).withTasks("compileJava").run()
+        executor.withEnvironmentVars(envVars).withTasks("compileJava").run()
         then:
         javaClassFile("org/test/JavaClazz.class").exists()
         where:

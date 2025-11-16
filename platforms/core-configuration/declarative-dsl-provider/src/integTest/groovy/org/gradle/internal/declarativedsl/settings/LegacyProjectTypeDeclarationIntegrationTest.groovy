@@ -30,7 +30,7 @@ import static org.gradle.util.Matchers.containsText
 @PolyglotDslTest
 class LegacyProjectTypeDeclarationIntegrationTest extends AbstractIntegrationSpec implements LegacyProjectTypeFixture, PolyglotTestFixture {
     @Rule
-    MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     @Rule
     MavenHttpPluginRepository mavenHttpRepo = new MavenHttpPluginRepository(mavenRepo)
@@ -62,7 +62,7 @@ class LegacyProjectTypeDeclarationIntegrationTest extends AbstractIntegrationSpe
     def 'can declare and configure a custom project type from published plugin'() {
         given:
         def pluginBuilder = withLegacyProjectTypePlugins()
-        pluginBuilder.publishAs("com", "example", "1.0", pluginPortal, createExecuter()).allowAll()
+        pluginBuilder.publishAs("com", "example", "1.0", pluginPortal, createExecutor()).allowAll()
 
         settingsFile() << """
             plugins {

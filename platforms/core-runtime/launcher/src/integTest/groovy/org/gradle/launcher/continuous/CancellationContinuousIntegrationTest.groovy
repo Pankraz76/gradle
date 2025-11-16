@@ -69,7 +69,7 @@ class CancellationContinuousIntegrationTest extends AbstractContinuousIntegratio
     // GradleHandle.abort() is unsafe on Windows - this is a test infrastructure problem
     def "does not cancel on EOT or by closing System.in when not interactive"() {
         when:
-        executer.beforeExecute {
+        executor.beforeExecute {
             it.withForceInteractive(false).withStdinPipe(new PipedOutputStream() {
                 @Override
                 void connect(PipedInputStream snk) throws IOException {

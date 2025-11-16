@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 public class UnexpectedBuildFailure extends RuntimeException {
     public UnexpectedBuildFailure(String message) {

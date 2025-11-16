@@ -75,7 +75,7 @@ class AbstractSwiftMixedLanguageIntegrationTest extends AbstractIntegrationSpec 
             """
         }
 
-        executer.beforeExecute({
+        executor.beforeExecute({
             usingInitScript(initScript)
         })
     }

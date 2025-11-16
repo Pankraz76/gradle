@@ -19,17 +19,17 @@ package org.gradle.api.internal.tasks.execution
 import org.gradle.api.internal.TaskInternal
 import org.gradle.api.internal.changedetection.TaskExecutionModeResolver
 import org.gradle.api.internal.changedetection.changes.DefaultTaskExecutionMode
-import org.gradle.api.internal.tasks.TaskExecuter
-import org.gradle.api.internal.tasks.TaskExecuterResult
+import org.gradle.api.internal.tasks.TaskExecutor
+import org.gradle.api.internal.tasks.TaskExecutorResult
 import org.gradle.api.internal.tasks.TaskExecutionContext
 import org.gradle.api.internal.tasks.TaskStateInternal
 import org.gradle.api.internal.tasks.properties.TaskProperties
 import spock.lang.Specification
 import spock.lang.Subject
 
-@Subject(ResolveTaskExecutionModeExecuter)
-class ResolveTaskExecutionModeExecuterTest extends Specification {
-    final delegate = Mock(TaskExecuter)
+@Subject(ResolveTaskExecutionModeExecutor)
+class ResolveTaskExecutionModeExecutorTest extends Specification {
+    final delegate = Mock(TaskExecutor)
     final taskProperties = Mock(TaskProperties)
     final task = Mock(TaskInternal)
     final taskState = Mock(TaskStateInternal)
@@ -37,11 +37,11 @@ class ResolveTaskExecutionModeExecuterTest extends Specification {
     final repository = Mock(TaskExecutionModeResolver)
     final executionMode = DefaultTaskExecutionMode.incremental()
 
-    final executer = new ResolveTaskExecutionModeExecuter(repository, delegate)
+    final executor = new ResolveTaskExecutionModeExecutor(repository, delegate)
 
     def 'taskContext is initialized and cleaned as expected'() {
         when:
-        executer.execute(task, taskState, taskContext)
+        executor.execute(task, taskState, taskContext)
 
         then: 'taskContext is initialized with task artifact state'
         1 * taskContext.taskProperties >> taskProperties
@@ -49,7 +49,7 @@ class ResolveTaskExecutionModeExecuterTest extends Specification {
         1 * taskContext.setTaskExecutionMode(executionMode)
 
         then: 'delegate is executed'
-        1 * delegate.execute(task, taskState, taskContext) >> TaskExecuterResult.WITHOUT_OUTPUTS
+        1 * delegate.execute(task, taskState, taskContext) >> TaskExecutorResult.WITHOUT_OUTPUTS
 
         then: 'task artifact state is removed from taskContext'
         1 * taskContext.setTaskExecutionMode(null)

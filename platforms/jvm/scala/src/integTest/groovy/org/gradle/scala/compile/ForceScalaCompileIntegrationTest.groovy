@@ -22,7 +22,7 @@ import spock.lang.Issue
 
 class ForceScalaCompileIntegrationTest extends AbstractIntegrationSpec {
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     @Issue("gradle/gradle#13224")

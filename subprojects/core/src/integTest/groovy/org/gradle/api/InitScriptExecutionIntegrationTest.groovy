@@ -18,7 +18,7 @@ package org.gradle.api
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.ToBeFixedForIsolatedProjects
 import org.gradle.integtests.fixtures.UnsupportedWithConfigurationCache
-import org.gradle.integtests.fixtures.executer.ArtifactBuilder
+import org.gradle.integtests.fixtures.executor.ArtifactBuilder
 import org.gradle.integtests.fixtures.timeout.IntegrationTestTimeout
 import org.gradle.test.fixtures.file.TestFile
 import spock.lang.Issue
@@ -27,10 +27,10 @@ import spock.lang.Issue
 class InitScriptExecutionIntegrationTest extends AbstractIntegrationSpec {
     def "executes init.gradle from user home dir"() {
         given:
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
 
         and:
-        executer.gradleUserHomeDir.file('init.gradle') << 'println "greetings from user home"'
+        executor.gradleUserHomeDir.file('init.gradle') << 'println "greetings from user home"'
 
         when:
         run()
@@ -41,12 +41,12 @@ class InitScriptExecutionIntegrationTest extends AbstractIntegrationSpec {
 
     def "executes init scripts from init.d directory in user home dir in alphabetical order"() {
         given:
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
 
         and:
-        executer.gradleUserHomeDir.file('init.d/a.gradle') << 'println "init #a#"'
-        executer.gradleUserHomeDir.file('init.d/b.gradle') << 'println "init #b#"'
-        executer.gradleUserHomeDir.file('init.d/c.gradle') << 'println "init #c#"'
+        executor.gradleUserHomeDir.file('init.d/a.gradle') << 'println "init #a#"'
+        executor.gradleUserHomeDir.file('init.d/b.gradle') << 'println "init #b#"'
+        executor.gradleUserHomeDir.file('init.d/c.gradle') << 'println "init #c#"'
 
         when:
         run()
@@ -94,7 +94,7 @@ try {
         buildFile << 'task doStuff'
 
         when:
-        result = executer.usingInitScript(initScript).withTasks('doStuff').run()
+        result = executor.usingInitScript(initScript).withTasks('doStuff').run()
 
         then:
         outputContains('quiet message')
@@ -125,7 +125,7 @@ try {
         buildFile << 'task doStuff'
 
         when:
-        executer.usingInitScript(initScript1).usingInitScript(initScript2).withTasks('doStuff').run()
+        executor.usingInitScript(initScript1).usingInitScript(initScript2).withTasks('doStuff').run()
 
         then:
         notThrown(Throwable)
@@ -155,7 +155,7 @@ try {
         buildFile << 'task doStuff'
 
         when:
-        result = executer.usingInitScript(initScript1).usingInitScript(initScript2).withTasks('doStuff').run()
+        result = executor.usingInitScript(initScript1).usingInitScript(initScript2).withTasks('doStuff').run()
 
         then:
         notThrown(Throwable)
@@ -166,11 +166,11 @@ try {
 
     def "executes Kotlin init scripts from init.d directory in user home dir in alphabetical order"() {
         given:
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
 
         and:
         ["c", "b", "a"].each {
-            executer.gradleUserHomeDir.file("init.d/${it}.gradle.kts") << """
+            executor.gradleUserHomeDir.file("init.d/${it}.gradle.kts") << """
                 // make sure the script is evaluated as Kotlin by explicitly qualifying `println`
                 kotlin.io.println("init #${it}#")
             """
@@ -205,7 +205,7 @@ rootProject {
         """
 
         when:
-        executer.withArguments("-I", "init.gradle")
+        executor.withArguments("-I", "init.gradle")
         run "root"
 
         then:
@@ -222,7 +222,7 @@ rootProject {
             initScript.text = "println 'counter: $it'"
             assert initScript.length() == before
 
-            executer.withArguments("--init-script", initScript.absolutePath)
+            executor.withArguments("--init-script", initScript.absolutePath)
             succeeds()
             result.assertOutputContains("counter: $it")
         }
@@ -239,7 +239,7 @@ initscript {
 }
 """
         expect:
-        executer.withArguments('--init-script', initScript.absolutePath)
+        executor.withArguments('--init-script', initScript.absolutePath)
         succeeds()
     }
 
@@ -247,13 +247,13 @@ initscript {
     @UnsupportedWithConfigurationCache
     def "init script can register all projects hook from within the projects loaded callback of build listener"() {
         given:
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
 
         and:
         file("buildSrc/settings.gradle").createFile()
 
         and:
-        executer.gradleUserHomeDir.file('init.d/a.gradle') << '''
+        executor.gradleUserHomeDir.file('init.d/a.gradle') << '''
             gradle.addListener(new BuildAdapter() {
                 void projectsLoaded(Gradle gradle) {
                     gradle.rootProject.allprojects {
@@ -278,7 +278,7 @@ initscript {
     def "init script file is a dotfile"() {
         def initScript = file('.empty')
         initScript << 'println "greetings from empty init script"'
-        executer.withArguments('--init-script', initScript.absolutePath)
+        executor.withArguments('--init-script', initScript.absolutePath)
 
         when:
         run()

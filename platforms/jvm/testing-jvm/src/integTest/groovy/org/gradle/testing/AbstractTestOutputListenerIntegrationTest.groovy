@@ -22,7 +22,7 @@ import spock.lang.Issue
 @Issue("GRADLE-1009")
 abstract class AbstractTestOutputListenerIntegrationTest extends AbstractTestingMultiVersionIntegrationTest {
     def setup() {
-        executer.noExtraLogging()
+        executor.noExtraLogging()
     }
 
     def "can use standard output listener for tests"() {
@@ -75,7 +75,7 @@ abstract class AbstractTestOutputListenerIntegrationTest extends AbstractTesting
         """.stripIndent()
 
         when:
-        def failure = executer.withTasks('test').runWithFailure()
+        def failure = executor.withTasks('test').runWithFailure()
 
         then:
         failure.output.contains("Test ${maybeParentheses('showsOutputWhenPassing')}(SomeTest) StdOut out passing")
@@ -158,7 +158,7 @@ abstract class AbstractTestOutputListenerIntegrationTest extends AbstractTesting
         """
 
         when:
-        executer.withArgument('-i')
+        executor.withArgument('-i')
         succeeds('test')
 
         then:

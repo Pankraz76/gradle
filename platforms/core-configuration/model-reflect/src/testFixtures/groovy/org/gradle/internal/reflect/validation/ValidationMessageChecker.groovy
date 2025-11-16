@@ -18,7 +18,7 @@ package org.gradle.internal.reflect.validation
 
 import org.gradle.api.internal.DocumentationRegistry
 import org.gradle.api.services.BuildService
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.model.internal.asm.AsmClassGeneratorUtils
 
 import static org.gradle.internal.reflect.validation.TypeValidationProblemRenderer.convertToSingleLine
@@ -503,7 +503,7 @@ trait ValidationMessageChecker {
             .solution("Use a different package that doesn't conflict with standard Java or Kotlin types for custom types.")
     }
 
-    void expectThatExecutionOptimizationDisabledWarningIsDisplayed(GradleExecuter executer,
+    void expectThatExecutionOptimizationDisabledWarningIsDisplayed(GradleExecutor executor,
                                                                    String message,
                                                                    String docId = "incremental_build",
                                                                    String section = "") {
@@ -513,7 +513,7 @@ trait ValidationMessageChecker {
             "This will fail with an error in Gradle 10. " +
             "Execution optimizations are disabled to ensure correctness. " +
             documentationRegistry.getDocumentationRecommendationFor("information", docId, section)
-        executer.expectDocumentedDeprecationWarning(deprecationMessage)
+        executor.expectDocumentedDeprecationWarning(deprecationMessage)
     }
 
     private <T extends ValidationMessageDisplayConfiguration> T display(Class<T> clazz, String docSection, @DelegatesTo(value = ValidationMessageDisplayConfiguration, strategy = Closure.DELEGATE_FIRST) Closure<?> spec) {

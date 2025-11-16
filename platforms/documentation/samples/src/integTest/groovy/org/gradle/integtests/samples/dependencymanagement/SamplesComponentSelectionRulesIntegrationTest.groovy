@@ -27,7 +27,7 @@ class SamplesComponentSelectionRulesIntegrationTest extends AbstractSampleIntegr
 
     @UsesSample("dependencyManagement/customizingResolution-selectionRule")
     def "can run resolveConfiguration sample with #dsl dsl"() {
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
 
         when:
         run "resolveConfiguration"
@@ -43,7 +43,7 @@ class SamplesComponentSelectionRulesIntegrationTest extends AbstractSampleIntegr
 
     @UsesSample("dependencyManagement/customizingResolution-selectionRule")
     def "can run reject sample with #dsl dsl"() {
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
 
         when:
         run "printRejectConfig"
@@ -57,7 +57,7 @@ class SamplesComponentSelectionRulesIntegrationTest extends AbstractSampleIntegr
 
     @UsesSample("dependencyManagement/customizingResolution-selectionRule")
     def "can run metadata rules sample with #dsl dsl"() {
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
 
         when:
         run "printMetadataRulesConfig"
@@ -72,7 +72,7 @@ class SamplesComponentSelectionRulesIntegrationTest extends AbstractSampleIntegr
 
     @UsesSample("dependencyManagement/customizingResolution-selectionRule")
     def "can run targeted rule sample with #dsl dsl"() {
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
 
         when:
         run "printTargetConfig"

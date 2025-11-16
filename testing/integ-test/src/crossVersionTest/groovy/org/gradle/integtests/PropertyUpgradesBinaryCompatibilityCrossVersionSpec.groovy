@@ -16,7 +16,7 @@
 package org.gradle.integtests
 
 import org.gradle.integtests.fixtures.TargetVersions
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 
 import java.util.function.Consumer
 
@@ -84,16 +84,16 @@ class PropertyUpgradesBinaryCompatibilityCrossVersionSpec extends AbstractProper
         }
     }
 
-    def succeedsWithPluginCompiledWithPreviousVersion(Consumer<GradleExecuter> additionalChecks = { }) {
+    def succeedsWithPluginCompiledWithPreviousVersion(Consumer<GradleExecutor> additionalChecks = { }) {
         version(previous).withTasks('assemble').inDirectory(file("producer")).run()
 
-        def currentExecuter = version(current)
+        def currentExecutor = version(current)
             .withTasks('tasks')
             .withStacktraceEnabled()
             .requireDaemon()
             .requireIsolatedDaemons()
-        additionalChecks.accept(currentExecuter)
-        currentExecuter.run()
+        additionalChecks.accept(currentExecutor)
+        currentExecutor.run()
     }
 }
 

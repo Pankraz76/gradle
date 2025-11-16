@@ -71,7 +71,7 @@ class DeprecationHandlingIntegrationTest extends AbstractIntegrationSpec {
 
     def 'DeprecatedPlugin and DeprecatedTask - #scenario'() {
         given:
-        executer.beforeExecute {
+        executor.beforeExecute {
             withoutInternalDeprecationStackTraceFlag()
         }
         buildFile << """
@@ -89,12 +89,12 @@ class DeprecationHandlingIntegrationTest extends AbstractIntegrationSpec {
 
         when:
         if (fullStacktraceEnabled) {
-            executer.withStacktraceEnabled()
+            executor.withStacktraceEnabled()
         }
         if (warningsCount > 0) {
-            executer.noDeprecationChecks()
+            executor.noDeprecationChecks()
         }
-        executer.withWarningMode(warnings)
+        executor.withWarningMode(warnings)
         warnings == WarningMode.Fail ? fails('thisIsADeprecatedTask', 'broken') : succeeds('thisIsADeprecatedTask', 'broken')
 
         then:
@@ -153,8 +153,8 @@ class DeprecationHandlingIntegrationTest extends AbstractIntegrationSpec {
         """.stripIndent()
 
         when:
-        executer.expectDocumentedDeprecationWarning("The DeprecatedPlugin plugin has been deprecated. This is scheduled to be removed in Gradle 10. Consider using the Foobar plugin instead. For more information, please refer to https://docs.gradle.org/current/userguide/feature_lifecycle.html#sec:deprecated in the Gradle documentation.")
-        executer.withWarningMode(WarningMode.Fail)
+        executor.expectDocumentedDeprecationWarning("The DeprecatedPlugin plugin has been deprecated. This is scheduled to be removed in Gradle 10. Consider using the Foobar plugin instead. For more information, please refer to https://docs.gradle.org/current/userguide/feature_lifecycle.html#sec:deprecated in the Gradle documentation.")
+        executor.withWarningMode(WarningMode.Fail)
 
         then:
         fails('broken')
@@ -172,8 +172,8 @@ class DeprecationHandlingIntegrationTest extends AbstractIntegrationSpec {
         """.stripIndent()
 
         when:
-        executer.noDeprecationChecks()
-        executer.usingInitScript(initScript)
+        executor.noDeprecationChecks()
+        executor.usingInitScript(initScript)
         run '-s'
 
         then:
@@ -200,9 +200,9 @@ class DeprecationHandlingIntegrationTest extends AbstractIntegrationSpec {
 
         when:
         if (withFullStacktrace) {
-            executer.withFullDeprecationStackTraceEnabled()
+            executor.withFullDeprecationStackTraceEnabled()
         }
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
         run()
 
         then:
@@ -233,9 +233,9 @@ class DeprecationHandlingIntegrationTest extends AbstractIntegrationSpec {
 
         when:
         if (withFullStacktrace) {
-            executer.withFullDeprecationStackTraceEnabled()
+            executor.withFullDeprecationStackTraceEnabled()
         }
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
         run()
 
         then:
@@ -281,9 +281,9 @@ class DeprecationHandlingIntegrationTest extends AbstractIntegrationSpec {
 
         expect:
         2.times {
-            executer.expectDocumentedDeprecationWarning("The Task.someFeature() method has been deprecated. This is scheduled to be removed in Gradle 10. For more information, please refer to https://docs.gradle.org/current/userguide/feature_lifecycle.html#sec:deprecated in the Gradle documentation.")
-            executer.expectDocumentedDeprecationWarning("The Task.someFeature() method has been deprecated. This is scheduled to be removed in Gradle 10. For more information, please refer to https://docs.gradle.org/current/userguide/feature_lifecycle.html#sec:deprecated in the Gradle documentation.")
-            executer.expectDocumentedDeprecationWarning("The Task.someFeature() method has been deprecated. This is scheduled to be removed in Gradle 10. For more information, please refer to https://docs.gradle.org/current/userguide/feature_lifecycle.html#sec:deprecated in the Gradle documentation.")
+            executor.expectDocumentedDeprecationWarning("The Task.someFeature() method has been deprecated. This is scheduled to be removed in Gradle 10. For more information, please refer to https://docs.gradle.org/current/userguide/feature_lifecycle.html#sec:deprecated in the Gradle documentation.")
+            executor.expectDocumentedDeprecationWarning("The Task.someFeature() method has been deprecated. This is scheduled to be removed in Gradle 10. For more information, please refer to https://docs.gradle.org/current/userguide/feature_lifecycle.html#sec:deprecated in the Gradle documentation.")
+            executor.expectDocumentedDeprecationWarning("The Task.someFeature() method has been deprecated. This is scheduled to be removed in Gradle 10. For more information, please refer to https://docs.gradle.org/current/userguide/feature_lifecycle.html#sec:deprecated in the Gradle documentation.")
             run("broken", "buildSrc:broken", "included:broken")
 
             outputContains("Build file '${file("included/build.gradle")}': line 5")

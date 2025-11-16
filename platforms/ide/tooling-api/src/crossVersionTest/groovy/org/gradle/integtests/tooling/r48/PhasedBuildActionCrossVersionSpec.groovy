@@ -21,7 +21,7 @@ import org.gradle.integtests.tooling.fixture.ActionQueriesModelThatRequiresConfi
 import org.gradle.integtests.tooling.fixture.ActionShouldNotBeCalled
 import org.gradle.integtests.tooling.fixture.TargetGradleVersion
 import org.gradle.integtests.tooling.fixture.ToolingApiSpecification
-import org.gradle.tooling.BuildActionExecuter
+import org.gradle.tooling.BuildActionExecutor
 import org.gradle.tooling.BuildActionFailureException
 import org.gradle.tooling.BuildException
 import org.gradle.tooling.UnsupportedVersionException
@@ -393,8 +393,8 @@ class PhasedBuildActionCrossVersionSpec extends ToolingApiSpecification {
 
         where:
         description                 | taskSelector
-        "empty array of task names" | { BuildActionExecuter b -> b.forTasks() }
-        "empty list of task names"  | { BuildActionExecuter b -> b.forTasks([]) }
+        "empty array of task names" | { BuildActionExecutor b -> b.forTasks() }
+        "empty list of task names"  | { BuildActionExecutor b -> b.forTasks([]) }
     }
 
     def "#description means run default tasks when they are defined"() {
@@ -419,8 +419,8 @@ class PhasedBuildActionCrossVersionSpec extends ToolingApiSpecification {
 
         where:
         description                 | taskSelector
-        "empty array of task names" | { BuildActionExecuter b -> b.forTasks() }
-        "empty list of task names"  | { BuildActionExecuter b -> b.forTasks([]) }
+        "empty array of task names" | { BuildActionExecutor b -> b.forTasks() }
+        "empty list of task names"  | { BuildActionExecutor b -> b.forTasks([]) }
     }
 
     def "#description means run tasks injected by build logic"() {
@@ -446,8 +446,8 @@ class PhasedBuildActionCrossVersionSpec extends ToolingApiSpecification {
 
         where:
         description                 | taskSelector
-        "empty array of task names" | { BuildActionExecuter b -> b.forTasks() }
-        "empty list of task names"  | { BuildActionExecuter b -> b.forTasks([]) }
+        "empty array of task names" | { BuildActionExecutor b -> b.forTasks() }
+        "empty list of task names"  | { BuildActionExecutor b -> b.forTasks([]) }
     }
 
     @TargetGradleVersion(">=4.0 <4.8")
@@ -464,6 +464,6 @@ class PhasedBuildActionCrossVersionSpec extends ToolingApiSpecification {
 
         then:
         UnsupportedVersionException e = thrown()
-        e.message == "The version of Gradle you are using (${version}) does not support the PhasedBuildActionExecuter API. Support for this is available in Gradle 4.8 and all later versions."
+        e.message == "The version of Gradle you are using (${version}) does not support the PhasedBuildActionExecutor API. Support for this is available in Gradle 4.8 and all later versions."
     }
 }

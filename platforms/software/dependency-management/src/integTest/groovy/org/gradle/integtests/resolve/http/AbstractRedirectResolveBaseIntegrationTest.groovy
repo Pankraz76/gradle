@@ -44,7 +44,7 @@ abstract class AbstractRedirectResolveBaseIntegrationTest extends AbstractHttpDe
     @Override
     def setup() {
         setupServer()
-        executer.withWarningMode(WarningMode.All)
+        executor.withWarningMode(WarningMode.All)
     }
 
     def configurationWithIvyDependencyAndExpectedArtifact(String dependency, String expectedArtifact, boolean allowInsecureProtocol = defaultAllowInsecureProtocol()) {

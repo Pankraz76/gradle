@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.fixtures
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.spockframework.runtime.extension.IAnnotationDrivenExtension
 import org.spockframework.runtime.model.FeatureInfo
 
@@ -31,7 +31,7 @@ class ToBeFixedForConfigurationCacheExtension implements IAnnotationDrivenExtens
     @Override
     void visitFeatureAnnotation(ToBeFixedForConfigurationCache annotation, FeatureInfo feature) {
 
-        if (GradleContextualExecuter.isNotConfigCache()) {
+        if (GradleContextualExecutor.isNotConfigCache()) {
             return
         }
 

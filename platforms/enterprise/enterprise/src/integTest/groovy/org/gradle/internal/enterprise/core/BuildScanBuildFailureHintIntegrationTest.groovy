@@ -35,11 +35,11 @@ class BuildScanBuildFailureHintIntegrationTest extends AbstractIntegrationSpec {
     private static final List<String> DUMMY_TASK_ONLY = [DUMMY_TASK_NAME]
     private static final List<String> DUMMY_TASK_AND_BUILD_SCAN = [DUMMY_TASK_NAME, "--$BuildScanOption.LONG_OPTION"]
 
-    def fixture = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecuter())
+    def fixture = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecutor())
 
     def setup() {
         settingsFile << fixture.pluginManagement()
-        fixture.publishDummyPlugin(executer)
+        fixture.publishDummyPlugin(executor)
     }
 
     def "does not render hint for successful build without applied plugin"() {

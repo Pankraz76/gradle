@@ -18,7 +18,7 @@ package org.gradle.test.fixtures.server.http
 
 
 import org.bbottema.javasocksproxyserver.SyncSocksServer
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
 import org.gradle.util.ports.FixedAvailablePortAllocator
@@ -34,7 +34,7 @@ import org.junit.rules.ExternalResource
  * When used as a rule, the proxy is stopped automatically at the end of the test,
  * but it is _not_ automatically started.
  *
- * To use the proxy with a build, you must call configureProxy(GradleExecuter) before
+ * To use the proxy with a build, you must call configureProxy(GradleExecutor) before
  * starting the proxy.
  *
  */
@@ -64,7 +64,7 @@ class SocksProxyServer extends ExternalResource {
         !recordingServerSocketFactory.getConnectionLog().isEmpty()
     }
 
-    void configureProxy(GradleExecuter executer) {
+    void configureProxy(GradleExecutor executor) {
         if (port <= 0) {
             throw new IllegalStateException("Port must be assigned before configuring the proxy.")
         }
@@ -72,9 +72,9 @@ class SocksProxyServer extends ExternalResource {
         // build -> proxy(localhost) -> repo(localhost)
         //                           -> 127.0.0.1
         //
-        executer.withArgument('-DsocksProxyHost=localhost')
-        executer.withArgument("-DsocksProxyPort=${port}")
-        executer.withArgument("-DsocksNonProxyHosts=") // to allow connections to localhost via socks proxy
+        executor.withArgument('-DsocksProxyHost=localhost')
+        executor.withArgument("-DsocksProxyPort=${port}")
+        executor.withArgument("-DsocksNonProxyHosts=") // to allow connections to localhost via socks proxy
     }
 
     void stop() {

@@ -30,17 +30,17 @@ import static org.junit.Assert.assertTrue
 
 class DisconnectableInputStreamTest extends MultithreadedTestRule {
 
-    Action<Runnable> toActionExecuter(ExecutorFactory factory) {
+    Action<Runnable> toActionExecutor(ExecutorFactory factory) {
         new Action<Runnable>() {
             void execute(Runnable runnable) {
-                factory.create("test executer").execute(runnable)
+                factory.create("test executor").execute(runnable)
             }
         }
     }
 
     @Test
     void inputStreamReadsFromSourceInputStream() {
-        def instr = new DisconnectableInputStream(stream("some text"), toActionExecuter(executorFactory))
+        def instr = new DisconnectableInputStream(stream("some text"), toActionExecutor(executorFactory))
 
         assertReads(instr, "some text")
 
@@ -52,7 +52,7 @@ class DisconnectableInputStreamTest extends MultithreadedTestRule {
 
     @Test
     void buffersDataReadFromSourceInputStream() {
-        def instr = new DisconnectableInputStream(stream("test1test2end"), toActionExecuter(executorFactory))
+        def instr = new DisconnectableInputStream(stream("test1test2end"), toActionExecutor(executorFactory))
 
         assertReads(instr, "test1")
         assertReads(instr, "test2")
@@ -66,7 +66,7 @@ class DisconnectableInputStreamTest extends MultithreadedTestRule {
 
     @Test
     void canReadSingleChars() {
-        def instr = new DisconnectableInputStream(stream("abc"), toActionExecuter(executorFactory))
+        def instr = new DisconnectableInputStream(stream("abc"), toActionExecutor(executorFactory))
 
         assertThat((char) instr.read(), equalTo('a'.charAt(0)))
         assertThat((char) instr.read(), equalTo('b'.charAt(0)))
@@ -78,7 +78,7 @@ class DisconnectableInputStreamTest extends MultithreadedTestRule {
 
     @Test
     void canReadUsingZeroLengthBuffer() {
-        def instr = new DisconnectableInputStream(stream("abc"), toActionExecuter(executorFactory))
+        def instr = new DisconnectableInputStream(stream("abc"), toActionExecutor(executorFactory))
 
         assertThat(instr.read(new byte[0], 0, 0), equalTo(0))
         assertReads(instr, "abc")
@@ -107,7 +107,7 @@ class DisconnectableInputStreamTest extends MultithreadedTestRule {
             return 2
         }
 
-        def instr = new DisconnectableInputStream(source, toActionExecuter(executorFactory), 10)
+        def instr = new DisconnectableInputStream(source, toActionExecutor(executorFactory), 10)
 
         run {
             syncAt(1)
@@ -133,7 +133,7 @@ class DisconnectableInputStreamTest extends MultithreadedTestRule {
             return expected.length
         }
 
-        def instr = new DisconnectableInputStream(source, toActionExecuter(executorFactory))
+        def instr = new DisconnectableInputStream(source, toActionExecutor(executorFactory))
         run {
             expectBlocksUntil(1) {
                 assertReads(instr, "some text")
@@ -155,7 +155,7 @@ class DisconnectableInputStreamTest extends MultithreadedTestRule {
             return count
         }
 
-        def instr = new DisconnectableInputStream(source, toActionExecuter(executorFactory))
+        def instr = new DisconnectableInputStream(source, toActionExecutor(executorFactory))
 
         start {
             expectBlocksUntil(1) {
@@ -180,7 +180,7 @@ class DisconnectableInputStreamTest extends MultithreadedTestRule {
             return -1
         }
 
-        def instr = new DisconnectableInputStream(source, toActionExecuter(executorFactory))
+        def instr = new DisconnectableInputStream(source, toActionExecutor(executorFactory))
 
         run {
             expectBlocksUntil(1) {
@@ -201,7 +201,7 @@ class DisconnectableInputStreamTest extends MultithreadedTestRule {
             throw failure
         }
 
-        def instr = new DisconnectableInputStream(source, toActionExecuter(executorFactory))
+        def instr = new DisconnectableInputStream(source, toActionExecutor(executorFactory))
 
         run {
             def nread = instr.read(new byte[20])
@@ -222,7 +222,7 @@ class DisconnectableInputStreamTest extends MultithreadedTestRule {
             return -1
         }
 
-        def instr = new DisconnectableInputStream(source, toActionExecuter(executorFactory), 10)
+        def instr = new DisconnectableInputStream(source, toActionExecutor(executorFactory), 10)
 
         run {
             syncAt(1)
@@ -241,7 +241,7 @@ class DisconnectableInputStreamTest extends MultithreadedTestRule {
             return count
         }
 
-        def instr = new DisconnectableInputStream(source, toActionExecuter(executorFactory))
+        def instr = new DisconnectableInputStream(source, toActionExecutor(executorFactory))
         instr.read()
         instr.close()
 
@@ -250,7 +250,7 @@ class DisconnectableInputStreamTest extends MultithreadedTestRule {
 
     @Test
     void cannotReadFromInputStreamAfterItIsClosed() {
-        def instr = new DisconnectableInputStream(stream("some text"), toActionExecuter(executorFactory))
+        def instr = new DisconnectableInputStream(stream("some text"), toActionExecutor(executorFactory))
         instr.close()
 
         assertThat(instr.read(), equalTo(-1))
@@ -259,8 +259,8 @@ class DisconnectableInputStreamTest extends MultithreadedTestRule {
     }
 
     @Test
-    void threadExecuterExecutesTheAction() {
-        def e = new DisconnectableInputStream.ThreadExecuter()
+    void threadExecutorExecutesTheAction() {
+        def e = new DisconnectableInputStream.ThreadExecutor()
         def latch = new CountDownLatch(1)
 
         e.execute {

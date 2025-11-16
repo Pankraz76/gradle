@@ -410,7 +410,7 @@ class BuildDashboardPluginIntegrationTest extends WellBehavedPluginTest {
             doc = Jsoup.parse(buildDashboardFile, "utf8")
         }
         if (!attached) {
-            executer.beforeExecute { doc = null }
+            executor.beforeExecute { doc = null }
             attached = true
         }
         return doc

@@ -73,7 +73,7 @@ abstract class AbstractJUnitSuitesIntegrationTest extends AbstractTestingMultiVe
         """.stripIndent()
 
         when:
-        executer.withTasks('test').run()
+        executor.withTasks('test').run()
 
         then:
         GenericHtmlTestExecutionResult result = resultsFor()

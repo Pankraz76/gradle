@@ -17,11 +17,11 @@
 package org.gradle.api
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ProgressLoggingFixture
+import org.gradle.integtests.fixtures.executor.ProgressLoggingFixture
 
 class ProgressLoggingIntegrationTest extends AbstractIntegrationSpec {
     @org.junit.Rule
-    ProgressLoggingFixture events = new ProgressLoggingFixture(executer, temporaryFolder)
+    ProgressLoggingFixture events = new ProgressLoggingFixture(executor, temporaryFolder)
 
     def "generates progress events during build"() {
         when:

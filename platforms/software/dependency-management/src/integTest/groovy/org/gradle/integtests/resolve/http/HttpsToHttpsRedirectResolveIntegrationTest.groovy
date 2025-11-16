@@ -39,6 +39,6 @@ class HttpsToHttpsRedirectResolveIntegrationTest extends AbstractRedirectResolve
         keyStore = TestKeyStore.init(resources.dir)
         keyStore.enableSslWithServerCert(server)
         keyStore.enableSslWithServerCert(backingServer)
-        keyStore.configureServerCert(executer)
+        keyStore.configureServerCert(executor)
     }
 }

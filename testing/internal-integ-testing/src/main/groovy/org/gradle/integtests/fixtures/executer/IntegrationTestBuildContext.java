@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import org.gradle.test.fixtures.file.TestFile;
 import org.gradle.testfixtures.internal.NativeServicesTestFixture;
@@ -32,7 +32,7 @@ public class IntegrationTestBuildContext {
     public static final IntegrationTestBuildContext INSTANCE = new IntegrationTestBuildContext();
 
     public static boolean isEmbedded() {
-        return System.getProperty("org.gradle.integtest.executer", "").equals("embedded");
+        return System.getProperty("org.gradle.integtest.executor", "").equals("embedded");
     }
 
     @Nullable

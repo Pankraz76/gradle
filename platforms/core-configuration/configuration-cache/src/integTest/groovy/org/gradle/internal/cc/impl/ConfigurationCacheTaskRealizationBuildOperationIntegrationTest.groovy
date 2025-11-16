@@ -21,7 +21,7 @@ import org.gradle.api.internal.tasks.RealizeTaskBuildOperationType
 import org.gradle.integtests.fixtures.BuildOperationsFixture
 
 class ConfigurationCacheTaskRealizationBuildOperationIntegrationTest extends AbstractConfigurationCacheIntegrationTest {
-    def buildOperations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def buildOperations = new BuildOperationsFixture(executor, testDirectoryProvider)
 
     def "load after store emits two realization operations with the same id"() {
         buildFile << """

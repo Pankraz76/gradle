@@ -32,7 +32,7 @@ class SamplesDeclaringDependenciesIntegrationTest extends AbstractSampleIntegrat
     @UsesSample("dependencyManagement/declaringDependencies-concreteVersion")
     def "can use declare and resolve dependency with concrete version with #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)
@@ -47,7 +47,7 @@ class SamplesDeclaringDependenciesIntegrationTest extends AbstractSampleIntegrat
     @UsesSample("dependencyManagement/declaringDependencies-withoutVersion")
     def "can use declare and resolve dependency without version with #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)
@@ -62,7 +62,7 @@ class SamplesDeclaringDependenciesIntegrationTest extends AbstractSampleIntegrat
     @UsesSample("dependencyManagement/declaringDependencies-dynamicVersion")
     def "can use declare and resolve dependency with dynamic version with #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('copyLibs')
@@ -77,7 +77,7 @@ class SamplesDeclaringDependenciesIntegrationTest extends AbstractSampleIntegrat
     @UsesSample("dependencyManagement/declaringDependencies-changingVersion")
     def "can use declare and resolve dependency with changing version with #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)
@@ -92,7 +92,7 @@ class SamplesDeclaringDependenciesIntegrationTest extends AbstractSampleIntegrat
     @UsesSample("dependencyManagement/declaringDependencies-fileDependencies")
     def "can use declare and resolve file dependencies with #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)
@@ -111,7 +111,7 @@ class SamplesDeclaringDependenciesIntegrationTest extends AbstractSampleIntegrat
     @UsesSample("dependencyManagement/declaringDependencies-artifactOnly")
     def "can resolve dependency with artifact-only declaration with #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)
@@ -126,7 +126,7 @@ class SamplesDeclaringDependenciesIntegrationTest extends AbstractSampleIntegrat
     @UsesSample("dependencyManagement/declaringDependencies-artifactOnlyWithClassifier")
     def "can resolve dependency with artifact-only declaration with classifier with #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)

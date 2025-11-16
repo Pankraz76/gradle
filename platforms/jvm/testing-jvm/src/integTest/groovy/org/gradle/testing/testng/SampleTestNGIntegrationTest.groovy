@@ -34,14 +34,14 @@ class SampleTestNGIntegrationTest extends AbstractIntegrationTest {
 
     @Before
     void setUp() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     @Test
     @UsesSample('testing/testng-suitexmlbuilder')
     void suiteXmlBuilder() {
         def testDir = sample.dir.file('groovy')
-        executer.inDirectory(testDir).withTasks('clean', 'test').run()
+        executor.inDirectory(testDir).withTasks('clean', 'test').run()
 
         def result = resultsFor(testDir)
         result.testPathPreNormalized(':org.gradle.testng.UserImplTest:testOkFirstName').onlyRoot().assertHasResult(TestResult.ResultType.SUCCESS)
@@ -51,7 +51,7 @@ class SampleTestNGIntegrationTest extends AbstractIntegrationTest {
     @UsesSample('testing/testng-java-passing')
     void javaPassing() {
         def testDir = sample.dir.file('groovy')
-        executer.inDirectory(testDir).withTasks('clean', 'test').run()
+        executor.inDirectory(testDir).withTasks('clean', 'test').run()
 
         def result = resultsFor(testDir)
         result.assertAtLeastTestPathsExecuted('org.gradle.OkTest', 'org.gradle.ConcreteTest')

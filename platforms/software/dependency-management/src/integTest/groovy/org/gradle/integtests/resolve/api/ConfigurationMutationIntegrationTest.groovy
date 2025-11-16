@@ -358,7 +358,7 @@ class ConfigurationMutationIntegrationTest extends AbstractDependencyResolutionT
     }
 
     def "withDependencies deprecations are properly attributed to source plugin"() {
-        BuildOperationsFixture buildOps = new BuildOperationsFixture(executer, temporaryFolder)
+        BuildOperationsFixture buildOps = new BuildOperationsFixture(executor, temporaryFolder)
 
         settingsFile << """
             includeBuild("plugin")
@@ -419,7 +419,7 @@ class ConfigurationMutationIntegrationTest extends AbstractDependencyResolutionT
         """
 
         when:
-        executer.expectDocumentedDeprecationWarning("foo has been deprecated. This will fail with an error in Gradle ${GradleVersion.current().majorVersion + 1}. For more information, please refer to https://docs.gradle.org/current/userguide/feature_lifecycle.html#sec:deprecated in the Gradle documentation.")
+        executor.expectDocumentedDeprecationWarning("foo has been deprecated. This will fail with an error in Gradle ${GradleVersion.current().majorVersion + 1}. For more information, please refer to https://docs.gradle.org/current/userguide/feature_lifecycle.html#sec:deprecated in the Gradle documentation.")
         succeeds("resolve")
 
         then:

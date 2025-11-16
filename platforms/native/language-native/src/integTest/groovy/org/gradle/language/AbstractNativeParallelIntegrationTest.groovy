@@ -26,10 +26,10 @@ import org.junit.Rule
 
 abstract class AbstractNativeParallelIntegrationTest extends AbstractInstalledToolChainIntegrationSpec {
     @Rule BlockingHttpServer server = new BlockingHttpServer()
-    BuildOperationsFixture buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+    BuildOperationsFixture buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def setup() {
-        executer.withArgument("--max-workers=4")
+        executor.withArgument("--max-workers=4")
     }
 
     def cleanup() {

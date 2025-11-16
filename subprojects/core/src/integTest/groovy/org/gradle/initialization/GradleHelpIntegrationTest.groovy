@@ -20,8 +20,8 @@ import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 
 class GradleHelpIntegrationTest extends AbstractIntegrationSpec {
     def "gradle -h is useful"() {
-        // This test doesn't actually start a daemon, but we need to require a daemon to avoid the in-process executer
-        executer.requireDaemon().requireIsolatedDaemons()
+        // This test doesn't actually start a daemon, but we need to require a daemon to avoid the in-process executor
+        executor.requireDaemon().requireIsolatedDaemons()
 
         when:
         succeeds("-h")

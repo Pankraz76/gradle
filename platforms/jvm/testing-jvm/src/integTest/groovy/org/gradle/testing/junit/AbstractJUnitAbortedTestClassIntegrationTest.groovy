@@ -26,7 +26,7 @@ abstract class AbstractJUnitAbortedTestClassIntegrationTest extends AbstractTest
     // So this test was adjusted accordingly.
     def "supports assumptions in JUnit4 rules"() {
         given:
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         file('src/test/java/org/gradle/SkippingRuleTests.java') << """
             package org.gradle;
 

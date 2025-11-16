@@ -63,7 +63,7 @@ task retrieve(type: Sync) {
         module.artifact.expectGet()
 
         and:
-        executer.withArguments(arg)
+        executor.withArguments(arg)
         succeeds 'retrieve'
 
         then:
@@ -108,7 +108,7 @@ task showMissing {
         module.artifact.expectGet()
 
         then:
-        executer.withArguments(arg)
+        executor.withArguments(arg)
         succeeds('showMissing')
 
         where:
@@ -150,7 +150,7 @@ task retrieve(type: Sync) {
         artifact.expectGet()
 
         then:
-        executer.withArguments(arg)
+        executor.withArguments(arg)
         succeeds 'retrieve'
         file('libs').assertHasDescendants('projectA-1.2.jar')
 
@@ -196,7 +196,7 @@ task retrieve(type: Sync) {
 
         and: "We resolve again, offline"
         server.resetExpectations()
-        executer.withArguments('--offline')
+        executor.withArguments('--offline')
         run 'retrieve'
 
         then:
@@ -224,7 +224,7 @@ task listJars {
         resolve.prepare()
 
         when:
-        executer.withArguments("--offline")
+        executor.withArguments("--offline")
 
         then:
         fails 'checkDeps'

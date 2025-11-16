@@ -311,7 +311,7 @@ class CopyPermissionsIntegrationTest extends AbstractIntegrationSpec implements 
         """
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         runAndFail "copy"
         then:
         expectUnreadableCopyDestinationFailure()

@@ -16,7 +16,7 @@
 package org.gradle.integtests.fixtures.logging
 
 import groovy.transform.CompileStatic
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult
 import org.gradle.internal.logging.ConsoleRenderer
 import org.gradle.exemplar.executor.ExecutionMetadata
 import org.gradle.exemplar.test.normalizer.OutputNormalizer

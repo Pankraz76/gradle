@@ -278,7 +278,7 @@ allprojects {
         setupBuildWithSingleStep()
 
         when:
-        executer.withArgument("--parallel")
+        executor.withArgument("--parallel")
         run ":app:resolveGreen"
 
         then:
@@ -299,7 +299,7 @@ project(':common') {
 """
 
         when:
-        executer.withArgument("--parallel")
+        executor.withArgument("--parallel")
         run "common:resolveGreen"
 
         then:
@@ -312,7 +312,7 @@ project(':common') {
         setupBuildWithFirstStepThatDoesNotUseDependencies()
 
         when:
-        executer.withArgument("--parallel")
+        executor.withArgument("--parallel")
         run "app:resolveGreen"
 
         then:
@@ -335,7 +335,7 @@ project(':common') {
         setupBuildWithTwoSteps()
 
         when:
-        executer.withArgument("--parallel")
+        executor.withArgument("--parallel")
         run "app:resolveGreen"
 
         then:

@@ -36,7 +36,7 @@ class SamplesRepositoriesIntegrationTest extends AbstractIntegrationSpec {
     def "can use repositories notation with #dsl dsl"() {
         // This test is not very strong. Its main purpose is to the for the correct syntax as we use many
         // code snippets from this build script in the user's guide.
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
 
         expect:
         succeeds('lookup')

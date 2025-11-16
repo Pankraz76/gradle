@@ -19,7 +19,7 @@ package org.gradle.integtests
 import org.gradle.api.internal.tasks.compile.CompilationFailedException
 import org.gradle.integtests.fixtures.AbstractIntegrationTest
 import org.gradle.integtests.fixtures.ToBeFixedForIsolatedProjects
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
 import org.gradle.test.fixtures.Flaky
 import org.gradle.test.fixtures.file.TestFile
 import org.junit.Test
@@ -33,7 +33,7 @@ class JavaProjectIntegrationTest extends AbstractIntegrationTest {
         buildFile.writelns("apply plugin: 'java'")
         testFile("src/main/java/org/gradle/broken.java") << "broken"
 
-        ExecutionFailure failure = executer.withTasks("build").runWithFailure()
+        ExecutionFailure failure = executor.withTasks("build").runWithFailure()
 
         failure.assertHasDescription("Execution failed for task ':compileJava'.")
         failure.assertHasCause(CompilationFailedException.COMPILATION_FAILED_DETAILS_BELOW)
@@ -47,7 +47,7 @@ class JavaProjectIntegrationTest extends AbstractIntegrationTest {
         testFile("src/main/java/org/gradle/ok.java") << "package org.gradle; class ok { }"
         testFile("src/test/java/org/gradle/broken.java") << "broken"
 
-        ExecutionFailure failure = executer.withTasks("build").runWithFailure()
+        ExecutionFailure failure = executor.withTasks("build").runWithFailure()
 
         failure.assertHasDescription("Execution failed for task ':compileTestJava'.")
         failure.assertHasCause(CompilationFailedException.COMPILATION_FAILED_DETAILS_BELOW)
@@ -60,7 +60,7 @@ class JavaProjectIntegrationTest extends AbstractIntegrationTest {
         buildFile.write("apply plugin: 'java'")
         testFile("src/main/java/org/gradle/broken.java") << "class Broken { }"
 
-        ExecutionFailure failure = executer.withTasks("javadoc").runWithFailure()
+        ExecutionFailure failure = executor.withTasks("javadoc").runWithFailure()
 
         failure.assertHasDescription("Execution failed for task ':javadoc'.")
         failure.assertHasCause("Javadoc generation failed.")
@@ -72,7 +72,7 @@ class JavaProjectIntegrationTest extends AbstractIntegrationTest {
         buildFile.write("apply plugin: 'java'")
         testFile("src/main/resources/org/gradle/resource.file") << "test resource"
 
-        executer.withTasks("build").run()
+        executor.withTasks("build").run()
         testFile("build/resources/main/org/gradle/resource.file").assertExists()
     }
 
@@ -99,7 +99,7 @@ class JavaProjectIntegrationTest extends AbstractIntegrationTest {
         """
 
         when:
-        executer.withTasks("build").run()
+        executor.withTasks("build").run()
 
         then:
         testFile("build/resources/main/prod.resource").assertExists()
@@ -123,7 +123,7 @@ class JavaProjectIntegrationTest extends AbstractIntegrationTest {
 
         testFile("src/main/resources/org/gradle/resource.file") << "some resource"
 
-        executer.withTasks("jar").run()
+        executor.withTasks("jar").run()
         testFile("build/libs/empty.jar").assertIsFile()
     }
 
@@ -144,12 +144,12 @@ class JavaProjectIntegrationTest extends AbstractIntegrationTest {
         '''
 
         //when
-        def result = executer.withTasks("classes").run()
+        def result = executor.withTasks("classes").run()
         //then
         result.assertTasksScheduled(":compileJava", ":generateResource", ":processResources", ":classes")
 
         //when
-        result = executer.withTasks("testClasses").run()
+        result = executor.withTasks("testClasses").run()
         //then
         result.output.contains(":generateTestResource")
     }

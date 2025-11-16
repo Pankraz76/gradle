@@ -188,7 +188,7 @@ class BuildscriptResolutionIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.usingInitScript(initScriptFile)
+        executor.usingInitScript(initScriptFile)
 
         then:
         succeeds("help")
@@ -254,7 +254,7 @@ class BuildscriptResolutionIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.usingInitScript(initScriptFile)
+        executor.usingInitScript(initScriptFile)
         fails("help")
 
         then:
@@ -323,7 +323,7 @@ class BuildscriptResolutionIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.usingInitScript(initScriptFile)
+        executor.usingInitScript(initScriptFile)
         fails("help")
 
         then:
@@ -399,7 +399,7 @@ class BuildscriptResolutionIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.usingInitScript(initScriptFile)
+        executor.usingInitScript(initScriptFile)
 
         then:
         succeeds("help")
@@ -505,7 +505,7 @@ class BuildscriptResolutionIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.usingInitScript(initScriptFile)
+        executor.usingInitScript(initScriptFile)
 
         then:
         fails("help")
@@ -698,7 +698,7 @@ class BuildscriptResolutionIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.usingInitScript(initScriptFile)
+        executor.usingInitScript(initScriptFile)
 
         then:
         fails("help")

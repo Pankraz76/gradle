@@ -40,7 +40,7 @@ jvmCompile {
 }
 addDependenciesAndConfigurations(TestType.INTEGRATION.prefix)
 configurations.named("integTestRuntimeClasspath") {
-    // The InProcessGradleExecuter and the BuildOperationsFixture currently expect the
+    // The InProcessGradleExecutor and the BuildOperationsFixture currently expect the
     // under-development Gradle distribution to be on the runtime classpath. We should
     // avoid this and instead dynamically load the classpath from `integTest.gradleHomeDir` instead.
     extendsFrom(configurations.named("integTestDistributionRuntimeOnly").get())

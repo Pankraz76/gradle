@@ -43,7 +43,7 @@ abstract class AbstractHttpsRepoResolveIntegrationTest extends AbstractHttpDepen
         setupBuildFile(repoType, useAuth)
 
         when:
-        keyStore.configureServerCert(executer)
+        keyStore.configureServerCert(executor)
         succeeds "libs"
 
         then:
@@ -67,7 +67,7 @@ abstract class AbstractHttpsRepoResolveIntegrationTest extends AbstractHttpDepen
         setupBuildFile(repoType)
 
         when:
-        keyStore.configureServerAndClientCerts(executer)
+        keyStore.configureServerAndClientCerts(executor)
         succeeds "libs"
 
         then:
@@ -81,8 +81,8 @@ abstract class AbstractHttpsRepoResolveIntegrationTest extends AbstractHttpDepen
         setupBuildFile(repoType)
 
         when:
-        executer.withStackTraceChecksDisabled() // Jetty logs stuff to console
-        keyStore.configureIncorrectServerCert(executer)
+        executor.withStackTraceChecksDisabled() // Jetty logs stuff to console
+        keyStore.configureIncorrectServerCert(executor)
         fails "libs"
 
         then:
@@ -97,8 +97,8 @@ abstract class AbstractHttpsRepoResolveIntegrationTest extends AbstractHttpDepen
         setupBuildFile(repoType)
 
         when:
-        executer.withStackTraceChecksDisabled() // Jetty logs stuff to console
-        keyStore.configureServerAndClientCerts(executer)
+        executor.withStackTraceChecksDisabled() // Jetty logs stuff to console
+        keyStore.configureServerAndClientCerts(executor)
         fails "libs"
 
         then:
@@ -114,8 +114,8 @@ abstract class AbstractHttpsRepoResolveIntegrationTest extends AbstractHttpDepen
         setupBuildFile(repoType)
 
         when:
-        keyStore.configureServerAndClientCerts(executer)
-        executer.withArgument("-Djavax.net.ssl.keyStore=Not-Existing-File").withArgument("--stacktrace")
+        keyStore.configureServerAndClientCerts(executor)
+        executor.withArgument("-Djavax.net.ssl.keyStore=Not-Existing-File").withArgument("--stacktrace")
         fails "libs"
 
         then:
@@ -132,8 +132,8 @@ abstract class AbstractHttpsRepoResolveIntegrationTest extends AbstractHttpDepen
         setupBuildFile(repoType)
 
         when:
-        keyStore.configureServerAndClientCerts(executer)
-        executer.withArgument("-Djavax.net.ssl.trustStore=Not-Existing-File")
+        keyStore.configureServerAndClientCerts(executor)
+        executor.withArgument("-Djavax.net.ssl.trustStore=Not-Existing-File")
         fails "libs"
 
         then:

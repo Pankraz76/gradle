@@ -44,7 +44,7 @@ import org.gradle.build.event.BuildEventsListenerRegistry
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.integtests.fixtures.ToBeFixedForIsolatedProjects
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.reflect.Instantiator
 import org.gradle.process.ExecOperations
 import org.gradle.test.fixtures.dsl.GradleDsl
@@ -91,7 +91,7 @@ class BuildServiceIntegrationTest extends AbstractIntegrationSpec {
         serviceImplementation()
         adhocTaskUsingUndeclaredService(1)
         enableServiceUsageDeclaration()
-        executer.expectDocumentedDeprecationWarning(
+        executor.expectDocumentedDeprecationWarning(
             "Build service 'counter' is being used by task ':broken' without the corresponding declaration via 'Task#usesService'. " +
                 "This behavior has been deprecated. " +
                 "This will fail with an error in Gradle 10. " +
@@ -140,7 +140,7 @@ class BuildServiceIntegrationTest extends AbstractIntegrationSpec {
             }
         """
         enableServiceUsageDeclaration()
-        executer.expectDocumentedDeprecationWarning(
+        executor.expectDocumentedDeprecationWarning(
             "Build service 'counter' is being used by task ':broken' without the corresponding declaration via 'Task#usesService'. " +
                 "This behavior has been deprecated. " +
                 "This will fail with an error in Gradle 10. " +
@@ -217,7 +217,7 @@ class BuildServiceIntegrationTest extends AbstractIntegrationSpec {
         file("src/main/java/Foo.java").createFile().text = """class Foo {}"""
         enableServiceUsageDeclaration()
         // should not be expected
-        executer.expectDocumentedDeprecationWarning(
+        executor.expectDocumentedDeprecationWarning(
             "Build service 'counter' is being used by task ':compileJava' without the corresponding declaration via 'Task#usesService'. " +
                 "This behavior has been deprecated. " +
                 "This will fail with an error in Gradle 10. " +
@@ -485,7 +485,7 @@ service: closed with value 10001
 
         then:
         outputDoesNotContain "'Task#usesService'"
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             // Service lifecycle is different with CC
             outputContains """
                 > Configure project :
@@ -841,7 +841,7 @@ service: closed with value 10001
 
             provider.get().increment()
         """
-        executer.beforeExecute {
+        executor.beforeExecute {
             withArgument("--configuration-cache")
         }
 

@@ -30,7 +30,7 @@ class DeprecatedUsageBuildOperationProgressIntegrationTest extends AbstractInteg
     }
 
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "emits deprecation warnings as build operation progress events with context"() {
         when:
@@ -85,7 +85,7 @@ class DeprecatedUsageBuildOperationProgressIntegrationTest extends AbstractInteg
 
         """
         and:
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
         succeeds 't', 't2', '-I', 'init.gradle'
 
         then:
@@ -227,7 +227,7 @@ class DeprecatedUsageBuildOperationProgressIntegrationTest extends AbstractInteg
         """
 
         and:
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
         succeeds 'help'
 
         then:
@@ -270,7 +270,7 @@ class DeprecatedUsageBuildOperationProgressIntegrationTest extends AbstractInteg
         """
 
         and:
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
         succeeds 't'
 
         then:
@@ -319,7 +319,7 @@ class DeprecatedUsageBuildOperationProgressIntegrationTest extends AbstractInteg
         }
 
         when:
-        executer.noDeprecationChecks().withWarningMode(mode)
+        executor.noDeprecationChecks().withWarningMode(mode)
         run()
 
         then:
@@ -359,7 +359,7 @@ class DeprecatedUsageBuildOperationProgressIntegrationTest extends AbstractInteg
         }
 
         when:
-        executer.noDeprecationChecks().withWarningMode(mode)
+        executor.noDeprecationChecks().withWarningMode(mode)
         if (mode == WarningMode.Fail) {
             runAndFail()
         } else {

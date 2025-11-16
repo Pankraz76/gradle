@@ -27,7 +27,7 @@ class UsingLockingOnNonProjectConfigurationsIntegrationTest extends AbstractDepe
     def lockfileFixture = new LockfileFixture(testDirectory: testDirectory)
 
     @Rule
-    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     def 'locks build script classpath configuration (initial unique: #unique)'() {
         given:
@@ -411,7 +411,7 @@ buildscript {
         given:
         def message = "hello from settings plugin"
         pluginBuilder.addSettingsPlugin("println '$message'")
-        pluginBuilder.publishAs("org", "settings-plugin", "1.0", pluginRepo, createExecuter()).allowAll()
+        pluginBuilder.publishAs("org", "settings-plugin", "1.0", pluginRepo, createExecutor()).allowAll()
 
         and:
         settingsFile.text = """
@@ -442,7 +442,7 @@ buildscript {
 
     def addPlugin() {
         pluginBuilder.addPlugin("System.out.println(\"Hello World\");", 'bar.plugin')
-        pluginBuilder.publishAs('org.bar', 'bar-plugin', '1.0', pluginRepo, executer).allowAll()
+        pluginBuilder.publishAs('org.bar', 'bar-plugin', '1.0', pluginRepo, executor).allowAll()
     }
 
 }

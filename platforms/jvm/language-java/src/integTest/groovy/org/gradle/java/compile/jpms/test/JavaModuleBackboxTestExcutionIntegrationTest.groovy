@@ -119,7 +119,7 @@ class JavaModuleBackboxTestExcutionIntegrationTest extends AbstractJavaModuleTes
             }
         """
         // Test workers that die very quickly after startup can cause an unexpected stack trace sometimes
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
 
         when:
         testModuleInfo('requires junit')

@@ -43,7 +43,7 @@ class ConfigurationCacheDebugLogIntegrationTest extends AbstractConfigurationCac
         """
 
         when:
-        executer.withArgument "-D$ConfigurationCacheDebugOption.PROPERTY_NAME=true"
+        executor.withArgument "-D$ConfigurationCacheDebugOption.PROPERTY_NAME=true"
 
         and:
         configurationCacheRun 'ok'
@@ -75,7 +75,7 @@ class ConfigurationCacheDebugLogIntegrationTest extends AbstractConfigurationCac
                 withDebugLogging()
                 break
             case CCDebugEnablement.SYSTEM_PROPERTY:
-                executer.withArgument "-D$ConfigurationCacheDebugOption.PROPERTY_NAME=true"
+                executor.withArgument "-D$ConfigurationCacheDebugOption.PROPERTY_NAME=true"
                 break
             case CCDebugEnablement.GRADLE_PROPERTIES_FILE:
                 file('gradle.properties') << "$ConfigurationCacheDebugOption.PROPERTY_NAME=true"

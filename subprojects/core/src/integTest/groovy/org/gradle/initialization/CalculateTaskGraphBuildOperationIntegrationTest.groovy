@@ -26,10 +26,10 @@ import org.gradle.internal.taskgraph.CalculateTreeTaskGraphBuildOperationType
 
 class CalculateTaskGraphBuildOperationIntegrationTest extends AbstractIntegrationSpec {
 
-    final buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+    final buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
     @SuppressWarnings("GroovyUnusedDeclaration")
-    final operationNotificationsFixture = new BuildOperationNotificationsFixture(executer, temporaryFolder)
+    final operationNotificationsFixture = new BuildOperationNotificationsFixture(executor, temporaryFolder)
 
     @ToBeFixedForConfigurationCache(because = "Emits extra TaskGraph build operations when loading after store")
     def "requested and filtered tasks are exposed"() {

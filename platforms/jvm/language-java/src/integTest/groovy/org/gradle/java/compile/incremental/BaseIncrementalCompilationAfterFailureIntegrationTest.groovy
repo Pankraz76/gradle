@@ -574,12 +574,12 @@ class GroovyIncrementalCompilationAfterFailureIntegrationTest extends BaseIncrem
         a.text = "class A extends ABase implements WithTrait { def m() { println('b') } }"
 
         then:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         def execution = runAndFail "compileGroovy"
         execution.assertHasCause("Unrecoverable compilation error")
 
         when:
-        executer.withStacktraceEnabled()
+        executor.withStacktraceEnabled()
         run"compileGroovy", "--info"
 
         then:

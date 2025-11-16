@@ -17,9 +17,9 @@
 package org.gradle.kotlin.dsl.fixtures
 
 import org.gradle.integtests.fixtures.AbstractIntegrationTest
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.kotlin.dsl.resolver.GradleInstallation
 import org.gradle.kotlin.dsl.support.zipTo
 import org.junit.Before
@@ -66,7 +66,7 @@ abstract class AbstractKotlinIntegrationTest : AbstractIntegrationTest() {
             }
             """
         )
-        executer.beforeExecute {
+        executor.beforeExecute {
             usingInitScript(setupScript)
         }
     }
@@ -89,7 +89,7 @@ abstract class AbstractKotlinIntegrationTest : AbstractIntegrationTest() {
                 """
             )
         }.let { setupScript ->
-            executer.beforeExecute {
+            executor.beforeExecute {
                 usingInitScript(setupScript)
             }
         }
@@ -143,7 +143,7 @@ abstract class AbstractKotlinIntegrationTest : AbstractIntegrationTest() {
 
     @Before
     fun useRepositoryMirrors() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     protected
@@ -314,7 +314,7 @@ abstract class AbstractKotlinIntegrationTest : AbstractIntegrationTest() {
         File(projectRoot, relativePath).canonicalFile
 
     fun build(vararg arguments: String): ExecutionResult =
-        gradleExecuterFor(arguments).run()
+        gradleExecutorFor(arguments).run()
 
     protected
     fun buildFailureOutput(vararg arguments: String): String =
@@ -322,24 +322,24 @@ abstract class AbstractKotlinIntegrationTest : AbstractIntegrationTest() {
 
     protected
     fun buildAndFail(vararg arguments: String): ExecutionFailure =
-        gradleExecuterFor(arguments).runWithFailure()
+        gradleExecutorFor(arguments).runWithFailure()
 
     protected
     fun build(rootDir: File, vararg arguments: String): ExecutionResult =
-        gradleExecuterFor(arguments, rootDir).run()
+        gradleExecutorFor(arguments, rootDir).run()
 
     protected
-    fun gradleExecuterFor(arguments: Array<out String>, rootDir: File = projectRoot) =
+    fun gradleExecutorFor(arguments: Array<out String>, rootDir: File = projectRoot) =
         inDirectory(rootDir).withArguments(*arguments)
 
     protected
     inline fun <T> withOwnGradleUserHomeDir(reason: String, block: () -> T): T {
-        executer.requireOwnGradleUserHomeDir(reason)
+        executor.requireOwnGradleUserHomeDir(reason)
         return try {
             block()
         } finally {
             // wait for all daemons to shut down so the test dir can be deleted
-            executer.cleanup()
+            executor.cleanup()
         }
     }
 }

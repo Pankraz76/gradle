@@ -22,11 +22,11 @@ import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import static org.gradle.initialization.StartParameterBuildOptions.IsolatedProjectsOption.PROPERTY_NAME
 
 @SelfType(AbstractIntegrationSpec)
-trait IsolatedProjectsExecuterFixture {
+trait IsolatedProjectsExecutorFixture {
 
     private static final String ENABLE_CLI = "-D${PROPERTY_NAME}=true"
 
     void withIsolatedProjects() {
-        executer.withArgument(ENABLE_CLI)
+        executor.withArgument(ENABLE_CLI)
     }
 }

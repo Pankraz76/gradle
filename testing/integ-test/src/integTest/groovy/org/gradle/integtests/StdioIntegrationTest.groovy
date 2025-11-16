@@ -24,10 +24,10 @@ import org.gradle.util.internal.TextUtil
 @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicitly requests a daemon")
 class StdioIntegrationTest extends AbstractIntegrationSpec {
     def setup() {
-        executer.requireDaemon()
+        executor.requireDaemon()
         // This isn't actually required - the test is fine with shared daemons
         // In fact, it would be much better to test this feature using shared daemons
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
     }
 
     def "task can read stdin when stdin has bounded length"() {
@@ -46,7 +46,7 @@ task echo {
     }
 }
 '''
-        executer.withStdinPipe(new PipedOutputStream() {
+        executor.withStdinPipe(new PipedOutputStream() {
             @Override
             void connect(PipedInputStream snk) throws IOException {
                 super.connect(snk)
@@ -80,7 +80,7 @@ task echo {
 }
 '''
         when:
-        executer.withStdinPipe(new PipedOutputStream() {
+        executor.withStdinPipe(new PipedOutputStream() {
             @Override
             void connect(PipedInputStream snk) throws IOException {
                 super.connect(snk)

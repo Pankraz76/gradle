@@ -133,10 +133,10 @@ class CompositeBuildLookupIntegrationTest extends AbstractCompositeBuildValidati
         """)
 
         expect:
-        executer.withArguments("--include-build", "../buildC")
+        executor.withArguments("--include-build", "../buildC")
         execute(buildA, "withBuild", "buildB:validate")
 
-        executer.withArguments("--include-build", "../buildB")
+        executor.withArguments("--include-build", "../buildB")
         execute(buildA, "withoutBuild", "buildB:validate")
     }
 

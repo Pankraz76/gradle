@@ -26,14 +26,14 @@ class GradleNativeIntegrationTest extends AbstractIntegrationSpec {
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicitly requests a daemon")
     def "caches native binaries in specified user home"() {
         given:
-        executer.withNoExplicitNativeServicesDir()
-        executer.requireOwnGradleUserHomeDir()
-        executer.requireDaemon().requireIsolatedDaemons()
+        executor.withNoExplicitNativeServicesDir()
+        executor.requireOwnGradleUserHomeDir()
+        executor.requireDaemon().requireIsolatedDaemons()
 
         when:
         succeeds "help"
 
         then:
-        executer.gradleUserHomeDir.file("native").assertIsDir()
+        executor.gradleUserHomeDir.file("native").assertIsDir()
     }
 }

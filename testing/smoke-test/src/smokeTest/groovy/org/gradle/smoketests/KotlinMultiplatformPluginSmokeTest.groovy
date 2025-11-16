@@ -16,7 +16,7 @@
 
 package org.gradle.smoketests
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.integtests.fixtures.versions.KotlinGradlePluginVersions
 import org.gradle.test.fixtures.Flaky
 import org.gradle.util.GradleVersion
@@ -80,7 +80,7 @@ class KotlinMultiplatformPluginSmokeTest extends AbstractKotlinPluginSmokeTest {
                 "https://youtrack.jetbrains.com/issue/KT-67110"
             )
             .expectLegacyDeprecationWarningIf(
-                GradleContextualExecuter.notConfigCache && kotlinVersionNumber.baseVersion < KotlinGradlePluginVersions.KOTLIN_2_1_20,
+                GradleContextualExecutor.notConfigCache && kotlinVersionNumber.baseVersion < KotlinGradlePluginVersions.KOTLIN_2_1_20,
                 "Invocation of Task.project at execution time has been deprecated. This will fail with an error in Gradle 10. This API is incompatible with the configuration cache, which will become the only mode supported by Gradle in a future release. Consult the upgrading guide for further information: https://docs.gradle.org/${GradleVersion.current().version}/userguide/upgrading_version_7.html#task_project"
             )
             .expectDeprecationWarningIf(

@@ -29,7 +29,7 @@ class IncrementalScalaCompileIntegrationTest extends AbstractIntegrationSpec {
     @Rule TestResources resources = new TestResources(temporaryFolder)
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     def recompilesSourceWhenPropertiesChange() {

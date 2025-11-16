@@ -37,12 +37,12 @@ class DaemonReuseIntegrationTest extends DaemonIntegrationSpec {
 
     def "idle daemon is reused in preference to starting a new daemon"() {
         given:
-        executer.run()
+        executor.run()
         daemons.daemon.assertIdle()
 
         when:
         5.times {
-            executer.run()
+            executor.run()
         }
 
         then:
@@ -53,7 +53,7 @@ class DaemonReuseIntegrationTest extends DaemonIntegrationSpec {
     def "reused daemon port does not prevent new builds from starting"() {
         given:
         // Start a daemon
-        executer.run()
+        executor.run()
         daemons.daemon.assertIdle()
         // Kill the daemon without letting it shutdown cleanly
         daemons.daemon.kill()
@@ -91,13 +91,13 @@ class DaemonReuseIntegrationTest extends DaemonIntegrationSpec {
 
         // Try to run another build that should try to reuse the previous daemon, fail and then start another daemon
         when:
-        executer.run()
+        executor.run()
         then:
         daemons.daemons.size() == 2
 
         // Check that gradle --status also shows the first daemon is unreachable
         when:
-        executer.withArgument("--status")
+        executor.withArgument("--status")
         succeeds()
         then:
         outputContains("(unable to communicate with daemon)")
@@ -118,19 +118,19 @@ class DaemonReuseIntegrationTest extends DaemonIntegrationSpec {
         """
 
         given:
-        executer.beforeExecute {
-            executer.withStackTraceChecksDisabled()
+        executor.beforeExecute {
+            executor.withStackTraceChecksDisabled()
         }
         expectEvent("started")
         expectEvent("block")
-        def client = new DaemonClientFixture(executer.withArgument("--debug").withTasks("block").start())
+        def client = new DaemonClientFixture(executor.withArgument("--debug").withTasks("block").start())
         waitFor("started")
         daemons.daemon.assertBusy()
         client.kill()
         daemons.daemon.becomesCanceled()
 
         when:
-        def build = executer.withTasks("help").withArguments("--info").start()
+        def build = executor.withTasks("help").withArguments("--info").start()
         ConcurrentTestUtil.poll {
             assert build.standardOutput.contains(DaemonMessages.WAITING_ON_CANCELED)
         }
@@ -157,14 +157,14 @@ class DaemonReuseIntegrationTest extends DaemonIntegrationSpec {
 
         given:
         expectEvent("started")
-        def client = new DaemonClientFixture(executer.withTasks("block").withArguments("--debug", "-Dorg.gradle.jvmargs=-Xmx1025m").start())
+        def client = new DaemonClientFixture(executor.withTasks("block").withArguments("--debug", "-Dorg.gradle.jvmargs=-Xmx1025m").start())
         waitFor("started")
         daemons.daemon.assertBusy()
         client.kill()
         daemons.daemon.becomesCanceled()
 
         when:
-        def build = executer.withTasks("help").withArguments("--info").start()
+        def build = executor.withTasks("help").withArguments("--info").start()
 
         then:
         build.waitForFinish()
@@ -190,7 +190,7 @@ class DaemonReuseIntegrationTest extends DaemonIntegrationSpec {
 
         given:
         expectEvent("started")
-        def client = new DaemonClientFixture(executer.withArgument("--debug").withTasks("block").start())
+        def client = new DaemonClientFixture(executor.withArgument("--debug").withTasks("block").start())
         waitFor("started")
         def canceledDaemon = daemons.daemon
         canceledDaemon.assertBusy()
@@ -198,7 +198,7 @@ class DaemonReuseIntegrationTest extends DaemonIntegrationSpec {
         canceledDaemon.becomesCanceled()
 
         when:
-        def build = executer.withTasks("help").withArguments("--info").start()
+        def build = executor.withTasks("help").withArguments("--info").start()
         ConcurrentTestUtil.poll {
             assert build.standardOutput.contains(DaemonMessages.WAITING_ON_CANCELED)
         }
@@ -229,15 +229,15 @@ class DaemonReuseIntegrationTest extends DaemonIntegrationSpec {
         """
 
         // 2 daemons we can cancel
-        def client1 = new DaemonClientFixture(executer.withTasks("block").withArguments("--debug", "-PbuildNum=1").start())
+        def client1 = new DaemonClientFixture(executor.withTasks("block").withArguments("--debug", "-PbuildNum=1").start())
         waitFor("started1")
         def canceledDaemon1 = daemons.daemon
-        def client2 = new DaemonClientFixture(executer.withTasks("block").withArguments("--debug", "-PbuildNum=2").start())
+        def client2 = new DaemonClientFixture(executor.withTasks("block").withArguments("--debug", "-PbuildNum=2").start())
         waitFor("started2")
         def canceledDaemon2 = daemons.daemons.find { it.context.pid != canceledDaemon1.context.pid }
 
         // 1 daemon we can reuse
-        def build3 = executer.withTasks("help").start()
+        def build3 = executor.withTasks("help").start()
 
         when:
         build3.waitForFinish()
@@ -258,7 +258,7 @@ class DaemonReuseIntegrationTest extends DaemonIntegrationSpec {
         canceledDaemon2.becomesCanceled()
 
         when:
-        build3 = executer.withTasks("help").start()
+        build3 = executor.withTasks("help").start()
 
         then:
         build3.waitForFinish()
@@ -284,8 +284,8 @@ class DaemonReuseIntegrationTest extends DaemonIntegrationSpec {
 
         when:
         server.expectConcurrent("started1", "started2")
-        def gradle1 = executer.withTasks("block").withArguments("--debug", "-PbuildNum=1").start()
-        def gradle2 = executer.withTasks("block").withArguments("--debug", "-PbuildNum=2").start()
+        def gradle1 = executor.withTasks("block").withArguments("--debug", "-PbuildNum=1").start()
+        def gradle2 = executor.withTasks("block").withArguments("--debug", "-PbuildNum=2").start()
 
         then:
         gradle1.waitForFinish()

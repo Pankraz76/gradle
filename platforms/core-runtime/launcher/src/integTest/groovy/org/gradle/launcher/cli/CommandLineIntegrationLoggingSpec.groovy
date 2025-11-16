@@ -38,7 +38,7 @@ class CommandLineIntegrationLoggingSpec extends AbstractIntegrationSpec {
             }
         """
         expect:
-        executer.withArguments(flags)
+        executor.withArguments(flags)
         succeeds("assertLogging")
         outputContains(message)
 
@@ -54,7 +54,7 @@ class CommandLineIntegrationLoggingSpec extends AbstractIntegrationSpec {
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicitly requests a daemon")
     def "Set log level using org.gradle.logging.level in GRADLE_OPTS to #logLevel"() {
         setup:
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
 
         def message = 'Expected message in the output'
         buildFile << """
@@ -72,7 +72,7 @@ class CommandLineIntegrationLoggingSpec extends AbstractIntegrationSpec {
             }
         """
         expect:
-        executer.withCommandLineGradleOpts(flags).requireDaemon().requireIsolatedDaemons()
+        executor.withCommandLineGradleOpts(flags).requireDaemon().requireIsolatedDaemons()
         succeeds("assertLogging")
         outputContains(message)
 
@@ -88,7 +88,7 @@ class CommandLineIntegrationLoggingSpec extends AbstractIntegrationSpec {
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicitly requests a daemon")
     def "Command line switches override properly: #flags #options"() {
         setup:
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
 
         def message = 'Expected message in the output'
         buildFile << """
@@ -105,7 +105,7 @@ class CommandLineIntegrationLoggingSpec extends AbstractIntegrationSpec {
             }
         """
         expect:
-        executer.withArguments(flags).withCommandLineGradleOpts(options).requireDaemon().requireIsolatedDaemons()
+        executor.withArguments(flags).withCommandLineGradleOpts(options).requireDaemon().requireIsolatedDaemons()
         succeeds("assertLogging")
         outputContains(message)
 

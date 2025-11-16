@@ -110,7 +110,7 @@ abstract class AbstractTestingMultiVersionIntegrationTest extends MultiVersionIn
     }
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     /**

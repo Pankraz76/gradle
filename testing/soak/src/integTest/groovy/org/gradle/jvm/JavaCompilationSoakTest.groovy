@@ -22,7 +22,7 @@ class JavaCompilationSoakTest extends AbstractIntegrationSpec {
     def setup() {
         // projectCount * memoryHog ~= 25% default JVM heap size
         def projectCount = 5
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
 
         def subprojects = []
         projectCount.times {

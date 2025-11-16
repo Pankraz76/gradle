@@ -378,7 +378,7 @@ Searched in the following locations:
         def projectA1 = repo1.module('group', 'projectA', '1.1').publish()
         def projectA2 = repo2.module('group', 'projectA', '1.5').publish()
 
-        executer.withArgument("-D${SOCKET_TIMEOUT_SYSTEM_PROPERTY}=1000")
+        executor.withArgument("-D${SOCKET_TIMEOUT_SYSTEM_PROPERTY}=1000")
 
         buildFile << createBuildFile(repo1.uri, repo2.uri)
 
@@ -415,8 +415,8 @@ Searched in the following locations:
         def projectA1 = repo1.module('group', 'projectA', '1.1').publish()
         def projectA2 = repo2.module('group', 'projectA', '1.5').publish()
 
-        executer.beforeExecute {
-            executer.withArgument("-D${SOCKET_TIMEOUT_SYSTEM_PROPERTY}=1000")
+        executor.beforeExecute {
+            executor.withArgument("-D${SOCKET_TIMEOUT_SYSTEM_PROPERTY}=1000")
         }
 
         buildFile << createBuildFile(repo1.uri, repo2.uri)

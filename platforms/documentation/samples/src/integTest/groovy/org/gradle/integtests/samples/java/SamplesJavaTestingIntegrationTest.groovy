@@ -21,7 +21,7 @@ import org.gradle.integtests.fixtures.AbstractSampleIntegrationTest
 import org.gradle.integtests.fixtures.AvailableJavaHomes
 import org.gradle.integtests.fixtures.Sample
 import org.gradle.integtests.fixtures.UsesSample
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.integtests.fixtures.jvm.JavaToolchainFixture
 import org.gradle.internal.jvm.Jvm
 import org.gradle.test.fixtures.file.TestFile
@@ -41,7 +41,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
         Jvm jdk = AvailableJavaHomes.getJdk17()
 
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         withInstallations(jdk)
@@ -62,7 +62,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
     def "can execute a subset of tests with filtering with #dsl dsl"() {
         given:
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         def result = succeeds("test")
@@ -87,7 +87,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
     def "can change the destination for test results and reports with #dsl dsl"() {
         given:
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         def result = fails("test")
@@ -111,7 +111,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
     def "can create a custom TestReport task with #dsl dsl"() {
         given:
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         def result = succeeds("test", "testReport")
@@ -135,7 +135,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
     def "can filter tests by JUnit category with #dsl dsl"() {
         given:
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         def result = succeeds("test")
@@ -156,7 +156,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
     def "can filter tests by JUnit Platform tag with #dsl dsl"() {
         given:
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         def result = succeeds("test")
@@ -177,7 +177,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
     def "can filter tests by TestNG group with #dsl dsl"() {
         given:
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         def result = succeeds("test")
@@ -200,7 +200,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
     def "can run tests using JUnit Jupiter with #dsl dsl"() {
         given:
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         def result = succeeds("test")
@@ -220,7 +220,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
     def "can run older JUnit tests with JUnit Jupiter with #dsl dsl"() {
         given:
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         def result = succeeds("test")
@@ -247,7 +247,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
     def "can run JUnit Platform tests with a subset of engines with #dsl dsl"() {
         given:
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         def result = succeeds("test")
@@ -269,7 +269,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
     def "can use the preserveOrder option with TestNG tests with #dsl dsl"() {
         given:
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         def result = succeeds("test")
@@ -296,7 +296,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
     def "can use the groupByInstances option with TestNG tests with #dsl dsl"() {
         given:
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         def result = succeeds("test")
@@ -320,7 +320,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
         Jvm jdk = AvailableJavaHomes.getJdk17()
 
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         withInstallations(jdk)
@@ -328,7 +328,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
 
         then:
         // Task order is non-deterministic in CC
-        if (!GradleContextualExecuter.isConfigCache()) {
+        if (!GradleContextualExecutor.isConfigCache()) {
             result.assertTaskOrder(":test", ":integrationTest")
         }
 
@@ -350,7 +350,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
         TestFile dslDir = sample.dir.file(dsl)
 
         when: "run first time to populate configuration cache if it is enabled"
-        executer.inDirectory(dslDir).withArgument("-PmySkipTests")
+        executor.inDirectory(dslDir).withArgument("-PmySkipTests")
         withInstallations(jdk)
         def result = succeeds("build")
 
@@ -358,7 +358,7 @@ class SamplesJavaTestingIntegrationTest extends AbstractSampleIntegrationTest im
         result.assertTaskSkipped(":test")
 
         when: "run second time to restore from configuration cache if it is enabled"
-        executer.inDirectory(dslDir).withArgument("-PmySkipTests")
+        executor.inDirectory(dslDir).withArgument("-PmySkipTests")
         withInstallations(jdk)
         def secondResult = succeeds("build")
 

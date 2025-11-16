@@ -51,7 +51,7 @@ class SftpClientReuseIntegrationTest extends AbstractIntegrationSpec {
         def sync = coordinator.expectAndBlock('sync')
 
         when:
-        def gradle = executer.withTasks('reuseClient').withArgument("--info").start()
+        def gradle = executor.withTasks('reuseClient').withArgument("--info").start()
         sync.waitForAllPendingCalls()
 
         then:

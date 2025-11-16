@@ -37,7 +37,7 @@ class DaemonJavaCompilerIntegrationTest extends AbstractJavaCompilerIntegrationS
     }
 
     def setup() {
-        executer.withArguments("-d")
+        executor.withArguments("-d")
     }
 
     def "respects fork options settings"() {
@@ -98,7 +98,7 @@ class DaemonJavaCompilerIntegrationTest extends AbstractJavaCompilerIntegrationS
         """
 
         expect:
-        executer.withArgument("-Dorg.gradle.java.installations.paths=" + jdk.javaHome.absolutePath)
+        executor.withArgument("-Dorg.gradle.java.installations.paths=" + jdk.javaHome.absolutePath)
         succeeds("compileJava")
     }
 

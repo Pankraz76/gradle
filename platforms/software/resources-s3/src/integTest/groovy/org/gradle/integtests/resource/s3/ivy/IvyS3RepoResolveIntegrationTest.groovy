@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.resource.s3.ivy
 
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.integtests.resolve.ivy.AbstractIvyRemoteRepoResolveIntegrationTest
 import org.gradle.integtests.resource.s3.fixtures.S3Server
 import org.gradle.test.fixtures.server.RepositoryServer
@@ -33,9 +33,9 @@ class IvyS3RepoResolveIntegrationTest extends AbstractIvyRemoteRepoResolveIntegr
     }
 
     protected ExecutionResult succeeds(String... tasks) {
-        executer.withArgument("-Dorg.gradle.s3.endpoint=${server.uri}")
-        executer.withArgument("-Dorg.gradle.s3.maxErrorRetry=0")
-        result = executer.withTasks(*tasks).run()
+        executor.withArgument("-Dorg.gradle.s3.endpoint=${server.uri}")
+        executor.withArgument("-Dorg.gradle.s3.maxErrorRetry=0")
+        result = executor.withTasks(*tasks).run()
     }
 
     def "cannot add invalid authentication types for s3 repo"() {

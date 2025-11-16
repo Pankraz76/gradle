@@ -88,7 +88,7 @@ class CppStaticLibraryPublishingIntegrationTest extends AbstractCppPublishingInt
         """
         app.main.writeToProject(consumer)
 
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("assemble")
 
         then:
@@ -156,7 +156,7 @@ class CppStaticLibraryPublishingIntegrationTest extends AbstractCppPublishingInt
         """
         app.main.writeToProject(consumer)
 
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("assemble")
 
         then:

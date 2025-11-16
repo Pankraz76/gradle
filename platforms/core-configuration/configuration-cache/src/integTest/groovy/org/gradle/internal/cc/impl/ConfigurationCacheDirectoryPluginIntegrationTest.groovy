@@ -33,8 +33,8 @@ class ConfigurationCacheDirectoryPluginIntegrationTest extends AbstractConfigura
         """
 
         when:
-        executer.inDirectory(file("first")).withTasks("classes").run()
-        executer.inDirectory(file("second")).withTasks("classes").run()
+        executor.inDirectory(file("first")).withTasks("classes").run()
+        executor.inDirectory(file("second")).withTasks("classes").run()
         configurationCacheRun("-Dfirst.property=first.value", "-Dsecond.property=second.value")
 
         then:

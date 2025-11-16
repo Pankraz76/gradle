@@ -37,7 +37,7 @@ class ClasspathDependenciesAttributesIntegrationTest extends AbstractModuleDepen
         mavenRepo.module('test', 'bom', '1.0').hasPackaging('pom').dependencyConstraint(module).publish()
 
         pluginBuilder.addPlugin("println 'test-plugin applied'")
-        def pluginModule = pluginBuilder.publishAs('test:plugin:1.0', mavenRepo, executer).pluginModule
+        def pluginModule = pluginBuilder.publishAs('test:plugin:1.0', mavenRepo, executor).pluginModule
         def pomFile = pluginModule.pom.file
         // Adds a dependency on the BOM to show that variant derivation is then available during project use
         pomFile.text = pomFile.text.replace('</project>', """
@@ -111,7 +111,7 @@ task printDeps {
             .publish()
 
         pluginBuilder.addPlugin("println 'test-plugin applied'")
-        def pluginModule = pluginBuilder.publishAs('test:plugin:1.0', mavenRepo, executer).pluginModule
+        def pluginModule = pluginBuilder.publishAs('test:plugin:1.0', mavenRepo, executor).pluginModule
         def pomFile = pluginModule.pom.file
         // Adds a dependency on the BOM to show that variant derivation is then available during project use
         pomFile.text = pomFile.text.replace('</project>', """
@@ -195,7 +195,7 @@ buildscript {
 """
 
         expect:
-        executer.withArguments('--include-build', 'other')
+        executor.withArguments('--include-build', 'other')
         succeeds()
     }
 

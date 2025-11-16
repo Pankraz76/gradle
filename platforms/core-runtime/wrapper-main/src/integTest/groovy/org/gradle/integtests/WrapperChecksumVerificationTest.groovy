@@ -16,8 +16,8 @@
 
 package org.gradle.integtests
 
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
@@ -56,7 +56,7 @@ class WrapperChecksumVerificationTest extends AbstractWrapperIntegrationSpec {
         file(WRAPPER_PROPERTIES_PATH) << 'distributionSha256Sum=bad'
 
         when:
-        def failure = wrapperExecuter.withStackTraceChecksDisabled().runWithFailure()
+        def failure = wrapperExecutor.withStackTraceChecksDisabled().runWithFailure()
         def f = new File(file("user-home/wrapper/dists/gradle-bin").listFiles()[0], "gradle-bin.zip")
 
         then:
@@ -94,7 +94,7 @@ Visit https://gradle.org/release-checksums/ to verify the checksums of official 
         writeValidDistributionHash()
 
         when:
-        def success = wrapperExecuter.run()
+        def success = wrapperExecutor.run()
         then:
         success.output.contains('BUILD SUCCESSFUL')
     }
@@ -108,7 +108,7 @@ Visit https://gradle.org/release-checksums/ to verify the checksums of official 
         writeValidDistributionHash()
 
         when:
-        def result = wrapperExecuter.withTasks("wrapper", "--gradle-version", "7.5").runWithFailure()
+        def result = wrapperExecutor.withTasks("wrapper", "--gradle-version", "7.5").runWithFailure()
 
         then:
         result.assertHasErrorOutput("gradle-wrapper.properties contains distributionSha256Sum property, but the wrapper configuration does not have one. " +
@@ -133,7 +133,7 @@ Visit https://gradle.org/release-checksums/ to verify the checksums of official 
         def releasedDistribution = IntegrationTestBuildContext.INSTANCE.distribution("7.5")
         def releasedDistributionUrl = releasedDistribution.binDistribution.toURI().toString()
         def releasedDistributionChecksum = getDistributionHash(releasedDistribution)
-        wrapperExecuter.withTasks("wrapper", "--gradle-distribution-url", releasedDistributionUrl, "--gradle-distribution-sha256-sum", releasedDistributionChecksum).run()
+        wrapperExecutor.withTasks("wrapper", "--gradle-distribution-url", releasedDistributionUrl, "--gradle-distribution-sha256-sum", releasedDistributionChecksum).run()
 
         then:
         file(WRAPPER_PROPERTIES_PATH).getProperties().get(WrapperExecutor.DISTRIBUTION_SHA_256_SUM) == releasedDistributionChecksum
@@ -156,7 +156,7 @@ Visit https://gradle.org/release-checksums/ to verify the checksums of official 
         file(WRAPPER_PROPERTIES_PATH) << "distributionUrl=$underDevelopmentDistributionUrl"
 
         when:
-        wrapperExecuter.withTasks("wrapper").run()
+        wrapperExecutor.withTasks("wrapper").run()
 
         then:
         file(WRAPPER_PROPERTIES_PATH).getProperties().get(WrapperExecutor.DISTRIBUTION_SHA_256_SUM) == underDevelopmentDistributionChecksum

@@ -17,7 +17,7 @@
 package org.gradle.internal.enterprise.core
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.enterprise.BaseBuildScanPluginCheckInFixture
 import org.gradle.internal.enterprise.DevelocityPluginCheckInFixture
 import org.gradle.internal.enterprise.GradleEnterprisePluginCheckInFixture
@@ -27,7 +27,7 @@ import static org.gradle.internal.enterprise.impl.legacy.DevelocityPluginCompati
 
 abstract class BuildScanAutoApplyClasspathIntegrationTest extends AbstractIntegrationSpec {
 
-    protected final DevelocityPluginCheckInFixture autoAppliedPluginFixture = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecuter())
+    protected final DevelocityPluginCheckInFixture autoAppliedPluginFixture = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecutor())
 
     abstract boolean isIsolatedProjectsCompatible()
 
@@ -56,7 +56,7 @@ abstract class BuildScanAutoApplyClasspathIntegrationTest extends AbstractIntegr
 
     static class GradleEnterpriseAutoApplyClasspathIntegrationTest extends BuildScanAutoApplyClasspathIntegrationTest {
 
-        private final GradleEnterprisePluginCheckInFixture gradleEnterpriseFixture = new GradleEnterprisePluginCheckInFixture(testDirectory, mavenRepo, createExecuter())
+        private final GradleEnterprisePluginCheckInFixture gradleEnterpriseFixture = new GradleEnterprisePluginCheckInFixture(testDirectory, mavenRepo, createExecutor())
 
         @Override
         boolean isIsolatedProjectsCompatible() {
@@ -77,11 +77,11 @@ abstract class BuildScanAutoApplyClasspathIntegrationTest extends AbstractIntegr
     }
 
     def setup() {
-        Assume.assumeTrue(GradleContextualExecuter.notIsolatedProjects || isIsolatedProjectsCompatible())
+        Assume.assumeTrue(GradleContextualExecutor.notIsolatedProjects || isIsolatedProjectsCompatible())
 
-        autoAppliedPluginFixture.publishDummyPlugin(executer)
+        autoAppliedPluginFixture.publishDummyPlugin(executor)
 
-        transitivePluginFixture.publishDummyPlugin(executer)
+        transitivePluginFixture.publishDummyPlugin(executor)
         transitivePluginFixture.runtimeVersion = MINIMUM_SUPPORTED_PLUGIN_VERSION_NUMBER
         transitivePluginFixture.artifactVersion = MINIMUM_SUPPORTED_PLUGIN_VERSION_NUMBER
 

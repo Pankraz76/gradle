@@ -26,7 +26,7 @@ import static org.gradle.util.internal.TextUtil.normaliseFileSeparators
 
 class ApplyScriptPluginBuildOperationIntegrationTest extends AbstractIntegrationSpec {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "captures gradle script events"() {
         given:

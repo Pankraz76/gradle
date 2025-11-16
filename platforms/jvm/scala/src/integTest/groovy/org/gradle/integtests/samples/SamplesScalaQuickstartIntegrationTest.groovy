@@ -36,7 +36,7 @@ class SamplesScalaQuickstartIntegrationTest extends AbstractSampleIntegrationTes
     def "can build jar with #dsl dsl"() {
         // Build and test projects
         TestFile projectDir = sample.dir.file(dsl)
-        executer.inDirectory(projectDir).withTasks('clean', 'build').run()
+        executor.inDirectory(projectDir).withTasks('clean', 'build').run()
 
         // Check tests have run
         def result = new DefaultTestExecutionResult(projectDir)
@@ -58,7 +58,7 @@ class SamplesScalaQuickstartIntegrationTest extends AbstractSampleIntegrationTes
     @UsesSample('scala/quickstart')
     def "can build scalaDoc with #dsl dsl"() {
         TestFile projectDir = sample.dir.file(dsl)
-        executer.inDirectory(projectDir).withTasks('clean', 'scaladoc').run()
+        executor.inDirectory(projectDir).withTasks('clean', 'scaladoc').run()
 
         projectDir.file('build/docs/scaladoc/index.html').assertExists()
         projectDir.file('build/docs/scaladoc/org/gradle/sample/Named.html')

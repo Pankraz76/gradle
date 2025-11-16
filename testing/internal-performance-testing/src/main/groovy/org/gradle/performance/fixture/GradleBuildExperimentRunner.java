@@ -18,8 +18,8 @@ package org.gradle.performance.fixture;
 
 import com.google.common.collect.ImmutableList;
 import groovy.transform.CompileStatic;
-import org.gradle.integtests.fixtures.executer.GradleDistribution;
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext;
+import org.gradle.integtests.fixtures.executor.GradleDistribution;
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.jvm.Jvm;
 import org.gradle.performance.results.GradleProfilerReporter;

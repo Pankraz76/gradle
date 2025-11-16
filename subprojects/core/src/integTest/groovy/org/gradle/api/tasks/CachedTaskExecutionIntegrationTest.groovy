@@ -47,7 +47,7 @@ class CachedTaskExecutionIntegrationTest extends AbstractIntegrationSpec impleme
             }
         """
 
-    def cacheOperations = new BuildCacheOperationFixtures(executer, temporaryFolder)
+    def cacheOperations = new BuildCacheOperationFixtures(executor, temporaryFolder)
 
     def setup() {
         setupProjectInDirectory(testDirectory)
@@ -237,7 +237,7 @@ class CachedTaskExecutionIntegrationTest extends AbstractIntegrationSpec impleme
         setupProjectInDirectory(remoteProjectDir)
 
         when:
-        executer.inDirectory(remoteProjectDir)
+        executor.inDirectory(remoteProjectDir)
         remoteProjectDir.file("settings.gradle") << """
             buildCache {
                 local {
@@ -265,7 +265,7 @@ class CachedTaskExecutionIntegrationTest extends AbstractIntegrationSpec impleme
         setupProjectInDirectory(remoteProjectDir, "other-than-main")
 
         when:
-        executer.inDirectory(remoteProjectDir)
+        executor.inDirectory(remoteProjectDir)
         remoteProjectDir.file("settings.gradle") << """
             buildCache {
                 local {
@@ -524,7 +524,7 @@ class CachedTaskExecutionIntegrationTest extends AbstractIntegrationSpec impleme
             resources.file(resource).text = "content"
         }
         def gradleUserHome = file("gradle-user-home")
-        executer.withGradleUserHomeDir(gradleUserHome)
+        executor.withGradleUserHomeDir(gradleUserHome)
 
         // Make A then B and populate cache
         expect:

@@ -18,7 +18,7 @@ package org.gradle.operations.configuration
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.BuildOperationsFixture
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.configurationcache.options.ConfigurationCacheSettingsFinalizedProgressDetails
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
@@ -29,7 +29,7 @@ import org.gradle.test.preconditions.IntegTestPreconditions
 )
 class IsolatedProjectsSettingsBuildOperationsIntegrationTest extends AbstractIntegrationSpec {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "emits settings finalized event when not configured"() {
         given:
@@ -40,7 +40,7 @@ class IsolatedProjectsSettingsBuildOperationsIntegrationTest extends AbstractInt
 
         then:
         isolatedProjectsEvents().enabled == [false]
-        configurationCacheEvents().enabled == [GradleContextualExecuter.configCache]
+        configurationCacheEvents().enabled == [GradleContextualExecutor.configCache]
     }
 
     def "emits settings finalized event when explicitly #status"() {
@@ -51,14 +51,14 @@ class IsolatedProjectsSettingsBuildOperationsIntegrationTest extends AbstractInt
         succeeds("help", "-Dorg.gradle.unsafe.isolated-projects=$enabled")
         then:
         isolatedProjectsEvents().enabled == [enabled]
-        configurationCacheEvents().enabled == [GradleContextualExecuter.configCache || enabled]
+        configurationCacheEvents().enabled == [GradleContextualExecutor.configCache || enabled]
 
         // Ensure events are produced on CC hit as well
         when:
         succeeds("help", "-Dorg.gradle.unsafe.isolated-projects=$enabled")
         then:
         isolatedProjectsEvents().enabled == [enabled]
-        configurationCacheEvents().enabled == [GradleContextualExecuter.configCache || enabled]
+        configurationCacheEvents().enabled == [GradleContextualExecutor.configCache || enabled]
 
         where:
         status     | enabled

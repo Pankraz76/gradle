@@ -21,7 +21,7 @@ import org.gradle.integtests.fixtures.BuildOperationsFixture
 
 abstract class AbstractVersionCatalogIntegrationTest extends AbstractHttpDependencyResolutionTest {
 
-    final BuildOperationsFixture operations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    final BuildOperationsFixture operations = new BuildOperationsFixture(executor, testDirectoryProvider)
 
     def setup() {
         settingsFile << """
@@ -34,7 +34,7 @@ abstract class AbstractVersionCatalogIntegrationTest extends AbstractHttpDepende
                 }
             }
         """
-        executer.withPluginRepositoryMirrorDisabled() // otherwise the plugin portal fixture doesn't work!
+        executor.withPluginRepositoryMirrorDisabled() // otherwise the plugin portal fixture doesn't work!
     }
 
 }

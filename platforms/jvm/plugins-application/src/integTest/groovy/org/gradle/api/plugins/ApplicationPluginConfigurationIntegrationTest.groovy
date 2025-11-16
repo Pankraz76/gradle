@@ -17,7 +17,7 @@
 package org.gradle.api.plugins
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.ScriptExecuter
+import org.gradle.integtests.fixtures.ScriptExecutor
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.UnitTestPreconditions
 import org.gradle.util.internal.TextUtil
@@ -51,11 +51,11 @@ class ApplicationPluginConfigurationIntegrationTest extends AbstractIntegrationS
         run("installDist")
 
         def out = new ByteArrayOutputStream()
-        def executer = new ScriptExecuter()
-        executer.workingDir = testDirectory
-        executer.standardOutput = out
-        executer.commandLine("build/install/test/bin/test")
-        def result = executer.run()
+        def executor = new ScriptExecutor()
+        executor.workingDir = testDirectory
+        executor.standardOutput = out
+        executor.commandLine("build/install/test/bin/test")
+        def result = executor.run()
         then:
         result.assertNormalExitValue()
         out.toString() == TextUtil.toPlatformLineSeparators("all good\n")
@@ -96,13 +96,13 @@ class ApplicationPluginConfigurationIntegrationTest extends AbstractIntegrationS
         run("installDist")
 
         def out = new ByteArrayOutputStream()
-        def executer = new ScriptExecuter()
-        executer.workingDir = testDirectory
-        executer.standardOutput = out
-        executer.commandLine("build/install/test/bin/test")
+        def executor = new ScriptExecutor()
+        executor.workingDir = testDirectory
+        executor.standardOutput = out
+        executor.commandLine("build/install/test/bin/test")
 
         then:
-        executer.run().assertNormalExitValue()
+        executor.run().assertNormalExitValue()
         out.toString() == TextUtil.toPlatformLineSeparators("Module: $expectedModule\n")
 
         where:

@@ -20,28 +20,28 @@ package org.gradle.internal.scopeids
 import org.gradle.api.Action
 import org.gradle.integtests.fixtures.AbstractContinuousIntegrationTest
 import org.gradle.integtests.fixtures.ScopeIdsFixture
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.util.internal.ClosureBackedAction
 import org.junit.Rule
 
 class ContinuousScopeIdsIntegrationTest extends AbstractContinuousIntegrationTest {
 
-    final List<Action<GradleExecuter>> afterExecute = []
+    final List<Action<GradleExecutor>> afterExecute = []
 
-    final GradleExecuter delegatingExecuter = new GradleExecuter() {
+    final GradleExecutor delegatingExecutor = new GradleExecutor() {
         @Delegate
-        GradleExecuter delegate = executer
+        GradleExecutor delegate = executor
 
         void afterExecute(Closure action) {
-            afterExecute << new ClosureBackedAction<GradleExecuter>(action)
+            afterExecute << new ClosureBackedAction<GradleExecutor>(action)
         }
     }
 
     @Rule
-    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(delegatingExecuter, temporaryFolder)
+    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(delegatingExecutor, temporaryFolder)
 
     void afterBuild() {
-        afterExecute*.execute(executer)
+        afterExecute*.execute(executor)
     }
 
     def "ids are assigned for each invocation"() {

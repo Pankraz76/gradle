@@ -39,15 +39,15 @@ class TaskTimeoutIntegrationTest extends AbstractIntegrationSpec {
     long postTimeoutCheckFrequencyMs = Duration.ofMinutes(3).toMillis()
     long slowStopLogStacktraceFrequencyMs = Duration.ofMinutes(3).toMillis()
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def setup() {
-        executer.beforeExecute {
+        executor.beforeExecute {
             [
                 (DefaultTimeoutHandler.POST_TIMEOUT_CHECK_FREQUENCY_PROPERTY): postTimeoutCheckFrequencyMs,
                 (DefaultTimeoutHandler.SLOW_STOP_LOG_STACKTRACE_FREQUENCY_PROPERTY): slowStopLogStacktraceFrequencyMs
             ].each { k, v ->
-                executer.withArgument("-D$k=$v".toString())
+                executor.withArgument("-D$k=$v".toString())
             }
         }
     }
@@ -185,7 +185,7 @@ class TaskTimeoutIntegrationTest extends AbstractIntegrationSpec {
         if (isolationMode == 'process') {
             // worker starting threads can be interrupted during worker startup and cause a 'Could not initialise system classpath' exception.
             // See: https://github.com/gradle/gradle/issues/8699
-            executer.withStackTraceChecksDisabled()
+            executor.withStackTraceChecksDisabled()
         }
         buildFile << """
             import java.util.concurrent.CountDownLatch
@@ -269,7 +269,7 @@ class TaskTimeoutIntegrationTest extends AbstractIntegrationSpec {
             """
 
         expect:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         fails "block"
 
         and:
@@ -324,7 +324,7 @@ class TaskTimeoutIntegrationTest extends AbstractIntegrationSpec {
     @ToBeFixedForConfigurationCache(skip = INVESTIGATE)
     def "stack trace of task is printed if it is slow to stop"() {
         given:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         postTimeoutCheckFrequencyMs = 100
         slowStopLogStacktraceFrequencyMs = 100
 

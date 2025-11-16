@@ -96,7 +96,7 @@ class CppCachingIntegrationTest extends AbstractInstalledToolChainIntegrationSpe
         compileIsNotCached(release)
 
         when:
-        executer.beforeExecute {
+        executor.beforeExecute {
             inDirectory(newLocation)
         }
         run tasks.release.compile

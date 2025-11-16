@@ -36,7 +36,7 @@ class CopySpecEncodingIntegrationSpec extends AbstractIntegrationSpec {
                 expand(one: 1)
             }
         """.stripIndent()
-        executer.beforeExecute { it.withDefaultCharacterEncoding('ISO-8859-1') }
+        executor.beforeExecute { it.withDefaultCharacterEncoding('ISO-8859-1') }
 
         when:
         run 'copy'
@@ -72,7 +72,7 @@ class CopySpecEncodingIntegrationSpec extends AbstractIntegrationSpec {
                 filteringCharset = 'ISO-8859-1'
             }
         """.stripIndent()
-        executer.beforeExecute { it.withDefaultCharacterEncoding('UTF-8') }
+        executor.beforeExecute { it.withDefaultCharacterEncoding('UTF-8') }
 
         when:
         run 'copy'
@@ -113,7 +113,7 @@ class CopySpecEncodingIntegrationSpec extends AbstractIntegrationSpec {
                 }
             }
         """.stripIndent()
-        executer.beforeExecute { it.withDefaultCharacterEncoding('ISO-8859-1') }
+        executor.beforeExecute { it.withDefaultCharacterEncoding('ISO-8859-1') }
 
         when:
         run 'copy'
@@ -139,7 +139,7 @@ class CopySpecEncodingIntegrationSpec extends AbstractIntegrationSpec {
                 }
             }
         """.stripIndent()
-        executer.beforeExecute { it.withDefaultCharacterEncoding('UTF-8') }
+        executor.beforeExecute { it.withDefaultCharacterEncoding('UTF-8') }
 
         when:
         run 'copy'

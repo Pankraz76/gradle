@@ -18,7 +18,7 @@ package org.gradle.integtests.resolve
 
 import com.google.common.collect.Lists
 import org.gradle.integtests.fixtures.AbstractHttpDependencyResolutionTest
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.test.fixtures.maven.MavenModule
 
 class ResolvedArtifactOrderingIntegrationTest extends AbstractHttpDependencyResolutionTest {
@@ -85,7 +85,7 @@ class ResolvedArtifactOrderingIntegrationTest extends AbstractHttpDependencyReso
                     assert artifacts.collect { it.file.name } == [${fileNames}]
                     assert filteredArtifactFiles.collect { it.name } == [${fileNames}]
                     assert filteredArtifacts.collect { it.file.name } == [${fileNames}]
-                    if (${!GradleContextualExecuter.configCache}) {
+                    if (${!GradleContextualExecutor.configCache}) {
                         // Don't check eager methods when CC is enabled
                         assert configurations.${name}.resolve().collect { it.name } == [${fileNames}]
                         assert configurations.${name}.files.collect { it.name } == [${fileNames}]

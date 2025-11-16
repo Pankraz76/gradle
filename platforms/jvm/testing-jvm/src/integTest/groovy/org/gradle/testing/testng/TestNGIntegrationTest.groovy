@@ -39,7 +39,7 @@ class TestNGIntegrationTest extends MultiVersionIntegrationSpec implements Verif
     private testResults = resultsFor()
 
     def setup() {
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         TestNGCoverage.enableTestNG(buildFile, version)
     }
 

@@ -70,7 +70,7 @@ abstract class AbstractMultiBuildIdeIntegrationTest extends AbstractIntegrationS
         }
 
         when:
-        executer.inDirectory(buildA)
+        executor.inDirectory(buildA)
         run(":${workspaceTask}")
 
         then:
@@ -118,7 +118,7 @@ abstract class AbstractMultiBuildIdeIntegrationTest extends AbstractIntegrationS
         }
 
         when:
-        executer.inDirectory(buildA)
+        executor.inDirectory(buildA)
         run(":${workspaceTask}")
 
         then:

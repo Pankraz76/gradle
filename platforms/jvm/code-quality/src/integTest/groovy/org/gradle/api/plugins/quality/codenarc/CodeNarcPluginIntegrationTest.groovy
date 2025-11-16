@@ -17,9 +17,9 @@ package org.gradle.api.plugins.quality.codenarc
 
 import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.integtests.fixtures.WellBehavedPluginTest
-import org.gradle.integtests.fixtures.configurationcache.isolated.IsolatedProjectsExecuterFixture
+import org.gradle.integtests.fixtures.configurationcache.isolated.IsolatedProjectsExecutorFixture
 
-class CodeNarcPluginIntegrationTest extends WellBehavedPluginTest implements CodeNarcTestFixture, IsolatedProjectsExecuterFixture {
+class CodeNarcPluginIntegrationTest extends WellBehavedPluginTest implements CodeNarcTestFixture, IsolatedProjectsExecutorFixture {
     @Override
     String getPluginName() {
         return "codenarc"

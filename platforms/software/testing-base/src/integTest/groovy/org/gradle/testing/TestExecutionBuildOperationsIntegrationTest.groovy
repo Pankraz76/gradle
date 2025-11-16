@@ -30,11 +30,11 @@ class TestExecutionBuildOperationsIntegrationTest extends AbstractIntegrationSpe
     @Rule
     final TestResources resources = new TestResources(testDirectoryProvider)
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "emitsBuildOperationsForJUnitTests"() {
         given:
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
 
         when:
         run "test"
@@ -50,7 +50,7 @@ class TestExecutionBuildOperationsIntegrationTest extends AbstractIntegrationSpe
 
     def "emitsBuildOperationsForTestNgTests"() {
         given:
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
 
         when:
         run "test"
@@ -67,7 +67,7 @@ class TestExecutionBuildOperationsIntegrationTest extends AbstractIntegrationSpe
 
     def "emits test operations as expected for two builds in a row"() {
         given:
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
         resources.maybeCopy('TestExecutionBuildOperationsIntegrationTest/emitsBuildOperationsForJUnitTests')
 
         when:

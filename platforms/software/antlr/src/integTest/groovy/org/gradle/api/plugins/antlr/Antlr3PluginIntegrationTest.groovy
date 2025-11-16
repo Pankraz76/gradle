@@ -88,7 +88,7 @@ class Antlr3PluginIntegrationTest extends AbstractAntlrIntegrationTest {
             }
         """
         if (expectDeprecationWarning) {
-            expectPackageArgumentDeprecationWarning(executer)
+            expectPackageArgumentDeprecationWarning(executor)
         }
 
         expect:

@@ -31,7 +31,7 @@ class IvyPublishSftpIntegrationTest extends AbstractIvyPublishIntegTest {
 
     def setup() {
         // SFTP test fixture does not handle parallel resolution requests
-        executer.beforeExecute {
+        executor.beforeExecute {
             it.withArgument("--max-workers=1")
         }
     }

@@ -524,7 +524,7 @@ task resolveChildFirst {
         """
 
         when:
-        executer.withArguments("--offline")
+        executor.withArguments("--offline")
 
         then:
         succeeds("resolveChildFirst")

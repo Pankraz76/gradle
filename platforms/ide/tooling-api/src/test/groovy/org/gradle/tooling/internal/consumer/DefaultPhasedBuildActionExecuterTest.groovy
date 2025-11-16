@@ -25,8 +25,8 @@ import org.gradle.tooling.internal.consumer.connection.ConsumerConnection
 import org.gradle.tooling.internal.consumer.parameters.ConsumerOperationParameters
 import org.gradle.tooling.internal.protocol.ResultHandlerVersion1
 
-class DefaultPhasedBuildActionExecuterTest extends ConcurrentSpec {
-    // Tests based on DefaultBuildActionExecuterTest
+class DefaultPhasedBuildActionExecutorTest extends ConcurrentSpec {
+    // Tests based on DefaultBuildActionExecutorTest
 
     def asyncConnection = Mock(AsyncConsumerActionExecutor) {
         getDisplayName() >> 'testConnection'
@@ -34,13 +34,13 @@ class DefaultPhasedBuildActionExecuterTest extends ConcurrentSpec {
     def connection = Mock(ConsumerConnection)
     def parameters = Stub(ConnectionParameters)
     def phasedAction = Stub(PhasedBuildAction)
-    def executer = new DefaultPhasedBuildActionExecuter(phasedAction, asyncConnection, parameters)
+    def executor = new DefaultPhasedBuildActionExecutor(phasedAction, asyncConnection, parameters)
 
     def "delegates to connection to run phased action"() {
         def handler = Mock(ResultHandler)
 
         when:
-        executer.run(handler)
+        executor.run(handler)
 
         then:
         1 * asyncConnection.run(!null, !null) >> { ConsumerAction<Void> consumerAction, ResultHandlerVersion1 adaptedHandler ->
@@ -59,7 +59,7 @@ class DefaultPhasedBuildActionExecuterTest extends ConcurrentSpec {
         def failure = new RuntimeException()
 
         when:
-        executer.run(handler)
+        executor.run(handler)
 
         then:
         1 * asyncConnection.run(!null, !null) >> { def consumerAction, ResultHandlerVersion1 adaptedHandler ->
@@ -92,7 +92,7 @@ class DefaultPhasedBuildActionExecuterTest extends ConcurrentSpec {
 
         when:
         async {
-            executer.run(handler)
+            executor.run(handler)
             instant.dispatched
             thread.blockUntil.resultReceived
         }
@@ -115,7 +115,7 @@ class DefaultPhasedBuildActionExecuterTest extends ConcurrentSpec {
         when:
         def model
         operation.fetchResult {
-            model = executer.run()
+            model = executor.run()
         }
 
         then:
@@ -140,7 +140,7 @@ class DefaultPhasedBuildActionExecuterTest extends ConcurrentSpec {
 
         when:
         operation.fetchResult {
-            executer.run()
+            executor.run()
         }
 
         then:
@@ -156,7 +156,7 @@ class DefaultPhasedBuildActionExecuterTest extends ConcurrentSpec {
         def handler = Stub(ResultHandler)
 
         when:
-        executer.forTasks('a', 'b').run(handler)
+        executor.forTasks('a', 'b').run(handler)
 
         then:
         1 * asyncConnection.run(!null, !null) >> { ConsumerAction<Void> consumerAction, ResultHandlerVersion1 adaptedHandler ->
@@ -169,7 +169,7 @@ class DefaultPhasedBuildActionExecuterTest extends ConcurrentSpec {
         }
 
         when:
-        executer.forTasks(Collections.singleton("a")).run(handler)
+        executor.forTasks(Collections.singleton("a")).run(handler)
 
         then:
         1 * asyncConnection.run(!null, !null) >> { ConsumerAction<Void> consumerAction, ResultHandlerVersion1 adaptedHandler ->
@@ -184,15 +184,15 @@ class DefaultPhasedBuildActionExecuterTest extends ConcurrentSpec {
 
     def "forTasks sets empty list correctly"() {
         when:
-        executer.forTasks([])
+        executor.forTasks([])
 
         then:
-        executer.operationParamsBuilder.tasks == []
+        executor.operationParamsBuilder.tasks == []
 
         when:
-        executer.forTasks(Collections.emptySet())
+        executor.forTasks(Collections.emptySet())
 
         then:
-        executer.operationParamsBuilder.tasks == []
+        executor.operationParamsBuilder.tasks == []
     }
 }

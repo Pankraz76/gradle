@@ -55,7 +55,7 @@ class PathTraversalCheckerIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def "Copy task refuses to unzip evil.zip"() {
-        executer.withStacktraceEnabled()
+        executor.withStacktraceEnabled()
 
         given:
         buildFile '''

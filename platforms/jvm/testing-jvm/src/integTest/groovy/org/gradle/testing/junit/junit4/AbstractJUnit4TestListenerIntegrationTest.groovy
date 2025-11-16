@@ -16,7 +16,7 @@
 
 package org.gradle.testing.junit.junit4
 
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.testing.junit.AbstractJUnitTestListenerIntegrationTest
 
 import static org.gradle.util.Matchers.containsLine
@@ -60,7 +60,7 @@ abstract class AbstractJUnit4TestListenerIntegrationTest extends AbstractJUnitTe
         """.stripIndent()
 
         when:
-        ExecutionResult result = executer.withTasks("test").run()
+        ExecutionResult result = executor.withTasks("test").run()
 
         then:
         assert containsLine(result.getOutput(), "START [Test class SomeTest] [SomeTest]")
@@ -104,7 +104,7 @@ abstract class AbstractJUnit4TestListenerIntegrationTest extends AbstractJUnitTe
         """.stripIndent()
 
         when:
-        ExecutionResult result = executer.withTasks("test").run()
+        ExecutionResult result = executor.withTasks("test").run()
 
         then:
         assert containsLine(result.getOutput(), "START [Test class SomeTest] [SomeTest]")

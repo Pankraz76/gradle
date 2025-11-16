@@ -34,7 +34,7 @@ import org.junit.Rule
 @LeaksFileHandles("Kotlin Compiler Daemon working directory")
 class CatalogPluginsKotlinDSLIntegrationTest extends AbstractVersionCatalogIntegrationTest {
     @Rule
-    final MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    final MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     def "can declare multiple catalogs"() {
         String taskName = 'greet'
@@ -43,7 +43,7 @@ class CatalogPluginsKotlinDSLIntegrationTest extends AbstractVersionCatalogInteg
         String pluginVersion = '1.5'
         def plugin = new PluginBuilder(file("greeter"))
             .addPluginWithPrintlnTask(taskName, message, pluginId)
-            .publishAs("some", "artifact", pluginVersion, pluginPortal, executer)
+            .publishAs("some", "artifact", pluginVersion, pluginPortal, executor)
 
         settingsFile << """
             dependencyResolutionManagement {
@@ -81,7 +81,7 @@ class CatalogPluginsKotlinDSLIntegrationTest extends AbstractVersionCatalogInteg
         String pluginVersion = '1.5'
         def plugin = new PluginBuilder(file("greeter"))
             .addPluginWithPrintlnTask(taskName, message, pluginId)
-            .publishAs("some", "artifact", pluginVersion, pluginPortal, executer)
+            .publishAs("some", "artifact", pluginVersion, pluginPortal, executor)
 
         file("settings.gradle") << """
             dependencyResolutionManagement {
@@ -113,7 +113,7 @@ class CatalogPluginsKotlinDSLIntegrationTest extends AbstractVersionCatalogInteg
         String pluginVersion = '1.5'
         def plugin = new PluginBuilder(file("greeter"))
             .addPluginWithPrintlnTask(taskName, message, pluginId)
-            .publishAs("some", "artifact", pluginVersion, pluginPortal, executer)
+            .publishAs("some", "artifact", pluginVersion, pluginPortal, executor)
 
         file("settings.gradle") << """
             dependencyResolutionManagement {
@@ -147,7 +147,7 @@ class CatalogPluginsKotlinDSLIntegrationTest extends AbstractVersionCatalogInteg
         new PluginBuilder(file("greeter"))
             .addPluginWithPrintlnTask(firstLevelTask, 'Hello from first plugin!', firstLevelPluginId, "FirstPlugin")
             .addPluginWithPrintlnTask(secondLevelPluginTask, 'Hello from second plugin!', secondLevelPluginId, "SecondPlugin")
-            .publishAs("some", "artifact", pluginVersion, pluginPortal, executer)
+            .publishAs("some", "artifact", pluginVersion, pluginPortal, executor)
             .allowAll()
 
         settingsFile << """
@@ -180,12 +180,12 @@ class CatalogPluginsKotlinDSLIntegrationTest extends AbstractVersionCatalogInteg
         String firstPluginId = 'com.acme.greeter'
         new PluginBuilder(file("greeter"))
             .addPluginWithPrintlnTask('greet', 'Hello from first plugin!', firstPluginId, "FirstPlugin")
-            .publishAs("some", "artifact", pluginVersion, pluginPortal, executer)
+            .publishAs("some", "artifact", pluginVersion, pluginPortal, executor)
             .allowAll()
         String secondPluginId = 'com.acme.greeter2'
         new PluginBuilder(file("greeter-second"))
             .addPluginWithPrintlnTask('greet2', 'Hello from second plugin!', secondPluginId, "SecondPlugin")
-            .publishAs("some", "artifact2", pluginVersion, pluginPortal, executer)
+            .publishAs("some", "artifact2", pluginVersion, pluginPortal, executor)
             .allowAll()
 
         file("settings.gradle") << """
@@ -229,7 +229,7 @@ class CatalogPluginsKotlinDSLIntegrationTest extends AbstractVersionCatalogInteg
         String pluginVersion = '1.5'
         def plugin = new PluginBuilder(file("greeter"))
             .addPluginWithPrintlnTask(taskName, 'Hello from plugin!', pluginId)
-            .publishAs("some", "artifact", pluginVersion, pluginPortal, executer)
+            .publishAs("some", "artifact", pluginVersion, pluginPortal, executor)
 
         file("settings.gradle") << """
             dependencyResolutionManagement {

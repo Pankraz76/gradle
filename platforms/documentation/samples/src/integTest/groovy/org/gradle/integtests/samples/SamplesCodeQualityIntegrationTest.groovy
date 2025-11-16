@@ -35,7 +35,7 @@ class SamplesCodeQualityIntegrationTest extends AbstractSampleIntegrationTest {
         TestFile buildDir = projectDir.file('build')
 
         when:
-        executer
+        executor
             .inDirectory(projectDir)
             .withTasks('check')
             .run()

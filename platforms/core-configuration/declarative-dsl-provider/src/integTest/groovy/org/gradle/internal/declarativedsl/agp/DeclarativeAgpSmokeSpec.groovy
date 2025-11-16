@@ -31,7 +31,7 @@ class DeclarativeAgpSmokeSpec extends AbstractIntegrationSpec {
     def 'a declarative project configures successfully with AGP'() {
         Assume.assumeTrue("Java version >= 11 required by AGP dependencies", Jvm.current().javaVersionMajor >= 11)
 
-        executer.usingInitScript(agpVersions.createAgpNightlyRepositoryInitScript())
+        executor.usingInitScript(agpVersions.createAgpNightlyRepositoryInitScript())
 
         given:
         file("gradle.properties") << "android.experimental.declarative=true"
@@ -104,7 +104,7 @@ class DeclarativeAgpSmokeSpec extends AbstractIntegrationSpec {
         """
 
         expect:
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
         succeeds(":projects", ":tasks", "--all")
         outputContains("lib:assembleStaging")
 

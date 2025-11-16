@@ -18,7 +18,7 @@ package org.gradle.tooling.internal.consumer;
 
 import org.gradle.internal.Cast;
 import org.gradle.tooling.BuildAction;
-import org.gradle.tooling.BuildActionExecuter;
+import org.gradle.tooling.BuildActionExecutor;
 import org.gradle.tooling.GradleConnectionException;
 import org.gradle.tooling.IntermediateResultHandler;
 import org.gradle.tooling.ResultHandler;
@@ -32,19 +32,19 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.Arrays;
 
-class DefaultBuildActionExecuter<T> extends AbstractLongRunningOperation<DefaultBuildActionExecuter<T>> implements BuildActionExecuter<T> {
+class DefaultBuildActionExecutor<T> extends AbstractLongRunningOperation<DefaultBuildActionExecutor<T>> implements BuildActionExecutor<T> {
     private final BuildAction<T> buildAction;
     private final AsyncConsumerActionExecutor connection;
 
-    public DefaultBuildActionExecuter(BuildAction<T> buildAction, AsyncConsumerActionExecutor connection, ConnectionParameters parameters) {
+    public DefaultBuildActionExecutor(BuildAction<T> buildAction, AsyncConsumerActionExecutor connection, ConnectionParameters parameters) {
         super(parameters);
-        operationParamsBuilder.setEntryPoint("BuildActionExecuter API");
+        operationParamsBuilder.setEntryPoint("BuildActionExecutor API");
         this.buildAction = buildAction;
         this.connection = connection;
     }
 
     @Override
-    protected DefaultBuildActionExecuter<T> getThis() {
+    protected DefaultBuildActionExecutor<T> getThis() {
         return this;
     }
 
@@ -54,13 +54,13 @@ class DefaultBuildActionExecuter<T> extends AbstractLongRunningOperation<Default
     }
 
     @Override
-    public BuildActionExecuter<T> forTasks(String... tasks) {
+    public BuildActionExecutor<T> forTasks(String... tasks) {
         operationParamsBuilder.setTasks(tasks != null ? Arrays.asList(tasks) : null);
         return getThis();
     }
 
     @Override
-    public BuildActionExecuter<T> forTasks(Iterable<String> tasks) {
+    public BuildActionExecutor<T> forTasks(Iterable<String> tasks) {
         operationParamsBuilder.setTasks(tasks != null ? CollectionUtils.toList(tasks) : null);
         return getThis();
     }
@@ -94,7 +94,7 @@ class DefaultBuildActionExecuter<T> extends AbstractLongRunningOperation<Default
         })));
     }
 
-    static class Builder implements BuildActionExecuter.Builder {
+    static class Builder implements BuildActionExecutor.Builder {
         private PhasedBuildAction.@Nullable BuildActionWrapper<?> projectsLoadedAction = null;
         private PhasedBuildAction.@Nullable BuildActionWrapper<?> buildFinishedAction = null;
 
@@ -125,8 +125,8 @@ class DefaultBuildActionExecuter<T> extends AbstractLongRunningOperation<Default
         }
 
         @Override
-        public BuildActionExecuter<Void> build() {
-            return new DefaultPhasedBuildActionExecuter(new DefaultPhasedBuildAction(projectsLoadedAction, buildFinishedAction), connection, parameters);
+        public BuildActionExecutor<Void> build() {
+            return new DefaultPhasedBuildActionExecutor(new DefaultPhasedBuildAction(projectsLoadedAction, buildFinishedAction), connection, parameters);
         }
 
         private static IllegalArgumentException getException(String phase) {

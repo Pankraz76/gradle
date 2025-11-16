@@ -27,7 +27,7 @@ import org.gradle.test.fixtures.file.TestFile
 import java.time.Instant
 
 class TestEventReporterIntegrationTest extends AbstractIntegrationSpec {
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "emits build operations for custom test"() {
         given:

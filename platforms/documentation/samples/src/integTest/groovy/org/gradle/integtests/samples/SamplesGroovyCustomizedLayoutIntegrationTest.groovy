@@ -32,7 +32,7 @@ class SamplesGroovyCustomizedLayoutIntegrationTest extends AbstractSampleIntegra
         TestFile groovyProjectDir = sample.dir.file(dsl)
 
         when:
-        executer.inDirectory(groovyProjectDir).withTasks('clean', 'build').run()
+        executor.inDirectory(groovyProjectDir).withTasks('clean', 'build').run()
 
         then:
         // Check tests have run

@@ -37,7 +37,7 @@ task verify {
         """
 
         expect:
-        executer.withBuildJvmOpts("-Djava.vendor=hollywood", "-Dsun.sunny=california").withTasks("verify").run()
+        executor.withBuildJvmOpts("-Djava.vendor=hollywood", "-Dsun.sunny=california").withTasks("verify").run()
     }
 
     def "other client JVM system properties are carried over to daemon JVM"() {
@@ -51,7 +51,7 @@ task verify {
         """
 
         expect:
-        executer.withBuildJvmOpts("-Dfoo.bar=baz").withTasks("verify").run()
+        executor.withBuildJvmOpts("-Dfoo.bar=baz").withTasks("verify").run()
     }
 
 
@@ -66,14 +66,14 @@ task verify {
         """
 
         when:
-        executer.withArgument("-Dfile.encoding=UTF-8")
+        executor.withArgument("-Dfile.encoding=UTF-8")
         run("verify")
 
         then:
         daemons.daemons.size() == 1
 
         when:
-        executer.withArgument("-Dfile.encoding=ISO-8859-1")
+        executor.withArgument("-Dfile.encoding=ISO-8859-1")
         run("verify")
 
         then:
@@ -93,7 +93,7 @@ task verify {
 
         def tmpPath1 = tempFolder('folder1')
         when:
-        executer.withArgument("-Djava.io.tmpdir=${tmpPath1}")
+        executor.withArgument("-Djava.io.tmpdir=${tmpPath1}")
         run("verify")
 
         then:
@@ -102,7 +102,7 @@ task verify {
 
         when:
         def tmpPath2 = tempFolder('tmpPath2')
-        executer.withArgument("-Djava.io.tmpdir=${tmpPath2}")
+        executor.withArgument("-Djava.io.tmpdir=${tmpPath2}")
         run "verify"
         then:
         output.contains("verified = $tmpPath2")
@@ -123,7 +123,7 @@ task verify {
         """
 
         when:
-        executer.withEnvironmentVars(GRADLE_OPTS: "\"-Djava.io.tmpdir=${tempFolder('folder1')}\"")
+        executor.withEnvironmentVars(GRADLE_OPTS: "\"-Djava.io.tmpdir=${tempFolder('folder1')}\"")
         run "verify"
 
         then:
@@ -132,7 +132,7 @@ task verify {
 
         when:
         def tmpPath2 = tempFolder('tmpPath2')
-        executer.withEnvironmentVars(GRADLE_OPTS: "\"-Djava.io.tmpdir=${tmpPath2}\"")
+        executor.withEnvironmentVars(GRADLE_OPTS: "\"-Djava.io.tmpdir=${tmpPath2}\"")
         run "verify"
 
         then:
@@ -154,7 +154,7 @@ task verify {
         """
 
         when:
-        executer.withEnvironmentVars(GRADLE_OPTS: "-Djavax.net.ssl.keyStorePassword=secret");
+        executor.withEnvironmentVars(GRADLE_OPTS: "-Djavax.net.ssl.keyStorePassword=secret");
         run "verify"
 
         then:
@@ -163,7 +163,7 @@ task verify {
         output.contains("verified = secret")
 
         when:
-        executer.withEnvironmentVars(GRADLE_OPTS: "-Djavax.net.ssl.keyStorePassword=anotherSecret");
+        executor.withEnvironmentVars(GRADLE_OPTS: "-Djavax.net.ssl.keyStorePassword=anotherSecret");
         run "verify"
 
         then:
@@ -193,7 +193,7 @@ task verify {
         output.contains("verified = none")
 
         when:
-        executer.withEnvironmentVars(GRADLE_OPTS: "-D${HeapProportionalCacheSizer.CACHE_RESERVED_SYSTEM_PROPERTY}=200");
+        executor.withEnvironmentVars(GRADLE_OPTS: "-D${HeapProportionalCacheSizer.CACHE_RESERVED_SYSTEM_PROPERTY}=200");
         run "verify"
 
         then:

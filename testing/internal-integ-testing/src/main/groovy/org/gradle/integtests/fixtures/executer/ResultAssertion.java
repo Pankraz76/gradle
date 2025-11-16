@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import com.google.common.io.CharSource;
 import org.gradle.api.Action;
@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
-import static org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult.STACK_TRACE_ELEMENT;
+import static org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult.STACK_TRACE_ELEMENT;
 
 /**
  * Detects Gradle deprecation warnings in build output.

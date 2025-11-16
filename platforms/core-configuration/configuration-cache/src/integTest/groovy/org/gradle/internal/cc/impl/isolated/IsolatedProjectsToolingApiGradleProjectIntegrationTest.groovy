@@ -75,7 +75,7 @@ class IsolatedProjectsToolingApiGradleProjectIntegrationTest extends AbstractIso
         """
 
         when: "fetching without Isolated Projects"
-        executer.withArguments("-Dorg.gradle.internal.GradleProjectBuilderOptions=omit_all_tasks")
+        executor.withArguments("-Dorg.gradle.internal.GradleProjectBuilderOptions=omit_all_tasks")
         def expectedProjectModel = fetchModel(GradleProject)
 
         then:

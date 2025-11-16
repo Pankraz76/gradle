@@ -73,7 +73,7 @@ class WorkerExecutorNestingIntegrationTest extends AbstractWorkerExecutorIntegra
         """.stripIndent()
 
         when:
-        executer.withArguments("--max-workers=${maxWorkers}")
+        executor.withArguments("--max-workers=${maxWorkers}")
         succeeds("runInWorker")
 
         then:
@@ -92,7 +92,7 @@ class WorkerExecutorNestingIntegrationTest extends AbstractWorkerExecutorIntegra
         """.stripIndent()
 
         when:
-        executer.withArguments("--max-workers=${maxWorkers}")
+        executor.withArguments("--max-workers=${maxWorkers}")
         succeeds("runInWorker")
 
         then:
@@ -184,7 +184,7 @@ class WorkerExecutorNestingIntegrationTest extends AbstractWorkerExecutorIntegra
         """.stripIndent()
 
         when:
-        executer.withArguments("--max-workers=${maxWorkers}")
+        executor.withArguments("--max-workers=${maxWorkers}")
         succeeds("runInWorker")
 
         then:

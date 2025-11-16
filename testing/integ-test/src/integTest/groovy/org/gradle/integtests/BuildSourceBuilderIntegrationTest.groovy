@@ -101,9 +101,9 @@ class BuildSourceBuilderIntegrationTest extends AbstractIntegrationSpec {
 
         when:
         // https://github.com/gradle/gradle-private/issues/3639 warmup to avoid potential timeout.
-        executer.withTasks("warmup").run()
-        def runBlockingHandle = executer.withTasks("build1").usingInitScript(initScriptFile).start()
-        def runReleaseHandle = executer.withTasks("build2").usingInitScript(initScriptFile).start()
+        executor.withTasks("warmup").run()
+        def runBlockingHandle = executor.withTasks("build1").usingInitScript(initScriptFile).start()
+        def runReleaseHandle = executor.withTasks("build2").usingInitScript(initScriptFile).start()
 
         and:
         def releaseResult = runReleaseHandle.waitForFinish()

@@ -579,7 +579,7 @@ class PluginBuildsIntegrationTest extends AbstractPluginBuildIntegrationTest {
         def buildLogicBuild = pluginBuild("build-logic", dsl == 'Kotlin')
         def mainBuild = createDir('main')
 
-        executer.inDirectory(mainBuild)
+        executor.inDirectory(mainBuild)
 
         settingsPluginBuild.settingsPluginFile.text = """
             pluginManagement {

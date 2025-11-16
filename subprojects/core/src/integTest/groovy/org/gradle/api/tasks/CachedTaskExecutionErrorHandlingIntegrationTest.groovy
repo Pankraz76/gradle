@@ -82,8 +82,8 @@ class CachedTaskExecutionErrorHandlingIntegrationTest extends AbstractIntegratio
             }
         """
 
-        executer.beforeExecute {
-            executer.withBuildCacheEnabled()
+        executor.beforeExecute {
+            executor.withBuildCacheEnabled()
         }
     }
 
@@ -105,7 +105,7 @@ class CachedTaskExecutionErrorHandlingIntegrationTest extends AbstractIntegratio
         """
 
         if (expectStacktrace) {
-            executer.withStackTraceChecksDisabled()
+            executor.withStackTraceChecksDisabled()
         }
 
         when:
@@ -151,8 +151,8 @@ class CachedTaskExecutionErrorHandlingIntegrationTest extends AbstractIntegratio
             }
         """
 
-        executer.beforeExecute {
-            executer.withStackTraceChecksDisabled()
+        executor.beforeExecute {
+            executor.withStackTraceChecksDisabled()
         }
 
         when:

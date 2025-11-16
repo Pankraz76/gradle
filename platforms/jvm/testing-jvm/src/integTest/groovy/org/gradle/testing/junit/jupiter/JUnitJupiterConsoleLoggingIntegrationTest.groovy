@@ -50,7 +50,7 @@ class JUnitJupiterConsoleLoggingIntegrationTest extends AbstractJUnitConsoleLogg
         """
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         fails "test"
 
         then:

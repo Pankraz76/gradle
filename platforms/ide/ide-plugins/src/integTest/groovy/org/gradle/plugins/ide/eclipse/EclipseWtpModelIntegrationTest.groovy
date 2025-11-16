@@ -305,7 +305,7 @@ project(':contrib') {
 }
 """
         //when
-        executer.withTasks('eclipse').run()
+        executor.withTasks('eclipse').run()
 
         //then
         def implComponent = wtpComponent('impl')
@@ -341,7 +341,7 @@ project(':contrib') {
 }
 """
         //when
-        executer.withTasks('eclipse').run()
+        executor.withTasks('eclipse').run()
 
         //then no exception thrown
     }
@@ -456,7 +456,7 @@ project(':contrib') {
         """
 
         //when
-        executer.withTasks("eclipse").run()
+        executor.withTasks("eclipse").run()
 
         //then the container is configured
         assert getClasspathFile().text.contains("org.eclipse.jst.j2ee.internal.web.container")
@@ -472,7 +472,7 @@ project(':contrib') {
         """
 
         //when
-        executer.withTasks("eclipse").run()
+        executor.withTasks("eclipse").run()
 
         //then container is added only once:
         assert !getClasspathFile().text.contains("org.eclipse.jst.j2ee.internal.web.container")
@@ -506,7 +506,7 @@ project(':contrib') {
         """
 
         //when
-        executer.withTasks("eclipse").run()
+        executor.withTasks("eclipse").run()
 
         //then
         def classpath = classpath
@@ -536,7 +536,7 @@ project(':contrib') {
         """
 
         //when
-        executer.withTasks("eclipse").run()
+        executor.withTasks("eclipse").run()
 
         //then
         def classpath = getClasspath()
@@ -568,7 +568,7 @@ project(':contrib') {
         """
 
         //when
-        executer.withTasks("eclipse").run()
+        executor.withTasks("eclipse").run()
 
         //then
         def classpath = getClasspath()

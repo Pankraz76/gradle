@@ -18,7 +18,7 @@ package org.gradle.kotlin.dsl.caching
 
 import org.assertj.core.api.Assertions.assertThat
 import org.gradle.integtests.fixtures.daemon.DaemonLogsAnalyzer
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.kotlin.dsl.caching.fixtures.CachedScript
 import org.gradle.kotlin.dsl.caching.fixtures.KotlinDslCacheFixture
 import org.gradle.kotlin.dsl.caching.fixtures.cachedBuildFile
@@ -254,8 +254,8 @@ class ScriptCachingIntegrationTest : AbstractScriptCachingIntegrationTest() {
         }
 
         // and: ignore debug stack traces in output causing flakiness
-        executer.beforeExecute {
-            executer.withStackTraceChecksDisabled()
+        executor.beforeExecute {
+            executor.withStackTraceChecksDisabled()
         }
 
         // expect: memory hog released
@@ -274,7 +274,7 @@ class ScriptCachingIntegrationTest : AbstractScriptCachingIntegrationTest() {
                 }
             }
         }
-        val daemonFixture = DaemonLogsAnalyzer.newAnalyzer(executer.daemonBaseDir)
+        val daemonFixture = DaemonLogsAnalyzer.newAnalyzer(executor.daemonBaseDir)
         assertThat(daemonFixture.daemons).hasSize(1)
     }
 
@@ -334,7 +334,7 @@ class ScriptCachingIntegrationTest : AbstractScriptCachingIntegrationTest() {
                 result.assertNotOutput("Caching of Kotlin script compilation disabled by property")
             }
 
-            val localBuildCacheDir = executer.gradleUserHomeDir.resolve("caches/build-cache-1")
+            val localBuildCacheDir = executor.gradleUserHomeDir.resolve("caches/build-cache-1")
             val localBuildCacheFiles = localBuildCacheDir.list { _, fileName -> fileName != "gc.properties" && fileName != "build-cache-1.lock" }
 
             assertThat(localBuildCacheFiles).hasSize(expectedEntryCount)

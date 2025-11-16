@@ -17,7 +17,7 @@
 package org.gradle.launcher.daemon
 
 import org.gradle.integtests.fixtures.TargetCoverage
-import org.gradle.integtests.fixtures.executer.GradleHandle
+import org.gradle.integtests.fixtures.executor.GradleHandle
 import org.gradle.launcher.daemon.fixtures.DaemonMultiJdkIntegrationTest
 @TargetCoverage({DaemonPerformanceMonitoringCoverage.ALL_VERSIONS})
 class DaemonPerformanceMonitoringSoakTest extends DaemonMultiJdkIntegrationTest {
@@ -50,9 +50,9 @@ class DaemonPerformanceMonitoringSoakTest extends DaemonMultiJdkIntegrationTest 
         int newDaemons = 0
         try {
             for (int i = 0; i < maxBuilds; i++) {
-                executer.noExtraLogging()
-                executer.withBuildJvmOpts("-Xms128m", "-XX:MaxMetaspaceSize=${heapSize}", "-Xmx${heapSize}", "-Dorg.gradle.daemon.performance.logging=true")
-                GradleHandle gradle = executer.start()
+                executor.noExtraLogging()
+                executor.withBuildJvmOpts("-Xms128m", "-XX:MaxMetaspaceSize=${heapSize}", "-Xmx${heapSize}", "-Dorg.gradle.daemon.performance.logging=true")
+                GradleHandle gradle = executor.start()
                 gradle.waitForExit()
                 if (gradle.standardOutput ==~ /(?s).*Starting build in new daemon \[memory: [0-9].*/) {
                     newDaemons++;

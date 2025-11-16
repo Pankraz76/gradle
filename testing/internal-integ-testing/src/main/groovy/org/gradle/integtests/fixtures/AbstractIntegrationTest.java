@@ -16,14 +16,14 @@
 package org.gradle.integtests.fixtures;
 
 import org.gradle.api.Action;
-import org.gradle.integtests.fixtures.executer.ArtifactBuilder;
-import org.gradle.integtests.fixtures.executer.GradleBackedArtifactBuilder;
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter;
-import org.gradle.integtests.fixtures.executer.GradleDistribution;
-import org.gradle.integtests.fixtures.executer.GradleExecuter;
-import org.gradle.integtests.fixtures.executer.InProcessGradleExecuter;
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext;
-import org.gradle.integtests.fixtures.executer.UnderDevelopmentGradleDistribution;
+import org.gradle.integtests.fixtures.executor.ArtifactBuilder;
+import org.gradle.integtests.fixtures.executor.GradleBackedArtifactBuilder;
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor;
+import org.gradle.integtests.fixtures.executor.GradleDistribution;
+import org.gradle.integtests.fixtures.executor.GradleExecutor;
+import org.gradle.integtests.fixtures.executor.InProcessGradleExecutor;
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext;
+import org.gradle.integtests.fixtures.executor.UnderDevelopmentGradleDistribution;
 import org.gradle.test.fixtures.IntegrationTest;
 import org.gradle.test.fixtures.dsl.GradleDsl;
 import org.gradle.test.fixtures.file.TestFile;
@@ -59,7 +59,7 @@ public abstract class AbstractIntegrationTest implements HasGradleExecutor {
     public final ToBeFixedForIsolatedProjectsRule toBeFixedForIsolatedProjects = new ToBeFixedForIsolatedProjectsRule();
 
     public final GradleDistribution distribution = new UnderDevelopmentGradleDistribution(getBuildContext());
-    public final GradleContextualExecuter executer = createExecuter();
+    public final GradleContextualExecutor executor = createExecutor();
 
     public IntegrationTestBuildContext getBuildContext() {
         return IntegrationTestBuildContext.INSTANCE;
@@ -73,11 +73,11 @@ public abstract class AbstractIntegrationTest implements HasGradleExecutor {
 
     @After
     public void cleanup() {
-        executer.cleanup();
+        executor.cleanup();
     }
 
-    protected GradleContextualExecuter createExecuter() {
-        return new GradleContextualExecuter(distribution, testDirectoryProvider, getBuildContext());
+    protected GradleContextualExecutor createExecutor() {
+        return new GradleContextualExecutor(distribution, testDirectoryProvider, getBuildContext());
     }
 
     protected GradleDistribution getDistribution() {
@@ -85,8 +85,8 @@ public abstract class AbstractIntegrationTest implements HasGradleExecutor {
     }
 
     @Override
-    public GradleExecuter getExecuter() {
-        return executer;
+    public GradleExecutor getExecutor() {
+        return executor;
     }
 
     protected TestNameTestDirectoryProvider getTestDirectoryProvider() {
@@ -109,22 +109,22 @@ public abstract class AbstractIntegrationTest implements HasGradleExecutor {
         return getTestDirectory().createDirs(names);
     }
 
-    protected GradleExecuter inTestDirectory() {
+    protected GradleExecutor inTestDirectory() {
         return inDirectory(getTestDirectory());
     }
 
-    protected GradleExecuter inDirectory(File directory) {
-        return getExecuter().inDirectory(directory);
+    protected GradleExecutor inDirectory(File directory) {
+        return getExecutor().inDirectory(directory);
     }
 
-    protected GradleExecuter usingProjectDir(File projectDir) {
-        return getExecuter().usingProjectDirectory(projectDir);
+    protected GradleExecutor usingProjectDir(File projectDir) {
+        return getExecutor().usingProjectDirectory(projectDir);
     }
 
     protected ArtifactBuilder artifactBuilder() {
-        GradleExecuter gradleExecuter = new InProcessGradleExecuter(distribution, testDirectoryProvider);
-        gradleExecuter.withGradleUserHomeDir(getExecuter().getGradleUserHomeDir());
-        return new GradleBackedArtifactBuilder(gradleExecuter, getTestDirectory().file("artifacts"));
+        GradleExecutor gradleExecutor = new InProcessGradleExecutor(distribution, testDirectoryProvider);
+        gradleExecutor.withGradleUserHomeDir(getExecutor().getGradleUserHomeDir());
+        return new GradleBackedArtifactBuilder(gradleExecutor, getTestDirectory().file("artifacts"));
     }
 
     public MavenFileRepository maven(TestFile repo) {
@@ -158,9 +158,9 @@ public abstract class AbstractIntegrationTest implements HasGradleExecutor {
     }
 
 
-    public GradleExecuter using(Action<GradleExecuter> action) {
-        action.execute(executer);
-        return executer;
+    public GradleExecutor using(Action<GradleExecutor> action) {
+        action.execute(executor);
+        return executor;
     }
 
     public static String mavenCentralRepository() {

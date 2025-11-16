@@ -19,13 +19,13 @@ package org.gradle.api.internal.tasks.testing;
 import org.gradle.internal.scan.UsedByScanPlugin;
 
 @UsedByScanPlugin("test-distribution")
-public interface TestExecuter<T extends TestExecutionSpec> {
+public interface TestExecutor<T extends TestExecutionSpec> {
 
     @UsedByScanPlugin("test-distribution")
     void execute(T testExecutionSpec, TestResultProcessor testResultProcessor);
 
     /**
-     * Stops any {@link TestDefinitionProcessor} utilized by this {@code TestExecuter}.
+     * Stops any {@link TestDefinitionProcessor} utilized by this {@code TestExecutor}.
      */
     @UsedByScanPlugin("test-distribution")
     void stopNow();

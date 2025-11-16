@@ -24,7 +24,7 @@ class PropertyUpgradeReportingIntegrationTest extends AbstractIntegrationSpec {
 
     def "usage of upgraded properties in buildSrc should be reported"() {
         given:
-        executer.requireOwnGradleUserHomeDir("We cache report in global cache")
+        executor.requireOwnGradleUserHomeDir("We cache report in global cache")
         javaFile("buildSrc/src/main/java/test/MyPlugin.java", """
             package test;
 
@@ -54,7 +54,7 @@ class PropertyUpgradeReportingIntegrationTest extends AbstractIntegrationSpec {
 
     def "usage of upgraded properties in Kotlin scripts should be reported"() {
         given:
-        executer.requireOwnGradleUserHomeDir("We cache report in global cache")
+        executor.requireOwnGradleUserHomeDir("We cache report in global cache")
         buildKotlinFile << """
             plugins {
                 id("java-library")
@@ -120,7 +120,7 @@ class PropertyUpgradeReportingIntegrationTest extends AbstractIntegrationSpec {
 
     def "should not report upgraded properties if --property-upgrade-report flag is not used"() {
         given:
-        executer.requireOwnGradleUserHomeDir("We cache report in global cache")
+        executor.requireOwnGradleUserHomeDir("We cache report in global cache")
         javaFile("buildSrc/src/main/java/test/MyPlugin.java", """
             package test;
 
@@ -162,7 +162,7 @@ class PropertyUpgradeReportingIntegrationTest extends AbstractIntegrationSpec {
     @ToBeImplemented("Inherited properties are not reported for project dependency classes")
     def "usage of upgraded properties in extended class should be reported"() {
         given:
-        executer.requireOwnGradleUserHomeDir("Run with empty cache, so report is always generated")
+        executor.requireOwnGradleUserHomeDir("Run with empty cache, so report is always generated")
         javaFile("buildSrc/src/main/java/MyJavaCompile.java", """
             import org.gradle.api.tasks.compile.JavaCompile;
 

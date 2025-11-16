@@ -26,8 +26,8 @@ class GradleImplDepsLoggingIntegrationTest extends BaseGradleImplDepsIntegration
 
     def "Generating Gradle API jar is logged with rich console"() {
         given:
-        executer.withTestConsoleAttached()
-        executer.withConsole(ConsoleOutput.Rich)
+        executor.withTestConsoleAttached()
+        executor.withConsole(ConsoleOutput.Rich)
         buildFile << """
             configurations {
                 gradleImplDeps

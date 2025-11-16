@@ -38,7 +38,7 @@ class PublicApiIntegrationTest extends AbstractIntegrationSpec implements JavaTo
     def kotlinVersion = System.getProperty("integTest.kotlinVersion")
 
     def setup() {
-        executer.beforeExecute {
+        executor.beforeExecute {
             args("-Dorg.gradle.unsafe.suppress-gradle-api=true")
             withInstallations(jvm)
         }

@@ -30,8 +30,8 @@ class JavadocFileEncodingIntegrationTest extends AbstractIntegrationSpec {
                 }
             }
         """
-        executer.requireIsolatedDaemons()
-        executer.requireDaemon()
+        executor.requireIsolatedDaemons()
+        executor.requireDaemon()
 
         file("src/main/java/Main.java") << """
             public class Main {}
@@ -39,8 +39,8 @@ class JavadocFileEncodingIntegrationTest extends AbstractIntegrationSpec {
 
         when:
         // Doesn't support the characters used in the title
-        executer.useOnlyRequestedJvmOpts()
-        executer.withBuildJvmOpts("-Dfile.encoding=CP1250")
+        executor.useOnlyRequestedJvmOpts()
+        executor.withBuildJvmOpts("-Dfile.encoding=CP1250")
         succeeds("javadoc")
         then:
         file("build/docs/javadoc/index.html").text.contains("<title>? ? ? ?</title>")
@@ -48,7 +48,7 @@ class JavadocFileEncodingIntegrationTest extends AbstractIntegrationSpec {
         result.assertTaskExecuted(":javadoc")
 
         when:
-        executer.withBuildJvmOpts("-Dfile.encoding=UTF-8")
+        executor.withBuildJvmOpts("-Dfile.encoding=UTF-8")
         succeeds("javadoc")
         then:
         file("build/docs/javadoc/index.html").text.contains("<title>💩 💩 💩 💩</title>")
@@ -73,19 +73,19 @@ class JavadocFileEncodingIntegrationTest extends AbstractIntegrationSpec {
                 message = "💩 💩 💩 💩"
             }
         """
-        executer.requireIsolatedDaemons()
-        executer.requireDaemon()
+        executor.requireIsolatedDaemons()
+        executor.requireDaemon()
 
         when:
         // Message is UTF-8
-        executer.useOnlyRequestedJvmOpts()
-        executer.withBuildJvmOpts("-Dfile.encoding=CP1250")
+        executor.useOnlyRequestedJvmOpts()
+        executor.withBuildJvmOpts("-Dfile.encoding=CP1250")
         succeeds("writer")
         then:
         file("build/message.txt").text == "? ? ? ?"
 
         when:
-        executer.withBuildJvmOpts("-Dfile.encoding=UTF-8")
+        executor.withBuildJvmOpts("-Dfile.encoding=UTF-8")
         succeeds("writer")
         then:
         file("build/message.txt").text == "💩 💩 💩 💩"

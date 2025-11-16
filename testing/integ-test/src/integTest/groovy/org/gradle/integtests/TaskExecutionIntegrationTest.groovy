@@ -25,8 +25,8 @@ import org.gradle.integtests.fixtures.UnsupportedWithConfigurationCache
 import spock.lang.Issue
 import spock.lang.Timeout
 
-import static org.gradle.integtests.fixtures.executer.TaskOrderSpecs.any
-import static org.gradle.integtests.fixtures.executer.TaskOrderSpecs.exact
+import static org.gradle.integtests.fixtures.executor.TaskOrderSpecs.any
+import static org.gradle.integtests.fixtures.executor.TaskOrderSpecs.exact
 import static org.hamcrest.CoreMatchers.startsWith
 
 class TaskExecutionIntegrationTest extends AbstractIntegrationSpec implements TasksWithInputsAndOutputs, StableConfigurationCacheDeprecations {
@@ -34,8 +34,8 @@ class TaskExecutionIntegrationTest extends AbstractIntegrationSpec implements Ta
     int expectedTaskGetProjectDeprecationCount = 0
 
     @Override
-    protected void setupExecuter() {
-        super.setupExecuter()
+    protected void setupExecutor() {
+        super.setupExecutor()
         expectTaskGetProjectDeprecations(expectedTaskGetProjectDeprecationCount)
     }
 
@@ -169,9 +169,9 @@ class TaskExecutionIntegrationTest extends AbstractIntegrationSpec implements Ta
         expect:
         2.times {
             // project defaults
-            executer.withArguments("-m").run().normalizedOutput.contains(":a SKIPPED\n:b SKIPPED")
+            executor.withArguments("-m").run().normalizedOutput.contains(":a SKIPPED\n:b SKIPPED")
             // named tasks
-            executer.withArguments("-m").withTasks("b").run().normalizedOutput.contains(":a SKIPPED\n:b SKIPPED")
+            executor.withArguments("-m").withTasks("b").run().normalizedOutput.contains(":a SKIPPED\n:b SKIPPED")
         }
     }
 
@@ -232,18 +232,18 @@ class TaskExecutionIntegrationTest extends AbstractIntegrationSpec implements Ta
         expect:
         2.times {
             // Exclude entire branch
-            executer.withTasks(":d").withArguments("-x", "c").run().assertTasksScheduled(":d")
+            executor.withTasks(":d").withArguments("-x", "c").run().assertTasksScheduled(":d")
             // Exclude direct dependency
-            executer.withTasks(":d").withArguments("-x", "b").run().assertTasksScheduled(":a", ":c", ":d")
+            executor.withTasks(":d").withArguments("-x", "b").run().assertTasksScheduled(":a", ":c", ":d")
             // Exclude using paths and multi-project
-            executer.withTasks("d").withArguments("-x", "c").run().assertTasksScheduled(":d", ":sub:d")
-            executer.withTasks("d").withArguments("-x", "sub:c").run().assertTasksScheduled(":a", ":b", ":c", ":d", ":sub:d")
-            executer.withTasks("d").withArguments("-x", ":sub:c").run().assertTasksScheduled(":a", ":b", ":c", ":d", ":sub:d")
-            executer.withTasks("d").withArguments("-x", "d").run().assertNoTasksScheduled()
+            executor.withTasks("d").withArguments("-x", "c").run().assertTasksScheduled(":d", ":sub:d")
+            executor.withTasks("d").withArguments("-x", "sub:c").run().assertTasksScheduled(":a", ":b", ":c", ":d", ":sub:d")
+            executor.withTasks("d").withArguments("-x", ":sub:c").run().assertTasksScheduled(":a", ":b", ":c", ":d", ":sub:d")
+            executor.withTasks("d").withArguments("-x", "d").run().assertNoTasksScheduled()
             // Project defaults
-            executer.withArguments("-x", "b").run().assertTasksScheduled(":a", ":c", ":d", ":sub:c", ":sub:d")
+            executor.withArguments("-x", "b").run().assertTasksScheduled(":a", ":c", ":d", ":sub:c", ":sub:d")
             // Unknown task
-            executer.withTasks("d").withArguments("-x", "unknown").runWithFailure().assertThatDescription(startsWith("Task 'unknown' not found in root project 'root' and its subprojects."))
+            executor.withTasks("d").withArguments("-x", "unknown").runWithFailure().assertThatDescription(startsWith("Task 'unknown' not found in root project 'root' and its subprojects."))
         }
     }
 
@@ -261,7 +261,7 @@ class TaskExecutionIntegrationTest extends AbstractIntegrationSpec implements Ta
 
         expect:
         2.times {
-            executer.inDirectory(file('sub')).withTasks('c').withArguments('-x', 'a').run().assertTasksScheduled(':a', ':sub:b', ':sub:c')
+            executor.inDirectory(file('sub')).withTasks('c').withArguments('-x', 'a').run().assertTasksScheduled(':a', ':sub:b', ':sub:c')
         }
     }
 
@@ -274,8 +274,8 @@ class TaskExecutionIntegrationTest extends AbstractIntegrationSpec implements Ta
 
         expect:
         2.times {
-            executer.withTasks("someTask").withArguments("-x", "sODep").run().assertTasksScheduled(":someDep", ":someTask")
-            executer.withTasks("someTask").withArguments("-x", ":sODep").run().assertTasksScheduled(":someDep", ":someTask")
+            executor.withTasks("someTask").withArguments("-x", "sODep").run().assertTasksScheduled(":someDep", ":someTask")
+            executor.withTasks("someTask").withArguments("-x", ":sODep").run().assertTasksScheduled(":someDep", ":someTask")
         }
     }
 
@@ -288,9 +288,9 @@ class TaskExecutionIntegrationTest extends AbstractIntegrationSpec implements Ta
 
         expect:
         2.times {
-            executer.withTasks("someTask").withArguments("-x", "someDep", "-x", "someOtherDep").run().assertTasksScheduled(":someTask")
-            executer.withTasks("someTask").withArguments("-x", ":someDep", "-x", ":someOtherDep").run().assertTasksScheduled(":someTask")
-            executer.withTasks("someTask").withArguments("-x", "sODep", "-x", "soDep").run().assertTasksScheduled(":someTask")
+            executor.withTasks("someTask").withArguments("-x", "someDep", "-x", "someOtherDep").run().assertTasksScheduled(":someTask")
+            executor.withTasks("someTask").withArguments("-x", ":someDep", "-x", ":someOtherDep").run().assertTasksScheduled(":someTask")
+            executor.withTasks("someTask").withArguments("-x", "sODep", "-x", "soDep").run().assertTasksScheduled(":someTask")
         }
     }
 
@@ -310,8 +310,8 @@ class TaskExecutionIntegrationTest extends AbstractIntegrationSpec implements Ta
 
         expect:
         2.times {
-            executer.withTasks("d").withArguments("-x", "a").run().assertTasksScheduled(":b", ":c", ":d")
-            executer.withTasks("b", "a").withArguments("-x", ":a").run().assertTasksScheduled(":b", ":sub:a")
+            executor.withTasks("d").withArguments("-x", "a").run().assertTasksScheduled(":b", ":c", ":d")
+            executor.withTasks("b", "a").withArguments("-x", ":a").run().assertTasksScheduled(":b", ":sub:a")
         }
     }
 

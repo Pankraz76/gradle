@@ -20,7 +20,7 @@ import org.gradle.integtests.fixtures.AbstractHttpDependencyResolutionTest
 class IvyChangingModuleRemoteResolveIntegrationTest extends AbstractHttpDependencyResolutionTest {
 
     def runRetrieveTask() {
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run 'retrieve'
     }
 
@@ -80,7 +80,7 @@ task retrieve(type: Copy) {
         moduleB.jar.expectGet()
 
         and: "We request 1.1 again"
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         runRetrieveTask()
 
         then: "We get all artifacts, including the new ones"
@@ -130,7 +130,7 @@ task retrieve(type: Copy) {
         module.jar.expectGet()
 
         and:
-        executer.withArgument('-PisChanging')
+        executor.withArgument('-PisChanging')
         runRetrieveTask()
 
         then:
@@ -266,7 +266,7 @@ task retrieve(type: Copy) {
         module.getArtifact(name: 'other').expectGet()
 
         and: "We request 1.1 (changing) again, with zero expiry for dynamic revision cache"
-        executer.withArguments("-PdoNotCacheChangingModules")
+        executor.withArguments("-PdoNotCacheChangingModules")
         runRetrieveTask()
 
         then: "We get new artifacts based on the new meta-data"

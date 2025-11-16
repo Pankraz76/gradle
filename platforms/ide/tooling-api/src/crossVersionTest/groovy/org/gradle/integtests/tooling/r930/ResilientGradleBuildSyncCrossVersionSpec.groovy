@@ -21,7 +21,7 @@ import org.gradle.integtests.tooling.fixture.ToolingApiSpecification
 import org.gradle.integtests.tooling.fixture.ToolingApiVersion
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.tooling.BuildAction
-import org.gradle.tooling.BuildActionExecuter
+import org.gradle.tooling.BuildActionExecutor
 import org.gradle.tooling.BuildController
 import org.gradle.tooling.model.gradle.GradleBuild
 
@@ -40,7 +40,7 @@ class ResilientGradleBuildSyncCrossVersionSpec extends ToolingApiSpecification {
         settingsFile.delete() // This is automatically created by `ToolingApiSpecification`
     }
 
-    BuildActionResult runFetchModelAction(Consumer<BuildActionExecuter<BuildActionResult>> configurer = {}) {
+    BuildActionResult runFetchModelAction(Consumer<BuildActionExecutor<BuildActionResult>> configurer = {}) {
         succeeds {
             def action = action(new FetchModelAction())
                 .withArguments(RESILIENT_MODEL_TRUE)

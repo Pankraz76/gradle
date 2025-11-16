@@ -39,8 +39,8 @@ class DependencyUnresolvedModuleIntegrationTest extends AbstractHttpDependencyRe
     def setup() {
         moduleA = publishMavenModule(mavenHttpRepo, 'a')
         downloadedLibsDir = file('build/libs')
-        executer.beforeExecute {
-            executer.withArgument("-D${SOCKET_TIMEOUT_SYSTEM_PROPERTY}=1000")
+        executor.beforeExecute {
+            executor.withArgument("-D${SOCKET_TIMEOUT_SYSTEM_PROPERTY}=1000")
         }
     }
 
@@ -51,7 +51,7 @@ class DependencyUnresolvedModuleIntegrationTest extends AbstractHttpDependencyRe
             // https://issues.apache.org/jira/browse/HTTPCLIENT-1478
             def keyStore = TestKeyStore.init(temporaryFolder.file('ssl-keystore'))
             keyStore.enableSslWithServerCert(server)
-            keyStore.configureServerCert(executer)
+            keyStore.configureServerCert(executor)
             server.expectSslHandshakeBlocking()
         } else {
             assert false: "Unsupported protocol: ${protocol}"

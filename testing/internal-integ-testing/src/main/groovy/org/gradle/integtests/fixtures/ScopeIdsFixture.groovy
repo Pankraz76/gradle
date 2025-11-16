@@ -18,8 +18,8 @@ package org.gradle.integtests.fixtures
 
 import groovy.json.JsonSlurper
 import groovy.transform.EqualsAndHashCode
-import org.gradle.integtests.fixtures.executer.GradleExecuter
-import org.gradle.integtests.fixtures.executer.UserInitScriptExecuterFixture
+import org.gradle.integtests.fixtures.executor.GradleExecutor
+import org.gradle.integtests.fixtures.executor.UserInitScriptExecutorFixture
 import org.gradle.internal.id.UniqueId
 import org.gradle.internal.scopeids.id.BuildInvocationScopeId
 import org.gradle.internal.scopeids.id.UserScopeId
@@ -32,15 +32,15 @@ import static org.gradle.util.internal.TextUtil.normaliseFileSeparators
 /**
  * Extracts the scope IDs for a build, and asserts that all nested builds have the same IDs.
  */
-class ScopeIdsFixture extends UserInitScriptExecuterFixture {
+class ScopeIdsFixture extends UserInitScriptExecutorFixture {
 
     private final List<Map<String, ScopeIds>> idsOfBuildTrees = []
 
     boolean disableConsistentWorkspaceIdCheck
     boolean disableConsistentUserIdCheck
 
-    ScopeIdsFixture(GradleExecuter executer, TestDirectoryProvider testDir) {
-        super(executer, testDir)
+    ScopeIdsFixture(GradleExecutor executor, TestDirectoryProvider testDir) {
+        super(executor, testDir)
     }
 
     int getBuildCount() {
@@ -130,9 +130,9 @@ class ScopeIdsFixture extends UserInitScriptExecuterFixture {
     }
 
     @Override
-    void configureExecuter(GradleExecuter executer) {
-        super.configureExecuter(executer)
-        executer.beforeExecute {
+    void configureExecutor(GradleExecutor executor) {
+        super.configureExecutor(executor)
+        executor.beforeExecute {
             idsFile.delete()
         }
     }

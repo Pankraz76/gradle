@@ -39,7 +39,7 @@ class ArchivesConfigurationDeprecationIntegrationTest extends AbstractIntegratio
         """
 
         expect:
-        executer.expectDocumentedDeprecationWarning(
+        executor.expectDocumentedDeprecationWarning(
             "The archives configuration has been deprecated for artifact declaration. " +
                 "This will fail with an error in Gradle 10. " +
                 "Add artifacts as direct task dependencies of the 'assemble' task instead of declaring them in the archives configuration. " +
@@ -87,13 +87,13 @@ class ArchivesConfigurationDeprecationIntegrationTest extends AbstractIntegratio
         """)
 
         expect:
-        executer.expectDocumentedDeprecationWarning(
+        executor.expectDocumentedDeprecationWarning(
             "The archives configuration has been deprecated for artifact declaration. " +
                 "This will fail with an error in Gradle 10. " +
                 "Add artifacts as direct task dependencies of the 'assemble' task instead of declaring them in the archives configuration. " +
                 "Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#sec:archives-configuration"
         )
-        executer.expectDocumentedDeprecationWarning("The archives configuration has been deprecated for consumption. " +
+        executor.expectDocumentedDeprecationWarning("The archives configuration has been deprecated for consumption. " +
             "This will fail with an error in Gradle 10. " +
             "For more information, please refer to https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:deprecated-configurations in the Gradle documentation."
         )

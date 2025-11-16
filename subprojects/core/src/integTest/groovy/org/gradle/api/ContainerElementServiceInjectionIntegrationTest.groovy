@@ -33,7 +33,7 @@ class ContainerElementServiceInjectionIntegrationTest extends AbstractIntegratio
             c.create("foo")
         """
         then:
-        // executer.expectDocumentedDeprecationWarning("The Project.container(Class) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the objects.domainObjectContainer(Class) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#project_container_methods")
+        // executor.expectDocumentedDeprecationWarning("The Project.container(Class) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the objects.domainObjectContainer(Class) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#project_container_methods")
         succeeds()
         when:
         buildFile """
@@ -45,7 +45,7 @@ class ContainerElementServiceInjectionIntegrationTest extends AbstractIntegratio
             cc.create("foo")
         """
         then:
-        // executer.expectDocumentedDeprecationWarning("The Project.container(Class) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the objects.domainObjectContainer(Class) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#project_container_methods")
+        // executor.expectDocumentedDeprecationWarning("The Project.container(Class) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the objects.domainObjectContainer(Class) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#project_container_methods")
         succeeds()
     }
 
@@ -71,7 +71,7 @@ class ContainerElementServiceInjectionIntegrationTest extends AbstractIntegratio
 
         expect:
         // https://github.com/gradle/gradle/issues/34693
-        // executer.expectDocumentedDeprecationWarning("The Project.container(Class) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the objects.domainObjectContainer(Class) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#project_container_methods")
+        // executor.expectDocumentedDeprecationWarning("The Project.container(Class) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the objects.domainObjectContainer(Class) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#project_container_methods")
         succeeds()
     }
 
@@ -85,7 +85,7 @@ class ContainerElementServiceInjectionIntegrationTest extends AbstractIntegratio
         """
 
         expect:
-        // executer.expectDocumentedDeprecationWarning("The Project.container(Class) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the objects.domainObjectContainer(Class) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#project_container_methods")
+        // executor.expectDocumentedDeprecationWarning("The Project.container(Class) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the objects.domainObjectContainer(Class) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#project_container_methods")
         succeeds()
     }
 
@@ -98,7 +98,7 @@ class ContainerElementServiceInjectionIntegrationTest extends AbstractIntegratio
         """
 
         expect:
-        executer.expectDocumentedDeprecationWarning("The Project.container(Class, Closure) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the objects.domainObjectContainer(Class, NamedDomainObjectFactory) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#project_container_methods")
+        executor.expectDocumentedDeprecationWarning("The Project.container(Class, Closure) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the objects.domainObjectContainer(Class, NamedDomainObjectFactory) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#project_container_methods")
         succeeds()
     }
 
@@ -117,7 +117,7 @@ class ContainerElementServiceInjectionIntegrationTest extends AbstractIntegratio
         """
 
         expect:
-        // executer.expectDocumentedDeprecationWarning("The Project.container(Class, NamedDomainObjectFactory) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the objects.domainObjectContainer(Class, NamedDomainObjectFactory) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#project_container_methods")
+        // executor.expectDocumentedDeprecationWarning("The Project.container(Class, NamedDomainObjectFactory) method has been deprecated. This is scheduled to be removed in Gradle 10. Please use the objects.domainObjectContainer(Class, NamedDomainObjectFactory) method instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#project_container_methods")
         succeeds()
     }
 

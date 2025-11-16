@@ -174,7 +174,7 @@ class AliasedArtifactResolutionIntegrationTest extends AbstractHttpDependencyRes
     }
 
     def succeedsWith(repository) {
-        executer.withArguments('-i', "-P${repository}")
+        executor.withArguments('-i', "-P${repository}")
         def result = succeeds 'retrieve'
         file('libs').assertHasDescendants('projectB-1.0.jar')
         server.resetExpectations()

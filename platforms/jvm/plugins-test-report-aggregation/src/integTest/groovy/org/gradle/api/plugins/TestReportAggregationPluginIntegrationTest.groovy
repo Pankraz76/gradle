@@ -468,7 +468,7 @@ class TestReportAggregationPluginIntegrationTest extends AbstractIntegrationSpec
             """
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         fails(":application:testAggregateTestReport", "--continue")
 
         then:

@@ -16,7 +16,7 @@
 
 package org.gradle.kotlin.dsl.tooling.builders
 
-import org.gradle.integtests.fixtures.executer.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleDistribution
 import org.gradle.integtests.tooling.fixture.ToolingApiAdditionalClasspathProvider
 import org.gradle.integtests.tooling.fixture.ToolingApiDistribution
 import org.gradle.util.GradleVersion

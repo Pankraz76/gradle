@@ -38,7 +38,7 @@ allprojects {
     compileJava.dependsOn copyLibs
 }
 """
-        executer.withArgument('--info')
+        executor.withArgument('--info')
     }
 
     def "project dependency c->[a,b]"() {
@@ -182,7 +182,7 @@ project(':c') {
         jarsNotBuilt 'a', 'b', 'c'
     }
 
-    // 'c' + 'd' _may_ be built with parallel executer
+    // 'c' + 'd' _may_ be built with parallel executor
     // test can't handle parallel task execution
     @Requires(IntegTestPreconditions.NotParallelOrConfigCacheExecutor)
     def "project dependency a->[b,c] and c->d and b fails"() {
@@ -206,7 +206,7 @@ project(':c') {
         failingBuild 'b'
 
         when:
-        executer.withArgument('--continue')
+        executor.withArgument('--continue')
         fails ':a:build'
 
         then:
@@ -223,7 +223,7 @@ project(':c') {
         failingBuild 'c'
 
         when:
-        executer.withArgument('--continue')
+        executor.withArgument('--continue')
         fails ':a:build'
 
         then:

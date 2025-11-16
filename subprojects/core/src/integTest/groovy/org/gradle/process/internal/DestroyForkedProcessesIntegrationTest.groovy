@@ -93,8 +93,8 @@ class DestroyForkedProcessesIntegrationTest extends DaemonIntegrationSpec {
     }
 
     private void startBuild(String task, File processStartedToken) {
-        executer.withArgument('--debug').withTasks(task)
-        client = new DaemonClientFixture(executer.start())
+        executor.withArgument('--debug').withTasks(task)
+        client = new DaemonClientFixture(executor.start())
         waitForProcess(processStartedToken)
         daemons.daemon.assertBusy()
     }

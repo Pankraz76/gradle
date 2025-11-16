@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 import org.gradle.util.internal.TextUtil
 
-import static org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult.STACK_TRACE_ELEMENT
+import static org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult.STACK_TRACE_ELEMENT
 
 class OutputScrapingExecutionResultTest extends AbstractExecutionResultTest {
     def "can have empty output"() {

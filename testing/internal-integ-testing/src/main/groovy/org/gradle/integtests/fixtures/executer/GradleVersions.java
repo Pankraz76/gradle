@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 /**
  * Intended to be used with {@link org.gradle.integtests.tooling.fixture.TargetGradleVersion} and other similar things.

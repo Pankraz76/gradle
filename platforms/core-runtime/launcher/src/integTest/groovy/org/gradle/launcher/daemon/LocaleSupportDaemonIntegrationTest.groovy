@@ -104,8 +104,8 @@ class LocaleSupportDaemonIntegrationTest extends DaemonIntegrationSpec {
         """
 
         when:
-        executer.requireIsolatedDaemons()
-        executer.withGradleVersionOverride(DefaultGradleVersion.version(overrideVersion))
+        executor.requireIsolatedDaemons()
+        executor.withGradleVersionOverride(DefaultGradleVersion.version(overrideVersion))
         runWithLocale(locale)
 
         then:
@@ -126,7 +126,7 @@ class LocaleSupportDaemonIntegrationTest extends DaemonIntegrationSpec {
     }
 
     void runWithLocale(Locale locale) {
-        executer.withDefaultLocale(locale)
+        executor.withDefaultLocale(locale)
         run "printLocale"
     }
 

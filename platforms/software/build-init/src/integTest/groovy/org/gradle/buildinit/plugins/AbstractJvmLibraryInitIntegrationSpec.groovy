@@ -22,7 +22,7 @@ abstract class AbstractJvmLibraryInitIntegrationSpec extends AbstractInitIntegra
     String subprojectName() { 'lib' }
 
     def setup() {
-        executer.beforeExecute { e ->
+        executor.beforeExecute { e ->
             e.withToolchainDetectionEnabled()
         }
     }

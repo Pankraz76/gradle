@@ -82,7 +82,7 @@ compile
         """
 
         when:
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         run "dependencies"
 
         then:
@@ -111,7 +111,7 @@ conf
         """
 
         when:
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         run "dependencies"
 
         then:
@@ -142,7 +142,7 @@ foo
         """
 
         when:
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         run "dependencies"
 
         then:
@@ -174,7 +174,7 @@ foo
         """
 
         when:
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         run "dependencies"
 
         then:
@@ -210,7 +210,7 @@ config
         """
 
         when:
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         run "dependencies"
 
         then:
@@ -1058,7 +1058,7 @@ compileClasspath - Compile classpath for source set 'main'.
             }
         """
 
-        executer.expectDocumentedDeprecationWarning("The compile configuration has been deprecated for dependency declaration. This will fail with an error in Gradle 10. Please use another configuration instead. For more information, please refer to https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:deprecated-configurations in the Gradle documentation.")
+        executor.expectDocumentedDeprecationWarning("The compile configuration has been deprecated for dependency declaration. This will fail with an error in Gradle 10. Please use another configuration instead. For more information, please refer to https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:deprecated-configurations in the Gradle documentation.")
 
         expect:
         succeeds ':a:dependencies'

@@ -18,7 +18,7 @@ package org.gradle.smoketests
 
 import org.gradle.api.JavaVersion
 import org.gradle.integtests.fixtures.daemon.DaemonLogsAnalyzer
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.internal.scan.config.fixtures.ApplyDevelocityPluginFixture
 import org.gradle.test.fixtures.file.DoesNotSupportNonAsciiPaths
@@ -75,7 +75,7 @@ class AbstractAndroidProjectSmokeTest extends AbstractSmokeTest implements Runne
     protected SmokeTestGradleRunner.SmokeTestBuildResult buildCachedLocation(File projectDir, String agpVersion) {
         return runnerForLocation(projectDir, agpVersion, "assembleDebug", *excludingCCIncompatibleTasks())
             .deprecations(AndroidProjectDeprecations) {
-                expectMultiStringNotationDeprecationIf(agpVersion, GradleContextualExecuter.isNotConfigCache())
+                expectMultiStringNotationDeprecationIf(agpVersion, GradleContextualExecutor.isNotConfigCache())
             }
             .build()
     }
@@ -134,7 +134,7 @@ class AbstractAndroidProjectSmokeTest extends AbstractSmokeTest implements Runne
 
     // license plugin is not compatible with CC: https://github.com/google/play-services-plugins/issues/246
     protected List<String> excludingCCIncompatibleTasks() {
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             return ["-x", ":app:prodDebugOssLicensesTask", "-x", ":app:demoDebugOssLicensesTask"]
         } else {
             return []

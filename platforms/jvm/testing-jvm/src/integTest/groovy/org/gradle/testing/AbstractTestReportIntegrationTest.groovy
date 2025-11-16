@@ -59,7 +59,7 @@ abstract class AbstractTestReportIntegrationTest extends AbstractTestingMultiVer
         result.testPath("LoggingTest", "test").onlyRoot().assertStderr(equalTo("This is stderr.\n"))
 
         when:
-        executer.withArguments("-DLogLessStuff=true")
+        executor.withArguments("-DLogLessStuff=true")
         run "test"
 
         then:

@@ -19,7 +19,7 @@ package org.gradle.internal.flow.services
 import org.gradle.api.file.ArchiveOperations
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.process.ExecOperations
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
@@ -317,7 +317,7 @@ class FlowScopeIntegrationTest extends AbstractIntegrationSpec {
         then:
         failureHasCause "Failed to calculate the value of task ':fails' property 'color'."
         failureHasCause "Cannot access the value of 'BuildWorkResult' before it becomes available!"
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             failureDescriptionStartsWith "Configuration cache problems found in this build"
         }
     }

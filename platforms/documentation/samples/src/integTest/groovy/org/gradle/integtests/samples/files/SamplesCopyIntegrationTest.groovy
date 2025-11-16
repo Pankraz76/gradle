@@ -33,7 +33,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can copy a single file using task properties for the paths with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('copyReport2')
@@ -49,7 +49,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can copy a single file using the file method with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
         def reportsDir = dslDir.file('build/reports')
         reportsDir.createDir().file('my-report.pdf').touch()
 
@@ -67,7 +67,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can specify multiple files in a from with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
         def reportsDir = dslDir.file('build/reports')
         reportsDir.createDir().file('my-report.pdf').touch()
 
@@ -86,7 +86,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can filter files to a specific type with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
         def reportsDir = dslDir.file('build/reports')
         reportsDir.createDir().file('my-report.pdf').touch()
         reportsDir.file('numbers.csv').touch()
@@ -111,7 +111,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can filter files to a specific type including in subdirectories with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
         def reportsDir = dslDir.file('build/reports')
         reportsDir.createDir().file('my-report.pdf').touch()
         reportsDir.file('numbers.csv').touch()
@@ -136,7 +136,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can copy a directory with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
         def reportsDir = dslDir.file('build/reports')
         reportsDir.createDir().file('my-report.pdf').touch()
         reportsDir.file('numbers.csv').touch()
@@ -160,7 +160,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can copy a directory, including itself with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
         def reportsDir = dslDir.file('build/reports')
         reportsDir.createDir().file('my-report.pdf').touch()
         reportsDir.file('numbers.csv').touch()
@@ -184,7 +184,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can rename files as they are copied with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('copyFromStaging')
@@ -203,7 +203,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can truncate filenames as they are copied with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
         def reportsDir = dslDir.file('build/reports')
         reportsDir.createDir().file('my-report.pdf').touch()
         reportsDir.file('numbers-long.csv').touch()
@@ -227,7 +227,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can use copy task with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('copyTask')
@@ -246,7 +246,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can use copy task with patterns with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('copyTaskWithPatterns')
@@ -266,7 +266,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can use copy task with multiple from clauses with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('anotherCopyTask')
@@ -287,7 +287,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can use copy method in task with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('copyMethod')
@@ -306,7 +306,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can use copy method in task with outputs with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('copyMethodWithExplicitDependencies')
@@ -325,7 +325,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can use copy task with rename with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('rename')
@@ -346,7 +346,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can use copy task with filter with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('filter')
@@ -362,7 +362,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can nest child specifications with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('nestedSpecs')
@@ -385,7 +385,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can use a standalone copyspec within a copy with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('copyAssets')
@@ -408,7 +408,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can use a standalone copyspec within an archiving task with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('distApp')
@@ -433,7 +433,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can share a configuration closure with copy patterns no. 1 with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('copyAppAssets')
@@ -454,7 +454,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can share a configuration closure with copy patterns no. 2 with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('archiveDistAssets')
@@ -484,7 +484,7 @@ class SamplesCopyIntegrationTest extends AbstractSampleIntegrationTest {
     def "can change Ant default excludes with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds('forcedCopy')

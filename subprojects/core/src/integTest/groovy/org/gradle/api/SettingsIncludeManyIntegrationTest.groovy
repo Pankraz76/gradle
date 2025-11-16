@@ -62,7 +62,7 @@ class SettingsIncludeManyIntegrationTest extends AbstractIntegrationSpec {
         """
 
         // The failure here emits a stacktrace because it's at compilation time
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
 
         expect:
         def result = fails("projects")

@@ -29,11 +29,11 @@ class VersionInSettingsPluginUseIntegrationTest extends AbstractIntegrationSpec 
     def pluginBuilder = new PluginBuilder(file(ARTIFACT))
 
     @Rule
-    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     def setup() {
         // https://github.com/gradle/build-tool-flaky-tests/issues/49
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         publishPlugin("1.0")
         publishPlugin("2.0")
         withSettings """
@@ -266,6 +266,6 @@ class VersionInSettingsPluginUseIntegrationTest extends AbstractIntegrationSpec 
 
     void publishPlugin(String impl, String version) {
         pluginBuilder.addPlugin(impl, PLUGIN_ID, "TestPlugin${version.replace('.', '_')}")
-        pluginBuilder.publishAs(GROUP, ARTIFACT, version, pluginRepo, executer).allowAll()
+        pluginBuilder.publishAs(GROUP, ARTIFACT, version, pluginRepo, executor).allowAll()
     }
 }

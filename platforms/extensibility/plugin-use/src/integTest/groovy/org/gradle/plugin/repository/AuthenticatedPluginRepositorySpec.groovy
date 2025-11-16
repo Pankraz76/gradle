@@ -43,9 +43,9 @@ class AuthenticatedPluginRepositorySpec extends AbstractHttpDependencyResolution
         pluginBuilder.addPluginWithPrintlnTask(taskName, message, "org.example.plugin")
 
         if (repoType == IVY) {
-            return pluginBuilder.publishAs("org.example.plugin:plugin:1.0", ivyHttpRepo, executer)
+            return pluginBuilder.publishAs("org.example.plugin:plugin:1.0", ivyHttpRepo, executor)
         } else if (repoType == MAVEN) {
-            return pluginBuilder.publishAs("org.example.plugin:plugin:1.0", mavenHttpRepo, executer)
+            return pluginBuilder.publishAs("org.example.plugin:plugin:1.0", mavenHttpRepo, executor)
         }
         return null
     }

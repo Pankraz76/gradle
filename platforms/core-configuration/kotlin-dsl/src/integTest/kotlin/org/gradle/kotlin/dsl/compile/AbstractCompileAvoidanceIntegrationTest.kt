@@ -126,14 +126,14 @@ abstract class AbstractCompileAvoidanceIntegrationTest : AbstractKotlinIntegrati
 
     protected
     fun configureProject(vararg tasks: String): BuildOperationsAssertions {
-        val buildOperations = BuildOperationsFixture(executer, testDirectoryProvider)
-        val output = executer.withTasks(*tasks).run().normalizedOutput
+        val buildOperations = BuildOperationsFixture(executor, testDirectoryProvider)
+        val output = executor.withTasks(*tasks).run().normalizedOutput
         return BuildOperationsAssertions(buildOperations, output)
     }
 
     protected
     fun configureProjectAndExpectCompileFailure(@Suppress("SameParameterValue") expectedFailure: String) {
-        val error = executer.runWithFailure().error
+        val error = executor.runWithFailure().error
         MatcherAssert.assertThat(error, CoreMatchers.containsString(expectedFailure))
     }
 }

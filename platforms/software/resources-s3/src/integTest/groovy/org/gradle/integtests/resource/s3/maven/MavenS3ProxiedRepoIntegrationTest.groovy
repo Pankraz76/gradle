@@ -61,7 +61,7 @@ task retrieve(type: Sync) {
         module.artifact.expectDownload()
 
         when:
-        executer.withArguments(
+        executor.withArguments(
                 "-Dorg.gradle.s3.endpoint=${server.uri}",
                 "-Dhttp.proxyHost=localhost",
                 "-Dhttp.proxyPort=${proxyServer.port}",
@@ -100,7 +100,7 @@ task retrieve(type: Sync) {
         module.artifact.expectDownload()
 
         when:
-        executer.withArguments(
+        executor.withArguments(
                 "-Dorg.gradle.s3.endpoint=${server.uri}",
                 "-Dhttp.proxyHost=localhost",
                 "-Dhttp.proxyPort=${proxyServer.port}",

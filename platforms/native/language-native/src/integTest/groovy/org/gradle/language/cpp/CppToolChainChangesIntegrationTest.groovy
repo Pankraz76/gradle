@@ -57,11 +57,11 @@ class CppToolChainChangesIntegrationTest extends AbstractIntegrationSpec {
     def "recompiles binary when toolchain changes from #toolChainBefore to #toolChainAfter"() {
         buildFile.text = buildScriptForToolChains(toolChainBefore, toolChainAfter)
         def useAlternateToolChain = false
-        executer.beforeExecute({
+        executor.beforeExecute({
             if (useAlternateToolChain) {
-                toolChainAfter.configureExecuter(it)
+                toolChainAfter.configureExecutor(it)
             } else {
-                toolChainBefore.configureExecuter(it)
+                toolChainBefore.configureExecutor(it)
             }
         })
 

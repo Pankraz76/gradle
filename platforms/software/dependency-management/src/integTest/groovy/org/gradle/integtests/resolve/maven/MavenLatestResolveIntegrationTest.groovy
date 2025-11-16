@@ -33,7 +33,7 @@ class MavenLatestResolveIntegrationTest extends AbstractHttpDependencyResolution
     }
 
     def runRetrieveTask() {
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run 'retrieve'
     }
     def "latest selector works correctly when no snapshot versions are present"() {
@@ -62,7 +62,7 @@ class MavenLatestResolveIntegrationTest extends AbstractHttpDependencyResolution
         buildFile << "dependencies { compile 'group:projectA:latest.foo' }"
 
         expect:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         fails 'retrieve'
         // would be better if metadata validation failed (status not contained in status scheme)
         failure.assertHasCause("Could not find any version that matches group:projectA:latest.foo.")

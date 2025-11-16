@@ -23,7 +23,7 @@ import spock.lang.Issue
 class TestNGUpToDateCheckIntegrationTest extends AbstractIntegrationSpec {
 
     def setup() {
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         file('src/test/java/SomeTest.java') << '''
             public class SomeTest {
                 @org.testng.annotations.Test(groups = {"group to include"})

@@ -37,8 +37,8 @@ class ConsoleTestNGUnsupportedTestWorkerFunctionalTest extends AbstractIntegrati
     BlockingHttpServer server = new BlockingHttpServer()
 
     def setup() {
-        executer.withConsole(ConsoleOutput.Rich)
-        executer.withArguments('--parallel', "--max-workers=$MAX_WORKERS")
+        executor.withConsole(ConsoleOutput.Rich)
+        executor.withArguments('--parallel', "--max-workers=$MAX_WORKERS")
         server.start()
     }
 

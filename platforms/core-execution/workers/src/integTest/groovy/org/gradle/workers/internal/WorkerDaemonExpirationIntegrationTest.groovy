@@ -27,8 +27,8 @@ class WorkerDaemonExpirationIntegrationTest extends AbstractIntegrationSpec {
 
     def setup() {
         given:
-        executer.requireIsolatedDaemons()
-        executer.requireDaemon()
+        executor.requireIsolatedDaemons()
+        executor.requireDaemon()
 
         and:
         settingsFile << """

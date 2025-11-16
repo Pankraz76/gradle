@@ -38,7 +38,7 @@ class GradleBuildCacheServiceCorruptionTest extends AbstractIntegrationSpec {
                 }
             }
         """
-        executer.withArguments("--parallel", "--info")
+        executor.withArguments("--parallel", "--info")
         expect:
         succeeds("clean", "breakBuild")
         // This fails when running with the forking executor

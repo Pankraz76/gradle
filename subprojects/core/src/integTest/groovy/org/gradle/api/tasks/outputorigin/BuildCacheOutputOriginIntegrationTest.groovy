@@ -27,14 +27,14 @@ import org.junit.Rule
 class BuildCacheOutputOriginIntegrationTest extends AbstractIntegrationSpec implements DirectoryBuildCacheFixture {
 
     @Rule
-    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(executer, temporaryFolder)
+    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(executor, temporaryFolder)
 
     @Rule
-    public final OriginFixture outputOrigin = new OriginFixture(executer, temporaryFolder)
+    public final OriginFixture outputOrigin = new OriginFixture(executor, temporaryFolder)
 
     @Delegate
     @Rule
-    public final BuildCacheKeyFixture buildCacheKeyFixture = new BuildCacheKeyFixture(executer, temporaryFolder)
+    public final BuildCacheKeyFixture buildCacheKeyFixture = new BuildCacheKeyFixture(executor, temporaryFolder)
 
     String getBuildInvocationId() {
         scopeIds.buildInvocationId.asString()
@@ -49,7 +49,7 @@ class BuildCacheOutputOriginIntegrationTest extends AbstractIntegrationSpec impl
     }
 
     def setup() {
-        executer.beforeExecute {
+        executor.beforeExecute {
             it.withBuildCacheEnabled()
         }
     }

@@ -18,8 +18,8 @@
 package org.gradle.launcher.daemon
 
 import org.gradle.integtests.fixtures.daemon.DaemonIntegrationSpec
-import org.gradle.integtests.fixtures.executer.DaemonGradleExecuter
-import org.gradle.integtests.fixtures.executer.DefaultGradleDistribution
+import org.gradle.integtests.fixtures.executor.DaemonGradleExecutor
+import org.gradle.integtests.fixtures.executor.DefaultGradleDistribution
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.test.fixtures.file.LeaksFileHandles
 import org.gradle.test.fixtures.file.TestFile
@@ -50,7 +50,7 @@ class DaemonInitScriptHandlingIntegrationTest extends DaemonIntegrationSpec {
         """
 
         and:
-        executer.withTasks("help")
+        executor.withTasks("help")
 
         when:
         def distro1Result = runWithGradleHome(distro1)
@@ -86,9 +86,9 @@ class DaemonInitScriptHandlingIntegrationTest extends DaemonIntegrationSpec {
     }
 
     def runWithGradleHome(TestFile gradleHome) {
-        def copiedDistro = new DefaultGradleDistribution(executer.distribution.version, gradleHome, null)
-        def daemonExecuter = new DaemonGradleExecuter(copiedDistro, executer.testDirectoryProvider)
-        executer.copyTo(daemonExecuter)
-        return daemonExecuter.run()
+        def copiedDistro = new DefaultGradleDistribution(executor.distribution.version, gradleHome, null)
+        def daemonExecutor = new DaemonGradleExecutor(copiedDistro, executor.testDirectoryProvider)
+        executor.copyTo(daemonExecutor)
+        return daemonExecutor.run()
     }
 }

@@ -27,7 +27,7 @@ class BuildScriptExecutionIntegrationSpec extends AbstractIntegrationSpec {
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "requires explicit encoding")
     def "build scripts must be encoded using utf-8"() {
         given:
-        executer.withDefaultCharacterEncoding("ISO-8859-15")
+        executor.withDefaultCharacterEncoding("ISO-8859-15")
 
         and:
         buildFile.setText("""

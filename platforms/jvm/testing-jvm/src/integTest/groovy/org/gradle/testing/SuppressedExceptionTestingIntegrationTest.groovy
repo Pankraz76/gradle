@@ -35,7 +35,7 @@ class SuppressedExceptionTestingIntegrationTest extends AbstractIntegrationSpec 
     }
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     def "non-deserializable suppressed exceptions are preserved"() {

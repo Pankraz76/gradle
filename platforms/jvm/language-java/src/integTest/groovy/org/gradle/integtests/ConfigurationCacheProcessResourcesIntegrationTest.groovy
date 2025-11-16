@@ -27,9 +27,9 @@ class ConfigurationCacheProcessResourcesIntegrationTest extends AbstractIntegrat
     def configurationCache = newConfigurationCacheFixture()
 
     @Override
-    void setupExecuter() {
-        super.setupExecuter()
-        executer.withConfigurationCacheEnabled()
+    void setupExecutor() {
+        super.setupExecutor()
+        executor.withConfigurationCacheEnabled()
     }
 
     @Issue('https://github.com/gradle/gradle/issues/16423')

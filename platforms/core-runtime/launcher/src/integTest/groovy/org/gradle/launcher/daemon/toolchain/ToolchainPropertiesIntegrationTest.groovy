@@ -31,7 +31,7 @@ class ToolchainPropertiesIntegrationTest extends AbstractIntegrationSpec impleme
 
         then:
         expectToolchainPropertyDeprecationFor('org.gradle.java.installations.auto-detect', 'false')
-        executer.withToolchainDetectionEnabled()
+        executor.withToolchainDetectionEnabled()
         succeeds("printProperty")
 
         and:
@@ -50,7 +50,7 @@ class ToolchainPropertiesIntegrationTest extends AbstractIntegrationSpec impleme
 
         then:
         expectToolchainPropertyDeprecationFor('org.gradle.java.installations.auto-detect', 'false')
-        executer.withToolchainDetectionEnabled()
+        executor.withToolchainDetectionEnabled()
         succeeds("printProperty")
 
         and:
@@ -96,7 +96,7 @@ class ToolchainPropertiesIntegrationTest extends AbstractIntegrationSpec impleme
         buildFile << printProjectProperty(ToolchainConfiguration.AUTO_DETECT)
 
         when:
-        executer.requireOwnGradleUserHomeDir("so we can set properties in GUH/gradle.properties")
+        executor.requireOwnGradleUserHomeDir("so we can set properties in GUH/gradle.properties")
         file("user-home/gradle.properties") << "${ToolchainConfiguration.AUTO_DETECT}=false"
 
         then:

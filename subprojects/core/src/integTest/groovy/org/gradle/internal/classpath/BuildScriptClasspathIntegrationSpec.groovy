@@ -22,7 +22,7 @@ import org.gradle.api.internal.cache.CacheConfigurationsInternal
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.AvailableJavaHomes
 import org.gradle.integtests.fixtures.cache.FileAccessTimeJournalFixture
-import org.gradle.integtests.fixtures.executer.ArtifactBuilder
+import org.gradle.integtests.fixtures.executor.ArtifactBuilder
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.fixtures.server.http.HttpServer
 import org.gradle.test.fixtures.server.http.MavenHttpRepository
@@ -173,7 +173,7 @@ class BuildScriptClasspathIntegrationSpec extends AbstractIntegrationSpec implem
                 }
             }
         """
-        executer.requireDaemon().requireIsolatedDaemons()
+        executor.requireDaemon().requireIsolatedDaemons()
 
         expect:
         succeeds("checkUrlConnectionCaching")
@@ -233,7 +233,7 @@ class BuildScriptClasspathIntegrationSpec extends AbstractIntegrationSpec implem
 
     def "cleans up unused cached entries in the Jars cache"() {
         given:
-        executer.requireIsolatedDaemons() // needs to stop daemon
+        executor.requireIsolatedDaemons() // needs to stop daemon
         requireOwnGradleUserHomeDir("needs its own journal")
         artifactBuilder().buildJar(file("repo/a-1.jar"))
 
@@ -255,7 +255,7 @@ class BuildScriptClasspathIntegrationSpec extends AbstractIntegrationSpec implem
         and:
         createBuildFileThatPrintsClasspathURLs()
         // start as new process so journal is not restored from in-memory cache
-        executer.withTasks("showBuildscript").start().waitForFinish()
+        executor.withTasks("showBuildscript").start().waitForFinish()
 
         then:
         buildscriptClasses.assertDoesNotExist()
@@ -393,14 +393,14 @@ class BuildScriptClasspathIntegrationSpec extends AbstractIntegrationSpec implem
         def jdk24 = AvailableJavaHomes.getJdk24()
 
         when:
-        executer.withJvm(jdk21).withArguments("-Dorg.gradle.java.installations.paths=${jdk21.javaHome},${jdk24.javaHome}")
+        executor.withJvm(jdk21).withArguments("-Dorg.gradle.java.installations.paths=${jdk21.javaHome},${jdk24.javaHome}")
         succeeds("printFoo")
 
         then:
         outputContains("JAR = DEFAULT")
 
         when:
-        executer.withJvm(jdk24).withArguments("-Dorg.gradle.java.installations.paths=${jdk21.javaHome},${jdk24.javaHome}")
+        executor.withJvm(jdk24).withArguments("-Dorg.gradle.java.installations.paths=${jdk21.javaHome},${jdk24.javaHome}")
         succeeds("printFoo")
 
         then:

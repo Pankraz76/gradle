@@ -53,7 +53,7 @@ class JavaCompileIntegrationTest extends AbstractIntegrationSpec {
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        executer.expectDocumentedDeprecationWarning("Configuring a Java executable via a relative path. " +
+        executor.expectDocumentedDeprecationWarning("Configuring a Java executable via a relative path. " +
             "This behavior has been deprecated. This will fail with an error in Gradle 10. " +
             "Resolving relative file paths might yield unexpected results, there is no single clear location it would make sense to resolve against. " +
             "Configure an absolute path to a Java executable instead. " +
@@ -613,7 +613,7 @@ class JavaCompileIntegrationTest extends AbstractIntegrationSpec {
         file('src/main/java/Hello.java') << 'public class Hello {}'
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         run 'compileJava'
 
         then:
@@ -637,7 +637,7 @@ class JavaCompileIntegrationTest extends AbstractIntegrationSpec {
         // See https://bugs.openjdk.java.net/browse/JDK-7062777?focusedCommentId=12254124&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-12254124.
         resources.findResource('broken-utf8.is-a-jar').copyTo(file('broken-utf8.jar'))
         file('src/main/java/Hello.java') << 'public class Hello {}'
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
 
         when:
         run 'compileJava', '--debug'
@@ -668,7 +668,7 @@ class JavaCompileIntegrationTest extends AbstractIntegrationSpec {
         '''
         file('foo.class') << 'this is clearly not a well formed class file'
         file('src/main/java/Hello.java') << 'public class Hello {}'
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
 
         when:
         run 'compileJava', '--debug'
@@ -693,7 +693,7 @@ class JavaCompileIntegrationTest extends AbstractIntegrationSpec {
         '''
         file('classes/foo.class') << 'this is clearly not a well formed class file'
         file('src/main/java/Hello.java') << 'public class Hello {}'
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
 
         when:
         run 'compileJava', '--debug'

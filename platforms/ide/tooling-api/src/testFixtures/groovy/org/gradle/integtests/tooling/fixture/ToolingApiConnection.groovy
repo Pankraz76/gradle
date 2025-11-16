@@ -18,7 +18,7 @@ package org.gradle.integtests.tooling.fixture
 
 import org.apache.commons.io.output.TeeOutputStream
 import org.gradle.tooling.BuildAction
-import org.gradle.tooling.BuildActionExecuter
+import org.gradle.tooling.BuildActionExecutor
 import org.gradle.tooling.BuildLauncher
 import org.gradle.tooling.ConfigurableLauncher
 import org.gradle.tooling.IntermediateResultHandler
@@ -76,13 +76,13 @@ class ToolingApiTestLauncher implements TestLauncher, ToolingApiConfigurableLaun
     }
 }
 
-class ToolingApiBuildActionExecuter<T> implements BuildActionExecuter<T>, ToolingApiConfigurableLauncher<BuildActionExecuter<T>> {
+class ToolingApiBuildActionExecutor<T> implements BuildActionExecutor<T>, ToolingApiConfigurableLauncher<BuildActionExecutor<T>> {
     @Delegate
-    private final BuildActionExecuter<T> buildActionExecutor
+    private final BuildActionExecutor<T> buildActionExecutor
 
-    ToolingApiBuildActionExecuter(BuildActionExecuter<T> buildActionExecuter, OutputStream stdout, OutputStream stderr) {
-        initTrait(buildActionExecuter, stdout, stderr)
-        this.buildActionExecutor = buildActionExecuter
+    ToolingApiBuildActionExecutor(BuildActionExecutor<T> buildActionExecutor, OutputStream stdout, OutputStream stderr) {
+        initTrait(buildActionExecutor, stdout, stderr)
+        this.buildActionExecutor = buildActionExecutor
     }
 }
 
@@ -96,33 +96,33 @@ class ToolingApiModelBuilder<T> implements ModelBuilder<T>, ToolingApiConfigurab
     }
 }
 
-class BuildActionExecuterBuilder implements BuildActionExecuter.Builder {
+class BuildActionExecutorBuilder implements BuildActionExecutor.Builder {
 
-    private final BuildActionExecuter.Builder delegate
+    private final BuildActionExecutor.Builder delegate
     private final OutputStream stderr
     private final OutputStream stdout
 
-    BuildActionExecuterBuilder(BuildActionExecuter.Builder delegate, OutputStream stdout, OutputStream stderr) {
+    BuildActionExecutorBuilder(BuildActionExecutor.Builder delegate, OutputStream stdout, OutputStream stderr) {
         this.delegate = delegate
         this.stdout = stdout
         this.stderr = stderr
     }
 
     @Override
-    <T> BuildActionExecuter.Builder projectsLoaded(BuildAction<T> buildAction, IntermediateResultHandler<? super T> handler) throws IllegalArgumentException {
+    <T> BuildActionExecutor.Builder projectsLoaded(BuildAction<T> buildAction, IntermediateResultHandler<? super T> handler) throws IllegalArgumentException {
         delegate.projectsLoaded(buildAction, handler)
         this
     }
 
     @Override
-    <T> BuildActionExecuter.Builder buildFinished(BuildAction<T> buildAction, IntermediateResultHandler<? super T> handler) throws IllegalArgumentException {
+    <T> BuildActionExecutor.Builder buildFinished(BuildAction<T> buildAction, IntermediateResultHandler<? super T> handler) throws IllegalArgumentException {
         delegate.buildFinished(buildAction, handler)
         this
     }
 
     @Override
-    BuildActionExecuter<Void> build() {
-        new ToolingApiBuildActionExecuter(delegate.build(), stdout, stderr)
+    BuildActionExecutor<Void> build() {
+        new ToolingApiBuildActionExecutor(delegate.build(), stdout, stderr)
     }
 }
 
@@ -150,8 +150,8 @@ class ToolingApiConnection {
         projectConnection."$name"(*args)
     }
 
-    BuildActionExecuter.Builder action() {
-        new BuildActionExecuterBuilder(projectConnection.action(), stdout, stderr)
+    BuildActionExecutor.Builder action() {
+        new BuildActionExecutorBuilder(projectConnection.action(), stdout, stderr)
     }
 
     BuildLauncher newBuild() {
@@ -166,7 +166,7 @@ class ToolingApiConnection {
         new ToolingApiModelBuilder(projectConnection.model(modelType), stdout, stderr)
     }
 
-    <T> BuildActionExecuter<T> action(BuildAction<T> buildAction) {
-        new ToolingApiBuildActionExecuter(projectConnection.action(buildAction), stdout, stderr)
+    <T> BuildActionExecutor<T> action(BuildAction<T> buildAction) {
+        new ToolingApiBuildActionExecutor(projectConnection.action(buildAction), stdout, stderr)
     }
 }

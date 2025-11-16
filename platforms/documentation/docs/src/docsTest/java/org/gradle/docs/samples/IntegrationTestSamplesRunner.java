@@ -89,7 +89,7 @@ class IntegrationTestSamplesRunner extends SamplesRunner {
         try {
             runChild(sample, new RunNotifierAdapter());
         } catch (Throwable e) {
-            String extraParameter = "configCache".equals(System.getProperty("org.gradle.integtest.executer")) ?
+            String extraParameter = "configCache".equals(System.getProperty("org.gradle.integtest.executor")) ?
                 "-PenableConfigurationCacheForDocsTests=true" : "";
             throw new GradleException(
                 "Sample test run failed.\nTo understand how docsTest works, See:\n" +

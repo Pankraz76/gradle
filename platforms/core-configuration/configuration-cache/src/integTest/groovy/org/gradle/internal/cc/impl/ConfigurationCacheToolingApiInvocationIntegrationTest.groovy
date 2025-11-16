@@ -16,15 +16,15 @@
 
 package org.gradle.internal.cc.impl
 
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.internal.cc.impl.fixtures.SomeToolingModelBuildAction
-import org.gradle.internal.cc.impl.fixtures.ToolingApiBackedGradleExecuter
+import org.gradle.internal.cc.impl.fixtures.ToolingApiBackedGradleExecutor
 import org.gradle.internal.cc.impl.fixtures.ToolingApiSpec
 
 class ConfigurationCacheToolingApiInvocationIntegrationTest extends AbstractConfigurationCacheIntegrationTest implements ToolingApiSpec {
     @Override
-    GradleExecuter createExecuter() {
-        return new ToolingApiBackedGradleExecuter(distribution, temporaryFolder)
+    GradleExecutor createExecutor() {
+        return new ToolingApiBackedGradleExecutor(distribution, temporaryFolder)
     }
 
     def "can run tasks via tooling API when configuration cache is enabled"() {

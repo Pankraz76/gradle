@@ -40,7 +40,7 @@ class HttpBuildCacheConfigurationBuildOperationIntegrationTest extends AbstractI
             }
         """
 
-    def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+    def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
     @Rule
     HttpBuildCacheServer httpBuildCacheServer = new HttpBuildCacheServer(testDirectoryProvider)
@@ -62,7 +62,7 @@ class HttpBuildCacheConfigurationBuildOperationIntegrationTest extends AbstractI
                 }
             }
         """
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
 
         when:
         succeeds("help")
@@ -108,7 +108,7 @@ class HttpBuildCacheConfigurationBuildOperationIntegrationTest extends AbstractI
                 }
             }
         """
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
 
         when:
         succeeds("help")
@@ -131,7 +131,7 @@ class HttpBuildCacheConfigurationBuildOperationIntegrationTest extends AbstractI
                 }
             }
         """
-        executer.withBuildCacheEnabled().withArgument('--offline')
+        executor.withBuildCacheEnabled().withArgument('--offline')
 
         when:
         succeeds("help")
@@ -152,7 +152,7 @@ class HttpBuildCacheConfigurationBuildOperationIntegrationTest extends AbstractI
                 }
             }
         """
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
 
         when:
         succeeds("help")
@@ -174,7 +174,7 @@ class HttpBuildCacheConfigurationBuildOperationIntegrationTest extends AbstractI
                 }
             }
         """
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
 
         when:
         succeeds("help")
@@ -199,7 +199,7 @@ class HttpBuildCacheConfigurationBuildOperationIntegrationTest extends AbstractI
                 }
             }
         """
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
 
         when:
         succeeds("help")

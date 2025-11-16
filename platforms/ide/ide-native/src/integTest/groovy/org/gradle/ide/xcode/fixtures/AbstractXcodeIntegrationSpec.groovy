@@ -104,18 +104,18 @@ rootProject.name = "${rootProjectName}"
 
     protected XcodebuildExecutor getXcodebuild() {
         // Gradle needs to be isolated so the xcodebuild does not leave behind daemons
-        assert executer.distribution.gradleHomeDir != null
-        assert !executer.usesSharedDaemons()
+        assert executor.distribution.gradleHomeDir != null
+        assert !executor.usesSharedDaemons()
         new XcodebuildExecutor(testDirectory)
     }
 
     void useXcodebuildTool() {
-        executer.requireDaemon().requireIsolatedDaemons()
+        executor.requireDaemon().requireIsolatedDaemons()
 
         def initScript = file("init.gradle")
         initScript << IdeCommandLineUtil.generateGradleProbeInitFile('xcode', 'xcodebuild')
 
-        executer.beforeExecute({
+        executor.beforeExecute({
             usingInitScript(initScript)
         })
     }
@@ -134,7 +134,7 @@ rootProject.name = "${rootProjectName}"
                 }
             }
         """
-        executer.beforeExecute({
+        executor.beforeExecute({
             usingInitScript(initScript)
         })
     }

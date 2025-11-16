@@ -23,7 +23,7 @@ class KotlinSettingsScriptIntegrationTest : AbstractKotlinIntegrationTest() {
         PluginBuilder(file("plugin")).run {
             packageName = null
             addSettingsPlugin("", "test.MySettingsPlugin", "MySettingsPlugin")
-            publishTo(executer, pluginJar)
+            publishTo(executor, pluginJar)
         }
 
         withSettings(
@@ -46,13 +46,13 @@ class KotlinSettingsScriptIntegrationTest : AbstractKotlinIntegrationTest() {
     @Test
     fun `can apply plugin using plugins block`() {
 
-        val pluginPortal: MavenHttpPluginRepository = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+        val pluginPortal: MavenHttpPluginRepository = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
         try {
             pluginPortal.start()
 
             PluginBuilder(file("plugin")).run {
                 addSettingsPlugin("println '*42*'", "test.MySettingsPlugin", "MySettingsPlugin")
-                publishAs("g", "m", "1.0", pluginPortal, createExecuter()).allowAll()
+                publishAs("g", "m", "1.0", pluginPortal, createExecutor()).allowAll()
             }
 
             withSettings(

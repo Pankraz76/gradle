@@ -106,8 +106,8 @@ class ContinuousBuildCancellationIntegrationTest extends AbstractContinuousInteg
 
     def "does not log daemon cancel message for continuous build"() {
         setup:
-        executer.requireDaemon()
-        executer.requireIsolatedDaemons()
+        executor.requireDaemon()
+        executor.requireIsolatedDaemons()
         setupJavaProject()
 
         when:
@@ -130,6 +130,6 @@ class ContinuousBuildCancellationIntegrationTest extends AbstractContinuousInteg
     }
 
     DaemonsFixture getDaemons() {
-        new DaemonLogsAnalyzer(executer.daemonBaseDir)
+        new DaemonLogsAnalyzer(executor.daemonBaseDir)
     }
 }

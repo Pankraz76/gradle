@@ -18,8 +18,8 @@ package org.gradle.api.internal.tasks.execution;
 import org.gradle.api.Task;
 import org.gradle.api.execution.TaskExecutionGraph;
 import org.gradle.api.internal.TaskInternal;
-import org.gradle.api.internal.tasks.TaskExecuter;
-import org.gradle.api.internal.tasks.TaskExecuterResult;
+import org.gradle.api.internal.tasks.TaskExecutor;
+import org.gradle.api.internal.tasks.TaskExecutorResult;
 import org.gradle.api.internal.tasks.TaskExecutionContext;
 import org.gradle.api.internal.tasks.TaskExecutionOutcome;
 import org.gradle.api.internal.tasks.TaskStateInternal;
@@ -27,20 +27,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A {@link org.gradle.api.internal.tasks.TaskExecuter} which skips tasks that have no actions.
+ * A {@link org.gradle.api.internal.tasks.TaskExecutor} which skips tasks that have no actions.
  */
-public class SkipTaskWithNoActionsExecuter implements TaskExecuter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SkipTaskWithNoActionsExecuter.class);
+public class SkipTaskWithNoActionsExecutor implements TaskExecutor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SkipTaskWithNoActionsExecutor.class);
     private final TaskExecutionGraph taskExecutionGraph;
-    private final TaskExecuter executer;
+    private final TaskExecutor executor;
 
-    public SkipTaskWithNoActionsExecuter(TaskExecutionGraph taskExecutionGraph, TaskExecuter executer) {
+    public SkipTaskWithNoActionsExecutor(TaskExecutionGraph taskExecutionGraph, TaskExecutor executor) {
         this.taskExecutionGraph = taskExecutionGraph;
-        this.executer = executer;
+        this.executor = executor;
     }
 
     @Override
-    public TaskExecuterResult execute(TaskInternal task, TaskStateInternal state, TaskExecutionContext context) {
+    public TaskExecutorResult execute(TaskInternal task, TaskStateInternal state, TaskExecutionContext context) {
         if (!task.hasTaskActions()) {
             LOGGER.info("Skipping {} as it has no actions.", task);
             boolean upToDate = true;
@@ -52,8 +52,8 @@ public class SkipTaskWithNoActionsExecuter implements TaskExecuter {
             }
             state.setActionable(false);
             state.setOutcome(upToDate ? TaskExecutionOutcome.UP_TO_DATE : TaskExecutionOutcome.EXECUTED);
-            return TaskExecuterResult.WITHOUT_OUTPUTS;
+            return TaskExecutorResult.WITHOUT_OUTPUTS;
         }
-        return executer.execute(task, state, context);
+        return executor.execute(task, state, context);
     }
 }

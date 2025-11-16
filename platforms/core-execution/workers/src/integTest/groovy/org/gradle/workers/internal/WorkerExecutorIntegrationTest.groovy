@@ -33,7 +33,7 @@ class WorkerExecutorIntegrationTest extends AbstractWorkerExecutorIntegrationTes
     @Rule
     public final BlockingHttpServer blockingServer = new BlockingHttpServer()
 
-    def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+    def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "can create and use a work action defined in buildSrc in #isolationMode"() {
         fixture.withWorkActionClassInBuildSrc()
@@ -182,7 +182,7 @@ class WorkerExecutorIntegrationTest extends AbstractWorkerExecutorIntegrationTes
     }
 
     def "re-uses an existing idle worker daemon"() {
-        executer.withWorkerDaemonsExpirationDisabled()
+        executor.withWorkerDaemonsExpirationDisabled()
         fixture.withWorkActionClassInBuildSrc()
 
         buildFile << """
@@ -231,7 +231,7 @@ class WorkerExecutorIntegrationTest extends AbstractWorkerExecutorIntegrationTes
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "This test requires isolated daemons")
     def "does not leak project state across multiple builds"() {
         fixture.withWorkActionClassInBuildSrc()
-        executer.withBuildJvmOpts('-Xms256m', '-Xmx512m').requireIsolatedDaemons().requireDaemon()
+        executor.withBuildJvmOpts('-Xms256m', '-Xmx512m').requireIsolatedDaemons().requireDaemon()
 
         buildFile << """
             ext.memoryHog = new byte[1024*1024*150] // ~150MB
@@ -291,7 +291,7 @@ class WorkerExecutorIntegrationTest extends AbstractWorkerExecutorIntegrationTes
     }
 
     def "re-uses an existing compatible worker daemon when a different work action is executed"() {
-        executer.withWorkerDaemonsExpirationDisabled()
+        executor.withWorkerDaemonsExpirationDisabled()
         fixture.withAlternateWorkActionClassInBuildSrc()
 
         buildFile << """

@@ -80,7 +80,7 @@ class RecoverFromBrokenResolutionIntegrationTest extends AbstractHttpDependencyR
         when:
         server.resetExpectations()
         then:
-        executer.withArgument("--offline")
+        executor.withArgument("--offline")
         run 'retrieve'
         and:
         file('libs/projectA-1.0-SNAPSHOT.jar').assertIsCopyOf(module.artifact.file)
@@ -114,7 +114,7 @@ class RecoverFromBrokenResolutionIntegrationTest extends AbstractHttpDependencyR
         when:
         server.resetExpectations()
         then:
-        executer.withArgument("--offline")
+        executor.withArgument("--offline")
         run 'retrieve'
         and:
         file('libs/projectA-1.0-SNAPSHOT.jar').assertIsCopyOf(module.artifact.file)
@@ -148,7 +148,7 @@ class RecoverFromBrokenResolutionIntegrationTest extends AbstractHttpDependencyR
         when:
         server.resetExpectations()
         then:
-        executer.withArgument("--offline")
+        executor.withArgument("--offline")
         run 'retrieve'
         and:
         file('libs/projectA-1.0-SNAPSHOT.jar').assertIsCopyOf(module.artifact.file)
@@ -185,7 +185,7 @@ class RecoverFromBrokenResolutionIntegrationTest extends AbstractHttpDependencyR
         when:
         server.resetExpectations()
         then:
-        executer.withArgument("--offline")
+        executor.withArgument("--offline")
         run 'retrieve'
         and:
         file('libs/projectA-1.0-SNAPSHOT.jar').assertIsCopyOf(module.artifact.file)
@@ -245,7 +245,7 @@ class RecoverFromBrokenResolutionIntegrationTest extends AbstractHttpDependencyR
         when:
         server.resetExpectations()
         then:
-        executer.withArgument("--offline")
+        executor.withArgument("--offline")
         run 'retrieve'
         and:
         file('libs/projectA-1.0.jar').assertIsCopyOf(ivyModule.jarFile)
@@ -300,7 +300,7 @@ class RecoverFromBrokenResolutionIntegrationTest extends AbstractHttpDependencyR
         when:
         server.resetExpectations()
         then:
-        executer.withArgument("--offline")
+        executor.withArgument("--offline")
         run 'retrieve'
         and:
         file('libs/projectA-1.1.jar').assertIsCopyOf(ivyModule.jarFile)

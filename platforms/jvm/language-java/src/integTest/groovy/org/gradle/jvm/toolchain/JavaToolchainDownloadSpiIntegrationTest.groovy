@@ -19,8 +19,8 @@ package org.gradle.jvm.toolchain
 import org.gradle.api.JavaVersion
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.AvailableJavaHomes
-import org.gradle.integtests.fixtures.executer.DocumentationUtils
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.DocumentationUtils
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.internal.jvm.Jvm
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.test.precondition.Requires
@@ -61,7 +61,7 @@ class JavaToolchainDownloadSpiIntegrationTest extends AbstractIntegrationSpec {
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        failure = executer
+        failure = executor
                 .withTasks("compileJava", "-s")
                 .requireOwnGradleUserHomeDir("needs to not have cached toolchains")
                 .withToolchainDownloadEnabled()
@@ -99,7 +99,7 @@ class JavaToolchainDownloadSpiIntegrationTest extends AbstractIntegrationSpec {
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        failure = executer
+        failure = executor
                 .withTasks("compileJava")
                 .requireOwnGradleUserHomeDir("needs to not have cached toolchains")
                 .withToolchainDownloadEnabled()
@@ -141,7 +141,7 @@ class JavaToolchainDownloadSpiIntegrationTest extends AbstractIntegrationSpec {
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        result = executer
+        result = executor
             .withTasks("compileJava", "-s")
             .requireOwnGradleUserHomeDir("needs to not have cached toolchains")
             .withToolchainDownloadEnabled()
@@ -195,7 +195,7 @@ class JavaToolchainDownloadSpiIntegrationTest extends AbstractIntegrationSpec {
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        failure = executer
+        failure = executor
                 .withTasks("compileJava")
                 .requireOwnGradleUserHomeDir("needs to not have cached toolchains")
                 .withToolchainDownloadEnabled()
@@ -243,7 +243,7 @@ class JavaToolchainDownloadSpiIntegrationTest extends AbstractIntegrationSpec {
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        failure = executer
+        failure = executor
                 .withTasks("compileJava")
                 .requireOwnGradleUserHomeDir("needs to not have cached toolchains")
                 .withToolchainDownloadEnabled()
@@ -287,7 +287,7 @@ class JavaToolchainDownloadSpiIntegrationTest extends AbstractIntegrationSpec {
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        failure = executer
+        failure = executor
                 .withTasks("compileJava")
                 .requireOwnGradleUserHomeDir("needs to not have cached toolchains")
                 .withToolchainDownloadEnabled()
@@ -331,7 +331,7 @@ class JavaToolchainDownloadSpiIntegrationTest extends AbstractIntegrationSpec {
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        failure = executer
+        failure = executor
                 .withTasks("compileJava")
                 .requireOwnGradleUserHomeDir("needs to not have cached toolchains")
                 .withToolchainDownloadEnabled()
@@ -378,7 +378,7 @@ class JavaToolchainDownloadSpiIntegrationTest extends AbstractIntegrationSpec {
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        failure = executer
+        failure = executor
                 .withTasks("compileJava")
                 .requireOwnGradleUserHomeDir("needs to not have cached toolchains")
                 .withToolchainDownloadEnabled()
@@ -430,7 +430,7 @@ class JavaToolchainDownloadSpiIntegrationTest extends AbstractIntegrationSpec {
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        failure = executer
+        failure = executor
                 .withTasks("compileJava")
                 .requireOwnGradleUserHomeDir("needs to not have cached toolchains")
                 .withToolchainDownloadEnabled()
@@ -474,7 +474,7 @@ class JavaToolchainDownloadSpiIntegrationTest extends AbstractIntegrationSpec {
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        failure = executer
+        failure = executor
                 .withTasks("compileJava")
                 .requireOwnGradleUserHomeDir("needs to not have cached toolchains")
                 .withToolchainDownloadEnabled()
@@ -540,7 +540,7 @@ class JavaToolchainDownloadSpiIntegrationTest extends AbstractIntegrationSpec {
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        def result = executer
+        def result = executor
             .withTasks("compileJava")
             .withArgument("--$logLevel")
             .requireOwnGradleUserHomeDir("needs to not have cached toolchains")
@@ -575,7 +575,7 @@ class JavaToolchainDownloadSpiIntegrationTest extends AbstractIntegrationSpec {
         def uri = jdkRepository.start()
         jdkRepository.expectHead()
 
-        executer
+        executor
             .requireOwnGradleUserHomeDir("needs to not have cached toolchains")
             .withToolchainDownloadEnabled()
 

@@ -42,7 +42,7 @@ public class DisconnectableInputStream extends BulkReadInputStream {
         See DisconnectableInputStreamTest
      */
 
-    static class ThreadExecuter implements Action<Runnable> {
+    static class ThreadExecutor implements Action<Runnable> {
         @Override
         public void execute(Runnable runnable) {
             Thread thread = new Thread(runnable);
@@ -57,14 +57,14 @@ public class DisconnectableInputStream extends BulkReadInputStream {
     }
 
     public DisconnectableInputStream(final InputStream source, int bufferLength) {
-        this(source, new ThreadExecuter(), bufferLength);
+        this(source, new ThreadExecutor(), bufferLength);
     }
 
-    DisconnectableInputStream(InputStream source, Action<Runnable> executer) {
-        this(source, executer, 1024);
+    DisconnectableInputStream(InputStream source, Action<Runnable> executor) {
+        this(source, executor, 1024);
     }
 
-    DisconnectableInputStream(final InputStream source, Action<Runnable> executer, int bufferLength) {
+    DisconnectableInputStream(final InputStream source, Action<Runnable> executor, int bufferLength) {
         buffer = new byte[bufferLength];
         Runnable consume = new Runnable() {
             @Override
@@ -129,7 +129,7 @@ public class DisconnectableInputStream extends BulkReadInputStream {
             }
         };
 
-        executer.execute(consume);
+        executor.execute(consume);
     }
 
     @Override

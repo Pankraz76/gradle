@@ -71,8 +71,8 @@ abstract class MavenConversionIntegrationTest extends AbstractInitIntegrationSpe
         def workingDir = temporaryFolder.createDir("workingDir")
 
         when:
-        executer.beforeExecute {
-            executer.inDirectory(workingDir).usingProjectDirectory(targetDir)
+        executor.beforeExecute {
+            executor.inDirectory(workingDir).usingProjectDirectory(targetDir)
         }
         run 'init', '--dsl', scriptDsl.id as String, '--incubating'
 
@@ -236,8 +236,8 @@ Root project 'webinar-parent'
 
     def "flatmultimodule"() {
         def dsl = dslFixtureFor(scriptDsl)
-        executer.beforeExecute {
-            executer.inDirectory(targetDir.file("webinar-parent"))
+        executor.beforeExecute {
+            executor.inDirectory(targetDir.file("webinar-parent"))
         }
 
         when:
@@ -409,8 +409,8 @@ ${TextUtil.indent(configLines.join("\n"), "                    ")}
         def workingDir = temporaryFolder.createDir("workingDir")
 
         when:
-        executer.beforeExecute {
-            executer.inDirectory(workingDir).usingProjectDirectory(targetDir)
+        executor.beforeExecute {
+            executor.inDirectory(workingDir).usingProjectDirectory(targetDir)
         }
         run 'init', '--dsl', scriptDsl.id as String
 
@@ -435,8 +435,8 @@ ${TextUtil.indent(configLines.join("\n"), "                    ")}
         def workingDir = temporaryFolder.createDir("workingDir")
 
         when:
-        executer.beforeExecute {
-            executer.inDirectory(workingDir).usingProjectDirectory(targetDir)
+        executor.beforeExecute {
+            executor.inDirectory(workingDir).usingProjectDirectory(targetDir)
         }
         run 'init', '--dsl', scriptDsl.id as String
 
@@ -648,7 +648,7 @@ ${TextUtil.indent(configLines.join("\n"), "                    ")}
 
         setup:
         withSharedResources()
-        executer.withArgument("-DCOMMONS_LANG_VERSION=2.6")
+        executor.withArgument("-DCOMMONS_LANG_VERSION=2.6")
 
         when:
         run 'init', '--dsl', scriptDsl.id as String

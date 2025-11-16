@@ -29,10 +29,10 @@ class ConfigurationCacheBuildCacheIntegrationTest extends AbstractIntegrationSpe
     def configurationCache = new ConfigurationCacheFixture(this)
 
     @Override
-    void setupExecuter(){
-        super.setupExecuter()
+    void setupExecutor(){
+        super.setupExecutor()
         withBuildCache()
-        executer.withConfigurationCacheEnabled()
+        executor.withConfigurationCacheEnabled()
     }
 
     @Issue("https://github.com/gradle/gradle/issues/32542")

@@ -120,7 +120,7 @@ class DependencyVerificationWritingIntegTest extends AbstractDependencyVerificat
         when:
         run ":compileJava"
         if (stop) {
-            executer.stop()
+            executor.stop()
         }
 
         then:
@@ -775,7 +775,7 @@ class DependencyVerificationWritingIntegTest extends AbstractDependencyVerificat
 
         when:
         if (stop) {
-            executer.stop()
+            executor.stop()
         }
         writeVerificationMetadata()
 

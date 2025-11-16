@@ -72,7 +72,7 @@ class DaemonLifecycleEncodingSpec extends AbstractDaemonLifecycleSpec {
         """
 
         when:
-        executer.withEnvironmentVars(GRADLE_OPTS: "-Dfile.encoding=UTF-8");
+        executor.withEnvironmentVars(GRADLE_OPTS: "-Dfile.encoding=UTF-8");
         run "verify"
 
         then:
@@ -80,8 +80,8 @@ class DaemonLifecycleEncodingSpec extends AbstractDaemonLifecycleSpec {
         daemons(gradleVersion).daemons.size() == 1
 
         when:
-        executer.withEnvironmentVars(GRADLE_OPTS: "-Dfile.encoding=ISO-8859-1");
-        executer.withArgument("-i")
+        executor.withEnvironmentVars(GRADLE_OPTS: "-Dfile.encoding=ISO-8859-1");
+        executor.withArgument("-i")
         run "verify"
 
         then:

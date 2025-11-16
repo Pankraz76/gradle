@@ -78,9 +78,9 @@ class MavenPublishConsoleIntegrationTest extends AbstractMavenPublishIntegTest {
         server.expect(server.put(m1.rootMetaData.path + ".sha256"))
         server.expect(server.put(m1.rootMetaData.path + ".sha512"))
 
-        executer.withTestConsoleAttached()
-        executer.withConsole(ConsoleOutput.Rich)
-        def build = executer.withTasks("publish").withArguments("--max-workers=2").start()
+        executor.withTestConsoleAttached()
+        executor.withConsole(ConsoleOutput.Rich)
+        def build = executor.withTasks("publish").withArguments("--max-workers=2").start()
         putJar.waitForAllPendingCalls()
 
         then:

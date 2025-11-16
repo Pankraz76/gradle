@@ -27,7 +27,7 @@ abstract class AbstractJUnitCategoriesOrTagsCoverageIntegrationSpec extends Abst
     abstract String getPluralCategoryOrTagName()
 
     def setup() {
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         buildFile << """
             apply plugin: "java"
 

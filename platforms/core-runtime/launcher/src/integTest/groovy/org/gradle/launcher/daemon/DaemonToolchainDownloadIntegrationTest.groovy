@@ -19,7 +19,7 @@ package org.gradle.launcher.daemon
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.AvailableJavaHomes
-import org.gradle.integtests.fixtures.executer.DocumentationUtils
+import org.gradle.integtests.fixtures.executor.DocumentationUtils
 import org.gradle.integtests.fixtures.jvm.JavaToolchainFixture
 import org.gradle.internal.buildconfiguration.fixture.DaemonJvmPropertiesFixture
 import org.gradle.internal.os.OperatingSystem
@@ -40,7 +40,7 @@ class DaemonToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imp
         writeJvmCriteria(AvailableJavaHomes.differentVersion.javaVersion)
 
         when:
-        failure = executer
+        failure = executor
             .withTasks("help")
             .runWithFailure()
 
@@ -59,7 +59,7 @@ class DaemonToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imp
         writeToolchainDownloadUrls("http://example.com")
 
         when:
-        failure = executer
+        failure = executor
             .withTasks("help")
             .withToolchainDownloadEnabled()
             .runWithFailure()
@@ -75,7 +75,7 @@ class DaemonToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imp
         writeToolchainDownloadUrls("https://example.com/v=^10")
 
         when:
-        failure = executer
+        failure = executor
             .withTasks("help")
             .withToolchainDownloadEnabled()
             .runWithFailure()
@@ -95,7 +95,7 @@ class DaemonToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imp
         writeToolchainDownloadUrls("invalid-url")
 
         when:
-        failure = executer
+        failure = executor
             .withTasks("help")
             .withToolchainDownloadEnabled()
             .runWithFailure()
@@ -116,7 +116,7 @@ class DaemonToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imp
         writeToolchainDownloadUrls(uri.toString())
 
         when:
-        failure = executer
+        failure = executor
             .withTasks("help", "-s")
             .requireOwnGradleUserHomeDir("Needs to download a JDK")
             .withToolchainDownloadEnabled()
@@ -145,7 +145,7 @@ class DaemonToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imp
         captureJavaHome()
 
         when:
-        executer.withTasks("help")
+        executor.withTasks("help")
             .requireOwnGradleUserHomeDir("Needs to download a JDK")
             .requireIsolatedDaemons()
             .withToolchainDownloadEnabled()
@@ -155,7 +155,7 @@ class DaemonToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imp
         jdkRepository.stop()
 
         then:
-        def installedToolchains = executer.gradleUserHomeDir.file("jdks").listFiles().findAll { it.isDirectory() }
+        def installedToolchains = executor.gradleUserHomeDir.file("jdks").listFiles().findAll { it.isDirectory() }
         assert installedToolchains.size() == 1
         assertDaemonUsedJvm(findJavaHome(installedToolchains[0]))
     }
@@ -175,7 +175,7 @@ class DaemonToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imp
         captureJavaHome()
 
         when:
-        executer.withTasks("help")
+        executor.withTasks("help")
             .requireOwnGradleUserHomeDir("Needs to download a JDK")
             .requireIsolatedDaemons()
             .withToolchainDownloadEnabled()
@@ -185,7 +185,7 @@ class DaemonToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imp
         jdkRepository.stop()
 
         then:
-        def installedToolchains = executer.gradleUserHomeDir.file("jdks").listFiles().findAll { it.isDirectory() }
+        def installedToolchains = executor.gradleUserHomeDir.file("jdks").listFiles().findAll { it.isDirectory() }
         assert installedToolchains.size() == 1
         def javaHome = findJavaHome(installedToolchains[0])
         assertDaemonUsedJvm(javaHome)
@@ -202,7 +202,7 @@ class DaemonToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imp
         writeToolchainDownloadUrls(uri2.toString())
 
         and:
-        executer.withTasks("help", "-s")
+        executor.withTasks("help", "-s")
             .requireOwnGradleUserHomeDir("Needs to download a JDK")
             .requireIsolatedDaemons()
             .withToolchainDownloadEnabled()
@@ -212,7 +212,7 @@ class DaemonToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imp
         jdkRepository2.stop()
 
         then:
-        def installedToolchains2 = executer.gradleUserHomeDir.file("jdks").listFiles().findAll { it.isDirectory() }
+        def installedToolchains2 = executor.gradleUserHomeDir.file("jdks").listFiles().findAll { it.isDirectory() }
         assert installedToolchains2.size() == 2
         def javaHome2 = findJavaHome(installedToolchains2.find { it != installedToolchains[0] })
         assertDaemonUsedJvm(javaHome2)
@@ -234,33 +234,33 @@ class DaemonToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imp
         captureJavaHome()
 
         when:
-        executer.withTasks("help")
+        executor.withTasks("help")
             .requireOwnGradleUserHomeDir("Needs to download a JDK")
             .requireIsolatedDaemons()
             .withToolchainDownloadEnabled()
             .start().waitForExit()
 
         then:
-        def installedToolchains = executer.gradleUserHomeDir.file("jdks").listFiles().findAll { it.isDirectory() }
+        def installedToolchains = executor.gradleUserHomeDir.file("jdks").listFiles().findAll { it.isDirectory() }
         assert installedToolchains.size() == 1
         def javaHome = findJavaHome(installedToolchains[0])
         assertDaemonUsedJvm(javaHome)
 
         when:
-        executer.gradleUserHomeDir.file("jdks")
+        executor.gradleUserHomeDir.file("jdks")
             .listFiles({ file -> file.name.endsWith(".zip") } as FileFilter)
             .each { it.text = "corrupted data" }
 
         // delete unpacked JDKs
-        executer.gradleUserHomeDir.file("jdks")
+        executor.gradleUserHomeDir.file("jdks")
             .listFiles({ file -> file.isDirectory() } as FileFilter)
             .each { it.deleteDir() }
 
         jdkRepository.reset()
-        executer.stop()
+        executor.stop()
 
         and:
-        def result = executer.withTasks("help", "--info")
+        def result = executor.withTasks("help", "--info")
             .requireOwnGradleUserHomeDir("Needs to download a JDK")
             .requireIsolatedDaemons()
             .withToolchainDownloadEnabled()

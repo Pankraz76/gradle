@@ -19,7 +19,7 @@ package org.gradle.integtests
 import org.gradle.api.internal.plugins.ExecutableJar
 import org.gradle.api.internal.plugins.StartScriptGenerator
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.ScriptExecuter
+import org.gradle.integtests.fixtures.ScriptExecutor
 
 /**
  * Tests for {@link org.gradle.api.internal.plugins.StartScriptGenerator} that are not covered by the application plugin tests, because they are not public API.
@@ -100,7 +100,7 @@ class StartScriptGeneratorIntegrationTest extends AbstractIntegrationSpec {
 
         and:
         def outputCapture = new ByteArrayOutputStream()
-        def scriptStarter = new ScriptExecuter()
+        def scriptStarter = new ScriptExecutor()
         scriptStarter.workingDir = file('build/generated-start-script')
         scriptStarter.executable = "jar-starter"
         scriptStarter.standardOutput = outputCapture

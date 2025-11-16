@@ -18,8 +18,8 @@ package org.gradle.api.internal.tasks.execution;
 
 import org.gradle.api.GradleException;
 import org.gradle.api.internal.TaskInternal;
-import org.gradle.api.internal.tasks.TaskExecuter;
-import org.gradle.api.internal.tasks.TaskExecuterResult;
+import org.gradle.api.internal.tasks.TaskExecutor;
+import org.gradle.api.internal.tasks.TaskExecutorResult;
 import org.gradle.api.internal.tasks.TaskExecutionContext;
 import org.gradle.api.internal.tasks.TaskExecutionOutcome;
 import org.gradle.api.internal.tasks.TaskStateInternal;
@@ -29,18 +29,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A {@link org.gradle.api.internal.tasks.TaskExecuter} which skips tasks whose onlyIf predicate evaluates to false
+ * A {@link org.gradle.api.internal.tasks.TaskExecutor} which skips tasks whose onlyIf predicate evaluates to false
  */
-public class SkipOnlyIfTaskExecuter implements TaskExecuter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SkipOnlyIfTaskExecuter.class);
-    private final TaskExecuter executer;
+public class SkipOnlyIfTaskExecutor implements TaskExecutor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SkipOnlyIfTaskExecutor.class);
+    private final TaskExecutor executor;
 
-    public SkipOnlyIfTaskExecuter(TaskExecuter executer) {
-        this.executer = executer;
+    public SkipOnlyIfTaskExecutor(TaskExecutor executor) {
+        this.executor = executor;
     }
 
     @Override
-    public TaskExecuterResult execute(TaskInternal task, TaskStateInternal state, TaskExecutionContext context) {
+    public TaskExecutorResult execute(TaskInternal task, TaskStateInternal state, TaskExecutionContext context) {
         Spec<? super TaskInternal> unsatisfiedSpec = null;
         try {
             Spec<? super TaskInternal> onlyIf = task.getOnlyIf();
@@ -55,7 +55,7 @@ public class SkipOnlyIfTaskExecuter implements TaskExecuter {
             }
         } catch (Throwable t) {
             state.setOutcome(new GradleException(String.format("Could not evaluate onlyIf predicate for %s.", task), t));
-            return TaskExecuterResult.WITHOUT_OUTPUTS;
+            return TaskExecutorResult.WITHOUT_OUTPUTS;
         }
 
         if (unsatisfiedSpec != null) {
@@ -68,9 +68,9 @@ public class SkipOnlyIfTaskExecuter implements TaskExecuter {
                 state.setSkipReasonMessage("onlyIf not satisfied");
             }
             state.setOutcome(TaskExecutionOutcome.SKIPPED);
-            return TaskExecuterResult.WITHOUT_OUTPUTS;
+            return TaskExecutorResult.WITHOUT_OUTPUTS;
         }
 
-        return executer.execute(task, state, context);
+        return executor.execute(task, state, context);
     }
 }

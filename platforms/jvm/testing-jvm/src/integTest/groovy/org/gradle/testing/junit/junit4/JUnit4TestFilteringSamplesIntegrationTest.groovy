@@ -27,7 +27,7 @@ class JUnit4TestFilteringSamplesIntegrationTest extends AbstractIntegrationSpec 
     @Rule Sample sample = new Sample(temporaryFolder, 'testing/filtering/groovy')
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     def "uses test filter"() {

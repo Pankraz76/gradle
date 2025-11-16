@@ -17,7 +17,7 @@
 package org.gradle.integtests.fixtures.daemon
 
 import org.gradle.integtests.fixtures.ProcessFixture
-import org.gradle.integtests.fixtures.executer.GradleHandle
+import org.gradle.integtests.fixtures.executor.GradleHandle
 import org.gradle.test.fixtures.ConcurrentTestUtil
 
 

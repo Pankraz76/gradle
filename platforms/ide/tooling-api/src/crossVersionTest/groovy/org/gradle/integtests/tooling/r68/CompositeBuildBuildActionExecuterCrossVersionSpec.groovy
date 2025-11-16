@@ -21,7 +21,7 @@ import org.gradle.integtests.tooling.fixture.ToolingApiSpecification
 import org.gradle.tooling.model.GradleProject
 
 @TargetGradleVersion('>=6.8')
-class CompositeBuildBuildActionExecuterCrossVersionSpec extends ToolingApiSpecification {
+class CompositeBuildBuildActionExecutorCrossVersionSpec extends ToolingApiSpecification {
 
     def "can run task from included build when running a build action"() {
         given:

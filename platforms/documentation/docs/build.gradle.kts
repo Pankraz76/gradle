@@ -728,10 +728,10 @@ tasks.named<Test>("docsTest") {
 
     if (project.configurationCacheEnabledForDocsTests) {
         systemProperty("org.gradle.integtest.samples.cleanConfigurationCacheOutput", "true")
-        systemProperty("org.gradle.integtest.executer", "configCache")
+        systemProperty("org.gradle.integtest.executor", "configCache")
 
         filter {
-            // Configuration cache samples enable configuration cache explicitly. We're not going to run them with the configuration cache executer.
+            // Configuration cache samples enable configuration cache explicitly. We're not going to run them with the configuration cache executor.
             excludeTestsMatching("org.gradle.docs.samples.*.snippet-configuration-cache-*")
             excludeTestsMatching("*WithoutCC*")
 

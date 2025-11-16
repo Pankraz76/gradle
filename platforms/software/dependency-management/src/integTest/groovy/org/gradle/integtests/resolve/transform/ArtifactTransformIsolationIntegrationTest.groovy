@@ -23,7 +23,7 @@ import org.gradle.api.artifacts.transform.TransformParameters
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.provider.Provider
 import org.gradle.integtests.fixtures.AbstractHttpDependencyResolutionTest
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
 import spock.lang.Issue
@@ -328,7 +328,7 @@ abstract class Resolve extends Copy {
         and:
         outputContains("variants: [{artifactType=secondCount, org.gradle.status=release}, {artifactType=secondCount, org.gradle.status=release}]")
         file("build/libs2").assertHasDescendants("test-1.3.jar.txt", "test2-2.3.jar.txt")
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             // Counter is serialized and isolated prior to execution, so transforms will not see the increment in each tasks' doLast { } (which is good)
             file("build/libs1/test-1.3.jar.txt").readLines() == ["1", "2", "3", "4", "5"]
             file("build/libs1/test2-2.3.jar.txt").readLines() == ["1", "2", "3", "4", "5"]
@@ -341,7 +341,7 @@ abstract class Resolve extends Copy {
         and:
         outputContains("variants: [{artifactType=thirdCount, org.gradle.status=release}, {artifactType=thirdCount, org.gradle.status=release}]")
         file("build/libs3").assertHasDescendants("test-1.3.jar.txt", "test2-2.3.jar.txt")
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             // Counter is serialized and isolated prior to execution, so transforms will not see the increment in each tasks' doLast { } (which is good)
             file("build/libs1/test-1.3.jar.txt").readLines() == ["1", "2", "3", "4", "5"]
             file("build/libs1/test2-2.3.jar.txt").readLines() == ["1", "2", "3", "4", "5"]
@@ -352,7 +352,7 @@ abstract class Resolve extends Copy {
         }
 
         and:
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             // Counter is serialized and isolated prior to execution, so transforms will not see the increment in each tasks' doLast { } (which is good)
             output.count("Transforming") == 2
             output.count("Transforming test-1.3.jar to test-1.3.jar.txt") == 1
@@ -391,7 +391,7 @@ abstract class Resolve extends Copy {
                 }
             }
         """
-        def isConfigCache = GradleContextualExecuter.configCache
+        def isConfigCache = GradleContextualExecutor.configCache
 
         when:
         fails ':consumer:resolve'

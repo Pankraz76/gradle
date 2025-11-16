@@ -286,7 +286,7 @@ fun buildToolGradleParameters(
     maxParallelForks: String = "%maxParallelForks%",
 ): List<String> =
     listOf(
-        // We pass the 'maxParallelForks' setting as 'workers.max' to limit the maximum number of executers even
+        // We pass the 'maxParallelForks' setting as 'workers.max' to limit the maximum number of executors even
         // if multiple test tasks run in parallel. We also pass it to the Gradle build as a maximum (maxParallelForks)
         // for each test task, such that we are independent of whatever default value is defined in the build itself.
         "-Dorg.gradle.workers.max=$maxParallelForks",

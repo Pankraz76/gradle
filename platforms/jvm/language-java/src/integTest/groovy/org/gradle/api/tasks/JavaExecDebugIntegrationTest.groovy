@@ -34,11 +34,11 @@ class JavaExecDebugIntegrationTest extends AbstractIntegrationSpec {
     JDWPUtil debugClient = new JDWPUtil()
 
     def setup() {
-        executer.beforeExecute {
+        executor.beforeExecute {
             // When waiting for debugger/target JVM, there might be:
             // com.sun.jdi.connect.TransportTimeoutException: timeout waiting for connection
             // it's fine to ignore them because we're waiting in a loop.
-            executer.withStackTraceChecksDisabled()
+            executor.withStackTraceChecksDisabled()
         }
     }
 
@@ -66,7 +66,7 @@ class JavaExecDebugIntegrationTest extends AbstractIntegrationSpec {
         """
 
         expect:
-        def failure = executer.withTasks(taskName).withStackTraceChecksDisabled().runWithFailure()
+        def failure = executor.withTasks(taskName).withStackTraceChecksDisabled().runWithFailure()
         failure.error.contains('ERROR: transport error 202: connect failed:') || failure.error.contains('ERROR: transport error 202: handshake failed')
 
         where:
@@ -111,7 +111,7 @@ class JavaExecDebugIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        def handle = executer.withTasks(taskName).start()
+        def handle = executor.withTasks(taskName).start()
         ConcurrentTestUtil.poll(60) {
             assert handle.standardOutput.contains('Listening for transport dt_socket at address')
         }
@@ -144,7 +144,7 @@ class JavaExecDebugIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        def handle = executer.withTasks(taskName).start()
+        def handle = executor.withTasks(taskName).start()
         ConcurrentTestUtil.poll(60) {
             assert handle.standardOutput.contains('Listening for transport dt_socket at address')
         }

@@ -1698,7 +1698,7 @@ Found the following transformation chains:
         outputContains("Transforming b.jar")
 
         when:
-        executer.withArgument("-Plenient=true")
+        executor.withArgument("-Plenient=true")
         succeeds("resolve")
 
         then:
@@ -1752,7 +1752,7 @@ Found the following transformation chains:
         when:
         m1.getArtifact(name: 'test-impl').expectGetBroken()
 
-        executer.withArguments("-Plenient=true")
+        executor.withArguments("-Plenient=true")
         succeeds("resolve")
 
         then:
@@ -1788,7 +1788,7 @@ Found the following transformation chains:
         outputContains("Transforming thing2.jar to thing2.jar.txt")
 
         when:
-        executer.withArguments("-Plenient=true")
+        executor.withArguments("-Plenient=true")
         succeeds("resolve")
 
         then:
@@ -1855,7 +1855,7 @@ Found the following transformation chains:
         failure.assertHasCause("Transform output this_file_does_not.exist must exist.")
 
         when:
-        executer.withArguments("-Plenient=true")
+        executor.withArguments("-Plenient=true")
         succeeds("resolve")
 
         then:
@@ -1918,7 +1918,7 @@ Found the following transformation chains:
         failure.assertThatCause(matchesRegexp("Transform ${failureMessage}."))
 
         when:
-        executer.withArguments("-Plenient=true")
+        executor.withArguments("-Plenient=true")
         succeeds("resolve")
 
         then:
@@ -2186,7 +2186,7 @@ Found the following transformation chains:
         when:
         m1.artifact.expectGetBroken()
 
-        executer.withArguments("-Plenient=true")
+        executor.withArguments("-Plenient=true")
         succeeds("resolve")
 
         then:
@@ -2624,7 +2624,7 @@ Found the following transformation chains:
     }
 
     def "notifies transform listeners and build operation listeners on successful execution"() {
-        def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+        def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
         given:
         buildFile << """
@@ -2691,7 +2691,7 @@ Found the following transformation chains:
     }
 
     def "notifies transform listeners and build operation listeners on failed execution"() {
-        def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+        def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
         given:
         buildFile << """

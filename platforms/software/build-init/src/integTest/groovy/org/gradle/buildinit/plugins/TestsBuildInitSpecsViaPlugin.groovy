@@ -54,12 +54,12 @@ trait TestsBuildInitSpecsViaPlugin {
 
     void publishTestPlugin() {
         def pluginProjectDir = file("plugin").with { createDir() }
-        executer.usingProjectDirectory(pluginProjectDir)
+        executor.usingProjectDirectory(pluginProjectDir)
 
         PluginBuilder pluginBuilder = buildTestPlugin()
 
-        executer.requireOwnGradleUserHomeDir("Adding new API that plugin needs") // TODO: Remove this when API is solid enough that it isn't changing every test run (it slows down test running)
-        def results = pluginBuilder.publishAs("org.example.myplugin:plugin:1.0", mavenRepo, executer)
+        executor.requireOwnGradleUserHomeDir("Adding new API that plugin needs") // TODO: Remove this when API is solid enough that it isn't changing every test run (it slows down test running)
+        def results = pluginBuilder.publishAs("org.example.myplugin:plugin:1.0", mavenRepo, executor)
 
         println()
         println "Published: '${results.getPluginModule().with { m -> m.getGroup() + ':' + m.getModule() + ':' + m.getVersion() }}'"
@@ -158,8 +158,8 @@ trait TestsBuildInitSpecsViaPlugin {
 
     void canBuildGeneratedProject(Jvm jvm = AvailableJavaHomes.getAvailableJdks(JavaVersion.current()).get(0)) {
         def generatedProjectDir = file("new-project")
-        executer.usingProjectDirectory(generatedProjectDir)
-        executer.withJvm(jvm)
+        executor.usingProjectDirectory(generatedProjectDir)
+        executor.withJvm(jvm)
 
         succeeds("build")
     }

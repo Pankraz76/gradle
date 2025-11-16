@@ -16,7 +16,7 @@
 
 package org.gradle.internal.cc.impl.inputs.undeclared
 
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.internal.cc.impl.AbstractConfigurationCacheIntegrationTest
 import org.junit.Assume
 
@@ -70,9 +70,9 @@ abstract class SystemPropertyInjection extends BuildInputInjection {
 
             @Override
             void setup(AbstractConfigurationCacheIntegrationTest test) {
-                Assume.assumeFalse("The embedded executer will fall back to forking a process", IntegrationTestBuildContext.embedded)
-                test.executer.requireDaemon().requireIsolatedDaemons()
-                test.executer.withCommandLineGradleOpts("-D${prop}=${value}")
+                Assume.assumeFalse("The embedded executor will fall back to forking a process", IntegrationTestBuildContext.embedded)
+                test.executor.requireDaemon().requireIsolatedDaemons()
+                test.executor.withCommandLineGradleOpts("-D${prop}=${value}")
             }
         }
     }

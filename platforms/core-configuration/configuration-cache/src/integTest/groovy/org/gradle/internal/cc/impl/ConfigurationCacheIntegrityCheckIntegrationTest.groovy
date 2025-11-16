@@ -18,7 +18,7 @@ package org.gradle.internal.cc.impl
 
 import org.gradle.initialization.StartParameterBuildOptions
 import org.gradle.integtests.fixtures.configurationcache.ConfigurationCacheFixture
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.util.internal.ToBeImplemented
 
 class ConfigurationCacheIntegrityCheckIntegrationTest extends AbstractConfigurationCacheIntegrationTest {
@@ -121,7 +121,7 @@ class ConfigurationCacheIntegrityCheckIntegrationTest extends AbstractConfigurat
             "It may have been written incorrectly or its data is corrupted.")
         failureCauseContains("Tag guard mismatch for JavaObjectSerializationCodec:")
 
-        if (GradleContextualExecuter.isDaemon()) {
+        if (GradleContextualExecutor.isDaemon()) {
             // TODO(https://github.com/gradle/gradle/issues/32807): this is an induced failure that shouldn't happen
             failureDescriptionContains("Could not receive a message from the daemon")
         }

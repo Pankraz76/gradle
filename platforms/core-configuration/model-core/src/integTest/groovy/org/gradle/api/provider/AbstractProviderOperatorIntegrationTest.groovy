@@ -17,7 +17,7 @@
 package org.gradle.api.provider
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
 import org.hamcrest.CoreMatchers
 
 abstract class AbstractProviderOperatorIntegrationTest extends AbstractIntegrationSpec {

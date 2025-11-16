@@ -27,7 +27,7 @@ class BuildSrcLocationIntegrationTest extends AbstractIntegrationSpec {
         buildSrc.file("build.gradle") << ''
 
         when:
-        executer.usingProjectDirectory(buildSrc)
+        executor.usingProjectDirectory(buildSrc)
 
         then:
         succeeds("help")

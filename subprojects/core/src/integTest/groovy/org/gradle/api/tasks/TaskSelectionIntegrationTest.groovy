@@ -41,7 +41,7 @@ class TaskSelectionIntegrationTest extends AbstractIntegrationSpec {
         result.assertTasksScheduled(":a:thing", ":b:thing", ":a:a:thing", ":b:b:thing")
 
         when:
-        executer.inDirectory(file("a"))
+        executor.inDirectory(file("a"))
         run "thing"
 
         then:
@@ -77,7 +77,7 @@ class TaskSelectionIntegrationTest extends AbstractIntegrationSpec {
         result.assertTasksScheduled(":a:thing", ":b:thing", ":b:b:thing")
 
         when:
-        executer.inDirectory(file("a"))
+        executor.inDirectory(file("a"))
         run "thing"
 
         then:

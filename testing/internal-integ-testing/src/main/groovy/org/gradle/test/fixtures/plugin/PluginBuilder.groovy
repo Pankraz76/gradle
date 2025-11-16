@@ -22,7 +22,7 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.initialization.Settings
 import org.gradle.integtests.fixtures.GroovyBuildScriptLanguage
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.model.ModelMap
 import org.gradle.model.Mutate
 import org.gradle.model.RuleSource
@@ -107,7 +107,7 @@ class PluginBuilder {
         projectDir.file('settings.gradle').write("")
     }
 
-    void publishTo(GradleExecuter executer, TestFile testFile, String buildScript = "") {
+    void publishTo(GradleExecutor executor, TestFile testFile, String buildScript = "") {
         prepareToExecute()
         buildFile << buildScript
         buildFile << """
@@ -116,19 +116,19 @@ class PluginBuilder {
                 destinationDirectory = file("${TextUtil.escapeString(testFile.parentFile.absolutePath)}")
             }
         """
-        executer.inDirectory(projectDir).withTasks("jar").run()
+        executor.inDirectory(projectDir).withTasks("jar").run()
     }
 
-    PluginPublicationResults publishAs(String coordinates, MavenRepository mavenRepo, GradleExecuter executer) {
+    PluginPublicationResults publishAs(String coordinates, MavenRepository mavenRepo, GradleExecutor executor) {
         List<String> gav = Splitter.on(":").splitToList(coordinates)
-        return publishAs(gav.get(0), gav.get(1), gav.get(2), mavenRepo, executer)
+        return publishAs(gav.get(0), gav.get(1), gav.get(2), mavenRepo, executor)
     }
 
-    PluginHttpPublicationResults publishAs(String group, String artifact, String version, MavenHttpPluginRepository mavenRepo, GradleExecuter executer) {
-        return new PluginHttpPublicationResults(publishAs(group, artifact, version, mavenRepo as MavenRepository, executer))
+    PluginHttpPublicationResults publishAs(String group, String artifact, String version, MavenHttpPluginRepository mavenRepo, GradleExecutor executor) {
+        return new PluginHttpPublicationResults(publishAs(group, artifact, version, mavenRepo as MavenRepository, executor))
     }
 
-    PluginPublicationResults publishAs(String group, String artifact, String version, MavenRepository mavenRepo, GradleExecuter executer) {
+    PluginPublicationResults publishAs(String group, String artifact, String version, MavenRepository mavenRepo, GradleExecutor executor) {
 
         // The implementation jar module.
         def module = mavenRepo.module(group, artifact, version)
@@ -144,12 +144,12 @@ class PluginBuilder {
             markerModules.add(marker.publish())
         }
 
-        publishTo(executer, artifactFile)
+        publishTo(executor, artifactFile)
 
         return new PluginPublicationResults(pluginModule, markerModules)
     }
 
-    PluginPublicationResults publishAs(String coordinates, IvyRepository ivyRepo, GradleExecuter executer) {
+    PluginPublicationResults publishAs(String coordinates, IvyRepository ivyRepo, GradleExecutor executor) {
         List<String> omr = Splitter.on(":").splitToList(coordinates)
 
         // The implementation jar module.
@@ -167,7 +167,7 @@ class PluginBuilder {
             markerModules.add(marker)
         }
 
-        publishTo(executer, artifactFile)
+        publishTo(executor, artifactFile)
 
         return new PluginPublicationResults(module, markerModules)
     }

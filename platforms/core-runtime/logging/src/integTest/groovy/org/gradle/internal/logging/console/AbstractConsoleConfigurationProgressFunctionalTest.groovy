@@ -19,7 +19,7 @@ package org.gradle.internal.logging.console
 import org.gradle.api.logging.configuration.ConsoleOutput
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.RichConsoleStyling
-import org.gradle.integtests.fixtures.executer.GradleHandle
+import org.gradle.integtests.fixtures.executor.GradleHandle
 import org.gradle.test.fixtures.ConcurrentTestUtil
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
 import org.junit.Rule
@@ -30,7 +30,7 @@ abstract class AbstractConsoleConfigurationProgressFunctionalTest extends Abstra
     GradleHandle gradle
 
     def setup() {
-        executer.withConsole(consoleType)
+        executor.withConsole(consoleType)
         server.start()
     }
 
@@ -52,7 +52,7 @@ abstract class AbstractConsoleConfigurationProgressFunctionalTest extends Abstra
         given:
         def rootBuildScript = server.expectAndBlock('root-build-script')
         def bBuildScript = server.expectAndBlock('b-build-script')
-        gradle = executer.withTasks("hello").start()
+        gradle = executor.withTasks("hello").start()
 
         expect:
         rootBuildScript.waitForAllPendingCalls()
@@ -96,7 +96,7 @@ abstract class AbstractConsoleConfigurationProgressFunctionalTest extends Abstra
         def childBuildScript = server.expectAndBlock('child-build-script')
         def childABuildScript = server.expectAndBlock('child-a-build-script')
         def rootBuildScript = server.expectAndBlock('root-build-script')
-        gradle = executer.withTasks("hello").start()
+        gradle = executor.withTasks("hello").start()
 
         expect:
         childBuildScript.waitForAllPendingCalls()
@@ -137,7 +137,7 @@ abstract class AbstractConsoleConfigurationProgressFunctionalTest extends Abstra
         def childBuildScript = server.expectAndBlock('buildsrc-build-script')
         def childABuildScript = server.expectAndBlock('buildsrc-a-build-script')
         def rootBuildScript = server.expectAndBlock('root-build-script')
-        gradle = executer.withTasks("hello").start()
+        gradle = executor.withTasks("hello").start()
 
         expect:
         childBuildScript.waitForAllPendingCalls()

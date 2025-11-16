@@ -16,10 +16,10 @@
 
 package org.gradle.ide.xcode.fixtures;
 
-import org.gradle.integtests.fixtures.executer.ExecutionFailure;
-import org.gradle.integtests.fixtures.executer.ExecutionResult;
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionFailure;
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult;
+import org.gradle.integtests.fixtures.executor.ExecutionFailure;
+import org.gradle.integtests.fixtures.executor.ExecutionResult;
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionFailure;
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult;
 import org.gradle.test.fixtures.file.ExecOutput;
 import org.gradle.test.fixtures.file.TestFile;
 

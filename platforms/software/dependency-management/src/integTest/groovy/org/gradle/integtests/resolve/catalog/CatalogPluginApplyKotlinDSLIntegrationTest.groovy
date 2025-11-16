@@ -24,7 +24,7 @@ import org.junit.Rule
 @LeaksFileHandles("Kotlin Compiler Daemon working directory")
 class CatalogPluginApplyKotlinDSLIntegrationTest extends AbstractVersionCatalogIntegrationTest {
     @Rule
-    final MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    final MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     def "can apply a plugin declared in a catalog"() {
         String taskName = 'greet'
@@ -33,7 +33,7 @@ class CatalogPluginApplyKotlinDSLIntegrationTest extends AbstractVersionCatalogI
         String pluginVersion = '1.5'
         def plugin = new PluginBuilder(file("greeter"))
             .addPluginWithPrintlnTask(taskName, message, pluginId)
-            .publishAs("some", "artifact", pluginVersion, pluginPortal, executer)
+            .publishAs("some", "artifact", pluginVersion, pluginPortal, executor)
 
         // We use the Groovy DSL for settings because that's not what we want to
         // test and the setup would be more complicated with Kotlin

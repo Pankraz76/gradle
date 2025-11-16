@@ -34,7 +34,7 @@ class GradleBuildScriptExecutionFromSubDirIntegTest extends AbstractIntegrationS
         when:
         def subdir = file("tmp")
         subdir.mkdirs()
-        executer.inDirectory(subdir)
+        executor.inDirectory(subdir)
         succeeds ':checkDir'
 
         then:

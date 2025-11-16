@@ -22,7 +22,7 @@ import org.gradle.integtests.fixtures.FeaturePreviewsFixture
 
 abstract class AbstractTypeSafeProjectAccessorsIntegrationTest extends AbstractHttpDependencyResolutionTest {
 
-    final BuildOperationsFixture operations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    final BuildOperationsFixture operations = new BuildOperationsFixture(executor, testDirectoryProvider)
 
     def setup() {
         FeaturePreviewsFixture.enableTypeSafeProjectAccessors(settingsFile)

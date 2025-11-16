@@ -24,10 +24,10 @@ import org.junit.Rule
 class ManualUpToDateOutputOriginIntegrationTest extends AbstractIntegrationSpec {
 
     @Rule
-    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(executer, temporaryFolder)
+    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(executor, temporaryFolder)
 
     @Rule
-    public final OriginFixture originBuildInvocationId = new OriginFixture(executer, temporaryFolder)
+    public final OriginFixture originBuildInvocationId = new OriginFixture(executor, temporaryFolder)
 
     String getBuildInvocationId() {
         scopeIds.buildInvocationId.asString()

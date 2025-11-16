@@ -44,7 +44,7 @@ public class BuildProcessScopeServices implements ServiceRegistrationProvider {
     }
 
     @Provides
-    BuildExecutor createBuildExecuter(
+    BuildExecutor createBuildExecutor(
         LoggingManagerInternal loggingManager,
         BuildLoggerFactory buildLoggerFactory,
         GradleUserHomeScopeServiceRegistry userHomeServiceRegistry,

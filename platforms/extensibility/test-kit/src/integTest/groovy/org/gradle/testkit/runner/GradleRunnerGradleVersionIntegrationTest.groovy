@@ -18,7 +18,7 @@ package org.gradle.testkit.runner
 
 import org.gradle.api.Action
 import org.gradle.integtests.fixtures.daemon.DaemonsFixture
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.TestKitPreconditions
 import org.gradle.test.preconditions.UnitTestPreconditions

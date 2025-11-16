@@ -19,7 +19,7 @@ package org.gradle.api.tasks.testing
 import org.gradle.api.GradleException
 import org.gradle.api.internal.tasks.testing.TestCompleteEvent
 import org.gradle.api.internal.tasks.testing.TestDescriptorInternal
-import org.gradle.api.internal.tasks.testing.TestExecuter
+import org.gradle.api.internal.tasks.testing.TestExecutor
 import org.gradle.api.internal.tasks.testing.TestExecutionSpec
 import org.gradle.api.internal.tasks.testing.TestResultProcessor
 import org.gradle.api.internal.tasks.testing.TestStartEvent
@@ -27,7 +27,7 @@ import org.gradle.test.fixtures.AbstractProjectBuilderSpec
 import org.gradle.util.TestUtil
 
 class TestTaskSpec extends AbstractProjectBuilderSpec {
-    def testExecuter = Mock(TestExecuter)
+    def testExecutor = Mock(TestExecutor)
     def suiteDescriptor = Mock(TestDescriptorInternal)
     def testDescriptor = Mock(TestDescriptorInternal)
 
@@ -35,7 +35,7 @@ class TestTaskSpec extends AbstractProjectBuilderSpec {
 
     def setup() {
         task = TestUtil.create(temporaryFolder).task(Test)
-        task.testExecuter = testExecuter
+        task.testExecutor = testExecutor
         task.binaryResultsDirectory.set(task.project.file('build/test-results'))
         task.reports.junitXml.outputLocation.set(task.project.file('build/test-results'))
         task.reports.html.outputLocation.set(task.project.file('build/test-report'))
@@ -57,7 +57,7 @@ class TestTaskSpec extends AbstractProjectBuilderSpec {
             getResultType() >> TestResult.ResultType.FAILURE
         }
 
-        _ * testExecuter.execute(_ as TestExecutionSpec, _) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
+        _ * testExecutor.execute(_ as TestExecutionSpec, _) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
             processor.started(suiteDescriptor, startEvent)
             processor.completed(testId, finishEvent)
         }
@@ -88,7 +88,7 @@ class TestTaskSpec extends AbstractProjectBuilderSpec {
             getResultType() >> TestResult.ResultType.SUCCESS
         }
 
-        _ * testExecuter.execute(_ as TestExecutionSpec, _) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
+        _ * testExecutor.execute(_ as TestExecutionSpec, _) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
             processor.started(suiteDescriptor, suiteStartEvent)
             processor.started(testDescriptor, testStartEvent)
             processor.completed("test", finishEvent)
@@ -108,7 +108,7 @@ class TestTaskSpec extends AbstractProjectBuilderSpec {
             getParentId() >> null
         }
 
-        _ * testExecuter.execute(_ as TestExecutionSpec, _) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
+        _ * testExecutor.execute(_ as TestExecutionSpec, _) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
             processor.started(suiteDescriptor, startEvent)
             processor.completed(testId, Stub(TestCompleteEvent) {
                 getResultType() >> TestResult.ResultType.FAILURE
@@ -145,7 +145,7 @@ class TestTaskSpec extends AbstractProjectBuilderSpec {
             getResultType() >> TestResult.ResultType.SUCCESS
         }
 
-        _ * testExecuter.execute(_ as TestExecutionSpec, _) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
+        _ * testExecutor.execute(_ as TestExecutionSpec, _) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
             processor.started(suiteDescriptor, suiteStartEvent)
             processor.started(testDescriptor, testStartEvent)
             processor.completed("test", finishEvent)

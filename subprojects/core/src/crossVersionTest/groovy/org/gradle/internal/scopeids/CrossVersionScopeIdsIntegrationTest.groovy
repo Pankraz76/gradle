@@ -19,29 +19,29 @@ package org.gradle.internal.scopeids
 import org.gradle.integtests.fixtures.CrossVersionIntegrationSpec
 import org.gradle.integtests.fixtures.ScopeIdsFixture
 import org.gradle.integtests.fixtures.TargetVersions
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.junit.Rule
 
 @TargetVersions("4.0+")
 class CrossVersionScopeIdsIntegrationTest extends CrossVersionIntegrationSpec {
 
-    GradleExecuter currentExecuter = version(current)
-    GradleExecuter previousExecuter
+    GradleExecutor currentExecutor = version(current)
+    GradleExecutor previousExecutor
 
     @Rule
-    ScopeIdsFixture scopeIds = new ScopeIdsFixture(currentExecuter, temporaryFolder)
+    ScopeIdsFixture scopeIds = new ScopeIdsFixture(currentExecutor, temporaryFolder)
 
     def setup() {
-        previousExecuter = version(previous)
-        scopeIds.configureExecuter(previousExecuter)
+        previousExecutor = version(previous)
+        scopeIds.configureExecutor(previousExecutor)
     }
 
     void runCurrent() {
-        currentExecuter.withTasks("help").run()
+        currentExecutor.withTasks("help").run()
     }
 
     void runEarlier() {
-        previousExecuter.withTasks("help").run()
+        previousExecutor.withTasks("help").run()
     }
 
     def "reads ids written by earlier versions"() {

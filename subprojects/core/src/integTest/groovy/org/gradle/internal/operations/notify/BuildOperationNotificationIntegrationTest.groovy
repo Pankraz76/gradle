@@ -44,12 +44,12 @@ import static org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache.Skip
 
 class BuildOperationNotificationIntegrationTest extends AbstractIntegrationSpec {
 
-    def notifications = new BuildOperationNotificationFixture(executer, testDirectoryProvider)
+    def notifications = new BuildOperationNotificationFixture(executor, testDirectoryProvider)
 
     def "obtains notifications about init scripts"() {
         when:
-        executer.requireOwnGradleUserHomeDir()
-        def init = executer.gradleUserHomeDir.file("init.d/init.gradle") << """
+        executor.requireOwnGradleUserHomeDir()
+        def init = executor.gradleUserHomeDir.file("init.d/init.gradle") << """
         """
         buildFile """
             task t
@@ -256,7 +256,7 @@ class BuildOperationNotificationIntegrationTest extends AbstractIntegrationSpec 
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicitly requests daemon")
     def "listeners are deregistered after build"() {
         when:
-        executer.requireDaemon().requireIsolatedDaemons()
+        executor.requireDaemon().requireIsolatedDaemons()
         buildFile << "task t"
         succeeds("t")
 

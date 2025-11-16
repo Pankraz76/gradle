@@ -17,7 +17,7 @@
 package org.gradle.integtests.composite
 
 import org.gradle.integtests.fixtures.build.BuildTestFile
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 
 class CompositeBuildIncludeCycleIntegrationTest extends AbstractCompositeBuildIntegrationTest {
 
@@ -253,7 +253,7 @@ class CompositeBuildIncludeCycleIntegrationTest extends AbstractCompositeBuildIn
     }
 
     void canRunFromCache(BuildTestFile build, String task) {
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             succeeds(build, task).assertHasPostBuildOutput(
                 'Configuration cache entry reused.'
             )

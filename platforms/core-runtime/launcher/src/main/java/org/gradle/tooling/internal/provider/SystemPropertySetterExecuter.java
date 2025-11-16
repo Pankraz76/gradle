@@ -24,11 +24,11 @@ import org.gradle.launcher.exec.BuildActionResult;
 
 import java.util.Properties;
 
-public class SystemPropertySetterExecuter implements BuildActionExecutor<BuildActionParameters, BuildRequestContext> {
+public class SystemPropertySetterExecutor implements BuildActionExecutor<BuildActionParameters, BuildRequestContext> {
 
     private final BuildActionExecutor<BuildActionParameters, BuildRequestContext> delegate;
 
-    public SystemPropertySetterExecuter(BuildActionExecutor<BuildActionParameters, BuildRequestContext> delegate) {
+    public SystemPropertySetterExecutor(BuildActionExecutor<BuildActionParameters, BuildRequestContext> delegate) {
         this.delegate = delegate;
     }
 

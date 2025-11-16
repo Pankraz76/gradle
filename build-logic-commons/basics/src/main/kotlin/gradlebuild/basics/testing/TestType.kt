@@ -19,7 +19,7 @@ package gradlebuild.basics.testing
 import org.gradle.api.tasks.testing.Test
 
 
-enum class TestType(val prefix: String, val executers: List<String>) {
+enum class TestType(val prefix: String, val executors: List<String>) {
     INTEGRATION("integ", listOf("embedded", "forking", "noDaemon", "parallel", "configCache", "isolatedProjects")),
     CROSSVERSION("crossVersion", listOf("embedded", "forking"))
 }

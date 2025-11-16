@@ -206,7 +206,7 @@ class ConfigurationCacheGroovyClosureIntegrationTest extends AbstractConfigurati
                 }
             }
         """
-        executer.beforeExecute { withArgument("-I").withArgument(initScript.absolutePath) }
+        executor.beforeExecute { withArgument("-I").withArgument(initScript.absolutePath) }
 
         when:
         configurationCacheFails ":some"

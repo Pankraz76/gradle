@@ -136,7 +136,7 @@ class IvyHttpRepoResolveIntegrationTest extends AbstractIvyRemoteRepoResolveInte
 
     void "skip subsequent Ivy repositories on timeout and recovers for later resolution"() {
         given:
-        executer.withArgument("-D${SOCKET_TIMEOUT_SYSTEM_PROPERTY}=1000")
+        executor.withArgument("-D${SOCKET_TIMEOUT_SYSTEM_PROPERTY}=1000")
         def repo1 = server.getRemoteIvyRepo("/repo1")
         def repo2 = server.getRemoteIvyRepo("/repo2")
         def module1 = repo1.module('group', 'projectA').publish()

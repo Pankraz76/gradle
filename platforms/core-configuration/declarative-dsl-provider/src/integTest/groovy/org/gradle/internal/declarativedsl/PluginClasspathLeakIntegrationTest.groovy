@@ -62,7 +62,7 @@ class PluginClasspathLeakIntegrationTest extends AbstractIntegrationSpec {
         addPluginSource(pluginProjectDir, code)
         addPluginBuildFile(pluginProjectDir, group, version, artifact)
 
-        executer.inDirectory(pluginProjectDir).withTasks("publishAllPublicationsToRepoRepository").run()
+        executor.inDirectory(pluginProjectDir).withTasks("publishAllPublicationsToRepoRepository").run()
     }
 
     private TestFile addPluginBuildFile(TestFile pluginProjectDir, String group, String version, String artifact) {

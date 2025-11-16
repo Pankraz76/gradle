@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 import org.gradle.test.fixtures.file.TestFile
 
 import static java.util.Arrays.asList
 
-class ProjectLifecycleFixture extends InitScriptExecuterFixture {
+class ProjectLifecycleFixture extends InitScriptExecutorFixture {
 
     private TestFile fixtureData
 
-    ProjectLifecycleFixture(GradleExecuter executer, TestDirectoryProvider testDir) {
-        super(executer, testDir)
+    ProjectLifecycleFixture(GradleExecutor executor, TestDirectoryProvider testDir) {
+        super(executor, testDir)
     }
 
     List<String> configuredProjects

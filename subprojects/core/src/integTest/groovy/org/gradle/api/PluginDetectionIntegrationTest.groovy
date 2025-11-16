@@ -71,7 +71,7 @@ class PluginDetectionIntegrationTest extends AbstractIntegrationSpec {
         def pluginBuilder = new PluginBuilder(testDirectory)
         pluginBuilder.addPlugin("")
         pluginBuilder.addRuleSource("test-rule-source")
-        pluginBuilder.publishTo(executer, file("plugin.jar"))
+        pluginBuilder.publishTo(executor, file("plugin.jar"))
 
         buildFile << """
             def operations = []

@@ -19,7 +19,7 @@ class NoSigningCredentialsIntegrationSpec extends SigningIntegrationSpec {
 
     def setup() {
         using m2
-        executer.withArguments("-info")
+        executor.withArguments("-info")
     }
 
     def "trying to perform a signing operation without a signatory produces reasonable error"() {

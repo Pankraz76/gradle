@@ -59,12 +59,12 @@ class JavaToolchainDownloadComplexProjectSoakTest extends AbstractIntegrationSpe
     def setup() {
         jdkRepository.reset()
 
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
             .withToolchainDownloadEnabled()
     }
 
     def cleanup() {
-        executer.gradleUserHomeDir.file("jdks").deleteDir()
+        executor.gradleUserHomeDir.file("jdks").deleteDir()
     }
 
     def "multiple subprojects with identical toolchain definitions"() {
@@ -76,7 +76,7 @@ class JavaToolchainDownloadComplexProjectSoakTest extends AbstractIntegrationSpe
         setupSubproject("subproject2", "Bar", jdkMetadata)
 
         when:
-        result = executer
+        result = executor
                 .withTasks("compileJava")
                 .run()
 
@@ -100,7 +100,7 @@ class JavaToolchainDownloadComplexProjectSoakTest extends AbstractIntegrationSpe
         setupSubproject("subproject2", "Bar", otherJdkMetadata)
 
         when:
-        result = executer
+        result = executor
                 .withTasks("compileJava")
                 .withArgument("--info")
                 .run()
@@ -156,7 +156,7 @@ class JavaToolchainDownloadComplexProjectSoakTest extends AbstractIntegrationSpe
         setupIncludedBuild()
 
         when:
-        result = executer
+        result = executor
                 .withTasks("compileJava")
                 .withArgument("--info")
                 .run()

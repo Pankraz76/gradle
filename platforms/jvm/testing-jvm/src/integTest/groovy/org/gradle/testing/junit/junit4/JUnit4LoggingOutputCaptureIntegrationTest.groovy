@@ -50,7 +50,7 @@ class JUnit4LoggingOutputCaptureIntegrationTest extends AbstractJUnit4LoggingOut
         """
 
         expect:
-        executer.withTestConsoleAttached()
+        executor.withTestConsoleAttached()
         succeeds("test")
 
         and: "all output is included/excluded in the xml report as configured"

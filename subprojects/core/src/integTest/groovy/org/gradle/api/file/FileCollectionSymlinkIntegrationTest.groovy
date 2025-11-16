@@ -38,8 +38,8 @@ class FileCollectionSymlinkIntegrationTest extends AbstractIntegrationSpec imple
     def setup() {
         expectReindentedValidationMessage()
         // This is required for the daemon to clean up symlinks between builds
-        executer.requireDaemon()
-        executer.requireIsolatedDaemons()
+        executor.requireDaemon()
+        executor.requireIsolatedDaemons()
     }
 
     def "#desc can handle symlinks"() {

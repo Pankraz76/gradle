@@ -32,7 +32,7 @@ class TaskErrorExecutionIntegrationTest extends AbstractIntegrationSpec implemen
 
     def setup() {
         expectReindentedValidationMessage()
-        executer.beforeExecute {
+        executor.beforeExecute {
             withStacktraceEnabled()
         }
     }

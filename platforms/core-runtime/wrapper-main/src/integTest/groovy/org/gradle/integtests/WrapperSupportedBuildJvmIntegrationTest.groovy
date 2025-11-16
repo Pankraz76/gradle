@@ -25,7 +25,7 @@ import org.gradle.test.preconditions.IntegTestPreconditions
 class WrapperSupportedBuildJvmIntegrationTest extends AbstractWrapperIntegrationSpec {
 
     def setup() {
-        wrapperExecuter.requireDaemon() // For non-daemon executors, tests single-use daemon mode
+        wrapperExecutor.requireDaemon() // For non-daemon executors, tests single-use daemon mode
     }
 
     def "can run the wrapper with java #jdk.javaVersion"() {
@@ -33,7 +33,7 @@ class WrapperSupportedBuildJvmIntegrationTest extends AbstractWrapperIntegration
         prepareWrapper()
 
         // Run the wrapper with the JVM under test
-        wrapperExecuter.withJvm(jdk)
+        wrapperExecutor.withJvm(jdk)
 
         // But run the daemon with the CI JDK, as the wrapper supports
         // JVM versions that the daemon does not.
@@ -44,7 +44,7 @@ class WrapperSupportedBuildJvmIntegrationTest extends AbstractWrapperIntegration
         """
 
         expect:
-        def wrapperResult = wrapperExecuter.withTasks("help").run()
+        def wrapperResult = wrapperExecutor.withTasks("help").run()
         wrapperResult.assertOutputContains("Version: " + Jvm.current().javaVersion)
         wrapperResult.assertTaskScheduled(":help")
 

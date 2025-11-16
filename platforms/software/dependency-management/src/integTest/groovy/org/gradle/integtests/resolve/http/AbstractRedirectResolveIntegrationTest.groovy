@@ -59,7 +59,7 @@ abstract class AbstractRedirectResolveIntegrationTest extends AbstractRedirectRe
         backingServer.expectGetBlocking('/redirected/group/projectA/1.0/ivy-1.0.xml')
 
         then:
-        executer.beforeExecute { withArgument("-D${SOCKET_TIMEOUT_SYSTEM_PROPERTY}=1000") }
+        executor.beforeExecute { withArgument("-D${SOCKET_TIMEOUT_SYSTEM_PROPERTY}=1000") }
         fails('listJars')
 
         and:

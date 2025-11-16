@@ -16,7 +16,7 @@
 
 package org.gradle.smoketests
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.integtests.fixtures.versions.KotlinGradlePluginVersions
 import org.gradle.test.fixtures.dsl.GradleDsl
 import org.gradle.testdistribution.LocalOnly
@@ -141,20 +141,20 @@ class AndroidGradleRecipesKotlinSmokeTest extends AbstractSmokeTest implements R
         result.task(":app:$taskName").outcome == TaskOutcome.SUCCESS
 
         and:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateStored()
         }
 
         when: 'running the build for the 2nd time'
         result = runner.deprecations(AndroidDeprecations) {
-            expectMultiStringNotationDeprecationIf(agpVersion, GradleContextualExecuter.isNotConfigCache())
+            expectMultiStringNotationDeprecationIf(agpVersion, GradleContextualExecutor.isNotConfigCache())
         }.build()
 
         then:
         result.task(":app:$taskName").outcome == TaskOutcome.UP_TO_DATE
 
         and:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateLoaded()
         }
 

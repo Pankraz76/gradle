@@ -153,7 +153,7 @@ class CppLibraryWithStaticLinkagePublishingIntegrationTest extends AbstractInsta
         """
         app.greeterLib.writeToProject(file(producer))
 
-        executer.inDirectory(producer)
+        executor.inDirectory(producer)
         run('publish')
 
         def consumer = file("consumer").createDir()
@@ -171,7 +171,7 @@ class CppLibraryWithStaticLinkagePublishingIntegrationTest extends AbstractInsta
         app.main.writeToProject(consumer)
 
         when:
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("installDebug")
 
         then:
@@ -180,7 +180,7 @@ class CppLibraryWithStaticLinkagePublishingIntegrationTest extends AbstractInsta
         debugInstall.assertIncludesLibraries()
 
         when:
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("installRelease")
 
         then:

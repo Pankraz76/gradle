@@ -29,7 +29,7 @@ class DaemonReportStatusIntegrationSpec extends DaemonIntegrationSpec {
 
     def "shows default message if no daemons are running"() {
         when:
-        def out = executer.withArgument("--status").run().normalizedOutput
+        def out = executor.withArgument("--status").run().normalizedOutput
 
         then:
         out =~ """^$DaemonMessages.NO_DAEMONS_RUNNING
@@ -49,16 +49,16 @@ task block {
 """
         daemons.getRegistry().storeStopEvent(new DaemonStopEvent(new Date(), 12346L, DaemonExpirationStatus.GRACEFUL_EXPIRE, "GRACEFUL_EXPIRE_REASON"))
         def block = server.expectAndBlock("block")
-        def build = executer.withTasks("block").start()
+        def build = executor.withTasks("block").start()
         block.waitForAllPendingCalls()
 
         daemons.daemon.assertBusy()
-        executer.useOnlyRequestedJvmOpts()
-        executer.withBuildJvmOpts('-Xmx128m')
-        executer.run()
+        executor.useOnlyRequestedJvmOpts()
+        executor.withBuildJvmOpts('-Xmx128m')
+        executor.run()
 
         when:
-        def out = executer.withArguments("--status").run().normalizedOutput
+        def out = executor.withArguments("--status").run().normalizedOutput
 
         then:
         daemons.daemons.size() == 2
@@ -79,7 +79,7 @@ task block {
         daemons.getRegistry().storeStopEvent(new DaemonStopEvent(new Date(), 12346L, DaemonExpirationStatus.GRACEFUL_EXPIRE, "GRACEFUL_EXPIRE_REASON"))
 
         when:
-        def out = executer.withArgument("--status").run().normalizedOutput
+        def out = executor.withArgument("--status").run().normalizedOutput
 
         then:
         out.startsWith(DaemonMessages.NO_DAEMONS_RUNNING)

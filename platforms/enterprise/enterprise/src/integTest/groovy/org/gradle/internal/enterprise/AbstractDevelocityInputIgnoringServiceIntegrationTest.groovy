@@ -27,11 +27,11 @@ import javax.inject.Inject
 
 abstract class AbstractDevelocityInputIgnoringServiceIntegrationTest extends AbstractIntegrationSpec {
 
-    def plugin = new GradleEnterprisePluginCheckInFixture(testDirectory, mavenRepo, createExecuter())
+    def plugin = new GradleEnterprisePluginCheckInFixture(testDirectory, mavenRepo, createExecutor())
 
     def setup() {
         settingsFile << plugin.pluginManagement() << plugin.plugins()
-        plugin.publishDummyPlugin(executer)
+        plugin.publishDummyPlugin(executor)
     }
 
     abstract String runIgnoringInputs(String code);

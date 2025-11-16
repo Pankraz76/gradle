@@ -44,7 +44,7 @@ abstract class AbstractVisualStudioIntegrationSpec extends AbstractInstalledTool
         // We direct the output because msbuild jumbles up stdout/stderr in ways that mess up our output scraping.
         // There is probably another way we could redirect the output or scrape the output, but this is good enough for testing.
         // In real builds (we do not redirect output normally), msbuild and VS do not hang like this.
-        executer.requireIsolatedDaemons().requireDaemon()
+        executor.requireIsolatedDaemons().requireDaemon()
 
         initScript << IdeCommandLineUtil.generateGradleProbeInitFile('visualStudio', 'msbuild')
         initScript << """
@@ -96,11 +96,11 @@ echo %outputLog%
 
     protected MSBuildExecutor getMsbuild() {
         // Gradle needs to be isolated so that msbuild does not leave behind daemons
-        assert executer.distribution.gradleHomeDir != null
-        assert !executer.usesSharedDaemons()
-        def executer = new MSBuildExecutor(testDirectory, toolChain)
-        executer.withArgument('/p:Platform=Win32')
-        return executer
+        assert executor.distribution.gradleHomeDir != null
+        assert !executor.usesSharedDaemons()
+        def executor = new MSBuildExecutor(testDirectory, toolChain)
+        executor.withArgument('/p:Platform=Win32')
+        return executor
     }
 
     protected SolutionFile solutionFile(String path) {

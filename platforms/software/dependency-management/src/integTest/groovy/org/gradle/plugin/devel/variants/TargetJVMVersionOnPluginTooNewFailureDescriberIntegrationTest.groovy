@@ -88,7 +88,7 @@ class TargetJVMVersionOnPluginTooNewFailureDescriberIntegrationTest extends Abst
         when:
         projectDir(producer)
         withInstallations(currentJdk, otherJdk)
-        executer.withJvm(higherVersion)
+        executor.withJvm(higherVersion)
         succeeds 'publish'
 
         then:
@@ -99,7 +99,7 @@ class TargetJVMVersionOnPluginTooNewFailureDescriberIntegrationTest extends Abst
         when:
         projectDir(consumer)
         withInstallations(currentJdk, otherJdk)
-        executer.withJvm(lowerVersion)
+        executor.withJvm(lowerVersion)
         fails 'greet', "--stacktrace"
 
         then:
@@ -255,7 +255,7 @@ class TargetJVMVersionOnPluginTooNewFailureDescriberIntegrationTest extends Abst
         when:
         projectDir(consumer)
         withInstallations(currentJdk, otherJdk)
-        executer.withJvm(lowerVersion)
+        executor.withJvm(lowerVersion)
         fails 'greet', "--stacktrace"
 
         then:

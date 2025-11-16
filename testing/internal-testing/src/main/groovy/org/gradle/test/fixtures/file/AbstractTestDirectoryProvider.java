@@ -129,7 +129,7 @@ public abstract class AbstractTestDirectoryProvider implements TestRule, TestDir
 
         private String cleanupErrorMessage() {
             return "Couldn't delete test dir for `" + displayName() + "` (test is holding files open). "
-                + "In order to find out which files are held open, you may find `org.gradle.integtests.fixtures.executer.GradleExecuter.withFileLeakDetection` useful.";
+                + "In order to find out which files are held open, you may find `org.gradle.integtests.fixtures.executor.GradleExecutor.withFileLeakDetection` useful.";
         }
 
         private String displayName() {

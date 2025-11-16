@@ -30,13 +30,13 @@ class SamplesManagingTransitiveDependenciesIntegrationTest extends AbstractInteg
     Sample sample = new Sample(testDirectoryProvider)
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     @UsesSample("dependencyManagement/managingTransitiveDependencies-versionsWithConstraints")
     def "respects dependency constraints for direct and transitive dependencies with #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)
@@ -52,7 +52,7 @@ class SamplesManagingTransitiveDependenciesIntegrationTest extends AbstractInteg
     @UsesSample("dependencyManagement/managingTransitiveDependencies-forceForDependency")
     def "can force a dependency version for #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)
@@ -69,7 +69,7 @@ class SamplesManagingTransitiveDependenciesIntegrationTest extends AbstractInteg
     @UsesSample("dependencyManagement/managingTransitiveDependencies-forceForConfiguration")
     def "can force a dependency version for particular configuration for #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)
@@ -86,7 +86,7 @@ class SamplesManagingTransitiveDependenciesIntegrationTest extends AbstractInteg
     @UsesSample("dependencyManagement/managingTransitiveDependencies-disableForDependency")
     def "can disable transitive dependency resolution for dependency for #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)
@@ -101,7 +101,7 @@ class SamplesManagingTransitiveDependenciesIntegrationTest extends AbstractInteg
     @UsesSample("dependencyManagement/managingTransitiveDependencies-disableForConfiguration")
     def "can disable transitive dependency resolution for particular configuration for #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)
@@ -116,7 +116,7 @@ class SamplesManagingTransitiveDependenciesIntegrationTest extends AbstractInteg
     @UsesSample("dependencyManagement/managingTransitiveDependencies-constraintsFromBOM")
     def "can import dependency versions from a bom for #dsl dsl"() {
         TestFile dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)

@@ -24,12 +24,12 @@ abstract class Snippets {
      * Defines the 'myTestTask' test task in the build script with a custom AbstractTestTask implementation in buildSrc.
      */
     static void customTestTask(TestFile buildScript, TestFile buildSrcDir) {
-        buildSrcDir.file('src/main/groovy/CustomTestExecuter.groovy') << '''
+        buildSrcDir.file('src/main/groovy/CustomTestExecutor.groovy') << '''
             import org.gradle.api.internal.tasks.testing.*
             import org.gradle.api.tasks.testing.TestResult
             import org.gradle.internal.operations.OperationIdentifier
 
-            class CustomTestExecuter implements TestExecuter<CustomTestExecutionSpec> {
+            class CustomTestExecutor implements TestExecutor<CustomTestExecutionSpec> {
 
                 @Override
                 void execute(CustomTestExecutionSpec customTestExecutionSpec, TestResultProcessor testResultProcessor) {
@@ -55,7 +55,7 @@ abstract class Snippets {
             }
         '''
         buildSrcDir.file('src/main/groovy/CustomTestTask.groovy') << '''
-            import org.gradle.api.internal.tasks.testing.TestExecuter
+            import org.gradle.api.internal.tasks.testing.TestExecutor
             import org.gradle.api.internal.tasks.testing.TestExecutionSpec
             import org.gradle.api.tasks.testing.AbstractTestTask
 
@@ -68,8 +68,8 @@ abstract class Snippets {
                 }
 
                 @Override
-                protected TestExecuter<? extends TestExecutionSpec> createTestExecuter() {
-                    return new CustomTestExecuter()
+                protected TestExecutor<? extends TestExecutionSpec> createTestExecutor() {
+                    return new CustomTestExecutor()
                 }
 
                 @Override

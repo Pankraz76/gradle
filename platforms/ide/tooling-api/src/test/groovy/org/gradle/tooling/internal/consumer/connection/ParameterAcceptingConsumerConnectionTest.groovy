@@ -140,7 +140,7 @@ class ParameterAcceptingConsumerConnectionTest extends Specification {
     def "cannot run phased action"() {
         def phasedAction = Stub(PhasedBuildAction)
         def parameters = Stub(ConsumerOperationParameters) {
-            getEntryPointName() >> 'PhasedBuildActionExecuter API'
+            getEntryPointName() >> 'PhasedBuildActionExecutor API'
         }
 
         when:
@@ -148,7 +148,7 @@ class ParameterAcceptingConsumerConnectionTest extends Specification {
 
         then:
         UnsupportedVersionException e = thrown()
-        e.message == 'The version of Gradle you are using (4.4) does not support the PhasedBuildActionExecuter API. Support for this is available in Gradle 4.8 and all later versions.'
+        e.message == 'The version of Gradle you are using (4.4) does not support the PhasedBuildActionExecutor API. Support for this is available in Gradle 4.8 and all later versions.'
     }
 
     interface TestModelBuilder extends ConnectionVersion4, ConfigurableConnection, InternalParameterAcceptingConnection, InternalTestExecutionConnection, StoppableConnection,

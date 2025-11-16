@@ -238,7 +238,7 @@ fun Test.runWithJavaVersion(testJvmVersion: JavaLanguageVersion) {
         val argProvider = objects.newInstance(AddOpensArgumentProvider::class.java).apply {
             jvmVersion = testJvmVersion.asInt()
             unitTest = provider { isUnitTest() }
-            embedded = provider { usesEmbeddedExecuter() }
+            embedded = provider { usesEmbeddedExecutor() }
         }
         jvmArgumentProviders.add(argProvider)
     }
@@ -281,7 +281,7 @@ fun Test.isUnitTest() = listOf("test", "writePerformanceScenarioDefinitions", "w
  */
 fun Test.inheritDevelocityAccessTokenEnv() = setOf("smoke-test").contains(project.name)
 
-fun Test.usesEmbeddedExecuter() = systemProperties["org.gradle.integtest.executer"]?.equals("embedded") ?: false
+fun Test.usesEmbeddedExecutor() = systemProperties["org.gradle.integtest.executor"]?.equals("embedded") ?: false
 
 fun Test.configureRerun() {
     if (project.rerunAllTests.get()) {

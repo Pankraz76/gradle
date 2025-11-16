@@ -44,7 +44,7 @@ tasks.withType<DistributionTest>().configureEach {
     addSetUpAndTearDownActions()
 }
 
-fun executerRequiresFullDistribution(taskName: String) =
+fun executorRequiresFullDistribution(taskName: String) =
     taskName.startsWith("noDaemon")
 
 fun DistributionTest.addSetUpAndTearDownActions() {
@@ -59,7 +59,7 @@ fun DistributionTest.configureGradleTestEnvironment() {
 
     gradleInstallationForTest.apply {
         gradleDistribution.homeDir.fileProvider(
-            if (executerRequiresFullDistribution(taskName)) {
+            if (executorRequiresFullDistribution(taskName)) {
                 configurations["${prefix}TestFullDistributionRuntimeClasspath"].getSingleFileProvider()
             } else {
                 configurations["${prefix}TestDistributionRuntimeClasspath"].getSingleFileProvider()

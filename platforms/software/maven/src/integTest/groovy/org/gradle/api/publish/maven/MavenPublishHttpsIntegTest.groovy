@@ -50,7 +50,7 @@ class MavenPublishHttpsIntegTest extends AbstractMavenPublishIntegTest {
 
         when:
         expectPublication()
-        keyStore.configureServerCert(executer)
+        keyStore.configureServerCert(executor)
         succeeds 'publish'
 
         then:
@@ -64,7 +64,7 @@ class MavenPublishHttpsIntegTest extends AbstractMavenPublishIntegTest {
 
         when:
         expectPublication()
-        keyStore.configureServerAndClientCerts(executer)
+        keyStore.configureServerAndClientCerts(executor)
         succeeds 'publish'
 
         then:
@@ -76,8 +76,8 @@ class MavenPublishHttpsIntegTest extends AbstractMavenPublishIntegTest {
         initBuild()
 
         when:
-        keyStore.configureIncorrectServerCert(executer)
-        executer.withStackTraceChecksDisabled() // Jetty logs stuff to console
+        keyStore.configureIncorrectServerCert(executor)
+        executor.withStackTraceChecksDisabled() // Jetty logs stuff to console
         fails 'publish'
 
         then:
@@ -90,8 +90,8 @@ class MavenPublishHttpsIntegTest extends AbstractMavenPublishIntegTest {
         initBuild()
 
         when:
-        executer.withStackTraceChecksDisabled() // Jetty logs stuff to console
-        keyStore.configureServerAndClientCerts(executer)
+        executor.withStackTraceChecksDisabled() // Jetty logs stuff to console
+        keyStore.configureServerAndClientCerts(executor)
 
         fails 'publish'
 

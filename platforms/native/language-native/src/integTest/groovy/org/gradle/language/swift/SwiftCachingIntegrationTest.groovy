@@ -95,7 +95,7 @@ class SwiftCachingIntegrationTest extends AbstractInstalledToolChainIntegrationS
 
         when:
         originalLocation.deleteDir()
-        executer.beforeExecute {
+        executor.beforeExecute {
             inDirectory(newLocation)
         }
 
@@ -127,7 +127,7 @@ class SwiftCachingIntegrationTest extends AbstractInstalledToolChainIntegrationS
 
         when:
         originalLocation.deleteDir()
-        executer.beforeExecute {
+        executor.beforeExecute {
             inDirectory(newLocation)
         }
         withBuildCache().run upstreamCompileTasks

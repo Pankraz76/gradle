@@ -83,7 +83,7 @@ project(':services:utilities') {
 """
 
         //when
-        executer.withTasks("eclipse").run()
+        executor.withTasks("eclipse").run()
 
         //then
         assertApiProjectContainsCorrectDependencies()
@@ -142,7 +142,7 @@ project(':services:utilities') {
         """
 
         //when
-        executer.withTasks("eclipse").run()
+        executor.withTasks("eclipse").run()
 
         //then
         def deps = parseEclipseProjectDependencies(project: 'api')
@@ -179,7 +179,7 @@ project(':services:utilities') {
         """
 
         //when
-        executer.withTasks("eclipse").run()
+        executor.withTasks("eclipse").run()
 
         //then
         def deps = parseEclipseProjectDependencies(project: 'api')

@@ -66,7 +66,7 @@ class JavaToolchainDownloadSpiAuthenticationIntegrationTest extends AbstractInte
         server.expectGet("/path/toolchain.zip", toolchainArchive)
 
         when:
-        failure = executer
+        failure = executor
                 .withTasks("compileJava")
                 .requireOwnGradleUserHomeDir("needs to be able to provision fresh toolchains")
                 .withToolchainDownloadEnabled()
@@ -122,7 +122,7 @@ class JavaToolchainDownloadSpiAuthenticationIntegrationTest extends AbstractInte
         server.expectGet("/path/toolchain.zip", "user", "password", toolchainArchive)
 
         when:
-        failure = executer
+        failure = executor
                 .withTasks("compileJava")
                 .requireOwnGradleUserHomeDir("needs to be able to provision fresh toolchains")
                 .withToolchainDownloadEnabled()

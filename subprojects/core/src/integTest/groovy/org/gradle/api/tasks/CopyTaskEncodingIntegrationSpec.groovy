@@ -49,8 +49,8 @@ class CopyTaskEncodingIntegrationSpec extends AbstractIntegrationSpec {
         file("res", nonAsciiFileName) << "foo"
 
         when:
-        executer.withDefaultCharacterEncoding("ISO-8859-1").withTasks("copyFiles")
-        executer.run()
+        executor.withDefaultCharacterEncoding("ISO-8859-1").withTasks("copyFiles")
+        executor.run()
 
         then:
         file("build/resources", nonAsciiFileName).exists()
@@ -79,7 +79,7 @@ class CopyTaskEncodingIntegrationSpec extends AbstractIntegrationSpec {
         file("res", nonAsciiFileName) << "foo"
 
         when:
-        executer.withTasks("copyFiles").run()
+        executor.withTasks("copyFiles").run()
 
         then:
         file("build/resources", nonAsciiFileName).exists()

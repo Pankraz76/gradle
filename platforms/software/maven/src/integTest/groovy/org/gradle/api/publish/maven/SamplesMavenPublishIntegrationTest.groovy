@@ -30,7 +30,7 @@ class SamplesMavenPublishIntegrationTest extends AbstractSampleIntegrationTest {
     def "quickstart publish with #dsl dsl"() {
         given:
         def sampleDir = sampleProject.dir.file(dsl)
-        executer.inDirectory(sampleDir)
+        executor.inDirectory(sampleDir)
 
         and:
         def fileRepo = maven(sampleDir.file("build/repo"))
@@ -53,12 +53,12 @@ class SamplesMavenPublishIntegrationTest extends AbstractSampleIntegrationTest {
         using m2
 
         given:
-        executer.beforeExecute m2
+        executor.beforeExecute m2
         def localModule = m2.mavenRepo().module("org.gradle.sample", "quickstart", "1.0").withModuleMetadata()
 
         and:
         def sampleDir = sampleProject.dir.file(dsl)
-        executer.inDirectory(sampleDir)
+        executor.inDirectory(sampleDir)
 
         and:
         def fileRepo = maven(sampleDir.file("build/repo"))
@@ -79,7 +79,7 @@ class SamplesMavenPublishIntegrationTest extends AbstractSampleIntegrationTest {
     def "publish java project with #dsl dsl"() {
         given:
         def sampleDir = sampleProject.dir.file(dsl)
-        executer.inDirectory(sampleDir)
+        executor.inDirectory(sampleDir)
 
         and:
         def fileRepo = maven(sampleDir.file("build/repos/releases"))
@@ -222,7 +222,7 @@ class SamplesMavenPublishIntegrationTest extends AbstractSampleIntegrationTest {
     def "publishes distribution archives with #dsl dsl"() {
         given:
         def sampleDir = sampleProject.dir.file(dsl)
-        executer.inDirectory(sampleDir)
+        executor.inDirectory(sampleDir)
 
         and:
         def repo = maven(sampleDir.file("build/repo"))

@@ -36,7 +36,7 @@ class DaemonToolchainPropertiesIntegrationTest extends AbstractIntegrationSpec i
 
         expect:
         expectToolchainPropertyDeprecationFor('org.gradle.java.installations.paths', otherJvm.javaHome.absolutePath)
-        executer.withArgument("-Porg.gradle.java.installations.paths=" + otherJvm.javaHome.absolutePath)
+        executor.withArgument("-Porg.gradle.java.installations.paths=" + otherJvm.javaHome.absolutePath)
         succeeds("help")
         assertDaemonUsedJvm(otherJvm)
     }
@@ -50,7 +50,7 @@ class DaemonToolchainPropertiesIntegrationTest extends AbstractIntegrationSpec i
 
         expect:
         file("gradle.properties") << "org.gradle.java.installations.paths=" + otherJvm.javaHome.absolutePath
-        executer.withArgument("-Porg.gradle.java.installations.paths=" + otherJvm.javaHome.absolutePath)
+        executor.withArgument("-Porg.gradle.java.installations.paths=" + otherJvm.javaHome.absolutePath)
         expectToolchainPropertyDeprecationFor('org.gradle.java.installations.paths', otherJvm.javaHome.absolutePath)
         succeeds("help")
         assertDaemonUsedJvm(otherJvm)
@@ -64,7 +64,7 @@ class DaemonToolchainPropertiesIntegrationTest extends AbstractIntegrationSpec i
         captureJavaHome()
 
         expect:
-        executer.withArgument("-Dorg.gradle.java.installations.paths=" + otherJvm.javaHome.absolutePath)
+        executor.withArgument("-Dorg.gradle.java.installations.paths=" + otherJvm.javaHome.absolutePath)
         succeeds("help")
         assertDaemonUsedJvm(otherJvm)
     }
@@ -90,7 +90,7 @@ class DaemonToolchainPropertiesIntegrationTest extends AbstractIntegrationSpec i
         captureJavaHome()
 
         expect:
-        executer.requireOwnGradleUserHomeDir("so we can set properties in GUH/gradle.properties")
+        executor.requireOwnGradleUserHomeDir("so we can set properties in GUH/gradle.properties")
         file("user-home/gradle.properties") << "org.gradle.java.installations.paths=" + TextUtil.normaliseFileSeparators(otherJvm.javaHome.absolutePath)
         succeeds("help")
         assertDaemonUsedJvm(otherJvm)
@@ -104,8 +104,8 @@ class DaemonToolchainPropertiesIntegrationTest extends AbstractIntegrationSpec i
         captureJavaHome()
 
         expect:
-        executer.withArgument("-Dorg.gradle.java.installations.paths=" + otherJvm.javaHome.absolutePath)
-        executer.withArgument("-Porg.gradle.java.installations.paths=" + otherJvm.javaHome.absolutePath)
+        executor.withArgument("-Dorg.gradle.java.installations.paths=" + otherJvm.javaHome.absolutePath)
+        executor.withArgument("-Porg.gradle.java.installations.paths=" + otherJvm.javaHome.absolutePath)
         succeeds("help")
         assertDaemonUsedJvm(otherJvm)
     }
@@ -118,8 +118,8 @@ class DaemonToolchainPropertiesIntegrationTest extends AbstractIntegrationSpec i
         captureJavaHome()
 
         expect:
-        executer.withArgument("-Dorg.gradle.java.installations.paths=" + Jvm.current().javaHome.absolutePath)
-        executer.withArgument("-Porg.gradle.java.installations.paths=" + otherJvm.javaHome.absolutePath)
+        executor.withArgument("-Dorg.gradle.java.installations.paths=" + Jvm.current().javaHome.absolutePath)
+        executor.withArgument("-Porg.gradle.java.installations.paths=" + otherJvm.javaHome.absolutePath)
         fails("help")
 
         and:

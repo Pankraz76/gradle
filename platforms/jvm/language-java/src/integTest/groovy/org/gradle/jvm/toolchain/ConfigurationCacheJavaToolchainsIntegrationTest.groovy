@@ -26,9 +26,9 @@ class ConfigurationCacheJavaToolchainsIntegrationTest extends AbstractIntegratio
     def configurationCache = newConfigurationCacheFixture()
 
     @Override
-    void setupExecuter() {
-        super.setupExecuter()
-        executer.withConfigurationCacheEnabled()
+    void setupExecutor() {
+        super.setupExecutor()
+        executor.withConfigurationCacheEnabled()
     }
 
     def "show toolchains task works properly"() {

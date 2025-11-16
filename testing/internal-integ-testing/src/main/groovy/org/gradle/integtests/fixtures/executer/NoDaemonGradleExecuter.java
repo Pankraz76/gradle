@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import org.gradle.api.Action;
 import org.gradle.api.JavaVersion;
@@ -43,17 +43,17 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.fail;
 
-public class NoDaemonGradleExecuter extends AbstractGradleExecuter {
+public class NoDaemonGradleExecutor extends AbstractGradleExecutor {
 
-    public NoDaemonGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider) {
+    public NoDaemonGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider) {
         super(distribution, testDirectoryProvider);
     }
 
-    public NoDaemonGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, IntegrationTestBuildContext buildContext) {
+    public NoDaemonGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, IntegrationTestBuildContext buildContext) {
         super(distribution, testDirectoryProvider, buildContext);
     }
 
-    public NoDaemonGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, GradleVersion gradleVersion, IntegrationTestBuildContext buildContext) {
+    public NoDaemonGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, GradleVersion gradleVersion, IntegrationTestBuildContext buildContext) {
         super(distribution, testDirectoryProvider, gradleVersion, buildContext);
     }
 
@@ -160,7 +160,7 @@ public class NoDaemonGradleExecuter extends AbstractGradleExecuter {
                 TestFile gradleHomeDir = getDistribution().getGradleHomeDir();
                 if (gradleHomeDir != null && !gradleHomeDir.isDirectory()) {
                     fail(gradleHomeDir + " is not a directory.\n"
-                        + "The test is most likely not written in a way that it can run with the embedded executer.");
+                        + "The test is most likely not written in a way that it can run with the embedded executor.");
                 }
 
                 NativeServicesTestFixture.initialize();
@@ -169,7 +169,7 @@ public class NoDaemonGradleExecuter extends AbstractGradleExecuter {
                     public File getWorkingDir() {
                         // Override this, so that the working directory is not canonicalised. Some int tests require that
                         // the working directory is not canonicalised
-                        return NoDaemonGradleExecuter.this.getWorkingDir();
+                        return NoDaemonGradleExecutor.this.getWorkingDir();
                     }
                 };
 
@@ -226,7 +226,7 @@ public class NoDaemonGradleExecuter extends AbstractGradleExecuter {
             builder.setExecutable("cmd.exe");
 
             List<String> allArgs = builder.getArgs();
-            String actualCommand = quote(quote(cmd) + " " + allArgs.stream().map(NoDaemonGradleExecuter::quote).collect(joining(" ")));
+            String actualCommand = quote(quote(cmd) + " " + allArgs.stream().map(NoDaemonGradleExecutor::quote).collect(joining(" ")));
             builder.setArgs(Arrays.asList("/d", "/c", actualCommand));
 
             String gradleHome = getDistribution().getGradleHomeDir().getAbsolutePath();

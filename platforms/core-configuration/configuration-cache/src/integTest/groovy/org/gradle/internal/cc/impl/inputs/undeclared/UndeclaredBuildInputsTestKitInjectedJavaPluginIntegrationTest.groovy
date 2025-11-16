@@ -17,14 +17,14 @@
 package org.gradle.internal.cc.impl.inputs.undeclared
 
 import org.gradle.integtests.fixtures.daemon.DaemonLogsAnalyzer
-import org.gradle.integtests.fixtures.executer.AbstractGradleExecuter
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.GradleExecuter
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionFailure
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult
+import org.gradle.integtests.fixtures.executor.AbstractGradleExecutor
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleExecutor
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionFailure
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult
 import org.gradle.internal.nativeintegration.services.NativeServices
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 import org.gradle.test.fixtures.file.TestFile
@@ -51,12 +51,12 @@ class UndeclaredBuildInputsTestKitInjectedJavaPluginIntegrationTest extends Abst
     )
 
     @Override
-    GradleExecuter createExecuter() {
+    GradleExecutor createExecutor() {
         testKitDir = file("test-kit")
-        def executer = new TestKitBackedGradleExecuter(distribution, temporaryFolder, getBuildContext(), testKitDir)
+        def executor = new TestKitBackedGradleExecutor(distribution, temporaryFolder, getBuildContext(), testKitDir)
         jar = file("plugins/sneaky.jar")
-        executer.pluginClasspath.add(jar)
-        return executer
+        executor.pluginClasspath.add(jar)
+        return executor
     }
 
     def cleanup() {
@@ -76,12 +76,12 @@ implementation-class: SneakyPlugin
         """
     }
 
-    static class TestKitBackedGradleExecuter extends AbstractGradleExecuter {
+    static class TestKitBackedGradleExecutor extends AbstractGradleExecutor {
         List<File> pluginClasspath = []
         private final IntegrationTestBuildContext buildContext
         private final TestFile testKitDir
 
-        TestKitBackedGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, IntegrationTestBuildContext buildContext, TestFile testKitDir) {
+        TestKitBackedGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, IntegrationTestBuildContext buildContext, TestFile testKitDir) {
             super(distribution, testDirectoryProvider)
             this.testKitDir = testKitDir
             this.buildContext = buildContext

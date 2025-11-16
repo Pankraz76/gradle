@@ -20,11 +20,11 @@ import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 
 class DevelocityPluginBuildOperationNotificationsIntegrationTest extends AbstractIntegrationSpec {
 
-    def plugin = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecuter())
+    def plugin = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecutor())
 
     def setup() {
         settingsFile << plugin.pluginManagement() << plugin.plugins()
-        plugin.publishDummyPlugin(executer)
+        plugin.publishDummyPlugin(executor)
         buildFile << """
             task t
         """

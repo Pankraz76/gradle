@@ -54,7 +54,7 @@ class JavaUtilLoggingSystemIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.withArgument("--debug")
+        executor.withArgument("--debug")
 
         then:
         succeeds('isLoggable')
@@ -79,7 +79,7 @@ class JavaUtilLoggingSystemIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.withArgument("--warn")
+        executor.withArgument("--warn")
 
         then:
         succeeds('isLoggable')
@@ -104,7 +104,7 @@ class JavaUtilLoggingSystemIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.withArgument("--info")
+        executor.withArgument("--info")
 
         then:
         succeeds('isLoggable')
@@ -129,7 +129,7 @@ class JavaUtilLoggingSystemIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer
+        executor
 
         then:
         succeeds('isLoggable')
@@ -154,7 +154,7 @@ class JavaUtilLoggingSystemIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.withArgument("--quiet")
+        executor.withArgument("--quiet")
 
         then:
         succeeds('isLoggable')

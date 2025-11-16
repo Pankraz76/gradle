@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 import org.gradle.initialization.StartParameterBuildOptions.ConfigurationCacheMaxProblemsOption
 import org.gradle.initialization.StartParameterBuildOptions.ConfigurationCacheOption
@@ -23,7 +23,7 @@ import org.gradle.initialization.StartParameterBuildOptions.ConfigurationCacheQu
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 import org.gradle.util.GradleVersion
 
-class ConfigurationCacheGradleExecuter extends DaemonGradleExecuter {
+class ConfigurationCacheGradleExecutor extends DaemonGradleExecutor {
 
     static final List<String> CONFIGURATION_CACHE_ARGS = [
         "--${ConfigurationCacheOption.LONG_OPTION}",
@@ -33,7 +33,7 @@ class ConfigurationCacheGradleExecuter extends DaemonGradleExecuter {
         "-Dorg.gradle.configuration-cache.internal.report-output-directory=.gradle/configuration-cache/reports"
     ].collect { it.toString() }
 
-    ConfigurationCacheGradleExecuter(
+    ConfigurationCacheGradleExecutor(
         GradleDistribution distribution,
         TestDirectoryProvider testDirectoryProvider,
         GradleVersion gradleVersion,

@@ -39,7 +39,7 @@ class AbstractLanguageInterOpIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
         file("buildSrc/settings.gradle.kts") << """
             include("plugin")
         """

@@ -33,7 +33,7 @@ import org.gradle.test.fixtures.file.TestNameTestDirectoryProvider
 import org.junit.Rule
 import spock.lang.Specification
 
-import static org.gradle.api.internal.file.copy.CopyActionExecuterUtil.visit
+import static org.gradle.api.internal.file.copy.CopyActionExecutorUtil.visit
 import static org.hamcrest.CoreMatchers.equalTo
 
 @CleanupTestDirectory

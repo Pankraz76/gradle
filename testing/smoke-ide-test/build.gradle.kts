@@ -90,7 +90,7 @@ tasks {
         dependsOn(unzipIdeStarter, shrinkGradle)
         group = "Verification"
         maxParallelForks = 1
-        systemProperties["org.gradle.integtest.executer"] = "forking"
+        systemProperties["org.gradle.integtest.executor"] = "forking"
         testClassesDirs = smokeIdeTestSourceSet.output.classesDirs
         classpath = smokeIdeTestSourceSet.runtimeClasspath
         jvmArgumentProviders.add(

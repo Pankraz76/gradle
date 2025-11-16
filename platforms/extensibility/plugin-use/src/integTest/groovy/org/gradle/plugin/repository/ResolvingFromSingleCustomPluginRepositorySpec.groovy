@@ -50,7 +50,7 @@ class ResolvingFromSingleCustomPluginRepositorySpec extends AbstractDependencyRe
         } else if (repoType == MAVEN) {
             repo = mavenRepo
         }
-        pluginBuilder.publishAs("org.example.plugin:plugin:1.0", repo, executer)
+        pluginBuilder.publishAs("org.example.plugin:plugin:1.0", repo, executor)
     }
 
     private String useCustomRepository(PathType pathType) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 package org.gradle.plugins.ide.eclipse
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.plugins.ide.AbstractIdeIntegrationTest
 
 class AbstractEclipseIntegrationTest extends AbstractIdeIntegrationTest {
@@ -81,11 +81,11 @@ class AbstractEclipseIntegrationTest extends AbstractIdeIntegrationTest {
     }
 
     protected EclipseClasspathFixture getClasspath() {
-        EclipseClasspathFixture.create(testDirectory, executer.gradleUserHomeDir)
+        EclipseClasspathFixture.create(testDirectory, executor.gradleUserHomeDir)
     }
 
     protected EclipseClasspathFixture classpath(String path) {
-        EclipseClasspathFixture.create(testDirectory.file(path), executer.gradleUserHomeDir)
+        EclipseClasspathFixture.create(testDirectory.file(path), executor.gradleUserHomeDir)
     }
 
     protected EclipseWtpFacetsFixture getWtpFacets() {

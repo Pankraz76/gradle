@@ -20,7 +20,7 @@ import org.gradle.integtests.fixtures.BuildOperationsFixture
 import org.gradle.operations.configuration.ConfigurationCacheCheckFingerprintBuildOperationType
 
 class IsolatedProjectsBuildOperationsIntegrationTest extends AbstractIsolatedProjectsToolingApiIntegrationTest {
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def setup() {
         settingsFile """

@@ -46,10 +46,10 @@ task block {
 
         when:
         def blockingHandler = server.expectAndBlock(UNBLOCK)
-        def build = executer.withTasks("block").start()
+        def build = executor.withTasks("block").start()
         blockingHandler.waitForAllPendingCalls()
         daemons.daemon.assertBusy()
-        executer.withArguments("--stop").run()
+        executor.withArguments("--stop").run()
         def failure = build.waitForFailure()
 
         then:
@@ -70,15 +70,15 @@ task block {
 
         when:
         def blockingHandler = server.expectAndBlock(UNBLOCK)
-        def build = executer.withTasks("block").start()
+        def build = executor.withTasks("block").start()
         blockingHandler.waitForAllPendingCalls()
 
         def stopExecutions = []
         5.times { idx ->
-            stopExecutions << executer.withArguments("--stop").start()
+            stopExecutions << executor.withArguments("--stop").start()
         }
         stopExecutions.each { it.waitForFinish() }
-        def out = executer.withArguments("--stop").run().output
+        def out = executor.withArguments("--stop").run().output
 
         then:
         stopsSingleDaemon()
@@ -94,8 +94,8 @@ task block {
         daemons.daemon.assertIdle()
 
         when:
-        executer.withJvm(AvailableJavaHomes.differentJdk)
-        executer.withArguments("--stop").run()
+        executor.withJvm(AvailableJavaHomes.differentJdk)
+        executor.withArguments("--stop").run()
 
         then:
         stopsSingleDaemon()
@@ -103,11 +103,11 @@ task block {
 
     def "reports exact number of daemons stopped and keeps console output clean"() {
         given:
-        executer.noExtraLogging()
-        executer.run()
+        executor.noExtraLogging()
+        executor.run()
 
         when:
-        def out = executer.withArguments("--stop").run().normalizedOutput
+        def out = executor.withArguments("--stop").run().normalizedOutput
 
         then:
         out == '''Stopping Daemon(s)
@@ -115,7 +115,7 @@ task block {
 '''
 
         when:
-        out = executer.withArguments("--stop").run().normalizedOutput
+        out = executor.withArguments("--stop").run().normalizedOutput
 
         then:
         out == """$DaemonMessages.NO_DAEMONS_RUNNING

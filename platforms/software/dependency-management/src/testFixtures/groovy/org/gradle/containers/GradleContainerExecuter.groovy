@@ -18,24 +18,24 @@ package org.gradle.containers
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import org.gradle.integtests.fixtures.executer.AbstractGradleExecuter
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionFailure
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult
+import org.gradle.integtests.fixtures.executor.AbstractGradleExecutor
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionFailure
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 
 /**
- * An executer which executes builds in a container.
+ * An executor which executes builds in a container.
  * The implementation is incomplete: if a feature is missing or doesn't work
  * as you expect, it's probably because it's not implemented yet.
  */
 @CompileStatic
-class GradleContainerExecuter extends AbstractGradleExecuter {
+class GradleContainerExecutor extends AbstractGradleExecutor {
     private final GradleInContainer container
 
-    GradleContainerExecuter(GradleInContainer container, GradleDistribution distribution, TestDirectoryProvider provider) {
+    GradleContainerExecutor(GradleInContainer container, GradleDistribution distribution, TestDirectoryProvider provider) {
         super(distribution, provider)
         this.container = container
     }

@@ -21,7 +21,7 @@ import org.gradle.api.tasks.WorkResult;
 import org.gradle.internal.nativeintegration.filesystem.FileSystem;
 import org.gradle.internal.reflect.Instantiator;
 
-public class CopyActionExecuter {
+public class CopyActionExecutor {
 
     private final Instantiator instantiator;
     private final PropertyFactory propertyFactory;
@@ -29,7 +29,7 @@ public class CopyActionExecuter {
     private final boolean reproducibleFileOrder;
     private final DocumentationRegistry documentationRegistry;
 
-    public CopyActionExecuter(Instantiator instantiator, PropertyFactory propertyFactory, FileSystem fileSystem, boolean reproducibleFileOrder, DocumentationRegistry documentationRegistry) {
+    public CopyActionExecutor(Instantiator instantiator, PropertyFactory propertyFactory, FileSystem fileSystem, boolean reproducibleFileOrder, DocumentationRegistry documentationRegistry) {
         this.instantiator = instantiator;
         this.propertyFactory = propertyFactory;
         this.fileSystem = fileSystem;

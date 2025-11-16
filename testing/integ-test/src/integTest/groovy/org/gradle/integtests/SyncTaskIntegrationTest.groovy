@@ -460,7 +460,7 @@ class SyncTaskIntegrationTest extends AbstractIntegrationSpec implements StableC
         unreadableOutput.exists()
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         runAndFail "sync"
         then:
         failure.assertHasDocumentedCause("Cannot access a file in the destination directory. " +
@@ -522,7 +522,7 @@ class SyncTaskIntegrationTest extends AbstractIntegrationSpec implements StableC
             }
         '''
         and:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run 'syncIt'
         file('build').assertHasDescendants(
             'file.txt',
@@ -537,7 +537,7 @@ class SyncTaskIntegrationTest extends AbstractIntegrationSpec implements StableC
         new File(uppercaseNestedDir, 'nestedDirFile2.txt').renameTo(new File(uppercaseNestedDir, 'NESTEDDIRFILE2.TXT'))
 
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         succeeds('syncIt', '-Dcapitalize')
         then:
         executedAndNotSkipped ':syncIt'

@@ -42,7 +42,7 @@ class ConfigurationCacheableIdFactoryIntegrationTest extends AbstractIntegration
         outputContains("Created new id:")
 
         when:
-        executer.withArgument("--configuration-cache")
+        executor.withArgument("--configuration-cache")
         runAndFail ":run"
 
         then:

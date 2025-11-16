@@ -18,7 +18,7 @@ DefaultConnection -> ProviderConnection: request
 note right
 request is funneled into ProviderConnection that is much simpler
 end note
-box "BuildActionExecuter chain in :launcher"
+box "BuildActionExecutor chain in :launcher"
 	participant LoggingBridging
 	participant DaemonBuild
 	participant DaemonClient

@@ -81,7 +81,7 @@ class JdkIllegalReflectionTestWorkerIntegrationTest extends AbstractIntegrationS
     @Issue("https://github.com/gradle/gradle/issues/19771")
     def "both tests and production code fail when application uses illegal reflection"() {
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
 
         then:
         fails "run"

@@ -28,9 +28,9 @@ class WrapperUserHomeIntegrationTest extends AbstractWrapperIntegrationSpec {
         def gradleUserHome = testDirectory.file('some-custom-user-home')
 
         when:
-        def executer = wrapperExecuter.withGradleUserHomeDir(null)
-        executer.withArguments("-Dgradle.user.home=$gradleUserHome.absolutePath")
-        executer.run()
+        def executor = wrapperExecutor.withGradleUserHomeDir(null)
+        executor.withArguments("-Dgradle.user.home=$gradleUserHome.absolutePath")
+        executor.run()
 
         then:
         installationIn gradleUserHome
@@ -43,9 +43,9 @@ class WrapperUserHomeIntegrationTest extends AbstractWrapperIntegrationSpec {
         def gradleUserHome = testDirectory.file('some-custom-user-home')
 
         when:
-        def executer = wrapperExecuter.withGradleUserHomeDir(null)
-        executer.withArguments('-g', gradleUserHome.absolutePath)
-        executer.run()
+        def executor = wrapperExecutor.withGradleUserHomeDir(null)
+        executor.withArguments('-g', gradleUserHome.absolutePath)
+        executor.run()
 
         then:
         installationIn gradleUserHome

@@ -23,8 +23,8 @@ import org.gradle.integtests.fixtures.AbstractHttpDependencyResolutionTest
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.integtests.fixtures.build.BuildTestFile
 import org.gradle.integtests.fixtures.cache.FileAccessTimeJournalFixture
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.internal.reflect.validation.ValidationMessageChecker
 import org.gradle.test.fixtures.Flaky
 import org.gradle.test.fixtures.file.LeaksFileHandles
@@ -106,15 +106,15 @@ class ArtifactTransformCachingIntegrationTest extends AbstractHttpDependencyReso
         def projectDir2 = file("project2")
         setupProjectInDir(projectDir1)
         setupProjectInDir(projectDir2)
-        executer.requireIsolatedDaemons()
-        executer.beforeExecute {
+        executor.requireIsolatedDaemons()
+        executor.beforeExecute {
             if (!IntegrationTestBuildContext.embedded) {
-                executer.withArgument("-D$REUSE_USER_HOME_SERVICES=true")
+                executor.withArgument("-D$REUSE_USER_HOME_SERVICES=true")
             }
         }
 
         when:
-        executer.inDirectory(projectDir1)
+        executor.inDirectory(projectDir1)
         succeeds ":util:resolve", ":app:resolve"
 
         then:
@@ -127,7 +127,7 @@ class ArtifactTransformCachingIntegrationTest extends AbstractHttpDependencyReso
 
         when:
         projectDir1.deleteDir()
-        executer.inDirectory(projectDir2)
+        executor.inDirectory(projectDir2)
         succeeds ":util:resolve", ":app:resolve"
 
         then:
@@ -453,7 +453,7 @@ class ArtifactTransformCachingIntegrationTest extends AbstractHttpDependencyReso
         def lib2Message = "Transforming lib2.jar with MakeGreen"
 
         then:
-        if (!GradleContextualExecuter.configCache) {
+        if (!GradleContextualExecutor.configCache) {
             // Only runs once, as the transform execution in-memory cache is not discarded prior to execution time
             output.count(lib1Message) == 1
             output.count(lib2Message) == 1
@@ -467,7 +467,7 @@ class ArtifactTransformCachingIntegrationTest extends AbstractHttpDependencyReso
         run(":app:toBeFinalized", "withDependency")
 
         then:
-        if (!GradleContextualExecuter.configCache) {
+        if (!GradleContextualExecutor.configCache) {
             // Runs again, as the artifact has changed
             output.count(lib1Message) == 1
             output.count(lib2Message) == 1
@@ -906,7 +906,7 @@ class ArtifactTransformCachingIntegrationTest extends AbstractHttpDependencyReso
         buildFile << declareAttributes() << multiProjectWithJarSizeTransform() << withJarTasks() << withFileLibDependency("lib3.jar") << withExternalLibDependency("lib4")
 
         when:
-        executer.withArgument("-Dbroken=true")
+        executor.withArgument("-Dbroken=true")
         fails ":app:resolve"
 
         then:
@@ -949,7 +949,7 @@ class ArtifactTransformCachingIntegrationTest extends AbstractHttpDependencyReso
         buildFile << declareAttributes() << multiProjectWithJarSizeTransform() << withJarTasks() << withFileLibDependency("lib3.jar") << withExternalLibDependency("lib4")
 
         when:
-        executer.withArgument("-Dbroken=true")
+        executor.withArgument("-Dbroken=true")
         fails ":app:resolve"
 
         then:
@@ -1008,12 +1008,12 @@ class ArtifactTransformCachingIntegrationTest extends AbstractHttpDependencyReso
         }
 
         when:
-        executer.inDirectory(projectDir1)
+        executor.inDirectory(projectDir1)
         succeeds ":app:resolve"
         def project1OutputDir = projectOutputDir("lib1.jar", "lib1.jar.txt")
 
         and:
-        executer.inDirectory(projectDir2)
+        executor.inDirectory(projectDir2)
         succeeds ":app:resolve"
         def project2OutputDir = projectOutputDir("lib1.jar", "lib1.jar.txt")
 
@@ -2033,15 +2033,15 @@ resultsFile:
         """
 
         when:
-        executer.requireOwnGradleUserHomeDir("Test checks existence of build cache entries")
-        executer.withArguments("--build-cache", "--info", "-Dorg.gradle.internal.transform-caching-disabled=${transformsDisabled}")
+        executor.requireOwnGradleUserHomeDir("Test checks existence of build cache entries")
+        executor.withArguments("--build-cache", "--info", "-Dorg.gradle.internal.transform-caching-disabled=${transformsDisabled}")
         succeeds ":lib:resolve"
 
         then:
         output.contains("Transformed lib1-1.0.jar to green")
         output.contains("Transformed lib1-1.0.jar to blue")
 
-        def localBuildCacheDir = executer.gradleUserHomeDir.file("caches/build-cache-1")
+        def localBuildCacheDir = executor.gradleUserHomeDir.file("caches/build-cache-1")
         def localBuildCacheFiles = localBuildCacheDir.list { dir, fileName -> fileName != "gc.properties" && fileName != "build-cache-1.lock" }
         localBuildCacheFiles.length == entryCount
 
@@ -2061,7 +2061,7 @@ resultsFile:
         }
 
         when:
-        executer.requireIsolatedDaemons() // needs to stop daemon
+        executor.requireIsolatedDaemons() // needs to stop daemon
         requireOwnGradleUserHomeDir() // needs its own journal
         succeeds ":app:resolve"
 
@@ -2078,7 +2078,7 @@ resultsFile:
 
         and:
         // start as new process so journal is not restored from in-memory cache
-        executer.withTasks("help").start().waitForFinish()
+        executor.withTasks("help").start().waitForFinish()
 
         then:
         outputDir1.assertDoesNotExist()
@@ -2095,7 +2095,7 @@ resultsFile:
         withCreatedResourcesRetentionInDays(HALF_DEFAULT_MAX_AGE_IN_DAYS)
 
         when:
-        executer.requireIsolatedDaemons() // needs to stop daemon
+        executor.requireIsolatedDaemons() // needs to stop daemon
         requireOwnGradleUserHomeDir() // needs its own journal
         succeeds ":app:resolve"
 
@@ -2112,7 +2112,7 @@ resultsFile:
 
         and:
         // start as new process so journal is not restored from in-memory cache
-        executer.withTasks("help").start().waitForFinish()
+        executor.withTasks("help").start().waitForFinish()
 
         then:
         outputDir1.assertDoesNotExist()
@@ -2130,7 +2130,7 @@ resultsFile:
         alwaysCleanupCaches()
 
         when:
-        executer.requireIsolatedDaemons() // needs to stop daemon
+        executor.requireIsolatedDaemons() // needs to stop daemon
         requireOwnGradleUserHomeDir() // needs its own journal
         succeeds ":app:resolve"
 
@@ -2149,13 +2149,13 @@ resultsFile:
         writeLastTransformationAccessTimeToJournal(getWorkspaceRoot(outputDir1), daysAgo(HALF_DEFAULT_MAX_AGE_IN_DAYS + 1))
 
         and:
-        executer.beforeExecute {
+        executor.beforeExecute {
             if (!IntegrationTestBuildContext.embedded) {
-                executer.withArgument("-D$REUSE_USER_HOME_SERVICES=true")
+                executor.withArgument("-D$REUSE_USER_HOME_SERVICES=true")
             }
         }
         // start as new process so journal is not restored from in-memory cache
-        executer.withTasks("help").start().waitForFinish()
+        executor.withTasks("help").start().waitForFinish()
 
         then:
         outputDir1.assertDoesNotExist()
@@ -2171,7 +2171,7 @@ resultsFile:
         withCreatedResourcesRetentionInDays(DEFAULT_MAX_AGE_IN_DAYS_FOR_CREATED_CACHE_ENTRIES * 2)
 
         when:
-        executer.requireIsolatedDaemons() // needs to stop daemon
+        executor.requireIsolatedDaemons() // needs to stop daemon
         requireOwnGradleUserHomeDir() // needs its own journal
         succeeds ":app:resolve"
 
@@ -2188,7 +2188,7 @@ resultsFile:
 
         and:
         // start as new process so journal is not restored from in-memory cache
-        executer.withTasks("help").start().waitForFinish()
+        executor.withTasks("help").start().waitForFinish()
 
         then:
         outputDir1.assertExists()
@@ -2249,14 +2249,14 @@ resultsFile:
 
         when: 'cleaning build is started'
         def cleaningBarrier = blockingHttpServer.expectAndBlock("cleaning")
-        def cleaningBuild = executer.withTasks("waitForCleaningBarrier").withArgument("--no-daemon").start()
+        def cleaningBuild = executor.withTasks("waitForCleaningBarrier").withArgument("--no-daemon").start()
 
         then: 'cleaning build starts and waits on its barrier'
         cleaningBarrier.waitForAllPendingCalls()
 
         when: 'transforming build is started'
         def transformBarrier = blockingHttpServer.expectAndBlock("transform")
-        def transformingBuild = executer.withTasks("waitForTransformBarrier").start()
+        def transformingBuild = executor.withTasks("waitForTransformBarrier").start()
 
         then: 'transforming build starts artifact transform'
         transformBarrier.waitForAllPendingCalls()
@@ -2291,7 +2291,7 @@ resultsFile:
         }
 
         when:
-        executer.requireIsolatedDaemons() // needs to stop daemon
+        executor.requireIsolatedDaemons() // needs to stop daemon
         requireOwnGradleUserHomeDir() // needs its own journal
         disableCacheCleanupViaDsl()
         succeeds ":app:resolve"
@@ -2309,7 +2309,7 @@ resultsFile:
 
         and:
         // start as new process so journal is not restored from in-memory cache
-        executer.withTasks("help").start().waitForFinish()
+        executor.withTasks("help").start().waitForFinish()
 
         then:
         outputDir1.assertExists()
@@ -2612,6 +2612,6 @@ resultsFile:
 
     @Override
     TestFile getGradleUserHomeDir() {
-        return executer.gradleUserHomeDir
+        return executor.gradleUserHomeDir
     }
 }

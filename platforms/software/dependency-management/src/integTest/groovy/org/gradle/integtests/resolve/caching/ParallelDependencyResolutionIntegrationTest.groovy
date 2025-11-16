@@ -28,11 +28,11 @@ class ParallelDependencyResolutionIntegrationTest extends AbstractHttpDependency
     @Rule BlockingHttpServer blockingServer = new BlockingHttpServer()
 
     def setup() {
-        executer.withArgument('--parallel')
-        executer.withArgument('--max-workers=3') // needs to be set to the maximum number of expectConcurrentExecution() calls
-        executer.withArgument('--info')
+        executor.withArgument('--parallel')
+        executor.withArgument('--max-workers=3') // needs to be set to the maximum number of expectConcurrentExecution() calls
+        executor.withArgument('--info')
 
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
     }
 
     def "dependency is only downloaded at most once per build using Maven"() {

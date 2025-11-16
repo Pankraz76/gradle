@@ -16,8 +16,8 @@
 
 package org.gradle.integtests.fixtures.resolve
 
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.test.fixtures.file.TestFile
 
 /**
@@ -36,7 +36,7 @@ class ResolveFailureTestFixture {
         buildFile << """
             allprojects {
                 tasks.register("checkDeps") {
-                    if (${GradleContextualExecuter.configCache}) {
+                    if (${GradleContextualExecutor.configCache}) {
                         def files = configurations.${config}
                         doLast {
                             files.forEach { }
@@ -52,7 +52,7 @@ class ResolveFailureTestFixture {
     }
 
     void assertFailurePresent(ExecutionFailure failure) {
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             failure.assertHasDescription("Configuration cache state could not be cached")
         } else {
             failure.assertHasDescription("Execution failed for task")

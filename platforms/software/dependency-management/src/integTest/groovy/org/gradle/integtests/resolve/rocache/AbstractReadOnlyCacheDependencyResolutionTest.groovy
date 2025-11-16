@@ -44,8 +44,8 @@ abstract class AbstractReadOnlyCacheDependencyResolutionTest extends AbstractHtt
     abstract List<MavenHttpModule> getModulesInReadOnlyCache(MavenHttpRepository repo)
 
     def setup() {
-        executer.requireIsolatedDaemons()
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireIsolatedDaemons()
+        executor.requireOwnGradleUserHomeDir()
         def roModules = getModulesInReadOnlyCache(mavenHttpRepo)
         roModules.each {
             it.withModuleMetadata()
@@ -86,9 +86,9 @@ abstract class AbstractReadOnlyCacheDependencyResolutionTest extends AbstractHtt
                 }
             }
         """
-        executer.withArgument("--no-configuration-cache") // task uses Configuration API
+        executor.withArgument("--no-configuration-cache") // task uses Configuration API
         run ":populateCache"
-        executer.stop()
+        executor.stop()
         copyToReadOnlyCache()
         buildFile.setText("")
 
@@ -165,7 +165,7 @@ abstract class AbstractReadOnlyCacheDependencyResolutionTest extends AbstractHtt
     }
 
     void withReadOnlyCache() {
-        executer.withReadOnlyCacheDir(roCacheDir)
+        executor.withReadOnlyCacheDir(roCacheDir)
         makeCacheReadOnly()
     }
 

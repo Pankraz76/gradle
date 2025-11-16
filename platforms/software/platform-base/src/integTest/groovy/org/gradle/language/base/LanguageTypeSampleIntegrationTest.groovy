@@ -31,7 +31,7 @@ class LanguageTypeSampleIntegrationTest extends AbstractIntegrationSpec {
 
     def setup() {
         //  customModel/languageType/groovy sample contains buildSrc, which needs global init script to make mirror work
-        executer.withGlobalRepositoryMirrors()
+        executor.withGlobalRepositoryMirrors()
     }
 
     def "shows custom language sourcesets in component"() {

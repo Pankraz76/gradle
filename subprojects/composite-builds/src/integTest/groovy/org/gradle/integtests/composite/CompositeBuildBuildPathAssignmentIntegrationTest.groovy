@@ -25,7 +25,7 @@ import org.gradle.test.fixtures.file.TestDirectoryProvider
 
 class CompositeBuildBuildPathAssignmentIntegrationTest extends AbstractCompositeBuildIntegrationTest {
 
-    BuildOperationsFixture fixture = new BuildOperationsFixture(executer, temporaryFolder)
+    BuildOperationsFixture fixture = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "can have buildLogic build and include build with buildLogic build"() {
         def builds = nestedBuilds {
