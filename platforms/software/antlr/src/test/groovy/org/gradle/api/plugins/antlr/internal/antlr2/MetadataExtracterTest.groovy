@@ -43,7 +43,7 @@ class MetadataExtracterTest extends Specification {
         atom:   INT
             ;"""
         expect:
-        "org.acme" == new MetadataExtracter().getPackageName(new StringReader(grammar))
+        "org.acme" == new MetadataExtracter().getNormalizedPackageName(new BufferedReader(new StringReader(grammar)))
     }
 
     def "parses package information when header is declared as one-liner"() {
@@ -67,7 +67,7 @@ class MetadataExtracterTest extends Specification {
         atom:   INT
             ;"""
         expect:
-        "org.acme" == new MetadataExtracter().getPackageName(new StringReader(grammar))
+        "org.acme" == new MetadataExtracter().getNormalizedPackageName(new BufferedReader(new StringReader(grammar)))
     }
 
     def "parses package information with header block in cpp syntax"() {
@@ -100,6 +100,6 @@ import org.hibernate.hql.internal.ast.ErrorReporter;
         atom:   INT
             ;"""
         expect:
-        "org.hibernate.hql.internal.antlr" == new MetadataExtracter().getPackageName(new StringReader(grammar))
+        "org.hibernate.hql.internal.antlr" == new MetadataExtracter().getNormalizedPackageName(new BufferedReader(new StringReader(grammar)))
     }
 }

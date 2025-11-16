@@ -15,97 +15,73 @@
  */
 package org.gradle.api.plugins.antlr.internal.antlr2;
 
-import org.gradle.internal.UncheckedException;
-import org.jspecify.annotations.Nullable;
+import antlr.preprocessor.Hierarchy;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.Files.newBufferedReader;
+import static java.util.regex.Pattern.compile;
 
 /**
  * Preprocess an Antlr grammar file so that dependencies between grammars can be properly determined such that they can
  * be processed for generation in proper order later.
  */
-public class MetadataExtracter {
+public final class MetadataExtracter {
 
-    public XRef extractMetadata(Set<File> sources) {
-        antlr.Tool tool = new antlr.Tool();
-        antlr.preprocessor.Hierarchy hierarchy = new antlr.preprocessor.Hierarchy(tool);
+    private static final String HEADER = "header";
+    private static final String PACKAGE = "package";
+    private static final String PACKAGE_DECLARATION_NOT_FOUND = "Package declaration not found in grammar file.";
+    private static final Pattern PACKAGE_PATTERN = compile(HEADER + " \\{\\s*" + PACKAGE + "\\s+(.+);\\s+}");
 
-        // first let antlr preprocess the grammars...
-        for (File grammarFileFile : sources) {
-            final String grammarFilePath = grammarFileFile.getPath();
-
-            try {
-                hierarchy.readGrammarFile(grammarFilePath);
-            } catch (FileNotFoundException e) {
-                // should never happen here
-                throw new IllegalStateException("Received FileNotFoundException on already read file", e);
+    public static XRef extractMetadata(Set<File> files) {
+        try {
+            Hierarchy hierarchy = new Hierarchy(new antlr.Tool());
+            for (File grammarFileFile : files) { // let antlr preprocess the grammars. // todo: why can not extract this into dedicated method?
+                try {
+                    hierarchy.readGrammarFile(grammarFileFile.getPath());
+                } catch (FileNotFoundException ignored) {
+                    // should never happen
+                }
             }
-        }
-
-        // now, do our processing using the antlr preprocessor results whenever possible.
-        XRef xref = new XRef(hierarchy);
-        for (File grammarFileFile : sources) {
-
-            // determine the package name :(
-            String grammarPackageName = getPackageName(grammarFileFile);
-
-            final String grammarFilePath = grammarFileFile.getPath();
-            antlr.preprocessor.GrammarFile antlrGrammarFile = hierarchy.getFile(grammarFilePath);
-
-            GrammarFileMetadata grammarFileMetadata = new GrammarFileMetadata(grammarFileFile, antlrGrammarFile,
-                    grammarPackageName);
-
-            xref.addGrammarFile(grammarFileMetadata);
-        }
-
-        return xref;
-    }
-
-    @Nullable
-    private String getPackageName(File grammarFileFile) {
-        try {
-            return getPackageName(newBufferedReader(grammarFileFile.toPath(), UTF_8));
+            XRef xref = new XRef(hierarchy);
+            for (File grammarFileFile : files) { // process using the antlr preprocessor, results whenever possible. // todo: why can not extract this into dedicated method?
+                xref.addGrammarFile(
+                    new GrammarFileMetadata(
+                        grammarFileFile,
+                        hierarchy.getFile(grammarFileFile.getPath()),
+                        getNormalizedPackageName(newBufferedReader(grammarFileFile.toPath(), UTF_8).lines())));
+            }
+            return xref;
         } catch (IOException e) {
-            throw new UncheckedIOException("Cannot read antlr grammar file", e);
+            throw new UncheckedIOException(e);
         }
     }
 
-    String getPackageName(Reader reader) throws IOException {
-        String grammarPackageName = null;
-        BufferedReader in = new BufferedReader(reader);
-        try {
-            String line;
-            while ((line = in.readLine()) != null) {
-                line = line.trim();
-                if (line.startsWith("package") && line.endsWith(";")) {
-                    grammarPackageName =  line.substring(8, line.length() - 1);
-                }else if(line.startsWith("header")){
-                    Pattern p = Pattern.compile("header \\{\\s*package\\s+(.+);\\s+\\}");
-                    Matcher m = p.matcher(line);
-                    if(m.matches()){
-                        grammarPackageName = m.group(1);
+    private static String getNormalizedPackageName(Stream<String> lines) {
+        return lines
+            .map(String::trim)
+            .filter(line -> (line.startsWith(PACKAGE) && line.endsWith(";")) || line.startsWith(HEADER))
+            .findFirst()
+            .map(line -> {
+                if (line.startsWith(PACKAGE) && line.endsWith(";")) {
+                    return line.substring(PACKAGE.length() + 1, line.length() - 1);
+                } else {
+                    Matcher m = PACKAGE_PATTERN.matcher(line);
+                    if (m.matches()) {
+                        return m.group(1);
                     }
                 }
-
-            }
-        } finally {
-            try {
-                in.close();
-            } catch (IOException e) {
-                throw UncheckedException.throwAsUncheckedException(e);
-            }
-        }
-        return grammarPackageName;
+                throw new IllegalStateException(PACKAGE_DECLARATION_NOT_FOUND);
+            })
+            .orElseThrow(() -> new IllegalStateException(PACKAGE_DECLARATION_NOT_FOUND));
     }
+
 }
