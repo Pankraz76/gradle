@@ -17,9 +17,9 @@
 package org.gradle.integtests.fixtures.compatibility;
 
 import org.gradle.integtests.fixtures.GradleDistributionTool;
-import org.gradle.integtests.fixtures.executer.GradleDistribution;
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext;
-import org.gradle.integtests.fixtures.executer.UnderDevelopmentGradleDistribution;
+import org.gradle.integtests.fixtures.executor.GradleDistribution;
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext;
+import org.gradle.integtests.fixtures.executor.UnderDevelopmentGradleDistribution;
 import org.gradle.integtests.fixtures.versions.ReleasedVersionDistributions;
 
 import java.util.Collection;

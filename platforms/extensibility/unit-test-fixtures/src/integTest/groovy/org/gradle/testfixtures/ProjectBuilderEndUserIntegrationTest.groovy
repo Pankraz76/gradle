@@ -62,7 +62,7 @@ class ProjectBuilderEndUserIntegrationTest extends AbstractIntegrationSpec imple
             }
         """
 
-        executer.requireOwnGradleUserHomeDir(
+        executor.requireOwnGradleUserHomeDir(
             "ProjectBuilder tests run against the generated Gradle API Jar, and that Jar gets cached once per distribution in the user home. " +
                 "If we make changes to Gradle between test executions, we continue to use the cached API jar. " +
                 "This ensures we re-generate that API jar for each test execution"

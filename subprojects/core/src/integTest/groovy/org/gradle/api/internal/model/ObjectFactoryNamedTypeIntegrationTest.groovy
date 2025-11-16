@@ -139,7 +139,7 @@ class ObjectFactoryNamedTypeIntegrationTest extends AbstractIntegrationSpec {
         result.assertTaskSkipped(":a")
 
         when:
-        executer.withArgument("-Dname=b")
+        executor.withArgument("-Dname=b")
         run("a")
 
         then:
@@ -147,7 +147,7 @@ class ObjectFactoryNamedTypeIntegrationTest extends AbstractIntegrationSpec {
         file("out.txt").text == "b"
 
         when:
-        executer.withArgument("-Dname=b")
+        executor.withArgument("-Dname=b")
         run("a")
 
         then:

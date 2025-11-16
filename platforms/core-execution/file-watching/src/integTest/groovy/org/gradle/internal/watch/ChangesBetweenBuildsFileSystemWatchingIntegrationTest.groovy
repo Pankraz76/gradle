@@ -18,7 +18,7 @@ package org.gradle.internal.watch
 
 import org.gradle.testdistribution.LocalOnly
 import org.gradle.integtests.fixtures.TestBuildCache
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.internal.watch.registry.impl.WatchableHierarchies
 import spock.lang.Issue
 
@@ -209,7 +209,7 @@ class ChangesBetweenBuildsFileSystemWatchingIntegrationTest extends AbstractFile
         def sourceFile = projectDir.file("source.txt")
         def targetFile = projectDir.file("build/target.txt")
 
-        executer.beforeExecute {
+        executor.beforeExecute {
             inDirectory(projectDir)
             enableVerboseVfsLogs()
             withBuildCache()

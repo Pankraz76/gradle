@@ -17,7 +17,7 @@
 package org.gradle.initialization
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
 
@@ -25,9 +25,9 @@ import org.gradle.test.preconditions.IntegTestPreconditions
 class InternalGradleFailuresIntegrationTest extends AbstractIntegrationSpec {
 
     def setup() {
-        executer.requireIsolatedDaemons()
-        executer.requireOwnGradleUserHomeDir()
-        executer.requireDaemon()
+        executor.requireIsolatedDaemons()
+        executor.requireOwnGradleUserHomeDir()
+        executor.requireDaemon()
 
         buildFile """
             task hello() {
@@ -53,7 +53,7 @@ class InternalGradleFailuresIntegrationTest extends AbstractIntegrationSpec {
 
     def "Error message due to unwritable gradle user home directory is not scary"() {
         given:
-        def cachesDir = executer.gradleUserHomeDir.file("caches")
+        def cachesDir = executor.gradleUserHomeDir.file("caches")
         cachesDir.touch()
 
         when:
@@ -61,12 +61,12 @@ class InternalGradleFailuresIntegrationTest extends AbstractIntegrationSpec {
 
         then:
         cachesDir.isFile()
-        assertHasStartupFailure(failure, "Cannot create directory '${executer.gradleUserHomeDir.file("caches")}")
+        assertHasStartupFailure(failure, "Cannot create directory '${executor.gradleUserHomeDir.file("caches")}")
     }
 
     def "Error message due to unwritable Gradle daemon directory is not scary"() {
         given:
-        def daemonDir = executer.daemonBaseDir
+        def daemonDir = executor.daemonBaseDir
         daemonDir.touch()
 
         when:
@@ -79,10 +79,10 @@ class InternalGradleFailuresIntegrationTest extends AbstractIntegrationSpec {
 
     def "Error message due to unwritable native directory is not scary"() {
         given:
-        executer.withStacktraceEnabled()
-        def nativeDir = executer.gradleUserHomeDir.file("native")
+        executor.withStacktraceEnabled()
+        def nativeDir = executor.gradleUserHomeDir.file("native")
         nativeDir.touch()
-        executer.withNoExplicitNativeServicesDir()
+        executor.withNoExplicitNativeServicesDir()
 
         when:
         fails 'hello'

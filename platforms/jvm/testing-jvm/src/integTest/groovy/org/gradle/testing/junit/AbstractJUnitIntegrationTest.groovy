@@ -28,7 +28,7 @@ import org.gradle.testing.fixture.AbstractTestingMultiVersionIntegrationTest
  */
 abstract class AbstractJUnitIntegrationTest extends AbstractTestingMultiVersionIntegrationTest {
     def setup() {
-        executer.noExtraLogging()
+        executor.noExtraLogging()
     }
 
     def "can use test super classes from another project"() {
@@ -65,7 +65,7 @@ abstract class AbstractJUnitIntegrationTest extends AbstractTestingMultiVersionI
         '''.stripIndent()
 
         when:
-        executer.withTasks('a:test').run()
+        executor.withTasks('a:test').run()
 
         then:
         def results = resultsFor(testDirectory.file('a'))
@@ -99,7 +99,7 @@ abstract class AbstractJUnitIntegrationTest extends AbstractTestingMultiVersionI
         '''.stripIndent()
 
         when:
-        executer.withTasks('test').run()
+        executor.withTasks('test').run()
 
         then:
         def results = resultsFor(testDirectory)
@@ -151,7 +151,7 @@ abstract class AbstractJUnitIntegrationTest extends AbstractTestingMultiVersionI
         """.stripIndent()
 
         when:
-        executer.withTasks('check').run()
+        executor.withTasks('check').run()
 
         then:
         def testResult = new JUnitXmlTestExecutionResult(testDirectory)

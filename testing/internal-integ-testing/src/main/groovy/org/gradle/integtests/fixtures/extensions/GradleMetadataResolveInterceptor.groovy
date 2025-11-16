@@ -17,7 +17,7 @@
 package org.gradle.integtests.fixtures.extensions
 
 import groovy.transform.CompileStatic
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 
 /**
  * Runs tests with and without Gradle metadata support enabled
@@ -32,11 +32,11 @@ class GradleMetadataResolveInterceptor extends BehindFlagFeatureInterceptor {
                 (GRADLE_METADATA): booleanFeature("Gradle metadata"),
                 (REPOSITORY_TYPE): new Feature(ivy: 'Ivy repository', maven: 'Maven repository')
             ],
-            doNotExecuteAllPermutationsForNoDaemonExecuter())
+            doNotExecuteAllPermutationsForNoDaemonExecutor())
     }
 
-    private static boolean doNotExecuteAllPermutationsForNoDaemonExecuter() {
-        !GradleContextualExecuter.isNoDaemon()
+    private static boolean doNotExecuteAllPermutationsForNoDaemonExecutor() {
+        !GradleContextualExecutor.isNoDaemon()
     }
 
     def isInvalidCombination(Map<String, String> values) {

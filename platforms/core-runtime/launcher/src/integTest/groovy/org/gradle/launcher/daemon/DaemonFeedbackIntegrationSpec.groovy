@@ -45,21 +45,21 @@ task sleep {
 """
 
         when:
-        def sleeper = executer.withArguments('-i').withTasks('sleep').start()
+        def sleeper = executor.withArguments('-i').withTasks('sleep').start()
 
         then:
         poll(60) {
-            assert readLog(executer.daemonBaseDir).contains("taking a nap...")
+            assert readLog(executor.daemonBaseDir).contains("taking a nap...")
         }
 
         when:
-        executer.withArguments("--stop").run()
+        executor.withArguments("--stop").run()
 
         then:
         sleeper.waitForFailure()
 
         poll(5, 1) {
-            def log = readLog(executer.daemonBaseDir)
+            def log = readLog(executor.daemonBaseDir)
             assert log.contains(DaemonMessages.REMOVING_PRESENCE_DUE_TO_STOP)
             assert log.contains(DaemonMessages.DAEMON_VM_SHUTTING_DOWN)
         }
@@ -68,7 +68,7 @@ task sleep {
     @IntegrationTestTimeout(25)
     def "promptly shows decent message when daemon cannot be started"() {
         when:
-        executer.withArguments("-Dorg.gradle.jvmargs=-Xyz").run()
+        executor.withArguments("-Dorg.gradle.jvmargs=-Xyz").run()
 
         then:
         def ex = thrown(Exception)
@@ -89,10 +89,10 @@ task sleep {
         """
 
         when:
-        executer.withArguments("-i").withTasks("hello").run()
+        executor.withArguments("-i").withTasks("hello").run()
 
         then:
-        def log = readLog(executer.daemonBaseDir)
+        def log = readLog(executor.daemonBaseDir)
 
         //output before started relying logs via connection
         log.count(DaemonMessages.PROCESS_STARTED) == 1
@@ -102,10 +102,10 @@ task sleep {
         log.count('Hello build!') == 1
 
         when: "another build requested with the same daemon"
-        executer.withArguments("-i").withTasks("hello").run()
+        executor.withArguments("-i").withTasks("hello").run()
 
         then:
-        def aLog = readLog(executer.daemonBaseDir)
+        def aLog = readLog(executor.daemonBaseDir)
 
         aLog.count(DaemonMessages.PROCESS_STARTED) == 1
         aLog.count(DaemonMessages.STARTED_RELAYING_LOGS) == 2
@@ -117,25 +117,25 @@ task sleep {
         file("build.gradle") << "task foo { doLast { println 'hey!' } }"
 
         when: "running build with --info"
-        executer.withArguments("-i").withTasks('foo').run()
+        executor.withArguments("-i").withTasks('foo').run()
 
         then:
-        def log = readLog(executer.daemonBaseDir)
+        def log = readLog(executor.daemonBaseDir)
         log.findAll(DaemonMessages.STARTED_EXECUTING_COMMAND).size() == 1
 
         poll(60) {
             //in theory the client could have received result and complete
             // but the daemon has not yet finished processing hence polling
-            def daemonLog = readLog(executer.daemonBaseDir)
+            def daemonLog = readLog(executor.daemonBaseDir)
             assert daemonLog.findAll(DaemonMessages.FINISHED_EXECUTING_COMMAND).size() == 1
             assert daemonLog.findAll(DaemonMessages.FINISHED_BUILD).size() == 1
         }
 
         when: "another build requested with the same daemon with --info"
-        executer.withArguments("-i").withTasks('foo').run()
+        executor.withArguments("-i").withTasks('foo').run()
 
         then:
-        def aLog = readLog(executer.daemonBaseDir)
+        def aLog = readLog(executor.daemonBaseDir)
         aLog.findAll(DaemonMessages.STARTED_EXECUTING_COMMAND).size() == 2
     }
 
@@ -153,10 +153,10 @@ task sleep {
         """
 
         when:
-        executer.withArguments("-q").run()
+        executor.withArguments("-q").run()
 
         then:
-        def log = readLog(executer.daemonBaseDir)
+        def log = readLog(executor.daemonBaseDir)
 
         //daemon logs to file eagerly regardless of the build log level
         log.count(DaemonMessages.STARTED_RELAYING_LOGS) == 1
@@ -178,10 +178,10 @@ task sleep {
         """
 
         when:
-        executer.withArguments("-q").run()
+        executor.withArguments("-q").run()
 
         then:
-        def log = firstLog(executer.daemonBaseDir)
+        def log = firstLog(executor.daemonBaseDir)
         assertLogIsOnlyVisibleToOwner(log)
     }
 
@@ -203,19 +203,19 @@ task sleep {
         """
 
         when:
-        def daemon = executer.noExtraLogging().withArguments("--foreground").start()
+        def daemon = executor.noExtraLogging().withArguments("--foreground").start()
 
         then:
         poll(60) { assert daemon.standardOutput.contains(DaemonMessages.PROCESS_STARTED) }
 
         when:
-        def infoBuild = executer.withArguments("-i").withTasks("log").run()
+        def infoBuild = executor.withArguments("-i").withTasks("log").run()
 
         then:
         infoBuild.output.count("debug me!") == 0
         infoBuild.output.count("info me!") == 1
 
-        getLogs(executer.daemonBaseDir).size() == 0 //we should connect to the foreground daemon so no log was created
+        getLogs(executor.daemonBaseDir).size() == 0 //we should connect to the foreground daemon so no log was created
 
         // Output is delivered asynchronously to the daemon's output, so wait for it to appear
         poll(60) { assert daemon.standardOutput.count("info me!") == 1 }
@@ -223,7 +223,7 @@ task sleep {
         daemon.standardOutput.count(DaemonMessages.ABOUT_TO_START_RELAYING_LOGS) == 0
 
         when:
-        def debugBuild = executer.withArguments("-d").withTasks("log").run()
+        def debugBuild = executor.withArguments("-d").withTasks("log").run()
 
         then:
         debugBuild.output.count("debug me!") == 1

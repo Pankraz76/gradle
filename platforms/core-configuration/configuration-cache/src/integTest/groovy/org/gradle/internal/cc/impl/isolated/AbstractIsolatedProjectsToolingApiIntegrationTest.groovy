@@ -17,8 +17,8 @@
 package org.gradle.internal.cc.impl.isolated
 
 import org.gradle.integtests.fixtures.ProjectDirectoryCreator
-import org.gradle.integtests.fixtures.executer.GradleExecuter
-import org.gradle.internal.cc.impl.fixtures.ToolingApiBackedGradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
+import org.gradle.internal.cc.impl.fixtures.ToolingApiBackedGradleExecutor
 import org.gradle.internal.cc.impl.fixtures.ToolingApiSpec
 
 class AbstractIsolatedProjectsToolingApiIntegrationTest extends AbstractIsolatedProjectsIntegrationTest implements ToolingApiSpec, ProjectDirectoryCreator {
@@ -27,12 +27,12 @@ class AbstractIsolatedProjectsToolingApiIntegrationTest extends AbstractIsolated
     static final String CACHING_FOR_TOOLING = "-Dorg.gradle.internal.isolated-projects.caching=tooling"
 
     @Override
-    void withIsolatedProjects(String... moreExecuterArgs) {
-        executer.withArguments(ENABLE_CLI, CONFIGURE_ON_DEMAND_FOR_TOOLING, CACHING_FOR_TOOLING, *moreExecuterArgs)
+    void withIsolatedProjects(String... moreExecutorArgs) {
+        executor.withArguments(ENABLE_CLI, CONFIGURE_ON_DEMAND_FOR_TOOLING, CACHING_FOR_TOOLING, *moreExecutorArgs)
     }
 
     @Override
-    GradleExecuter createExecuter() {
-        return new ToolingApiBackedGradleExecuter(distribution, temporaryFolder)
+    GradleExecutor createExecutor() {
+        return new ToolingApiBackedGradleExecutor(distribution, temporaryFolder)
     }
 }

@@ -20,7 +20,6 @@ import com.google.common.collect.Lists;
 import org.gradle.api.GradleException;
 import org.gradle.api.plugins.antlr.internal.antlr2.GenerationPlan;
 import org.gradle.api.plugins.antlr.internal.antlr2.GenerationPlanBuilder;
-import org.gradle.api.plugins.antlr.internal.antlr2.MetadataExtracter;
 import org.gradle.api.plugins.antlr.internal.antlr2.XRef;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.os.OperatingSystem;
@@ -38,10 +37,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import static org.gradle.api.plugins.antlr.internal.AntlrSpec.PACKAGE_ARG;
+import static org.gradle.api.plugins.antlr.internal.antlr2.MetadataExtractor.extractMetadata;
 
-public class AntlrExecuter implements RequestHandler<AntlrSpec, AntlrResult> {
+public class AntlrExecutor implements RequestHandler<AntlrSpec, AntlrResult> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AntlrExecuter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AntlrExecutor.class);
 
     @Override
     public AntlrResult run(AntlrSpec spec) {
@@ -203,7 +203,7 @@ public class AntlrExecuter implements RequestHandler<AntlrSpec, AntlrResult> {
     private static class Antlr2Tool extends AntlrTool {
         @Override
         public AntlrResult doProcess(AntlrSpec spec) throws ClassNotFoundException {
-            XRef xref = new MetadataExtracter().extractMetadata(spec.getGrammarFiles());
+            XRef xref = extractMetadata(spec.getGrammarFiles());
             List<GenerationPlan> generationPlans = new GenerationPlanBuilder(spec.getOutputDirectory()).buildGenerationPlans(xref);
             for (GenerationPlan generationPlan : generationPlans) {
                 List<String> generationPlanArguments = Lists.newArrayList(spec.getArguments());

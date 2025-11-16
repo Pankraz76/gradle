@@ -16,8 +16,8 @@
 
 package org.gradle.performance
 
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
-import org.gradle.integtests.fixtures.executer.UnderDevelopmentGradleDistribution
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.UnderDevelopmentGradleDistribution
 import org.gradle.integtests.fixtures.versions.ReleasedVersionDistributions
 import org.gradle.internal.scan.config.fixtures.ApplyDevelocityPluginFixture
 import org.gradle.performance.annotations.AllFeaturesShouldBeAnnotated

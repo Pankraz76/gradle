@@ -17,12 +17,12 @@
 package org.gradle.integtests.fixtures
 
 
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
-import org.gradle.integtests.fixtures.executer.GradleHandle
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult
-import org.gradle.integtests.fixtures.executer.UnexpectedBuildFailure
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
+import org.gradle.integtests.fixtures.executor.GradleHandle
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult
+import org.gradle.integtests.fixtures.executor.UnexpectedBuildFailure
 import org.gradle.integtests.fixtures.timeout.JavaProcessStackTracesMonitor
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.test.fixtures.ConcurrentTestUtil
@@ -50,7 +50,7 @@ abstract class AbstractContinuousIntegrationTest extends AbstractIntegrationSpec
     List<ExecutionResult> results = []
 
     void turnOnDebug() {
-        executer.startBuildProcessInDebugger(true)
+        executor.startBuildProcessInDebugger(true)
         buildTimeout *= 100
     }
 
@@ -63,8 +63,8 @@ abstract class AbstractContinuousIntegrationTest extends AbstractIntegrationSpec
     }
 
     def setup() {
-        Assume.assumeFalse("Continuous build doesn't work with --no-daemon", GradleContextualExecuter.noDaemon)
-        executer.beforeExecute {
+        Assume.assumeFalse("Continuous build doesn't work with --no-daemon", GradleContextualExecutor.noDaemon)
+        executor.beforeExecute {
             def initScript = file("init.gradle")
             initScript.text = buildLogicForMinimumBuildTime(minimumBuildTimeMillis)
             withArgument("-I").withArgument(initScript.absolutePath)
@@ -145,14 +145,14 @@ ${result.error}
         stopGradle()
         standardOutputBuildMarker = 0
         errorOutputBuildMarker = 0
-        executer.withStdinPipe()
+        executor.withStdinPipe()
             .withTasks(tasks)
             .withForceInteractive(true)
             .withArgument("--full-stacktrace")
         if (!withoutContinuousArg) {
-            executer.withArgument("--continuous")
+            executor.withArgument("--continuous")
         }
-        gradle = executer.start()
+        gradle = executor.start()
     }
 
     protected OutputStream getStdinPipe() {

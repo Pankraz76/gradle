@@ -22,7 +22,7 @@ import org.gradle.api.internal.file.FileCollectionFactory;
 import org.gradle.api.internal.tasks.testing.JvmTestExecutionSpec;
 import org.gradle.api.internal.tasks.testing.TestDefinitionProcessor;
 import org.gradle.api.internal.tasks.testing.TestDefinition;
-import org.gradle.api.internal.tasks.testing.TestExecuter;
+import org.gradle.api.internal.tasks.testing.TestExecutor;
 import org.gradle.api.internal.tasks.testing.TestFramework;
 import org.gradle.api.internal.tasks.testing.TestResultProcessor;
 import org.gradle.api.internal.tasks.testing.WorkerTestDefinitionProcessorFactory;
@@ -52,9 +52,9 @@ import java.util.Set;
 /**
  * The default test class scanner factory.
  */
-public class DefaultTestExecuter implements TestExecuter<JvmTestExecutionSpec> {
+public class DefaultTestExecutor implements TestExecutor<JvmTestExecutionSpec> {
 
-    private static final Logger LOGGER = Logging.getLogger(DefaultTestExecuter.class);
+    private static final Logger LOGGER = Logging.getLogger(DefaultTestExecutor.class);
 
     private final WorkerProcessFactory workerFactory;
     private final ActorFactory actorFactory;
@@ -65,7 +65,7 @@ public class DefaultTestExecuter implements TestExecuter<JvmTestExecutionSpec> {
     private final DefaultTestFilter testFilter;
     private TestDefinitionProcessor<TestDefinition> processor;
 
-    public DefaultTestExecuter(
+    public DefaultTestExecutor(
         WorkerProcessFactory workerFactory, ActorFactory actorFactory, ModuleRegistry moduleRegistry,
         WorkerLeaseService workerLeaseService, int maxWorkerCount,
         Clock clock, DefaultTestFilter testFilter
@@ -121,7 +121,7 @@ public class DefaultTestExecuter implements TestExecuter<JvmTestExecutionSpec> {
         if (testResultProcessor != null) {
             // KMP calls this code with a delegating test result processor that does not return sensible Class objects
             String canonicalName = testResultProcessor.getClass().getCanonicalName();
-            if (canonicalName != null && canonicalName.endsWith("org.gradle.testretry.internal.executer.RetryTestResultProcessor")) {
+            if (canonicalName != null && canonicalName.endsWith("org.gradle.testretry.internal.executor.RetryTestResultProcessor")) {
                 testResultProcessor = new TestRetryShieldingTestResultProcessor(testResultProcessor);
             }
         }

@@ -58,7 +58,7 @@ class KotlinDslPluginGradlePluginCrossVersionSmokeTest(
 
         KotlinGradlePluginVersions.assumeCurrentJavaVersionIsSupportedBy(kotlinVersion)
         if (kotlinVersion < VersionNumber.parse(KotlinGradlePluginVersions().latestStable)) {
-            executer.noDeprecationChecks()
+            executor.noDeprecationChecks()
         }
 
         withDefaultSettingsIn("buildSrc")

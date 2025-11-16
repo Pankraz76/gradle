@@ -80,6 +80,6 @@ class RepositoryOrderingIntegrationSpec extends AbstractIntegrationSpec {
 
 
     private void overridePluginPortalUri(String uri) {
-        executer.withArgument("-D${PLUGIN_PORTAL_OVERRIDE_URL_PROPERTY}=$uri")
+        executor.withArgument("-D${PLUGIN_PORTAL_OVERRIDE_URL_PROPERTY}=$uri")
     }
 }

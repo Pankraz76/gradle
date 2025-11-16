@@ -295,7 +295,7 @@ class ConfigurationCacheEncryptionIntegrationTest extends AbstractConfigurationC
         """
 
         when:
-        executer.withArguments("-Djava.security.properties=${customPropertiesFile}")
+        executor.withArguments("-Djava.security.properties=${customPropertiesFile}")
         succeeds("help", "-i")
 
         then:
@@ -329,7 +329,7 @@ class ConfigurationCacheEncryptionIntegrationTest extends AbstractConfigurationC
         def allArgs = tasks + getEncryptionOptions(kind) + additionalArgs + ["-s"]
         // envVars overrides encryption env vars
         def allVars = getEncryptionEnvVars(kind) + envVars
-        executer.withEnvironmentVars(allVars)
+        executor.withEnvironmentVars(allVars)
         runner(*allArgs)
     }
 

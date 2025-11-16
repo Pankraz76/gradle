@@ -21,7 +21,7 @@ import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.BuildOperationsFixture
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.integtests.fixtures.ToBeFixedForIsolatedProjects
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.featurelifecycle.LoggingDeprecatedFeatureHandler
 import org.gradle.internal.logging.events.LogEvent
 import org.gradle.internal.logging.events.OutputEvent
@@ -52,12 +52,12 @@ class LoggingBuildOperationProgressIntegTest extends AbstractIntegrationSpec {
     public final RepositoryHttpServer server = new RepositoryHttpServer(temporaryFolder)
     MavenHttpRepository mavenHttpRepository = new MavenHttpRepository(server, '/repo', mavenRepo)
 
-    def operations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def operations = new BuildOperationsFixture(executor, testDirectoryProvider)
 
     @ToBeFixedForConfigurationCache(because = "different build operation tree")
     def "captures output sources with context"() {
         given:
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         mavenHttpRepository.module("org", "foo", '1.0').publish().allowAll()
 
         file('init/init.gradle') << """
@@ -151,7 +151,7 @@ class LoggingBuildOperationProgressIntegTest extends AbstractIntegrationSpec {
     @ToBeFixedForConfigurationCache(because = "Gradle.buildFinished")
     def "captures threaded output sources with context"() {
         given:
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         10.times {
             createDirs("project-" + it)
         }
@@ -436,7 +436,7 @@ class LoggingBuildOperationProgressIntegTest extends AbstractIntegrationSpec {
     def int getNumberOfExpectedEvents() {
         // when configuration cache is enabled also "Configuration cache entry reused." and "Parallel Configuration Cache is an incubating feature."
         // when CC is not enabled, "Consider enabling configuration cache to speed up this build"
-        def configCacheOffset = GradleContextualExecuter.configCache ? 2 : 1
+        def configCacheOffset = GradleContextualExecutor.configCache ? 2 : 1
         // 11 tasks + "\n" + "BUILD SUCCESSFUL" + "3 actionable tasks: 3 executed"
         return 14 + configCacheOffset
     }

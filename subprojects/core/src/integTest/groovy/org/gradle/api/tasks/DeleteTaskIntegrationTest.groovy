@@ -21,8 +21,8 @@ import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.integtests.fixtures.ToBeFixedForIsolatedProjects
 
 import static org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache.Skip.INVESTIGATE
-import static org.gradle.integtests.fixtures.executer.TaskOrderSpecs.any
-import static org.gradle.integtests.fixtures.executer.TaskOrderSpecs.exact
+import static org.gradle.integtests.fixtures.executor.TaskOrderSpecs.any
+import static org.gradle.integtests.fixtures.executor.TaskOrderSpecs.exact
 
 class DeleteTaskIntegrationTest extends AbstractIntegrationSpec {
     def "delete task removes specified files"() {
@@ -145,20 +145,20 @@ class DeleteTaskIntegrationTest extends AbstractIntegrationSpec {
             assert(file("build.gradle.kts").exists())
         """
         when: "clean is executed"
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         succeeds "clean"
         then: "clean is marked as UP-TO-DATE"
         result.groupedOutput.task(":clean").outcome == "UP-TO-DATE"
 
         when: "clean is executed again without any changes"
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         succeeds "clean"
         then: "clean is still marked UP-TO-DATE"
         result.groupedOutput.task(":clean").outcome == "UP-TO-DATE"
 
         when: "the kotlin script compiler is invoked due to a script change"
         buildKotlinFile << "\n"
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         succeeds "clean"
         then: "clean is still marked as UP-TO-DATE"
         result.groupedOutput.task(":clean").outcome == "UP-TO-DATE"

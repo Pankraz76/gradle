@@ -65,14 +65,14 @@ class CachedCustomPluginIntegrationTest extends AbstractIntegrationSpec implemen
         setupProjectInDirectory(originalProjectDir)
 
         when:
-        executer.inDirectory(originalProjectDir)
+        executor.inDirectory(originalProjectDir)
         withBuildCache().run "customTask"
         then:
         result.assertTaskExecuted(":customTask")
 
         when:
         setupProjectInDirectory(newProjectDir)
-        executer.inDirectory(newProjectDir)
+        executor.inDirectory(newProjectDir)
         withBuildCache().run "customTask"
         then:
         result.groupedOutput.task(":customTask").outcome == "FROM-CACHE"

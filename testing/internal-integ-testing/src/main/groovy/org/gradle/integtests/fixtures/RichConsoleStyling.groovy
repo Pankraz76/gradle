@@ -16,8 +16,8 @@
 
 package org.gradle.integtests.fixtures
 
-import org.gradle.integtests.fixtures.executer.GradleHandle
-import org.gradle.integtests.fixtures.executer.LogContent
+import org.gradle.integtests.fixtures.executor.GradleHandle
+import org.gradle.integtests.fixtures.executor.LogContent
 
 /**
  * Assertions for testing console behavior.

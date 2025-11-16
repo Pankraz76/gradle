@@ -135,7 +135,7 @@ class WorkerDaemonLifecycleTest extends AbstractDaemonWorkerExecutorIntegrationS
         succeeds "runInWorker1"
 
         and:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         fails "runInWorker2"
 
         then:

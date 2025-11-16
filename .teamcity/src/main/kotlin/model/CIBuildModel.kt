@@ -37,10 +37,10 @@ enum class StageName(
 ) {
     QUICK_FEEDBACK_LINUX_ONLY(
         "Quick Feedback - Linux Only",
-        "Run checks and functional tests (embedded executer, Linux)",
+        "Run checks and functional tests (embedded executor, Linux)",
         "QuickFeedbackLinuxOnly",
     ),
-    QUICK_FEEDBACK("Quick Feedback", "Run checks and functional tests (embedded executer, Windows)", "QuickFeedback"),
+    QUICK_FEEDBACK("Quick Feedback", "Run checks and functional tests (embedded executor, Windows)", "QuickFeedback"),
     PULL_REQUEST_FEEDBACK("Pull Request Feedback", "Run various functional tests", "PullRequestFeedback"),
     READY_FOR_NIGHTLY(
         "Ready for Nightly",

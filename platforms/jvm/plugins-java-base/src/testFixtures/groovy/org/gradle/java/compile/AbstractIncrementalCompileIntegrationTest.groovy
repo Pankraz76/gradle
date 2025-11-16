@@ -135,7 +135,7 @@ abstract class AbstractIncrementalCompileIntegrationTest extends AbstractIntegra
         writeUnusedLibraryClass(language)
 
         then:
-        executer.withArgument('-i')
+        executor.withArgument('-i')
         succeeds getAppCompileTask(language)
 
         and:

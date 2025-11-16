@@ -25,7 +25,7 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 class FailFastTestListenerInternalTest extends Specification {
-    TestExecuter testExecuter = Mock()
+    TestExecutor testExecutor = Mock()
     TestListenerInternal delegate = Mock()
 
     TestDescriptorInternal testDescriptor = new SimpleTestDescriptor()
@@ -38,7 +38,7 @@ class FailFastTestListenerInternalTest extends Specification {
     FailFastTestListenerInternal unit
 
     def setup() {
-        unit = new FailFastTestListenerInternal(testExecuter, delegate)
+        unit = new FailFastTestListenerInternal(testExecutor, delegate)
     }
 
     def "started invokes delegate"() {
@@ -64,7 +64,7 @@ class FailFastTestListenerInternalTest extends Specification {
         unit.completed(testDescriptor, testResult, completeEvent)
 
         then:
-        1 * testExecuter.stopNow()
+        1 * testExecutor.stopNow()
     }
 
     def "completed invokes delegate with result #result"() {

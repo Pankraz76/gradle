@@ -209,7 +209,7 @@ class ScriptPluginClassLoadingIntegrationTest extends AbstractIntegrationSpec {
         given:
         def jar = file("plugin.jar")
         pluginBuilder.addPlugin("project.task('hello')")
-        pluginBuilder.publishTo(executer, jar)
+        pluginBuilder.publishTo(executor, jar)
 
         settingsFile << "include 'sub'"
 
@@ -259,7 +259,7 @@ class ScriptPluginClassLoadingIntegrationTest extends AbstractIntegrationSpec {
         given:
         def jar = file("plugin.jar")
         pluginBuilder.addPlugin("project.task('hello')")
-        pluginBuilder.publishTo(executer, jar)
+        pluginBuilder.publishTo(executor, jar)
 
         buildFile """
             buildscript {
@@ -294,7 +294,7 @@ class ScriptPluginClassLoadingIntegrationTest extends AbstractIntegrationSpec {
         given:
         def jar = file("plugin.jar")
         pluginBuilder.addPlugin("project.task('hello')")
-        pluginBuilder.publishTo(executer, jar)
+        pluginBuilder.publishTo(executor, jar)
 
         buildFile """
             apply from: "script1.gradle"
@@ -333,7 +333,7 @@ class ScriptPluginClassLoadingIntegrationTest extends AbstractIntegrationSpec {
         given:
         def jar = file("plugin.jar")
         pluginBuilder.addPlugin("project.task('hello')")
-        pluginBuilder.publishTo(executer, jar)
+        pluginBuilder.publishTo(executor, jar)
 
         buildFile """
             apply from: 'foo.gradle'

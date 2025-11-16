@@ -615,12 +615,12 @@ class RepositoriesDeclaredInSettingsIntegrationTest extends AbstractModuleDepend
     // fails to delete directory under Windows otherwise
     @Requires(UnitTestPreconditions.NotWindows)
     def "can use a published settings plugin which will apply to both the main build and buildSrc"() {
-        def pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+        def pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
         pluginPortal.start()
         withSettingsPlugin()
         def plugin = new PluginBuilder(file("settings-plugin"))
             .addPluginId("org.gradle.repo-conventions", "RepoConventionPlugin")
-            .publishAs("g", "a", "1.0", pluginPortal, createExecuter())
+            .publishAs("g", "a", "1.0", pluginPortal, createExecutor())
 
         // make sure we don't use the default fixture which already adds repositories
         settingsFile.text = """
@@ -753,13 +753,13 @@ class RepositoriesDeclaredInSettingsIntegrationTest extends AbstractModuleDepend
     // fails to delete directory under Windows otherwise
     @Requires(UnitTestPreconditions.NotWindows)
     void "repositories declared in settings shouldn't be used to resolve plugins"() {
-        def pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+        def pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
         pluginPortal.start()
         def taskName = 'pluginTask'
         def message = 'hello from plugin'
         def plugin = new PluginBuilder(testDirectory.file("some-plugin"))
             .addPluginWithPrintlnTask(taskName, message, 'org.gradle.test.hello-world')
-            .publishAs("g", "a", "1.0", pluginPortal, createExecuter())
+            .publishAs("g", "a", "1.0", pluginPortal, createExecutor())
 
         // If we use the same repositories for project resolution and plugin resolution
         // the build will fail saying that it cannot find our settings plugin
@@ -852,7 +852,7 @@ settingsEvaluated {
                 expectResolve()
             }
         }
-        executer.usingInitScript(file("init.gradle"))
+        executor.usingInitScript(file("init.gradle"))
 
         then:
         succeeds ':checkDeps'

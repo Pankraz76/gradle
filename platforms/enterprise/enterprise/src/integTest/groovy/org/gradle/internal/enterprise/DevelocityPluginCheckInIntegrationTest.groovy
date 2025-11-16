@@ -27,11 +27,11 @@ import static org.gradle.internal.enterprise.impl.legacy.DevelocityPluginCompati
 
 class DevelocityPluginCheckInIntegrationTest extends AbstractIntegrationSpec {
 
-    def plugin = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecuter())
+    def plugin = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecutor())
 
     def setup() {
         settingsFile << plugin.pluginManagement()
-        plugin.publishDummyPlugin(executer)
+        plugin.publishDummyPlugin(executor)
         buildFile << """
             task t
             task f { doLast { throw new RuntimeException("failed") } }

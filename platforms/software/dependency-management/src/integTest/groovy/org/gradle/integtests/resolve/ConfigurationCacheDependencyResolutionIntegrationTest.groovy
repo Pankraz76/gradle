@@ -33,9 +33,9 @@ class ConfigurationCacheDependencyResolutionIntegrationTest extends AbstractInte
     def configurationCache = newConfigurationCacheFixture()
 
     @Override
-    void setupExecuter() {
-        super.setupExecuter()
-        executer.withConfigurationCacheEnabled()
+    void setupExecutor() {
+        super.setupExecutor()
+        executor.withConfigurationCacheEnabled()
     }
 
     def setup() {

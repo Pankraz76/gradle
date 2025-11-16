@@ -36,7 +36,7 @@ class TestTaskLocaleIntegrationTest extends AbstractIntegrationSpec {
         """.stripIndent()
 
         when:
-        executer
+        executor
             .requireDaemon()
             .requireIsolatedDaemons()
             .withBuildJvmOpts("-Duser.language=tr", "-Duser.country=TR")

@@ -18,7 +18,7 @@ package org.gradle.jvm.toolchain
 
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.DocumentationUtils
+import org.gradle.integtests.fixtures.executor.DocumentationUtils
 import org.gradle.integtests.fixtures.jvm.JavaToolchainFixture
 import org.gradle.internal.os.OperatingSystem
 
@@ -51,7 +51,7 @@ class JavaToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imple
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        failure = executer
+        failure = executor
             .withTasks("compileJava")
             .requireOwnGradleUserHomeDir()
             .withToolchainDetectionEnabled()
@@ -92,7 +92,7 @@ class JavaToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imple
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        failure = executer
+        failure = executor
             .withTasks("compileJava")
             .requireOwnGradleUserHomeDir()
             .runWithFailure()
@@ -126,7 +126,7 @@ class JavaToolchainDownloadIntegrationTest extends AbstractIntegrationSpec imple
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        failure = executer
+        failure = executor
             .withTasks("compileJava")
             .requireOwnGradleUserHomeDir()
             .withToolchainDetectionEnabled()

@@ -70,7 +70,7 @@ abstract class BaseJavaSourceIncrementalCompilationIntegrationTest extends Abstr
 
         when:
         file("extra/B.${language.name}").text = "class B { String change; }"
-        executer.withArgument "--info"
+        executor.withArgument "--info"
         run language.compileTaskName
 
         then:

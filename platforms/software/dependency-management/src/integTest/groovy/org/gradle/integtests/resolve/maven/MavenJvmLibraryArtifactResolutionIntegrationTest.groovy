@@ -132,7 +132,7 @@ if (project.hasProperty('nocache')) {
         snapshotSources.expectGet()
 
         then:
-        executer.withArgument(execArg)
+        executor.withArgument(execArg)
         succeeds("verifyRefresh")
 
         where:
@@ -189,7 +189,7 @@ if (project.hasProperty('nocache')) {
         snapshotSources.expectGet()
 
         then:
-        executer.withArgument(execArg)
+        executor.withArgument(execArg)
         succeeds("verifyRefresh")
         file("sources/some-artifact-1.0-SNAPSHOT-sources.jar").assertHasChangedSince(snapshot)
 

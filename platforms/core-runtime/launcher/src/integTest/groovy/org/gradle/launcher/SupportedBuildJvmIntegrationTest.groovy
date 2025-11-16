@@ -62,14 +62,14 @@ class SupportedBuildJvmIntegrationTest extends AbstractIntegrationSpec implement
         new TestFile(installedJdk.javaHome).copyTo(jdkToRemove)
 
         // start one JVM with jdk to remove
-        executer.withJavaHome(jdkToRemove.absolutePath)
+        executor.withJavaHome(jdkToRemove.absolutePath)
         succeeds("help")
 
         when:
         // remove the JDK
         jdkToRemove.deleteDir()
         // don't ask for the removed JDK now
-        executer.withJvm(installedJdk)
+        executor.withJvm(installedJdk)
         then:
         // try to start another build
         succeeds("help")

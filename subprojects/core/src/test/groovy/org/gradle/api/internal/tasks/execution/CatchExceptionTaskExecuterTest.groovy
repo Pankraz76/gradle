@@ -17,29 +17,29 @@
 package org.gradle.api.internal.tasks.execution
 
 import org.gradle.api.internal.TaskInternal
-import org.gradle.api.internal.tasks.TaskExecuter
-import org.gradle.api.internal.tasks.TaskExecuterResult
+import org.gradle.api.internal.tasks.TaskExecutor
+import org.gradle.api.internal.tasks.TaskExecutorResult
 import org.gradle.api.internal.tasks.TaskExecutionContext
 import org.gradle.api.internal.tasks.TaskExecutionOutcome
 import org.gradle.api.internal.tasks.TaskStateInternal
 import org.gradle.api.tasks.TaskExecutionException
 import spock.lang.Specification
 
-class CatchExceptionTaskExecuterTest extends Specification {
-    private TaskExecuter delegate = Mock(TaskExecuter)
-    private CatchExceptionTaskExecuter executer = new CatchExceptionTaskExecuter(delegate)
+class CatchExceptionTaskExecutorTest extends Specification {
+    private TaskExecutor delegate = Mock(TaskExecutor)
+    private CatchExceptionTaskExecutor executor = new CatchExceptionTaskExecutor(delegate)
     private TaskInternal task = Mock(TaskInternal)
     private TaskStateInternal state = new TaskStateInternal()
     private TaskExecutionContext context = Mock(TaskExecutionContext)
 
     def 'calls delegate and does nothing'() {
         when:
-        executer.execute(task, state, context)
+        executor.execute(task, state, context)
 
         then:
         1 * delegate.execute(task, state, context) >> {
             state.setOutcome(TaskExecutionOutcome.EXECUTED)
-            return TaskExecuterResult.WITHOUT_OUTPUTS
+            return TaskExecutorResult.WITHOUT_OUTPUTS
         }
         0 * _
         state.outcome == TaskExecutionOutcome.EXECUTED
@@ -51,7 +51,7 @@ class CatchExceptionTaskExecuterTest extends Specification {
         def failure = new RuntimeException("Failure")
 
         when:
-        executer.execute(task, state, context)
+        executor.execute(task, state, context)
 
         then:
         1 * delegate.execute(task, state, context) >> {

@@ -259,7 +259,7 @@ class BuildInitSpecsIntegrationTest extends AbstractInitIntegrationSpec implemen
     ], reason = "must run with specific JDK version")
     def "can generate declarative project type using argument to init"() {
         when:
-        executer.withJvm(AvailableJavaHomes.getJdk21())
+        executor.withJvm(AvailableJavaHomes.getJdk21())
         initSucceedsWithPluginSupplyingSpec(DECLARATIVE_PLUGIN_SPEC)
 
         then:

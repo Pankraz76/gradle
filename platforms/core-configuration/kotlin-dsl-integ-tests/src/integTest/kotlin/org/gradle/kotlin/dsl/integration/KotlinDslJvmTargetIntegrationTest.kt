@@ -114,7 +114,7 @@ class KotlinDslJvmTargetIntegrationTest : AbstractKotlinIntegrationTest() {
         """)
         withFile("plugin/src/main/kotlin/some.gradle.kts", printScriptJavaClassFileMajorVersion)
 
-        gradleExecuterFor(arrayOf("check", "publish"), rootDir = file("plugin"))
+        gradleExecutorFor(arrayOf("check", "publish"), rootDir = file("plugin"))
             .withJvm(currentJvm)
             .withArgument("-Dorg.gradle.java.installations.paths=$installationPaths")
             .run()
@@ -135,7 +135,7 @@ class KotlinDslJvmTargetIntegrationTest : AbstractKotlinIntegrationTest() {
         """)
         withBuildScriptIn("consumer", """plugins { id("some") }""")
 
-        val helpResult = gradleExecuterFor(arrayOf("help"), rootDir = file("consumer"))
+        val helpResult = gradleExecutorFor(arrayOf("help"), rootDir = file("consumer"))
             .withJvm(newerJvm)
             .run()
 
@@ -188,7 +188,7 @@ class KotlinDslJvmTargetIntegrationTest : AbstractKotlinIntegrationTest() {
         """)
         withFile("plugin/src/main/kotlin/some.gradle.kts", printScriptJavaClassFileMajorVersion)
 
-        gradleExecuterFor(arrayOf("check", "publish"), rootDir = file("plugin"))
+        gradleExecutorFor(arrayOf("check", "publish"), rootDir = file("plugin"))
             .withJvm(currentJvm)
             .withArgument("-Dorg.gradle.java.installations.paths=$installationPaths")
             .run()
@@ -209,7 +209,7 @@ class KotlinDslJvmTargetIntegrationTest : AbstractKotlinIntegrationTest() {
         """)
         withBuildScriptIn("consumer", """plugins { id("some") }""")
 
-        val helpResult = gradleExecuterFor(arrayOf("help"), rootDir = file("consumer"))
+        val helpResult = gradleExecutorFor(arrayOf("help"), rootDir = file("consumer"))
             .withJvm(newerJvm)
             .run()
 

@@ -33,10 +33,10 @@ abstract class AbstractGcsDependencyResolutionTest extends AbstractDependencyRes
     public final GcsServer server = new GcsServer(temporaryFolder)
 
     def setup() {
-        executer.withArgument('-i')
-        executer.withArgument("-D${GCS_ENDPOINT_PROPERTY}=${server.uri}")
-        executer.withArgument("-D${GCS_SERVICE_PATH_PROPERTY}=/")
-        executer.withArgument("-D${GCS_DISABLE_AUTH_PROPERTY}=true")
+        executor.withArgument('-i')
+        executor.withArgument("-D${GCS_ENDPOINT_PROPERTY}=${server.uri}")
+        executor.withArgument("-D${GCS_SERVICE_PATH_PROPERTY}=/")
+        executor.withArgument("-D${GCS_DISABLE_AUTH_PROPERTY}=true")
     }
 
     String getBucket() {

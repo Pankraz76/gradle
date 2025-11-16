@@ -87,7 +87,7 @@ class ContinuousBuildActionExecutorTest extends ConcurrentSpec {
         }
     }
 
-    def executer = executer()
+    def executor = executor()
 
     private File file = new File('file').absoluteFile
     PollingConditions conditions = new PollingConditions(timeout: 60, initialDelay: 0, factor: 1.25)
@@ -102,7 +102,7 @@ class ContinuousBuildActionExecutorTest extends ConcurrentSpec {
         executorService.shutdownNow()
     }
 
-    def "uses underlying executer when continuous build is not enabled"() {
+    def "uses underlying executor when continuous build is not enabled"() {
         given:
         continuousBuildDisabled()
 
@@ -325,7 +325,7 @@ class ContinuousBuildActionExecutorTest extends ConcurrentSpec {
                 return BuildActionRunner.Result.of(null)
             }
         }
-        executer = executer()
+        executor = executor()
     }
 
     private void buildDeclaresInputsAndTriggersChange() {
@@ -337,7 +337,7 @@ class ContinuousBuildActionExecutorTest extends ConcurrentSpec {
                 return BuildActionRunner.Result.of(null)
             }
         }
-        executer = executer()
+        executor = executor()
     }
 
     private boolean waitingForChangesMessageAppears() {
@@ -380,7 +380,7 @@ class ContinuousBuildActionExecutorTest extends ConcurrentSpec {
     }
 
     private void executeBuild() {
-        executer.execute(action, buildSessionContext)
+        executor.execute(action, buildSessionContext)
     }
 
     private void declareInput(File file) {
@@ -394,7 +394,7 @@ class ContinuousBuildActionExecutorTest extends ConcurrentSpec {
         }, EnumSet.allOf(InputBehavior))
     }
 
-    private ContinuousBuildActionExecutor executer() {
+    private ContinuousBuildActionExecutor executor() {
         new ContinuousBuildActionExecutor(
             inputListeners,
             changeListeners,

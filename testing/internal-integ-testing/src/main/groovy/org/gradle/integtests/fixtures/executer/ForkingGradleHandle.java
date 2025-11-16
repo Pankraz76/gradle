@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import com.google.common.base.Joiner;
 import org.gradle.api.Action;
@@ -149,7 +149,7 @@ class ForkingGradleHandle extends OutputScrapingGradleHandle {
         try {
             stdinPipe.write(4);
             if (isDaemon) {
-                // When running a test in a daemon executer, the input is buffered until a
+                // When running a test in a daemon executor, the input is buffered until a
                 // newline char is received
                 stdinPipe.write(getPlatformLineSeparator().getBytes());
             }
@@ -162,7 +162,7 @@ class ForkingGradleHandle extends OutputScrapingGradleHandle {
 
     private void requireStdinPipeFor(String method) {
         if (stdinPipe == null) {
-            throw new UnsupportedOperationException("Handle must be started using GradleExecuter.withStdinPipe() to use " + method);
+            throw new UnsupportedOperationException("Handle must be started using GradleExecutor.withStdinPipe() to use " + method);
         }
     }
 

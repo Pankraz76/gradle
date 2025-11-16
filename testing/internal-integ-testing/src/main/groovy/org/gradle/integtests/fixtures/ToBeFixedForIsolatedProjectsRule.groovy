@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.fixtures
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.jspecify.annotations.NullMarked
 import org.junit.rules.TestRule
 import org.junit.runner.Description
@@ -31,7 +31,7 @@ class ToBeFixedForIsolatedProjectsRule implements TestRule {
     @Override
     Statement apply(Statement base, Description description) {
         def annotation = description.getAnnotation(ToBeFixedForIsolatedProjects.class)
-        if (GradleContextualExecuter.isNotIsolatedProjects() || annotation == null) {
+        if (GradleContextualExecutor.isNotIsolatedProjects() || annotation == null) {
             return base
         }
 

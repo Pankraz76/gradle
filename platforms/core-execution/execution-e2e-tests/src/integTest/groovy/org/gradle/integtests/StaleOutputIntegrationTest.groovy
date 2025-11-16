@@ -283,7 +283,7 @@ class StaleOutputIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def "build operations are created for stale outputs cleanup"() {
-        def operations = new BuildOperationsFixture(executer, testDirectoryProvider)
+        def operations = new BuildOperationsFixture(executor, testDirectoryProvider)
         def fixture = new StaleOutputFixture()
         fixture.createInputs()
         buildFile(fixture.buildScript)
@@ -298,7 +298,7 @@ class StaleOutputIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def "no build operations are created for stale outputs cleanup if no files are removed"() {
-        def operations = new BuildOperationsFixture(executer, testDirectoryProvider)
+        def operations = new BuildOperationsFixture(executor, testDirectoryProvider)
         def fixture = new StaleOutputFixture()
         fixture.createInputs()
         buildFile(fixture.buildScript)
@@ -470,7 +470,7 @@ class StaleOutputIntegrationTest extends AbstractIntegrationSpec {
         def backup = file('backup/original.txt')
 
         and:
-        executer.beforeExecute {
+        executor.beforeExecute {
             withArgument("--max-workers=1")
         }
 

@@ -151,7 +151,7 @@ class ConfigurationCachePromoIntegrationTest extends AbstractConfigurationCacheI
             tasks.register("greet") { doLast { println("Hello") } }
         """
 
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
 
         when:
         run("greet")
@@ -170,7 +170,7 @@ class ConfigurationCachePromoIntegrationTest extends AbstractConfigurationCacheI
             }
         """
 
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
 
         when:
         run("greet")
@@ -445,7 +445,7 @@ class ConfigurationCachePromoIntegrationTest extends AbstractConfigurationCacheI
 
         def initDir = createDir("toInit")
 
-        executer.tap {
+        executor.tap {
             inDirectory(initDir)
             withRepositoryMirrors()
             ignoreMissingSettingsFile()

@@ -30,8 +30,8 @@ import org.junit.Assume
 @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicitly requests a daemon")
 class DaemonToolchainIntegrationTest extends AbstractIntegrationSpec implements DaemonJvmPropertiesFixture, JavaToolchainFixture {
     def setup() {
-        executer.requireIsolatedDaemons()
-        executer.requireDaemon()
+        executor.requireIsolatedDaemons()
+        executor.requireDaemon()
     }
 
     def "executes the daemon with the current jvm if the current jvm is specified"() {
@@ -78,7 +78,7 @@ class DaemonToolchainIntegrationTest extends AbstractIntegrationSpec implements 
         writeJvmCriteria(otherJvm.javaVersion, otherMetadata.vendor.knownVendor.name())
         captureJavaHome()
 
-        executer.withJavaHome(Jvm.current().javaHome.absolutePath)
+        executor.withJavaHome(Jvm.current().javaHome.absolutePath)
             .withEnvironmentVarsIncludingJavaHome([JAVA_HOME: otherJvm.javaHome.absolutePath])
 
         expect:

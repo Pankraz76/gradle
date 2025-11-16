@@ -64,7 +64,7 @@ class AntlrFilteringIntegrationTest extends AbstractIntegrationSpec implements A
 
         when:
         if (expectDeprecationWarning) {
-            expectPackageArgumentDeprecationWarning(executer)
+            expectPackageArgumentDeprecationWarning(executor)
         }
         succeeds(":filteredTask")
 

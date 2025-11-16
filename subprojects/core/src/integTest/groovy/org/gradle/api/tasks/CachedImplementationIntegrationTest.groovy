@@ -117,7 +117,7 @@ class CachedImplementationIntegrationTest extends AbstractIntegrationSpec {
             }
         """
 
-        pluginBuilder.publishTo(executer, pluginJar, """
+        pluginBuilder.publishTo(executor, pluginJar, """
             ${mavenCentralRepository()}
 
             dependencies {
@@ -152,7 +152,7 @@ class CachedImplementationIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
         succeeds "compileJava", "--info"
 
         then:
@@ -162,7 +162,7 @@ class CachedImplementationIntegrationTest extends AbstractIntegrationSpec {
         succeeds "clean"
 
         when:
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
         succeeds "compileJava"
 
         then:

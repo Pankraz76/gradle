@@ -19,7 +19,7 @@ import org.gradle.integtests.fixtures.AbstractDependencyResolutionTest
 
 class MavenFileRepoResolveIntegrationTest extends AbstractDependencyResolutionTest {
     def runRetrieveTask() {
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run 'retrieve'
     }
 
@@ -52,7 +52,7 @@ task retrieve(type: Sync) {
         when:
         moduleA.dependsOn('group', 'projectB', '9.1')
         moduleA.publishWithChangedContent()
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         runRetrieveTask()
 
         then:
@@ -90,7 +90,7 @@ task retrieve(type: Sync) {
         when:
         moduleA.dependsOn('group', 'projectB', '9.1')
         moduleA.publishWithChangedContent()
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         runRetrieveTask()
 
         then:

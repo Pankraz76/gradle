@@ -71,7 +71,7 @@ class CachedJavaCompileIntegrationTest extends AbstractCachedCompileIntegrationT
 
         and:
         withBuildCache()
-        executer.withArgument('-i')
+        executor.withArgument('-i')
         succeeds appCompileTask
 
         then:

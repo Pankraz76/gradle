@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  * This annotation can be used in similar way with {@link spock.lang.Timeout}, but shouldn't
  * be used together with {@link spock.lang.Timeout}. It should be annotated on
  * {@link org.gradle.integtests.fixtures.AbstractIntegrationSpec}. Upon timeout,
- * all threads' stack traces of current JVM (embedded executer) or forked JVM (forking executer)
+ * all threads' stack traces of current JVM (embedded executor) or forked JVM (forking executor)
  * are printed to help us debug deadlock issues.
  */
 

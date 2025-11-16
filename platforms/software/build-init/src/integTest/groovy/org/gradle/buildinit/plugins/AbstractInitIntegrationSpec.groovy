@@ -24,7 +24,7 @@ import org.gradle.buildinit.plugins.fixtures.ScriptDslFixture
 import org.gradle.buildinit.plugins.internal.modifiers.BuildInitDsl
 import org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.test.fixtures.file.TestFile
 
 import static org.gradle.initialization.ParallelismBuildOptions.ParallelOption
@@ -71,16 +71,16 @@ abstract class AbstractInitIntegrationSpec extends AbstractIntegrationSpec {
             // This is here to prevent Gradle searching up to find the build's settings.gradle
         """
         initializeIntoTestDir()
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     void initializeIntoTestDir() {
         containerDir = testDirectory
         targetDir = containerDir.createDir("some-thing")
         subprojectDir = subprojectName() ? targetDir.file(subprojectName()) : targetDir
-        executer.beforeExecute {
-            executer.inDirectory(targetDir)
-            executer.ignoreMissingSettingsFile()
+        executor.beforeExecute {
+            executor.inDirectory(targetDir)
+            executor.ignoreMissingSettingsFile()
         }
     }
 

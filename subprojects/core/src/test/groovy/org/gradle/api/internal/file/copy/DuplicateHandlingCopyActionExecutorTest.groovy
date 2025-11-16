@@ -55,7 +55,7 @@ class DuplicateHandlingCopyActionExecutorTest extends Specification {
     @Rule ConfigureLogging logging = new ConfigureLogging(outputEventListener)
 
     @Shared Instantiator instantiator = TestUtil.instantiatorFactory().decorateLenient()
-    def executer = new CopyActionExecuter(instantiator, TestUtil.propertyFactory(), fileSystem, false, TestFiles.documentationRegistry())
+    def executor = new CopyActionExecutor(instantiator, TestUtil.propertyFactory(), fileSystem, false, TestFiles.documentationRegistry())
     def copySpec = Mock(MyCopySpec) {
         getChildren() >> []
     }
@@ -200,7 +200,7 @@ class DuplicateHandlingCopyActionExecutorTest extends Specification {
     }
 
     void visit() {
-        executer.execute(copySpec, delegate)
+        executor.execute(copySpec, delegate)
     }
 
 }

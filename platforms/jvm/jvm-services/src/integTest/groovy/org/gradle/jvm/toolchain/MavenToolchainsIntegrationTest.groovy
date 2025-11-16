@@ -22,8 +22,8 @@ import org.spockframework.util.TextUtil
 class MavenToolchainsIntegrationTest extends AbstractIntegrationSpec {
     def "logs at info level when invalid toolchain file is provided"() {
         def toolchainsFile = file("toolchains.xml")
-        executer.withArgument("-Porg.gradle.java.installations.maven-toolchains-file=${TextUtil.escape(toolchainsFile.absolutePath)}")
-        executer.withToolchainDetectionEnabled()
+        executor.withArgument("-Porg.gradle.java.installations.maven-toolchains-file=${TextUtil.escape(toolchainsFile.absolutePath)}")
+        executor.withToolchainDetectionEnabled()
         toolchainsFile << "not xml"
 
         when:

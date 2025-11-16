@@ -33,7 +33,7 @@ class TestNGClassIntegrationTest extends MultiVersionIntegrationSpec {
     private final static String FINISHED = 'Finished'
 
     def setup() {
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         TestNGCoverage.enableTestNG(buildFile, version)
 
         buildFile << """

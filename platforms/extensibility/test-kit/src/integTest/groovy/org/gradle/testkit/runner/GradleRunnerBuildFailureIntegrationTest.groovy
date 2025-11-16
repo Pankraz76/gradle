@@ -16,8 +16,8 @@
 
 package org.gradle.testkit.runner
 
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionFailure
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionFailure
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult
 import org.gradle.testkit.runner.fixtures.InspectsBuildOutput
 import org.gradle.testkit.runner.fixtures.InspectsExecutedTasks
 import org.gradle.testkit.runner.fixtures.InspectsGroupedOutput

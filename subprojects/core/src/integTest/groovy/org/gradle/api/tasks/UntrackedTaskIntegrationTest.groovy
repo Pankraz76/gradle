@@ -217,7 +217,7 @@ class UntrackedTaskIntegrationTest extends AbstractIntegrationSpec implements Di
         """)
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         runAndFail "producer"
         then:
         executedAndNotSkipped(":producer")
@@ -247,7 +247,7 @@ class UntrackedTaskIntegrationTest extends AbstractIntegrationSpec implements Di
         """)
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         runAndFail "producer"
         then:
         executedAndNotSkipped(":producer")
@@ -275,7 +275,7 @@ class UntrackedTaskIntegrationTest extends AbstractIntegrationSpec implements Di
         """)
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         runAndFail "consumer"
         then:
         failure.assertHasDocumentedCause("Cannot access input property 'inputDir' of task ':consumer'. " +

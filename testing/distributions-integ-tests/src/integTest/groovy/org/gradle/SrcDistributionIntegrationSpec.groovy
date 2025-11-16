@@ -56,10 +56,10 @@ class SrcDistributionIntegrationSpec extends DistributionIntegrationSpec {
         !contentsDir.file(".git").exists()
 
         when:
-        executer.with {
+        executor.with {
             inDirectory(contentsDir)
             usingExecutable('gradlew')
-            // we add implicit Xmx1024m in AbstractGradleExecuter.getImplicitBuildJvmArgs()
+            // we add implicit Xmx1024m in AbstractGradleExecutor.getImplicitBuildJvmArgs()
             // that's too small for this build
             useOnlyRequestedJvmOpts()
             withTasks(':distributions-full:binDistributionZip')

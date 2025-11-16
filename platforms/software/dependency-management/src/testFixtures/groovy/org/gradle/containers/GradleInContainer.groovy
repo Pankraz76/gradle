@@ -18,10 +18,10 @@ package org.gradle.containers
 
 import groovy.transform.CompileStatic
 import groovy.transform.PackageScope
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 import org.spockframework.util.NotThreadSafe
 import org.testcontainers.Testcontainers
@@ -35,7 +35,7 @@ class GradleInContainer {
     static final String BASE_IMAGE = "adoptopenjdk/openjdk11:jdk-11.0.24_8-slim"
 
     private final GradleContainer container
-    private final GradleContainerExecuter executer
+    private final GradleContainerExecutor executor
 
     private boolean started
 
@@ -49,8 +49,8 @@ class GradleInContainer {
     GradleInContainer(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, String baseImage = BASE_IMAGE) {
         container = new GradleContainer(baseImage)
         bindReadOnly(distribution.gradleHomeDir, "/gradle-under-test")
-        executer = new GradleContainerExecuter(this, distribution, testDirectoryProvider)
-        executer.withGradleUserHomeDir(new File("/gradle-home"))
+        executor = new GradleContainerExecutor(this, distribution, testDirectoryProvider)
+        executor.withGradleUserHomeDir(new File("/gradle-home"))
     }
 
     GradleInContainer bindReadOnly(File local, String containerPath) {
@@ -63,8 +63,8 @@ class GradleInContainer {
         this
     }
 
-    GradleInContainer withExecuter(@DelegatesTo(value = GradleExecuter, strategy = Closure.DELEGATE_FIRST) Closure<?> action) {
-        action.delegate = executer
+    GradleInContainer withExecutor(@DelegatesTo(value = GradleExecutor, strategy = Closure.DELEGATE_FIRST) Closure<?> action) {
+        action.delegate = executor
         action.resolveStrategy = Closure.DELEGATE_FIRST
         action()
         this
@@ -119,12 +119,12 @@ class GradleInContainer {
     }
 
     ExecutionResult succeeds(String... tasks) {
-        executer.withTasks(tasks)
-        executer.run()
+        executor.withTasks(tasks)
+        executor.run()
     }
 
     ExecutionFailure fails(String... tasks) {
-        executer.withTasks(tasks)
-        executer.runWithFailure()
+        executor.withTasks(tasks)
+        executor.runWithFailure()
     }
 }

@@ -359,8 +359,8 @@ class WorkerExecutorParallelIntegrationTest extends AbstractWorkerExecutorIntegr
 
         when:
         args("--max-workers=${maxWorkers}")
-        executer.withTasks("parallelWorkTask")
-        def gradle = executer.start()
+        executor.withTasks("parallelWorkTask")
+        def gradle = executor.start()
 
         then:
         handler.waitForAllPendingCalls()
@@ -419,8 +419,8 @@ class WorkerExecutorParallelIntegrationTest extends AbstractWorkerExecutorIntegr
 
         when:
         args("--max-workers=${maxWorkers}")
-        executer.withTasks("parallelWorkTask")
-        def gradle = executer.start()
+        executor.withTasks("parallelWorkTask")
+        def gradle = executor.start()
 
         then:
         workItems.times {
@@ -460,7 +460,7 @@ class WorkerExecutorParallelIntegrationTest extends AbstractWorkerExecutorIntegr
 
         when:
         args("--max-workers=${maxWorkers}")
-        def gradle = executer.withTasks("parallelWorkTask")
+        def gradle = executor.withTasks("parallelWorkTask")
                         .requireIsolatedDaemons()
                         .withWorkerDaemonsExpirationDisabled()
                         .start()
@@ -509,8 +509,8 @@ class WorkerExecutorParallelIntegrationTest extends AbstractWorkerExecutorIntegr
 
         when:
         args("--max-workers=${maxWorkers}")
-        executer.withTasks("parallelWorkTask")
-        def gradle = executer.withWorkerDaemonsExpirationDisabled().start()
+        executor.withTasks("parallelWorkTask")
+        def gradle = executor.withWorkerDaemonsExpirationDisabled().start()
 
         then:
         handler.waitForAllPendingCalls()

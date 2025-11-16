@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.tooling.fixture
 
-import org.gradle.integtests.fixtures.executer.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleDistribution
 
 
 /**

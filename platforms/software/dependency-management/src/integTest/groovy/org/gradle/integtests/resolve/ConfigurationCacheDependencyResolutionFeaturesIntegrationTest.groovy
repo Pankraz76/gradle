@@ -37,14 +37,14 @@ class ConfigurationCacheDependencyResolutionFeaturesIntegrationTest extends Abst
     def configurationCache = newConfigurationCacheFixture()
 
     @Override
-    void setupExecuter() {
-        super.setupExecuter()
-        executer.withConfigurationCacheEnabled()
+    void setupExecutor() {
+        super.setupExecutor()
+        executor.withConfigurationCacheEnabled()
     }
 
     @Override
     def setup() {
-        executer.requireOwnGradleUserHomeDir("So that dependency resolution results from previous tests do not interfere")
+        executor.requireOwnGradleUserHomeDir("So that dependency resolution results from previous tests do not interfere")
     }
 
     @Canonical
@@ -975,7 +975,7 @@ class ConfigurationCacheDependencyResolutionFeaturesIntegrationTest extends Abst
         @Override
         void setup(AbstractIntegrationSpec owner) {
             owner.with {
-                m2.execute(executer)
+                m2.execute(executor)
                 m2.mavenRepo().module("thing", "lib1", "2.1").publish()
                 buildFile << """
                     repositories {
@@ -988,7 +988,7 @@ class ConfigurationCacheDependencyResolutionFeaturesIntegrationTest extends Abst
         @Override
         void publishWithDifferentArtifactContent(AbstractIntegrationSpec owner) {
             owner.with {
-                m2.execute(executer)
+                m2.execute(executor)
                 m2.mavenRepo().module("thing", "lib1", "2.1").publishWithChangedContent()
             }
         }
@@ -996,7 +996,7 @@ class ConfigurationCacheDependencyResolutionFeaturesIntegrationTest extends Abst
         @Override
         void publishWithDifferentDependencies(AbstractIntegrationSpec owner) {
             owner.with {
-                m2.execute(executer)
+                m2.execute(executor)
                 def dep = m2.mavenRepo().module("thing", "lib2", "4.0").publish()
                 m2.mavenRepo().module("thing", "lib1", "2.1").dependsOn(dep).publish()
             }
@@ -1005,7 +1005,7 @@ class ConfigurationCacheDependencyResolutionFeaturesIntegrationTest extends Abst
         @Override
         void publishNewVersion(AbstractIntegrationSpec owner) {
             owner.with {
-                m2.execute(executer)
+                m2.execute(executor)
                 def dep = m2.mavenRepo().module("thing", "lib2", "4.0").publish()
                 m2.mavenRepo().module("thing", "lib1", "2.5").dependsOn(dep).publish()
             }
@@ -1029,7 +1029,7 @@ class ConfigurationCacheDependencyResolutionFeaturesIntegrationTest extends Abst
         @Override
         void publishSnapshot(AbstractIntegrationSpec owner) {
             owner.with {
-                m2.execute(executer)
+                m2.execute(executor)
                 def dep = m2.mavenRepo().module("thing", "lib2", "4.0").publish()
                 m2.mavenRepo().module("thing", "lib1", "2.0-SNAPSHOT").dependsOn(dep).publish()
             }
@@ -1038,7 +1038,7 @@ class ConfigurationCacheDependencyResolutionFeaturesIntegrationTest extends Abst
         @Override
         void publishNewSnapshot(AbstractIntegrationSpec owner) {
             owner.with {
-                m2.execute(executer)
+                m2.execute(executor)
                 def dep = m2.mavenRepo().module("thing", "lib2", "4.1").publish()
                 m2.mavenRepo().module("thing", "lib1", "2.0-SNAPSHOT").dependsOn(dep).publish()
             }

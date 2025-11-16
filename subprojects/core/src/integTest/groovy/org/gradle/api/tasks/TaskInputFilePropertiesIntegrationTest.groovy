@@ -20,7 +20,7 @@ import org.gradle.api.internal.file.FileCollectionFactory
 import org.gradle.api.internal.tasks.TaskPropertyUtils
 import org.gradle.api.internal.tasks.properties.GetInputFilesVisitor
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.properties.bean.PropertyWalker
 import org.gradle.internal.reflect.validation.ValidationMessageChecker
 import spock.lang.Issue
@@ -146,7 +146,7 @@ class TaskInputFilePropertiesIntegrationTest extends AbstractIntegrationSpec imp
 
         expect:
         fails "customTask"
-        if(GradleContextualExecuter.configCache){
+        if(GradleContextualExecutor.configCache){
             failure.assertThatDescription(containsString("Task `:customTask` of type `CustomTask`: cannot serialize object of type 'org.gradle.api.DefaultTask', " +
                 "a subtype of 'org.gradle.api.Task', as these are not supported with the configuration cache."))
         }
@@ -168,13 +168,13 @@ class TaskInputFilePropertiesIntegrationTest extends AbstractIntegrationSpec imp
         })
 
         and:
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             verifyAll(receivedProblem(0)) {
                 fqid == 'validation:configuration-cache:cannot-serialize-object-of-type-org-gradle-api-defaulttask-a-subtype-of-org-gradle-api-task-as-these-are-not-supported-with-the-configuration-cache'
                 contextualLabel == 'cannot serialize object of type \'org.gradle.api.DefaultTask\', a subtype of \'org.gradle.api.Task\', as these are not supported with the configuration cache.'
             }
         }
-        verifyAll(receivedProblem(GradleContextualExecuter.configCache ? 1 : 0)) {
+        verifyAll(receivedProblem(GradleContextualExecutor.configCache ? 1 : 0)) {
             fqid == 'validation:property-validation:unsupported-notation'
             contextualLabel == 'Type \'CustomTask\' property \'input\' has unsupported value \'task \':dependencyTask\'\''
             details == "Type 'DefaultTask' cannot be converted to a $targetType"

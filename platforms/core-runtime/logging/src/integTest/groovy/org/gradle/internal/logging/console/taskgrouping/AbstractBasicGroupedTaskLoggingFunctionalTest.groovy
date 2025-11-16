@@ -17,7 +17,7 @@
 package org.gradle.internal.logging.console.taskgrouping
 
 import org.gradle.integtests.fixtures.console.AbstractConsoleGroupedTaskFunctionalTest
-import org.gradle.integtests.fixtures.executer.GradleHandle
+import org.gradle.integtests.fixtures.executor.GradleHandle
 import org.gradle.internal.logging.sink.GroupingProgressLogEventGenerator
 import org.gradle.test.fixtures.ConcurrentTestUtil
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
@@ -55,10 +55,10 @@ abstract class AbstractBasicGroupedTaskLoggingFunctionalTest extends AbstractCon
 
         when:
         server.expectConcurrent("log1", "log2", "log3")
-        executer.withArgument("--parallel")
+        executor.withArgument("--parallel")
             .withArgument("--no-problems-report")
         // run build in another process to avoid interference from logging from test fixtures
-        result = executer.withTasks("log").start().waitForFinish()
+        result = executor.withTasks("log").start().waitForFinish()
 
         then:
         result.groupedOutput.taskCount == 3
@@ -89,7 +89,7 @@ abstract class AbstractBasicGroupedTaskLoggingFunctionalTest extends AbstractCon
         """
 
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         succeeds('log')
 
         then:
@@ -183,7 +183,7 @@ abstract class AbstractBasicGroupedTaskLoggingFunctionalTest extends AbstractCon
         when:
         def waiting = server.expectConcurrentAndBlock("a-waiting", "b-waiting")
         def done = server.expectAndBlock("b-done")
-        def build = executer.withArgument("--parallel").withArgument("--no-problems-report").withTasks("run").start()
+        def build = executor.withArgument("--parallel").withArgument("--no-problems-report").withTasks("run").start()
 
         waiting.waitForAllPendingCalls()
         waiting.release("b-waiting")
@@ -214,7 +214,7 @@ abstract class AbstractBasicGroupedTaskLoggingFunctionalTest extends AbstractCon
         """
 
         def handle = server.expectAndBlock(server.get('running'))
-        def gradle = executer.withArgument("--no-problems-report").withTasks('log').start()
+        def gradle = executor.withArgument("--no-problems-report").withTasks('log').start()
 
         when:
         handle.waitForAllPendingCalls()

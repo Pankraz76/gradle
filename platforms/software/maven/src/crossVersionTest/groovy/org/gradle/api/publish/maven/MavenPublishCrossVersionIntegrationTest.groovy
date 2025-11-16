@@ -103,7 +103,7 @@ task retrieve(type: Sync) {
 }
 """
 
-        def executer = version previous
-        executer.requireOwnGradleUserHomeDir() withTasks 'retrieve' run()
+        def executor = version previous
+        executor.requireOwnGradleUserHomeDir() withTasks 'retrieve' run()
     }
 }

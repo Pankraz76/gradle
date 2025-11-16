@@ -30,16 +30,16 @@ class BuildCacheErrorIntegrationTest extends AbstractIntegrationSpec {
             class TestBuildCacheService implements BuildCacheService {
                 TestBuildCacheService(TestBuildCache configuration) {
                 }
-                
+
                 @Override
                 boolean load(BuildCacheKey key, BuildCacheEntryReader reader) throws BuildCacheException {
                     return false
                 }
-    
+
                 @Override
                 void store(BuildCacheKey key, BuildCacheEntryWriter writer) throws BuildCacheException {
                 }
-    
+
                 @Override
                 void close() throws IOException {
                 }
@@ -102,7 +102,7 @@ class BuildCacheErrorIntegrationTest extends AbstractIntegrationSpec {
             }
         """
         when:
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
         fails("compileJava")
         then:
         failure.assertHasCause("Build cache type 'TestBuildCache' has not been registered.")

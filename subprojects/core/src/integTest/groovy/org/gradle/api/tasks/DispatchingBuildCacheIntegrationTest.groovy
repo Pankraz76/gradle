@@ -29,7 +29,7 @@ class DispatchingBuildCacheIntegrationTest extends AbstractIntegrationSpec {
     private TestFile cacheOriginInputFile = file('cache-origin.txt')
     private TestFile outputFile = file('build/output.txt')
     private String cacheableTask = ':cacheableTask'
-    private BuildCacheOperationFixtures cacheOperations = new BuildCacheOperationFixtures(executer, temporaryFolder)
+    private BuildCacheOperationFixtures cacheOperations = new BuildCacheOperationFixtures(executor, temporaryFolder)
 
     def setup() {
         inputFile.text = 'This is the input'

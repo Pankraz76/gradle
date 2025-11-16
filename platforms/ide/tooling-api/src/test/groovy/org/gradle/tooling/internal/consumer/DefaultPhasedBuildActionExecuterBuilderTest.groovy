@@ -21,10 +21,10 @@ import org.gradle.tooling.BuildAction
 import org.gradle.tooling.IntermediateResultHandler
 import org.gradle.tooling.internal.consumer.async.AsyncConsumerActionExecutor
 
-class DefaultPhasedBuildActionExecuterBuilderTest extends Specification {
+class DefaultPhasedBuildActionExecutorBuilderTest extends Specification {
     def connection = Stub(AsyncConsumerActionExecutor)
     def parameters = Stub(ConnectionParameters)
-    def builder = new DefaultBuildActionExecuter.Builder(connection, parameters)
+    def builder = new DefaultBuildActionExecutor.Builder(connection, parameters)
 
     def "phased build action built correctly"() {
         def projectsLoadedAction = Mock(BuildAction)
@@ -33,17 +33,17 @@ class DefaultPhasedBuildActionExecuterBuilderTest extends Specification {
         def buildFinishedHandler = Mock(IntermediateResultHandler)
 
         when:
-        def executer = builder.projectsLoaded(projectsLoadedAction, projectsLoadedHandler)
+        def executor = builder.projectsLoaded(projectsLoadedAction, projectsLoadedHandler)
             .buildFinished(buildFinishedAction, buildFinishedHandler)
             .build()
 
         then:
-        executer.connection == connection
-        executer.connectionParameters == parameters
-        executer.phasedBuildAction.getProjectsLoadedAction().getAction() == projectsLoadedAction
-        executer.phasedBuildAction.getProjectsLoadedAction().getHandler() == projectsLoadedHandler
-        executer.phasedBuildAction.getBuildFinishedAction().getAction() == buildFinishedAction
-        executer.phasedBuildAction.getBuildFinishedAction().getHandler() == buildFinishedHandler
+        executor.connection == connection
+        executor.connectionParameters == parameters
+        executor.phasedBuildAction.getProjectsLoadedAction().getAction() == projectsLoadedAction
+        executor.phasedBuildAction.getProjectsLoadedAction().getHandler() == projectsLoadedHandler
+        executor.phasedBuildAction.getBuildFinishedAction().getAction() == buildFinishedAction
+        executor.phasedBuildAction.getBuildFinishedAction().getHandler() == buildFinishedHandler
     }
 
     def "exception when multiple actions per phase"() {

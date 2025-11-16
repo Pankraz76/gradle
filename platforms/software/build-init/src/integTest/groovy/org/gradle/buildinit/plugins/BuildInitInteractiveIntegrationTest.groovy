@@ -18,7 +18,7 @@ package org.gradle.buildinit.plugins
 
 import org.gradle.buildinit.plugins.fixtures.ScriptDslFixture
 import org.gradle.buildinit.plugins.internal.modifiers.BuildInitDsl
-import org.gradle.integtests.fixtures.executer.UnexpectedBuildFailure
+import org.gradle.integtests.fixtures.executor.UnexpectedBuildFailure
 import org.gradle.test.fixtures.ConcurrentTestUtil
 import org.gradle.util.internal.TextUtil
 import spock.lang.Issue

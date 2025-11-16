@@ -17,7 +17,7 @@
 package org.gradle.internal.enterprise
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.buildevents.BuildStartedTime
 import org.gradle.internal.scopeids.id.BuildInvocationScopeId
 import org.gradle.internal.scopeids.id.UserScopeId
@@ -28,11 +28,11 @@ import org.gradle.test.preconditions.IntegTestPreconditions
 
 class DevelocityPluginBuildStateIntegrationTest extends AbstractIntegrationSpec {
 
-    def plugin = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecuter())
+    def plugin = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecutor())
 
     def setup() {
         settingsFile << plugin.pluginManagement() << plugin.plugins()
-        plugin.publishDummyPlugin(executer)
+        plugin.publishDummyPlugin(executor)
     }
 
     @Requires(value = IntegTestPreconditions.NotNoDaemonExecutor, reason = "No daemon executor usually starts a single-use daemon, but not consistently and cannot be tested")
@@ -55,7 +55,7 @@ class DevelocityPluginBuildStateIntegrationTest extends AbstractIntegrationSpec 
                     assert buildState.workspaceId == services.get(${WorkspaceScopeId.name}).id.asString()
                     assert buildState.userId == services.get(${UserScopeId.name}).id.asString()
 
-                    assert (buildState.daemonScanInfo != null) == ${GradleContextualExecuter.isDaemon()}
+                    assert (buildState.daemonScanInfo != null) == ${GradleContextualExecutor.isDaemon()}
                 }
             }
         """

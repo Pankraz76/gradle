@@ -16,7 +16,7 @@
 package org.gradle.tooling;
 
 /**
- * A handler for an intermediate result obtained by a {@link BuildActionExecuter}.
+ * A handler for an intermediate result obtained by a {@link BuildActionExecutor}.
  *
  * @param <T> The result type.
  * @since 4.8

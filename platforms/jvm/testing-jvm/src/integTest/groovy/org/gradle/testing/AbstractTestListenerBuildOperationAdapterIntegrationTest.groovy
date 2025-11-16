@@ -22,7 +22,7 @@ import org.gradle.internal.operations.trace.BuildOperationRecord
 import org.gradle.testing.fixture.AbstractTestingMultiVersionIntegrationTest
 
 abstract class AbstractTestListenerBuildOperationAdapterIntegrationTest extends AbstractTestingMultiVersionIntegrationTest {
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     abstract void writeTestSources()
 

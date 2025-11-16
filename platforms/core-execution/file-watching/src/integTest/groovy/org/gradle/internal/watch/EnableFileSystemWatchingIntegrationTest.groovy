@@ -118,7 +118,7 @@ class EnableFileSystemWatchingIntegrationTest extends AbstractFileSystemWatching
         """
 
         requireOwnGradleUserHomeDir()
-        executer.gradleUserHomeDir.file("init.d/fsw.gradle") << """
+        executor.gradleUserHomeDir.file("init.d/fsw.gradle") << """
             gradle.startParameter.setWatchFileSystemMode(${WatchMode.name}.${watchMode.name()})
         """
 

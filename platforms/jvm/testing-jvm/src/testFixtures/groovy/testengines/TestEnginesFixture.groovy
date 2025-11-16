@@ -20,11 +20,11 @@ package testengines
 import groovy.transform.SelfType
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.TestResources
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.GradleExecuter
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
-import org.gradle.integtests.fixtures.executer.UnderDevelopmentGradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleExecutor
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.UnderDevelopmentGradleDistribution
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 import org.gradle.test.fixtures.file.TestNameTestDirectoryProvider.UniquePerTestClassDirectoryProvider
 import org.gradle.util.internal.TextUtil
@@ -55,7 +55,7 @@ trait TestEnginesFixture {
 
         // Switch to engine build directory for this setup
         GradleDistribution distribution = new UnderDevelopmentGradleDistribution(IntegrationTestBuildContext.INSTANCE)
-        GradleExecuter engineBuilder = new GradleContextualExecuter(distribution, testClassDirectoryProvider, IntegrationTestBuildContext.INSTANCE)
+        GradleExecutor engineBuilder = new GradleContextualExecutor(distribution, testClassDirectoryProvider, IntegrationTestBuildContext.INSTANCE)
         engineBuildDir = testClassDirectoryProvider.testDirectory.file(ENGINE_COPY_TO_DIR_NAME)
 
         // Build the test engine jar

@@ -17,12 +17,12 @@
 package org.gradle.launcher
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ProjectLifecycleFixture
+import org.gradle.integtests.fixtures.executor.ProjectLifecycleFixture
 import org.junit.Rule
 
 class ConfigurationOnDemandIntegrationTest extends AbstractIntegrationSpec {
 
-    @Rule ProjectLifecycleFixture fixture = new ProjectLifecycleFixture(executer, temporaryFolder)
+    @Rule ProjectLifecycleFixture fixture = new ProjectLifecycleFixture(executor, temporaryFolder)
 
     def "start parameter informs about the configuration on demand mode"() {
         file("gradle.properties") << "org.gradle.configureondemand=true"

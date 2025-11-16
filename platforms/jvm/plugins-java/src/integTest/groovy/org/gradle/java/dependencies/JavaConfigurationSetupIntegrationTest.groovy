@@ -107,7 +107,7 @@ class JavaConfigurationSetupIntegrationTest extends AbstractIntegrationSpec {
             }
         """
 
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         if (forbidden(alternatives) || doesNotExist(alternatives)) {
             fails 'resolve'
         } else {
@@ -159,9 +159,9 @@ class JavaConfigurationSetupIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.withStacktraceEnabled()
+        executor.withStacktraceEnabled()
 
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         if (forbidden(alternatives) || doesNotExist(alternatives)) {
             fails 'resolve'
         } else {

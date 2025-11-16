@@ -29,7 +29,7 @@ class ResolvingSnapshotFromPluginRepositorySpec extends AbstractDependencyResolu
         def taskName = "pluginTask"
 
         pluginBuilder.addPluginWithPrintlnTask(taskName, message, "org.example.plugin")
-        pluginBuilder.publishAs("org.example.plugin:plugin:${version}", mavenRepo, executer)
+        pluginBuilder.publishAs("org.example.plugin:plugin:${version}", mavenRepo, executor)
     }
 
     private void useCustomRepository(String resolutionStrategy = "") {

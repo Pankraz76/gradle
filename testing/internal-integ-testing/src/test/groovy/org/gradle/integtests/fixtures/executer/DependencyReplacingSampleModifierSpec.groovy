@@ -15,7 +15,7 @@
  */
 
 import org.gradle.exemplar.model.Sample
-import org.gradle.integtests.fixtures.executer.DependencyReplacingSampleModifier
+import org.gradle.integtests.fixtures.executor.DependencyReplacingSampleModifier
 import org.gradle.util.GradleVersion
 import spock.lang.Specification
 import spock.lang.TempDir

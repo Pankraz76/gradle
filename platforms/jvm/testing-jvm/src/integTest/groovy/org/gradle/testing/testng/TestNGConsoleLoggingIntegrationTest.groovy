@@ -24,7 +24,7 @@ import spock.lang.Issue
 class TestNGConsoleLoggingIntegrationTest extends AbstractIntegrationSpec {
 
     def setup() {
-        executer.noExtraLogging()
+        executor.noExtraLogging()
 
         buildFile << """
             apply plugin: "groovy"
@@ -104,7 +104,7 @@ Gradle test > org.gradle.TestNGTest.badTest FAILED
 
     def "can log with custom quiet logging"() {
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         args "-q"
         fails "test"
 
@@ -219,7 +219,7 @@ Gradle test > org.gradle.TestNGStandardOutputTest.printTest STANDARD_OUT
         """
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         fails "test"
 
         then:

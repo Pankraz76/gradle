@@ -39,11 +39,11 @@ class CacheTaskArchiveErrorIntegrationTest extends AbstractIntegrationSpec {
     def localCache = new TestBuildCache(file("local-cache"))
     def remoteCache = new TestBuildCache(file("remote-cache"))
 
-    def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+    def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
     def cacheOperations = new BuildCacheOperationFixtures(buildOperations)
 
     def setup() {
-        executer.beforeExecute { withBuildCacheEnabled() }
+        executor.beforeExecute { withBuildCacheEnabled() }
         settingsFile << localCache.localCacheConfiguration()
     }
 
@@ -78,7 +78,7 @@ class CacheTaskArchiveErrorIntegrationTest extends AbstractIntegrationSpec {
 
     @ToBeFixedForConfigurationCache(skip = INVESTIGATE)
     def "archive is not pushed to remote when packing fails"() {
-        executer.withStacktraceEnabled()
+        executor.withStacktraceEnabled()
 
         when:
         file("input.txt") << "data"
@@ -143,7 +143,7 @@ class CacheTaskArchiveErrorIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def "corrupt archive loaded from local cache is purged"() {
-        executer.withStacktraceEnabled()
+        executor.withStacktraceEnabled()
 
         when:
         file("input.txt") << "data"
@@ -208,7 +208,7 @@ class CacheTaskArchiveErrorIntegrationTest extends AbstractIntegrationSpec {
         localCache.hasCacheEntry(cacheKey)
 
         when:
-        executer.withStacktraceEnabled()
+        executor.withStacktraceEnabled()
         cleanBuildDir()
 
         and:

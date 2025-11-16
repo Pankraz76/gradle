@@ -77,7 +77,7 @@ class DaemonReuseIntegrationTest extends AbstractIntegrationSpec {
     }
 
     private void runBuildViaCLI() {
-        executer
+        executor
             .withDaemonBaseDir(toolingApi.daemonBaseDir)
             .requireDaemon()
             .useOnlyRequestedJvmOpts()

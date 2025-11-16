@@ -35,7 +35,7 @@ class IsolatedProjectsJavaPluginIntegrationTest extends AbstractIsolatedProjects
         """)
 
         when:
-        executer.withArguments(ENABLE_CLI)
+        executor.withArguments(ENABLE_CLI)
         runBuildAction(new FetchCustomModelForEachProjectInParallel())
 
         then:
@@ -83,7 +83,7 @@ class IsolatedProjectsJavaPluginIntegrationTest extends AbstractIsolatedProjects
         """)
 
         when:
-        executer.withArguments(ENABLE_CLI)
+        executor.withArguments(ENABLE_CLI)
         runBuildAction(new FetchCustomModelForEachProjectInParallel())
 
         then:

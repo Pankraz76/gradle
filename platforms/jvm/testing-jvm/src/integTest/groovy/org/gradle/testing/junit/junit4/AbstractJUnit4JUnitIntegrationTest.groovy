@@ -119,7 +119,7 @@ abstract class AbstractJUnit4JUnitIntegrationTest extends AbstractJUnitIntegrati
         """.stripIndent()
 
         when:
-        executer.withTasks('test').run()
+        executor.withTasks('test').run()
 
         then:
         def results = resultsFor(testDirectory)

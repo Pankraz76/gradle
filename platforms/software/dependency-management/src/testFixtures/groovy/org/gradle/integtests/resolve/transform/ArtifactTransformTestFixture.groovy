@@ -18,8 +18,8 @@ package org.gradle.integtests.resolve.transform
 
 import groovy.transform.SelfType
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.integtests.resolve.VariantAwareDependencyResolutionTestFixture
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.fixtures.maven.MavenModule
@@ -375,53 +375,53 @@ allprojects { p ->
     }
 
     static class ProjectConfigurator {
-        private final GradleExecuter executer
+        private final GradleExecutor executor
         private final String projectName
 
-        private ProjectConfigurator(GradleExecuter executer, String projectName) {
+        private ProjectConfigurator(GradleExecutor executor, String projectName) {
             this.projectName = projectName
-            this.executer = executer
+            this.executor = executor
         }
 
         void setProjectBuildDir(String buildDirPath) {
-            executer.withArgument("-D${projectName}OutputDir=${buildDirPath}")
+            executor.withArgument("-D${projectName}OutputDir=${buildDirPath}")
         }
 
         void setOutputFileName(String outputFileName) {
-            executer.withArgument("-D${projectName}FileName=${outputFileName}")
+            executor.withArgument("-D${projectName}FileName=${outputFileName}")
         }
 
         void setOutputDirName(String outputDirName) {
-            executer.withArgument("-D${projectName}DirName=${outputDirName}")
+            executor.withArgument("-D${projectName}DirName=${outputDirName}")
         }
 
         void emptyOutputDir() {
-            executer.withArgument("-D${projectName}EmptyDir")
+            executor.withArgument("-D${projectName}EmptyDir")
         }
 
         void setOutputFileContent(String textToWrite) {
-            executer.withArgument("-D${projectName}Content=${textToWrite}")
+            executor.withArgument("-D${projectName}Content=${textToWrite}")
         }
 
         void setOutputJarEntryName(String entryName) {
-            executer.withArgument("-D${projectName}EntryName=${entryName}")
+            executor.withArgument("-D${projectName}EntryName=${entryName}")
         }
 
         void setOutputJarEntryTimestamp(int timestamp) {
-            executer.withArgument("-D${projectName}Timestamp=${timestamp}")
+            executor.withArgument("-D${projectName}Timestamp=${timestamp}")
         }
 
         void setNames(List<String> names) {
-            executer.withArgument("-D${projectName}Names=${names.join(',')}")
+            executor.withArgument("-D${projectName}Names=${names.join(',')}")
         }
 
         void produceNothing() {
-            executer.withArgument("-D${projectName}ProduceNothing")
+            executor.withArgument("-D${projectName}ProduceNothing")
         }
     }
 
     void withProjectConfig(String projectName, @DelegatesTo(ProjectConfigurator) Closure config) {
-        def configurator = new ProjectConfigurator(executer, projectName)
+        def configurator = new ProjectConfigurator(executor, projectName)
         config.delegate = configurator
         config.call(configurator)
     }

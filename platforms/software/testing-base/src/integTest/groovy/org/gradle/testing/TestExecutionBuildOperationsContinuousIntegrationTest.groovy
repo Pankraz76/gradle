@@ -21,7 +21,7 @@ import org.gradle.api.internal.tasks.testing.operations.ExecuteTestBuildOperatio
 import org.gradle.integtests.fixtures.AbstractContinuousIntegrationTest
 import org.gradle.integtests.fixtures.BuildOperationsFixture
 import org.gradle.integtests.fixtures.TestResources
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.util.internal.ClosureBackedAction
 import org.junit.Rule
 
@@ -29,28 +29,28 @@ import static org.gradle.testing.TestExecutionBuildOperationTestUtils.assertJuni
 
 class TestExecutionBuildOperationsContinuousIntegrationTest extends AbstractContinuousIntegrationTest {
 
-    final List<Action<GradleExecuter>> afterExecute = []
+    final List<Action<GradleExecutor>> afterExecute = []
 
-    final GradleExecuter delegatingExecuter = new GradleExecuter() {
+    final GradleExecutor delegatingExecutor = new GradleExecutor() {
         @Delegate
-        GradleExecuter delegate = executer
+        GradleExecutor delegate = executor
 
         void afterExecute(Closure action) {
-            afterExecute << new ClosureBackedAction<GradleExecuter>(action)
+            afterExecute << new ClosureBackedAction<GradleExecutor>(action)
         }
     }
 
     @Rule
     final TestResources resources = new TestResources(testDirectoryProvider)
 
-    def operations = new BuildOperationsFixture(delegatingExecuter, temporaryFolder)
+    def operations = new BuildOperationsFixture(delegatingExecutor, temporaryFolder)
 
     void afterBuild() {
-        afterExecute*.execute(executer)
+        afterExecute*.execute(executor)
     }
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     def "emits test operations for continuous builds"() {

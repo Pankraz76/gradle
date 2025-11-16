@@ -40,8 +40,8 @@ import static org.gradle.jvm.toolchain.JavaToolchainDownloadUtil.noUrlResolverCo
 class UpdateDaemonJvmIntegrationTest extends AbstractIntegrationSpec implements DaemonJvmPropertiesFixture, JavaToolchainFixture {
 
     def setup() {
-        executer.requireDaemon()
-        executer.requireIsolatedDaemons()
+        executor.requireDaemon()
+        executor.requireIsolatedDaemons()
     }
 
     def "root project has an updateDaemonJvm task only"() {

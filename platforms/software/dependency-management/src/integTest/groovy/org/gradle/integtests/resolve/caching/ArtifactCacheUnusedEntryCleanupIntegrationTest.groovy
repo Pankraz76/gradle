@@ -24,7 +24,7 @@ import org.gradle.cache.internal.GradleUserHomeCleanupFixture
 import org.gradle.integtests.fixtures.AbstractHttpDependencyResolutionTest
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.integtests.fixtures.cache.FileAccessTimeJournalFixture
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.integtests.resolve.JvmLibraryArtifactResolveTestFixture
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.fixtures.maven.MavenModule
@@ -101,7 +101,7 @@ class ArtifactCacheUnusedEntryCleanupIntegrationTest extends AbstractHttpDepende
         buildscriptWithDependency(snapshotModule)
 
         when:
-        executer.requireIsolatedDaemons() // needs to stop daemon
+        executor.requireIsolatedDaemons() // needs to stop daemon
         succeeds 'resolve'
 
         then:
@@ -121,7 +121,7 @@ class ArtifactCacheUnusedEntryCleanupIntegrationTest extends AbstractHttpDepende
 
         and:
         // start as new process so journal is not restored from in-memory cache
-        executer.withTasks('help').start().waitForFinish()
+        executor.withTasks('help').start().waitForFinish()
 
         then:
         resource.assertDoesNotExist()
@@ -139,7 +139,7 @@ class ArtifactCacheUnusedEntryCleanupIntegrationTest extends AbstractHttpDepende
         withDownloadedResourcesRetentionInDays(HALF_DEFAULT_MAX_AGE_IN_DAYS)
 
         when:
-        executer.requireIsolatedDaemons() // needs to stop daemon
+        executor.requireIsolatedDaemons() // needs to stop daemon
         succeeds 'resolve'
 
         then:
@@ -160,7 +160,7 @@ class ArtifactCacheUnusedEntryCleanupIntegrationTest extends AbstractHttpDepende
 
         and:
         // start as new process so journal is not restored from in-memory cache
-        executer.withTasks('help').start().waitForFinish()
+        executor.withTasks('help').start().waitForFinish()
 
         then:
         resource.assertDoesNotExist()
@@ -179,7 +179,7 @@ class ArtifactCacheUnusedEntryCleanupIntegrationTest extends AbstractHttpDepende
         alwaysCleanupCaches()
 
         when:
-        executer.requireIsolatedDaemons() // needs to stop daemon
+        executor.requireIsolatedDaemons() // needs to stop daemon
         succeeds 'resolve'
 
         then:
@@ -200,12 +200,12 @@ class ArtifactCacheUnusedEntryCleanupIntegrationTest extends AbstractHttpDepende
         writeLastFileAccessTimeToJournal(files[1].parentFile, daysAgo(HALF_DEFAULT_MAX_AGE_IN_DAYS + 1))
 
         and:
-        executer.beforeExecute {
+        executor.beforeExecute {
             if (!IntegrationTestBuildContext.embedded) {
-                executer.withArgument("-D$REUSE_USER_HOME_SERVICES=true")
+                executor.withArgument("-D$REUSE_USER_HOME_SERVICES=true")
             }
         }
-        executer.withTasks('help').start().waitForFinish()
+        executor.withTasks('help').start().waitForFinish()
 
         then:
         resource.assertDoesNotExist()
@@ -222,7 +222,7 @@ class ArtifactCacheUnusedEntryCleanupIntegrationTest extends AbstractHttpDepende
         buildscriptWithDependency(snapshotModule)
 
         when:
-        executer.requireIsolatedDaemons() // needs to stop daemon
+        executor.requireIsolatedDaemons() // needs to stop daemon
 
         and:
         disableCacheCleanupViaDsl()
@@ -247,7 +247,7 @@ class ArtifactCacheUnusedEntryCleanupIntegrationTest extends AbstractHttpDepende
 
         and:
         // start as new process so journal is not restored from in-memory cache
-        executer.withTasks('help').start().waitForFinish()
+        executor.withTasks('help').start().waitForFinish()
 
         then:
         resource.assertExists()
@@ -453,6 +453,6 @@ class ArtifactCacheUnusedEntryCleanupIntegrationTest extends AbstractHttpDepende
 
     @Override
     TestFile getGradleUserHomeDir() {
-        return executer.gradleUserHomeDir
+        return executor.gradleUserHomeDir
     }
 }

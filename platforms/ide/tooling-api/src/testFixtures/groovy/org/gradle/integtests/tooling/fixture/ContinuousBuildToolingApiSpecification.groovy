@@ -18,10 +18,10 @@ package org.gradle.integtests.tooling.fixture
 
 import groovy.transform.stc.ClosureParams
 import groovy.transform.stc.SimpleType
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult
-import org.gradle.integtests.fixtures.executer.UnexpectedBuildFailure
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult
+import org.gradle.integtests.fixtures.executor.UnexpectedBuildFailure
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.test.fixtures.ConcurrentTestUtil
 import org.gradle.test.fixtures.file.TestFile

@@ -21,8 +21,8 @@ import org.gradle.api.internal.tasks.execution.ExecuteTaskBuildOperationType
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
 import org.gradle.caching.internal.origin.OriginMetadata
-import org.gradle.integtests.fixtures.executer.GradleExecuter
-import org.gradle.integtests.fixtures.executer.UserInitScriptExecuterFixture
+import org.gradle.integtests.fixtures.executor.GradleExecutor
+import org.gradle.integtests.fixtures.executor.UserInitScriptExecutorFixture
 import org.gradle.internal.build.event.BuildEventListenerRegistryInternal
 import org.gradle.internal.hash.HashCode
 import org.gradle.internal.operations.BuildOperationDescriptor
@@ -37,12 +37,12 @@ import org.gradle.util.internal.TextUtil
 
 import java.time.Duration
 
-class OriginFixture extends UserInitScriptExecuterFixture {
+class OriginFixture extends UserInitScriptExecutorFixture {
 
     Map<String, OriginMetadata> origins = [:]
 
-    OriginFixture(GradleExecuter executer, TestDirectoryProvider testDir) {
-        super(executer, testDir)
+    OriginFixture(GradleExecutor executor, TestDirectoryProvider testDir) {
+        super(executor, testDir)
     }
 
     private TestFile getFile() {

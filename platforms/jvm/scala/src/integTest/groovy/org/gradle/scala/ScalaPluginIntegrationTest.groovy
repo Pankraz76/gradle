@@ -83,7 +83,7 @@ class ScalaPluginIntegrationTest extends MultiVersionIntegrationSpec {
         """
 
         expect:
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
         succeeds(":a:classes", "--parallel")
         true
     }

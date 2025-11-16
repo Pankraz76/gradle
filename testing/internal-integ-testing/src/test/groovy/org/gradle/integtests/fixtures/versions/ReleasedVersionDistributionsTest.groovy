@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.fixtures.versions
 
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.internal.Factory
 import org.gradle.tooling.internal.consumer.DefaultGradleConnector
 import org.gradle.util.internal.DefaultGradleVersion

@@ -39,7 +39,7 @@ class HelpTaskIntegrationTest extends AbstractIntegrationSpec {
 
     def "shows help message when tasks #tasks run in a directory with no build definition present"() {
         useTestDirectoryThatIsNotEmbeddedInAnotherBuild()
-        executer.requireOwnGradleUserHomeDir().withArgument("--no-problems-report")
+        executor.requireOwnGradleUserHomeDir().withArgument("--no-problems-report")
 
         when:
         run(*tasks)
@@ -72,7 +72,7 @@ BUILD SUCCESSFUL"""
 
         and:
         // Uses a directory under the user home for those things that happen to need a cache directory
-        executer.gradleUserHomeDir.file(BuildScopeCacheDir.UNDEFINED_BUILD).assertIsDir()
+        executor.gradleUserHomeDir.file(BuildScopeCacheDir.UNDEFINED_BUILD).assertIsDir()
 
         where:
         tasks << [["help"], [], [":help"]]
@@ -84,7 +84,7 @@ BUILD SUCCESSFUL"""
         def sub = file("sub").createDir()
 
         when:
-        executer.inDirectory(sub).withArgument("--no-problems-report")
+        executor.inDirectory(sub).withArgument("--no-problems-report")
         run "help"
 
         then:
@@ -103,13 +103,13 @@ Directory '$sub' does not contain a Gradle build.
 
     def "shows help message when run in a buildSrc directory that does not contain build or settings script"() {
         given:
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         settingsFile.createFile()
         def sub = file("buildSrc").createDir()
         sub.file("src/main/java/Thing.java") << "class Thing { }"
 
         when:
-        executer.inDirectory(sub)
+        executor.inDirectory(sub)
         run "help"
 
         then:
@@ -124,7 +124,7 @@ Directory '$sub' does not contain a Gradle build.
 
         and:
         sub.file(".gradle").assertIsDir()
-        executer.gradleUserHomeDir.file(BuildScopeCacheDir.UNDEFINED_BUILD).assertDoesNotExist()
+        executor.gradleUserHomeDir.file(BuildScopeCacheDir.UNDEFINED_BUILD).assertDoesNotExist()
     }
 
     def "shows help message when run in users home directory"() {
@@ -133,7 +133,7 @@ Directory '$sub' does not contain a Gradle build.
 
         // the default, if running from user home dir
         def gradleUserHomeDir = file(".gradle")
-        executer.withGradleUserHomeDir(gradleUserHomeDir)
+        executor.withGradleUserHomeDir(gradleUserHomeDir)
 
         when:
         run "help"
@@ -178,7 +178,7 @@ To run a build, run gradle <task> ...
         def sub = file("sub").createDir()
 
         when:
-        executer.inDirectory(sub)
+        executor.inDirectory(sub)
         run "help"
 
         then:
@@ -197,7 +197,7 @@ To run a build, run gradle <task> ...
         settingsFile << "include 'a', 'b', 'c'"
 
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run "help"
 
         then:
@@ -224,7 +224,7 @@ BUILD SUCCESSFUL"""
 
     def "can print help for implicit tasks"() {
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run "help", "--task", "dependencies"
         then:
         output.contains """Detailed task information for dependencies
@@ -251,7 +251,7 @@ BUILD SUCCESSFUL"""
 
     def "can print help for placeholder added tasks"() {
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run "help", "--task", "help"
         then:
         output.contains """Detailed task information for help
@@ -294,7 +294,7 @@ include ":someproj"
         }
 """
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run "help", "--task", "hello"
         then:
         output.contains """Detailed task information for hello
@@ -343,7 +343,7 @@ include ":someproj2"
         }
 """
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run "help", "--task", "hello"
         then:
         output.contains """Detailed task information for hello
@@ -377,7 +377,7 @@ BUILD SUCCESSFUL"""
         settingsFile << "include ':subproj1'"
         buildFile << "allprojects{ apply plugin:'java'}"
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run "help", "--task", ":jar"
         then:
         output.contains """Detailed task information for :jar
@@ -400,7 +400,7 @@ Group
 BUILD SUCCESSFUL"""
 
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run "help", "--task", "jar"
         then:
         output.contains """Detailed task information for jar
@@ -441,7 +441,7 @@ BUILD SUCCESSFUL"""
         }"""
 
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run "help", "--task", "someTask"
         then:
         output.contains """Detailed task information for someTask
@@ -517,7 +517,7 @@ BUILD SUCCESSFUL"""
             description = "a description"
         }"""
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run "help", "--task", "sCC"
         then:
         output.contains """Detailed task information for sCC
@@ -561,7 +561,7 @@ BUILD SUCCESSFUL"""
     def "listsEnumAndBooleanCmdOptionValues"() {
         createDirs("proj1", "proj2")
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run "help", "--task", "hello"
         then:
         output.contains """Detailed task information for hello
@@ -600,7 +600,7 @@ BUILD SUCCESSFUL"""
     def "listsCommonDynamicAvailableValues"() {
         createDirs("sub1", "sub2")
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run "help", "--task", "hello"
         then:
         output.contains """Detailed task information for hello

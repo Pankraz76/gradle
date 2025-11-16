@@ -23,7 +23,7 @@ import org.gradle.api.tasks.WorkResults
 import org.gradle.test.fixtures.file.WorkspaceTest
 import org.gradle.util.TestUtil
 
-class CopyActionExecuterTest extends WorkspaceTest {
+class CopyActionExecutorTest extends WorkspaceTest {
 
     def "correctly executes copy actions, normalising and handling excludes"() {
         given:
@@ -57,11 +57,11 @@ class CopyActionExecuterTest extends WorkspaceTest {
                 WorkResults.didWork(workResult)
             }
         }
-        def executer = new CopyActionExecuter(TestUtil.instantiatorFactory().decorateLenient(), TestUtil.propertyFactory(), TestFiles.fileSystem(), false,
+        def executor = new CopyActionExecutor(TestUtil.instantiatorFactory().decorateLenient(), TestUtil.propertyFactory(), TestFiles.fileSystem(), false,
                 TestFiles.documentationRegistry())
 
         when:
-        executer.execute(copySpec, copyAction)
+        executor.execute(copySpec, copyAction)
 
         then:
         1 * action.processFile({ it.relativePath.pathString == "a" })

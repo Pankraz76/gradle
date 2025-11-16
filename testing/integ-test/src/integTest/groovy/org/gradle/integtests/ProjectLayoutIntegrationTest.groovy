@@ -20,7 +20,7 @@ import org.gradle.integtests.fixtures.AbstractIntegrationTest
 import org.gradle.integtests.fixtures.DefaultTestExecutionResult
 import org.gradle.integtests.fixtures.ScalaCoverage
 import org.gradle.integtests.fixtures.TestResources
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.test.fixtures.file.TestFile
 import org.junit.Before
 import org.junit.Rule
@@ -32,7 +32,7 @@ class ProjectLayoutIntegrationTest extends AbstractIntegrationTest {
 
     @Before
     void setUp() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     @Test
@@ -85,7 +85,7 @@ sourceSets.each {
         file('src/scala/org/gradle/main/ScalaClass2.scala') << 'package org.gradle; class ScalaClass2 { }'
         file('src/scala/org/gradle/test/ScalaClassTest2.scala') << 'package org.gradle; class ScalaClassTest2 { val c: ScalaClass = new ScalaClass(); @org.junit.jupiter.api.Test def test: Unit = { } }'
 
-        executer.withTasks('build').run()
+        executor.withTasks('build').run()
 
         File buildDir = file('build')
 
@@ -139,13 +139,13 @@ sourceSets.each {
                 'org/gradle/ScalaClass2.class'
         )
 
-        def runScalaDoc = !GradleContextualExecuter.daemon
+        def runScalaDoc = !GradleContextualExecutor.daemon
         def tasks = ['javadoc', 'groovydoc']
         if (runScalaDoc) {
             tasks << "scaladoc"
         }
 
-        executer.withTasks(tasks).run()
+        executor.withTasks(tasks).run()
 
         buildDir.file('docs/javadoc/index.html').assertIsFile()
         buildDir.file('docs/groovydoc/index.html').assertIsFile()
@@ -177,7 +177,7 @@ sourceSets.main.java {
         file('src/org/gradle/a/ClassA.java') << 'package org.gradle.a; public class ClassA { }'
         file('src/org/gradle/b/ClassB.java') << 'package org.gradle.b; public class ClassB { private org.gradle.a.ClassA field; }'
 
-        executer.withTasks('clean', 'assemble').run()
+        executor.withTasks('clean', 'assemble').run()
 
         file('a/build/classes/java/main').assertHasDescendants(
                 'org/gradle/a/ClassA.class'
@@ -189,7 +189,7 @@ sourceSets.main.java {
 
     @Test
     void canUseANonStandardBuildDir() {
-        executer.withTasks('build').run()
+        executor.withTasks('build').run()
 
         file('build').assertDoesNotExist()
 
@@ -207,6 +207,6 @@ sourceSets.main.java {
         include ':a'
         project(':a').projectDir = new File('relative/a')
         '''
-        executer.inDirectory(file('relative/a')).withTasks(':a:someTask').run()
+        executor.inDirectory(file('relative/a')).withTasks(':a:someTask').run()
     }
 }

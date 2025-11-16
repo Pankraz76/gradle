@@ -50,11 +50,11 @@ val releasedVersions = gradleModule.identity.releasedVersions.orNull
 
 fun createQuickFeedbackTasks() {
     val testType = TestType.CROSSVERSION
-    val defaultExecuter = "embedded"
+    val defaultExecutor = "embedded"
     val prefix = testType.prefix
-    testType.executers.forEach { executer ->
-        val taskName = "$executer${prefix.capitalize()}Test"
-        val testTask = createTestTask(taskName, executer, sourceSet, testType) {
+    testType.executors.forEach { executor ->
+        val taskName = "$executor${prefix.capitalize()}Test"
+        val testTask = createTestTask(taskName, executor, sourceSet, testType) {
             this.setSystemPropertiesOfTestJVM("latest")
             this.systemProperties["org.gradle.integtest.crossVersion"] = "true"
             this.systemProperties["org.gradle.integtest.crossVersion.lowestTestedVersion"] = releasedVersions?.lowestTestedVersion?.version
@@ -63,8 +63,8 @@ fun createQuickFeedbackTasks() {
             // discard existing options configuration and add a deprecation warning.  Just set the existing options.
             (this.testFramework.options as JUnitPlatformOptions).includeEngines("cross-version-test-engine")
         }
-        if (executer == defaultExecuter) {
-            // The test task with the default executer runs with 'check'
+        if (executor == defaultExecutor) {
+            // The test task with the default executor runs with 'check'
             tasks.named("check").configure { dependsOn(testTask) }
         }
     }
@@ -73,12 +73,12 @@ fun createQuickFeedbackTasks() {
 fun createAggregateTasks(sourceSet: SourceSet) {
     val allVersionsCrossVersionTests = tasks.register("allVersionsCrossVersionTests") {
         group = "verification"
-        description = "Runs the cross-version tests against all Gradle versions with 'forking' executer"
+        description = "Runs the cross-version tests against all Gradle versions with 'forking' executor"
     }
 
     val quickFeedbackCrossVersionTests = tasks.register("quickFeedbackCrossVersionTests") {
         group = "verification"
-        description = "Runs the cross-version tests against a subset of selected Gradle versions with 'forking' executer for quick feedback"
+        description = "Runs the cross-version tests against a subset of selected Gradle versions with 'forking' executor for quick feedback"
     }
 
     val releasedVersions = gradleModule.identity.releasedVersions.orNull

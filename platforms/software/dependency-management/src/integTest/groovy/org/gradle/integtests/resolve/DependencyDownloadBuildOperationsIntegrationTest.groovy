@@ -27,7 +27,7 @@ import org.gradle.internal.resource.ExternalResourceReadMetadataBuildOperationTy
 
 class DependencyDownloadBuildOperationsIntegrationTest extends AbstractHttpDependencyResolutionTest {
 
-    def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+    def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "emits events for dependency resolution downloads - chunked: #chunked"() {
         given:
@@ -79,7 +79,7 @@ class DependencyDownloadBuildOperationsIntegrationTest extends AbstractHttpDepen
         artifactOps[0].details.artifactIdentifier == 'impl-1.3.jar (org.utils:impl:1.3)'
 
         when:
-        executer.withArguments("--refresh-dependencies")
+        executor.withArguments("--refresh-dependencies")
         run "help"
 
         then:
@@ -177,7 +177,7 @@ class DependencyDownloadBuildOperationsIntegrationTest extends AbstractHttpDepen
         artifactOps[0].details.artifactIdentifier == 'impl-1.3.jar (org.utils:impl:1.3)'
 
         when:
-        executer.withArguments("--refresh-dependencies")
+        executor.withArguments("--refresh-dependencies")
         run "help"
 
         then:
@@ -271,7 +271,7 @@ class DependencyDownloadBuildOperationsIntegrationTest extends AbstractHttpDepen
         artifactOps[0].details.artifactIdentifier == 'impl-1.3.jar (org.utils:impl:1.3)'
 
         when:
-        executer.withArguments("--refresh-dependencies")
+        executor.withArguments("--refresh-dependencies")
         run "help"
 
         then:
@@ -347,7 +347,7 @@ class DependencyDownloadBuildOperationsIntegrationTest extends AbstractHttpDepen
         artifactOps[0].details.artifactIdentifier == 'impl-1.3.jar (org.utils:impl:1.3)'
 
         when:
-        executer.withArguments("--refresh-dependencies")
+        executor.withArguments("--refresh-dependencies")
         run "help"
 
         then:

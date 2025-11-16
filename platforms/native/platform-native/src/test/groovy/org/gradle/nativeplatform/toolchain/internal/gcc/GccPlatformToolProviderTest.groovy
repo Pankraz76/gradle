@@ -36,7 +36,7 @@ import spock.lang.Specification
 
 class GccPlatformToolProviderTest extends Specification {
 
-    def buildOperationExecuter = Mock(BuildOperationExecutor)
+    def buildOperationExecutor = Mock(BuildOperationExecutor)
     def operatingSystem = Mock(OperatingSystemInternal)
     def toolSearchPath = Mock(ToolSearchPath)
     def toolRegistry = Mock(ToolRegistry)
@@ -45,7 +45,7 @@ class GccPlatformToolProviderTest extends Specification {
     def workerLeaseService = Mock(WorkerLeaseService)
     def metaDataProvider = Mock(CompilerMetaDataProvider)
     def targetPlatform = Mock(NativePlatformInternal)
-    def platformToolProvider = new GccPlatformToolProvider(buildOperationExecuter, operatingSystem, toolSearchPath, toolRegistry, execActionFactory, namingSchemeFactory, true, workerLeaseService, metaDataProvider)
+    def platformToolProvider = new GccPlatformToolProvider(buildOperationExecutor, operatingSystem, toolSearchPath, toolRegistry, execActionFactory, namingSchemeFactory, true, workerLeaseService, metaDataProvider)
 
     def "arguments #args are passed to metadata provider for #toolType.toolName"() {
         def metaData = Stub(GccMetadata)

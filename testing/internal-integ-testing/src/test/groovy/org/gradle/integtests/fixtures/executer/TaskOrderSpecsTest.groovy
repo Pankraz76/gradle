@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 import spock.lang.Specification
 
-import static org.gradle.integtests.fixtures.executer.TaskOrderSpecs.*
+import static org.gradle.integtests.fixtures.executor.TaskOrderSpecs.*
 
 class TaskOrderSpecsTest extends Specification {
     def "can match order exactly (#executedTasks)"() {

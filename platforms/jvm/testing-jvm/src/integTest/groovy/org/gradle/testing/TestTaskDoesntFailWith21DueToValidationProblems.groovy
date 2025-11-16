@@ -76,7 +76,7 @@ class TestTaskDoesntFailWith21DueToValidationProblems extends AbstractIntegratio
             """.stripIndent()
 
         when:
-        executer.withJvm(AvailableJavaHomes.getJdk21()).withArgument("--configuration-cache")
+        executor.withJvm(AvailableJavaHomes.getJdk21()).withArgument("--configuration-cache")
 
         then:
         succeeds("test")

@@ -31,11 +31,11 @@ import static org.gradle.internal.enterprise.GradleEnterprisePluginConfig.BuildS
 
 class DevelocityPluginConfigIntegrationTest extends AbstractIntegrationSpec {
 
-    def plugin = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecuter())
+    def plugin = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecutor())
 
     def setup() {
         settingsFile << plugin.pluginManagement()
-        plugin.publishDummyPlugin(executer)
+        plugin.publishDummyPlugin(executor)
         buildFile << """
             task t
         """

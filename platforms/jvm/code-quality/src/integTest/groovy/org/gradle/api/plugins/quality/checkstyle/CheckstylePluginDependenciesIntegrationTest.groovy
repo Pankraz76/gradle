@@ -83,6 +83,6 @@ dependencies {
     }
 
     private void defaultLocale(String defaultLocale) {
-        executer.withDefaultLocale(new Locale(defaultLocale))
+        executor.withDefaultLocale(new Locale(defaultLocale))
     }
 }

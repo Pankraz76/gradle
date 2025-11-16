@@ -16,18 +16,18 @@
 
 package org.gradle.internal.enterprise
 
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.plugin.management.internal.autoapply.AutoAppliedDevelocityPlugin
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.fixtures.maven.MavenFileRepository
 
 class DevelocityPluginCheckInFixture extends BaseBuildScanPluginCheckInFixture {
 
-    DevelocityPluginCheckInFixture(TestFile projectDir, MavenFileRepository mavenRepo, GradleExecuter pluginBuildExecuter) {
+    DevelocityPluginCheckInFixture(TestFile projectDir, MavenFileRepository mavenRepo, GradleExecutor pluginBuildExecutor) {
         super(
             projectDir,
             mavenRepo,
-            pluginBuildExecuter,
+            pluginBuildExecutor,
             AutoAppliedDevelocityPlugin.ID.id,
             'com.gradle.develocity.agent.gradle',
             'DevelocityPlugin',

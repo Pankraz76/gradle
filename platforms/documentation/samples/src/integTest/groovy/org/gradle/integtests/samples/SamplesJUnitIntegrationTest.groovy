@@ -33,7 +33,7 @@ class SamplesJUnitIntegrationTest extends AbstractIntegrationTest {
 
     @Before
     void setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     @Test
@@ -41,7 +41,7 @@ class SamplesJUnitIntegrationTest extends AbstractIntegrationTest {
         TestFile projectDir = sample.dir.file("groovy")
 
         // Build and test projects
-        executer.inDirectory(projectDir).withTasks('clean', 'build').run()
+        executor.inDirectory(projectDir).withTasks('clean', 'build').run()
 
         // Check tests have run
         DefaultTestExecutionResult result = new DefaultTestExecutionResult(projectDir)

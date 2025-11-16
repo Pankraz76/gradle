@@ -121,7 +121,7 @@ class WorkerExecutorServicesIntegrationTest extends AbstractWorkerExecutorIntegr
         file("anotherProject/foo").text = "foo2"
 
         when:
-        executer.withWorkerDaemonsExpirationDisabled()
+        executor.withWorkerDaemonsExpirationDisabled()
         succeeds("runInWorker2")
 
         then:

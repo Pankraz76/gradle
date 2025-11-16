@@ -20,11 +20,11 @@ import org.gradle.plugins.ide.AbstractIdeIntegrationSpec
 
 class AbstractEclipseIntegrationSpec extends AbstractIdeIntegrationSpec {
     protected EclipseClasspathFixture getClasspath() {
-        EclipseClasspathFixture.create(testDirectory, executer.gradleUserHomeDir)
+        EclipseClasspathFixture.create(testDirectory, executor.gradleUserHomeDir)
     }
 
     protected EclipseClasspathFixture classpath(String project) {
-        EclipseClasspathFixture.create(testDirectory.file(project), executer.gradleUserHomeDir)
+        EclipseClasspathFixture.create(testDirectory.file(project), executor.gradleUserHomeDir)
     }
 
     protected EclipseWtpComponentFixture getWtpComponent() {

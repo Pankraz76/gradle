@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 import org.gradle.initialization.StartParameterBuildOptions
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 import org.gradle.util.GradleVersion
 
-class IsolatedProjectsGradleExecuter extends DaemonGradleExecuter {
+class IsolatedProjectsGradleExecutor extends DaemonGradleExecutor {
 
     static final List<String> ISOLATED_PROJECTS_ARGS = [
         "-D${StartParameterBuildOptions.IsolatedProjectsOption.PROPERTY_NAME}=true",
@@ -28,7 +28,7 @@ class IsolatedProjectsGradleExecuter extends DaemonGradleExecuter {
         "-Dorg.gradle.configuration-cache.internal.report-output-directory=.gradle/isolated-projects/reports",
     ].collect { it.toString() }
 
-    IsolatedProjectsGradleExecuter(
+    IsolatedProjectsGradleExecutor(
         GradleDistribution distribution,
         TestDirectoryProvider testDirectoryProvider,
         GradleVersion gradleVersion,

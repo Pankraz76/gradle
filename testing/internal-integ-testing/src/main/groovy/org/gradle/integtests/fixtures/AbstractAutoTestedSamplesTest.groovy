@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.fixtures
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 
 class AbstractAutoTestedSamplesTest extends AbstractIntegrationTest {
     // make sure all project directories exist
@@ -35,7 +35,7 @@ class AbstractAutoTestedSamplesTest extends AbstractIntegrationTest {
 
     void runSample(File file, String sample, String tagSuffix, File settingsEvaluatedHook) {
         println "Found sample: ${sample.split("\n")[0]} (...) in $file"
-        if (tagSuffix.contains('WithoutCC') && GradleContextualExecuter.configCache) {
+        if (tagSuffix.contains('WithoutCC') && GradleContextualExecutor.configCache) {
             println 'Skipping sample tagged WithoutCC'
             return
         }
@@ -43,14 +43,14 @@ class AbstractAutoTestedSamplesTest extends AbstractIntegrationTest {
         def settingsFile = testFile('settings.gradle')
         def fileToTest = tagSuffix.contains('Settings') ? settingsFile : buildFile
         if (tagSuffix.contains('WithDeprecations')) {
-            executer.noDeprecationChecks()
+            executor.noDeprecationChecks()
         }
         fileToTest.text = sample
-        executer
+        executor
             .withTasks('help')
             .withArguments("--stacktrace", "--init-script", settingsEvaluatedHook.absolutePath)
         beforeSample(file, tagSuffix)
-        executer.run()
+        executor.run()
         fileToTest.delete()
     }
 

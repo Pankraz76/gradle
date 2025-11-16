@@ -19,7 +19,7 @@ package org.gradle.integtests.fixtures.console
 import org.fusesource.jansi.Ansi
 import org.gradle.api.logging.configuration.ConsoleOutput
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ConsoleAttachment
+import org.gradle.integtests.fixtures.executor.ConsoleAttachment
 
 /**
  * A base class for testing the console.
@@ -29,8 +29,8 @@ abstract class AbstractConsoleGroupedTaskFunctionalTest extends AbstractIntegrat
     static ConsoleAttachment consoleAttachment
 
     def setup() {
-        executer.withTestConsoleAttached(consoleAttachment)
-        executer.beforeExecute {
+        executor.withTestConsoleAttached(consoleAttachment)
+        executor.beforeExecute {
             it.withConsole(consoleType)
         }
     }

@@ -143,8 +143,8 @@ abstract class AbstractGroovyCompileAvoidanceIntegrationSpec extends AbstractJav
 
     def "recompile with change of local ast transformation"() {
         given:
-        executer.beforeExecute {
-            executer.withArgument('--info')
+        executor.beforeExecute {
+            executor.withArgument('--info')
         }
         buildFile << astTransformationDeclaration()
         file("a/src/main/groovy/MyAnnotation.groovy") << astTransformationAnnotation()
@@ -184,8 +184,8 @@ abstract class AbstractGroovyCompileAvoidanceIntegrationSpec extends AbstractJav
 
     def "recompile with change of global ast transformation"() {
         given:
-        executer.beforeExecute {
-            executer.withArgument('--info')
+        executor.beforeExecute {
+            executor.withArgument('--info')
         }
         buildFile << astTransformationDeclaration()
         file("a/src/main/resources/META-INF/services/org.codehaus.groovy.transform.ASTTransformation") << "MyASTTransformation"

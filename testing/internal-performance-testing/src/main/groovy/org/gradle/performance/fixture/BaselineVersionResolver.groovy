@@ -19,7 +19,7 @@ package org.gradle.performance.fixture
 import com.google.common.base.Splitter
 import groovy.transform.CompileStatic
 import groovy.transform.TypeCheckingMode
-import org.gradle.integtests.fixtures.executer.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleDistribution
 import org.gradle.integtests.fixtures.versions.PublishedVersionDeterminer
 import org.gradle.integtests.fixtures.versions.ReleasedVersionDistributions
 import org.gradle.performance.results.ResultsStoreHelper

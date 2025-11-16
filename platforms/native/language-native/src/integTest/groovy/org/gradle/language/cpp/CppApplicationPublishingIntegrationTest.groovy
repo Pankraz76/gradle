@@ -153,7 +153,7 @@ class CppApplicationPublishingIntegrationTest extends AbstractCppPublishingInteg
                 install 'some.group:test:1.2'
             }
         """
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("install")
 
         then:
@@ -235,7 +235,7 @@ class CppApplicationPublishingIntegrationTest extends AbstractCppPublishingInteg
                 install 'some.group:app:1.2'
             }
         """
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("install")
 
         then:
@@ -330,7 +330,7 @@ class CppApplicationPublishingIntegrationTest extends AbstractCppPublishingInteg
                 install 'some.group:app:1.2'
             }
         """
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("install")
 
         then:
@@ -410,7 +410,7 @@ class CppApplicationPublishingIntegrationTest extends AbstractCppPublishingInteg
                 install 'some.group:testApp:1.2'
             }
         """
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("install")
 
         then:
@@ -458,7 +458,7 @@ class CppApplicationPublishingIntegrationTest extends AbstractCppPublishingInteg
                 install 'some.group:test:1.2'
             }
         """
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("install")
 
         then:
@@ -508,7 +508,7 @@ class CppApplicationPublishingIntegrationTest extends AbstractCppPublishingInteg
                 install 'some.group:test:1.2'
             }
         """
-        executer.inDirectory(consumer)
+        executor.inDirectory(consumer)
         run("install")
 
         then:

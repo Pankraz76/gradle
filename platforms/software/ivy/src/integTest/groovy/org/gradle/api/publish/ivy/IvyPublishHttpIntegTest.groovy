@@ -20,7 +20,7 @@ import org.eclipse.jetty.http.HttpStatus
 import org.gradle.api.artifacts.repositories.PasswordCredentials
 import org.gradle.api.credentials.Credentials
 import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.parser.MetaDataParser
-import org.gradle.integtests.fixtures.executer.ProgressLoggingFixture
+import org.gradle.integtests.fixtures.executor.ProgressLoggingFixture
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.fixtures.ivy.IvyFileRepository
 import org.gradle.test.fixtures.server.http.AuthScheme
@@ -40,7 +40,7 @@ class IvyPublishHttpIntegTest extends AbstractIvyPublishIntegTest {
     private static final int HTTP_UNRECOVERABLE_ERROR = 415
     private static final Credentials BAD_CREDENTIALS = TestCredentialUtil.defaultPasswordCredentials('testuser', 'bad')
     @Rule
-    ProgressLoggingFixture progressLogging = new ProgressLoggingFixture(executer, temporaryFolder)
+    ProgressLoggingFixture progressLogging = new ProgressLoggingFixture(executor, temporaryFolder)
     @Rule
     HttpServer server = new HttpServer()
 
@@ -65,7 +65,7 @@ class IvyPublishHttpIntegTest extends AbstractIvyPublishIntegTest {
         buildFile << publicationBuildWithoutCredentials(version, group, ivyHttpRepo.uri)
 
         if (!extraChecksums) {
-            executer.withArgument("-Dorg.gradle.internal.publish.checksums.insecure=true")
+            executor.withArgument("-Dorg.gradle.internal.publish.checksums.insecure=true")
             module.withoutExtraChecksums()
         }
 
@@ -532,7 +532,7 @@ class IvyPublishHttpIntegTest extends AbstractIvyPublishIntegTest {
         expectPublishModuleWithCredentials(module, credentials)
 
         when:
-        executer.withArguments("-PivyUsername=${credentials.username}", "-PivyPassword=${credentials.password}")
+        executor.withArguments("-PivyUsername=${credentials.username}", "-PivyPassword=${credentials.password}")
         succeeds 'publish'
 
         then:

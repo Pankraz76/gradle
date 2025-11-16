@@ -25,21 +25,21 @@ trait FileSystemWatchingFixture {
     @Before
     void setupFirstBuild() {
         // Make the first build in each test drop the VFS state
-        executer.withArgument(FileSystemWatchingHelper.dropVfsArgument)
+        executor.withArgument(FileSystemWatchingHelper.dropVfsArgument)
     }
 
     AbstractIntegrationSpec withWatchFs() {
-        executer.withArgument(FileSystemWatchingHelper.enableFsWatchingArgument)
+        executor.withArgument(FileSystemWatchingHelper.enableFsWatchingArgument)
         this as AbstractIntegrationSpec
     }
 
     AbstractIntegrationSpec withoutWatchFs() {
-        executer.withArgument(FileSystemWatchingHelper.disableFsWatchingArgument)
+        executor.withArgument(FileSystemWatchingHelper.disableFsWatchingArgument)
         this as AbstractIntegrationSpec
     }
 
     VerboseVfsLogAccessor enableVerboseVfsLogs() {
-        executer.withArgument(FileSystemWatchingHelper.verboseVfsLoggingArgument)
+        executor.withArgument(FileSystemWatchingHelper.verboseVfsLoggingArgument)
         new VerboseVfsLogAccessor(this as AbstractIntegrationSpec)
     }
 

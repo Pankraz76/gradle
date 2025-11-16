@@ -33,9 +33,9 @@ abstract class AbstractIncrementalAnnotationProcessingIntegrationTest extends Ab
     protected TestFile processorProjectDir
 
     def setup() {
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
 
-        operations = new CompileJavaBuildOperationsFixture(executer, testDirectoryProvider)
+        operations = new CompileJavaBuildOperationsFixture(executor, testDirectoryProvider)
         outputs = new CompilationOutputsFixture(file("build/classes"))
 
         annotationProjectDir = testDirectory.file("annotation").createDir()

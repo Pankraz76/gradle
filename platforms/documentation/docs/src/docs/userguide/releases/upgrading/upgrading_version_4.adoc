@@ -156,7 +156,7 @@ Tasks & properties::
  * The `Task.dependsOnTaskDidWork()` method has been removed — use <<incremental_build.adoc#incremental_build,declared inputs and outputs>> instead.
  * The following properties and methods of `TaskInternal` have been removed — use task dependencies, task rules, reusable utility methods, or the <<worker_api.adoc#worker_api,Worker API>> in place of executing a task directly.
  ** `execute()`
- ** `executer`
+ ** `executor`
  ** `getValidators()`
  ** `addValidator()`
  * The link:{javadocPath}/org/gradle/api/tasks/TaskInputs.html#file-java.lang.Object-[TaskInputs.file(Object)] method can no longer be called with an argument that resolves to anything other than a single regular file.

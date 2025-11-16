@@ -28,7 +28,7 @@ abstract class AbstractJUnitConsoleLoggingIntegrationTest extends AbstractTestin
     TestFile testFile = file('src/test/java/org/gradle/SomeTest.java')
 
     def setup() {
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         testFile << """
             package org.gradle;
 
@@ -98,7 +98,7 @@ abstract class AbstractJUnitConsoleLoggingIntegrationTest extends AbstractTestin
 
     def "custom quiet logging"() {
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         args("-q")
         fails("test")
 
@@ -159,7 +159,7 @@ abstract class AbstractJUnitConsoleLoggingIntegrationTest extends AbstractTestin
         """
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         args("-q")
         fails("test")
 

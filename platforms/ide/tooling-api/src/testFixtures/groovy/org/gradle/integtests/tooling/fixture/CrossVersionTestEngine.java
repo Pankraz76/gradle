@@ -17,7 +17,7 @@
 package org.gradle.integtests.tooling.fixture;
 
 import org.gradle.integtests.fixtures.compatibility.CoverageContext;
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext;
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext;
 import org.gradle.integtests.fixtures.versions.ReleasedVersionDistributions;
 import org.gradle.internal.Cast;
 import org.gradle.internal.Factory;

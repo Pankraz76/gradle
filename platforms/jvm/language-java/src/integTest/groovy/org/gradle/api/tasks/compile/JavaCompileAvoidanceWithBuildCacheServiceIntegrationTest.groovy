@@ -118,8 +118,8 @@ class JavaCompileAvoidanceWithBuildCacheServiceIntegrationTest extends AbstractI
         FileUtils.copyDirectory(file("a"), aRelocated)
 
         when:
-        def firstOperations = new BuildCacheOperationFixtures(new BuildOperationsFixture(executer, testDirectoryProvider, "first-operations"))
-        result = executer
+        def firstOperations = new BuildCacheOperationFixtures(new BuildOperationsFixture(executor, testDirectoryProvider, "first-operations"))
+        result = executor
             .withGradleUserHomeDir(testDirectoryProvider.getTestDirectory().file("first-user-home"))
             .inDirectory(file("a"))
             .withArgument("--init-script")
@@ -132,8 +132,8 @@ class JavaCompileAvoidanceWithBuildCacheServiceIntegrationTest extends AbstractI
         executedAndNotSkipped ':compileJava'
 
         when:
-        def secondOperations = new BuildCacheOperationFixtures(new BuildOperationsFixture(executer, testDirectoryProvider, "second-operations"))
-        result = executer
+        def secondOperations = new BuildCacheOperationFixtures(new BuildOperationsFixture(executor, testDirectoryProvider, "second-operations"))
+        result = executor
             .withGradleUserHomeDir(testDirectoryProvider.getTestDirectory().file("second-user-home"))
             .inDirectory(aRelocated)
             .withBuildCacheEnabled()
@@ -230,7 +230,7 @@ class JavaCompileAvoidanceWithBuildCacheServiceIntegrationTest extends AbstractI
         repo.module("com.example", "kotlin-library", "1.0.0").allowAll()
         server.start()
 
-        executer
+        executor
             .inDirectory(file("kotlin-library"))
             .withTasks("publish")
             .run()

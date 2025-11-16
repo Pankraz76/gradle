@@ -43,11 +43,11 @@ class CrossBuildScriptCachingIntegrationSpec extends AbstractIntegrationSpec {
     File remappedCachesDir
     @Rule
     BlockingHttpServer server = new BlockingHttpServer()
-    def buildOperations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def buildOperations = new BuildOperationsFixture(executor, testDirectoryProvider)
     private TestFile homeDirectory = testDirectoryProvider.getTestDirectory().file("user-home")
 
     def setup() {
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         root = new FileTreeBuilder(testDirectory)
         cachesDir = new File(homeDirectory, 'caches')
         def versionCaches = new File(cachesDir, GradleVersion.current().version)
@@ -96,9 +96,9 @@ class CrossBuildScriptCachingIntegrationSpec extends AbstractIntegrationSpec {
         }
 
         when:
-        executer.withGradleUserHomeDir(homeDirectory)
-        executer.requireDaemon()
-        executer.requireIsolatedDaemons()
+        executor.withGradleUserHomeDir(homeDirectory)
+        executor.requireDaemon()
+        executor.requireIsolatedDaemons()
         run 'help'
 
         then:
@@ -338,7 +338,7 @@ class CrossBuildScriptCachingIntegrationSpec extends AbstractIntegrationSpec {
         def handle = server.expectAndBlock("running")
 
         when:
-        def longRunning = executer.withTasks("someLongRunningTask").start()
+        def longRunning = executor.withTasks("someLongRunningTask").start()
         handle.waitForAllPendingCalls()
 
         then:
@@ -354,8 +354,8 @@ class CrossBuildScriptCachingIntegrationSpec extends AbstractIntegrationSpec {
             tasks.register("fastTask") {}
         """
         // Don't write to the same file as the first process, as that blocks execution on Windows
-        def fastBuildOperations = new BuildOperationsFixture(executer, testDirectoryProvider, "operations-2")
-        def fast = executer.withTasks("fastTask").run()
+        def fastBuildOperations = new BuildOperationsFixture(executor, testDirectoryProvider, "operations-2")
+        def fast = executor.withTasks("fastTask").run()
 
         assert longRunning.isRunning()
         handle.releaseAll()
@@ -444,7 +444,7 @@ class CrossBuildScriptCachingIntegrationSpec extends AbstractIntegrationSpec {
         }
 
         when:
-        executer.withArgument('-Igradle/init.gradle')
+        executor.withArgument('-Igradle/init.gradle')
         run 'help'
 
         then:
@@ -474,7 +474,7 @@ class CrossBuildScriptCachingIntegrationSpec extends AbstractIntegrationSpec {
         }
 
         when:
-        executer.withArgument('-Iinit.gradle')
+        executor.withArgument('-Iinit.gradle')
         run 'help'
 
         then:
@@ -502,7 +502,7 @@ class CrossBuildScriptCachingIntegrationSpec extends AbstractIntegrationSpec {
         }
 
         when:
-        executer.withArgument('-Iinit.gradle')
+        executor.withArgument('-Iinit.gradle')
         run 'help'
 
         then:
@@ -633,9 +633,9 @@ class CrossBuildScriptCachingIntegrationSpec extends AbstractIntegrationSpec {
                 }
             '''))
         }
-        executer.requireIsolatedDaemons()
-        executer.requireDaemon()
-        executer.withGradleUserHomeDir(homeDirectory)
+        executor.requireIsolatedDaemons()
+        executor.requireDaemon()
+        executor.withGradleUserHomeDir(homeDirectory)
 
         when:
         succeeds 'success'
@@ -663,7 +663,7 @@ class CrossBuildScriptCachingIntegrationSpec extends AbstractIntegrationSpec {
     }
 
     DaemonsFixture getDaemons() {
-        new DaemonLogsAnalyzer(executer.daemonBaseDir)
+        new DaemonLogsAnalyzer(executor.daemonBaseDir)
     }
 
     void hasScript(String path, List<ClassDetails> scripts) {

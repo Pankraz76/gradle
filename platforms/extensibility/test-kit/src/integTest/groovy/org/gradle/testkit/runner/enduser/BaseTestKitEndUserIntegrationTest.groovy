@@ -29,7 +29,7 @@ abstract class BaseTestKitEndUserIntegrationTest extends BaseGradleRunnerIntegra
 
     def setup() {
         requireIsolatedTestKitDir = true
-        executer.beforeExecute {
+        executor.beforeExecute {
             usingInitScript(file("tempDirInit.gradle") << """
                 allprojects {
                     tasks.withType(Test) {

@@ -35,15 +35,15 @@ class PostPluginResolutionFailuresIntegrationSpec extends AbstractIntegrationSpe
     def pluginBuilder = new PluginBuilder(file("plugin"))
 
     @Rule
-    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     def setup() {
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
     }
 
     def "error loading plugin"() {
         pluginBuilder.addUnloadablePlugin(PLUGIN_ID)
-        pluginBuilder.publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executer).allowAll()
+        pluginBuilder.publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executor).allowAll()
 
         buildFile applyPlugin()
 
@@ -56,7 +56,7 @@ class PostPluginResolutionFailuresIntegrationSpec extends AbstractIntegrationSpe
 
     def "error creating plugin"() {
         pluginBuilder.addNonConstructiblePlugin(PLUGIN_ID)
-        pluginBuilder.publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executer).allowAll()
+        pluginBuilder.publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executor).allowAll()
 
         buildFile applyPlugin()
 
@@ -70,7 +70,7 @@ class PostPluginResolutionFailuresIntegrationSpec extends AbstractIntegrationSpe
 
     def "error applying plugin"() {
         pluginBuilder.addPlugin("throw new Exception('throwing plugin')", PLUGIN_ID)
-        pluginBuilder.publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executer).allowAll()
+        pluginBuilder.publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executor).allowAll()
 
         buildFile applyPlugin()
 

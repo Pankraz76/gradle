@@ -46,7 +46,7 @@ allprojects { p ->
       }
 }
 """
-        executer.beforeExecute({
+        executor.beforeExecute({
             usingInitScript(initScript)
         })
 

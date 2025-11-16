@@ -21,7 +21,7 @@ import org.gradle.api.internal.catalog.problems.VersionCatalogProblemId
 import org.gradle.api.internal.catalog.problems.VersionCatalogProblemTestFor
 import org.gradle.api.problems.FileLocation
 import org.gradle.integtests.fixtures.configurationcache.ConfigurationCacheFixture
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.integtests.fixtures.resolve.ResolveTestFixture
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.fixtures.server.http.MavenHttpPluginRepository
@@ -38,7 +38,7 @@ class TomlDependenciesExtensionIntegrationTest extends AbstractVersionCatalogInt
     }
 
     @Rule
-    final MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    final MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     TestFile tomlFile = testDirectory.file("gradle/libs.versions.toml")
 
@@ -834,8 +834,8 @@ key2=
         return "In file '${tomlFile.absolutePath}' at line $line, column $column: Unexpected end of line, expected ', \", ''', \"\"\", a number, a boolean, a date/time, an array, or a table"
     }
 
-    private GradleExecuter withConfigurationCache() {
-        executer.withArgument("--configuration-cache")
+    private GradleExecutor withConfigurationCache() {
+        executor.withArgument("--configuration-cache")
     }
 
     @Issue("https://github.com/gradle/gradle/issues/20383")
@@ -938,7 +938,7 @@ dependencyResolutionManagement {
 """
 
         when:
-        executer.withStacktraceEnabled()
+        executor.withStacktraceEnabled()
         fails 'help'
 
         then:

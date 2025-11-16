@@ -149,7 +149,7 @@ class AttributeContainerIntegrationTest extends AbstractIntegrationSpec {
         """
 
         expect:
-        executer.expectDocumentedDeprecationWarning("Declaring a Usage attribute with a legacy value has been deprecated. This will fail with an error in Gradle 10. A Usage attribute was declared with value '${legacyUsage}'. Declare a Usage attribute with value '${replacedUsage}' and a LibraryElements attribute with value '${replacedLibraryElements}' instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#deprecate_legacy_usage_values")
+        executor.expectDocumentedDeprecationWarning("Declaring a Usage attribute with a legacy value has been deprecated. This will fail with an error in Gradle 10. A Usage attribute was declared with value '${legacyUsage}'. Declare a Usage attribute with value '${replacedUsage}' and a LibraryElements attribute with value '${replacedLibraryElements}' instead. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#deprecate_legacy_usage_values")
         succeeds("help")
 
         where:

@@ -32,7 +32,7 @@ import static org.gradle.api.tasks.compile.JavaAnnotationProcessingIntegrationTe
 class JavaAnnotationProcessingIntegrationTest extends AbstractIntegrationSpec {
 
     def fixture = new HelperProcessorFixture()
-    def operations = new CompileJavaBuildOperationsFixture(executer, testDirectoryProvider)
+    def operations = new CompileJavaBuildOperationsFixture(executor, testDirectoryProvider)
 
     def annotationProjectDir = file("annotation")
     def processorProjectDir = file("processor")

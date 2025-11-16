@@ -21,7 +21,7 @@ import org.gradle.integtests.fixtures.TestNGExecutionResult
 
 class TestNGProducesOldReportsIntegrationTest extends AbstractIntegrationSpec {
     def setup() {
-        executer.noExtraLogging()
+        executor.noExtraLogging()
     }
 
     def "always produces the new xml reports"() {
@@ -51,7 +51,7 @@ test {
 }
 """
         when:
-        executer.withTasks('test').runWithFailure().assertTestsFailed()
+        executor.withTasks('test').runWithFailure().assertTestsFailed()
 
         then:
         !new TestNGExecutionResult(file(".")).hasTestNGXmlResults()
@@ -82,7 +82,7 @@ test {
 }
 """
         when:
-        executer.withTasks('test').run()
+        executor.withTasks('test').run()
 
         then:
         new JUnitXmlTestExecutionResult(file(".")).hasJUnitXmlResults()

@@ -17,7 +17,7 @@
 package org.gradle.integtests.fixtures.console
 
 
-import org.gradle.integtests.fixtures.executer.ConsoleAttachment
+import org.gradle.integtests.fixtures.executor.ConsoleAttachment
 import org.gradle.integtests.fixtures.extensions.AbstractMultiTestInterceptor
 import org.gradle.integtests.fixtures.extensions.AbstractMultiTestInterceptor.Execution
 import org.spockframework.runtime.extension.IMethodInvocation

@@ -177,7 +177,7 @@ abstract class AbstractTestTaskIntegrationTest extends AbstractTestingMultiVersi
         """.stripIndent()
 
         when:
-        executer.withArguments("--max-workers=${maxWorkers}", "-i")
+        executor.withArguments("--max-workers=${maxWorkers}", "-i")
         succeeds 'test'
 
         then:
@@ -283,7 +283,7 @@ abstract class AbstractTestTaskIntegrationTest extends AbstractTestingMultiVersi
         succeeds("help")
     }
 
-    def "reports failure of TestExecuter regardless of filters"() {
+    def "reports failure of TestExecutor regardless of filters"() {
         given:
         file('src/test/java/MyTest.java') << standaloneTestClass
         buildFile << """
@@ -291,7 +291,7 @@ abstract class AbstractTestTaskIntegrationTest extends AbstractTestingMultiVersi
 
             test {
                 doFirst {
-                    testExecuter = new TestExecuter<JvmTestExecutionSpec>() {
+                    testExecutor = new TestExecutor<JvmTestExecutionSpec>() {
                         @Override
                         void execute(JvmTestExecutionSpec testExecutionSpec, TestResultProcessor resultProcessor) {
                             DefaultTestSuiteDescriptor suite = new DefaultTestSuiteDescriptor(testExecutionSpec.path, testExecutionSpec.path)

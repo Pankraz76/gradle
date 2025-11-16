@@ -23,7 +23,7 @@ import static org.gradle.initialization.StartParameterBuildOptions.BuildScanOpti
 
 class BuildScanAutoApplyKotlinIntegrationTest extends KotlinScriptIntegrationTest {
 
-    private final DevelocityPluginCheckInFixture fixture = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecuter())
+    private final DevelocityPluginCheckInFixture fixture = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecutor())
 
     def "can automatically apply plugin when --scan is provided on command-line"() {
         given:
@@ -43,7 +43,7 @@ class BuildScanAutoApplyKotlinIntegrationTest extends KotlinScriptIntegrationTes
             }
         """
 
-        fixture.publishDummyPlugin(executer)
+        fixture.publishDummyPlugin(executor)
 
         when:
         args("--${BuildScanOption.LONG_OPTION}", "-I", initScript.absolutePath)

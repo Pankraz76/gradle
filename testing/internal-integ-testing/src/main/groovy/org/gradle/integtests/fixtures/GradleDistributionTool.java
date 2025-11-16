@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.fixtures;
 
-import org.gradle.integtests.fixtures.executer.GradleDistribution;
+import org.gradle.integtests.fixtures.executor.GradleDistribution;
 import org.gradle.util.GradleVersion;
 
 import java.util.Objects;

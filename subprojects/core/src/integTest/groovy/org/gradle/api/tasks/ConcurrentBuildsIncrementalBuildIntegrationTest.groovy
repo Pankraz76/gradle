@@ -118,14 +118,14 @@ task block2 {
 
         when:
         // Start build 1 then wait until it has run task 'a'. Should see 'a' is up-to-date
-        executer.withTasks("block1")
-        def build1 = executer.start()
+        executor.withTasks("block1")
+        def build1 = executor.start()
         block1.waitForAllPendingCalls()
 
         // Change content and start build 2 then wait until it has run task 'a'. Should see 'a' is not up-to-date
         inputFile.text = 'new content'
-        executer.withTasks("block2")
-        def build2 = executer.start()
+        executor.withTasks("block2")
+        def build2 = executor.start()
         block2.waitForAllPendingCalls()
 
         // Finish up build 1
@@ -133,7 +133,7 @@ task block2 {
         def result1 = build1.waitForFinish()
 
         // Run build 3 before build 2 has completed. This happens after build 2 has run 'a'. Should see 'a' is up-to-date
-        def result3 = executer.withTasks("a").run()
+        def result3 = executor.withTasks("a").run()
 
         // Finish up build 2
         block2.releaseAll()
@@ -183,13 +183,13 @@ block2.mustRunAfter b
 
         when:
         // Start build 1 then wait until it has run task 'a'.
-        executer.withTasks("a", "block1", "b")
-        def build1 = executer.start()
+        executor.withTasks("a", "block1", "b")
+        def build1 = executor.start()
         block1.waitForAllPendingCalls()
 
         // Start build 2 then wait until it has run both 'a' and 'b'.
-        executer.withTasks("a", "b", "block2")
-        def build2 = executer.start()
+        executor.withTasks("a", "b", "block2")
+        def build2 = executor.start()
         block2.waitForAllPendingCalls()
 
         // Finish up build 1 and 2

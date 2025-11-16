@@ -16,7 +16,7 @@
 
 package org.gradle.kotlin.dsl.caching.fixtures
 
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 
 import org.gradle.kotlin.dsl.execution.ProgramKind.ScriptPlugin
 import org.gradle.kotlin.dsl.execution.ProgramKind.TopLevel

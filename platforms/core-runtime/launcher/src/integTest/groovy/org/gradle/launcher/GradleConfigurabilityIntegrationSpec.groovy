@@ -28,7 +28,7 @@ class GradleConfigurabilityIntegrationSpec extends AbstractIntegrationSpec {
 
     def buildSucceeds(String script) {
         file('build.gradle') << script
-        executer.withArguments("--info").useOnlyRequestedJvmOpts().run()
+        executor.withArguments("--info").useOnlyRequestedJvmOpts().run()
     }
 
     def "honours jvm args specified in gradle.properties"() {

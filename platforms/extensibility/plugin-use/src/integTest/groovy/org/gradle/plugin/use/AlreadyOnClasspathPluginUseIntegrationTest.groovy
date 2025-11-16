@@ -23,7 +23,7 @@ import org.gradle.util.internal.TextUtil
 
 class AlreadyOnClasspathPluginUseIntegrationTest extends AbstractIntegrationSpec {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def setup() {
         withSettings("")
@@ -478,7 +478,7 @@ class AlreadyOnClasspathPluginUseIntegrationTest extends AbstractIntegrationSpec
                         //when:
                         def runner = GradleRunner.create()
                             .withGradleInstallation(new File("${TextUtil.normaliseFileSeparators(distribution.gradleHomeDir.absolutePath)}"))
-                            .withTestKitDir(new File("${TextUtil.normaliseFileSeparators(executer.gradleUserHomeDir.absolutePath)}"))
+                            .withTestKitDir(new File("${TextUtil.normaliseFileSeparators(executor.gradleUserHomeDir.absolutePath)}"))
                             .withPluginClasspath()
                             .withProjectDir(rootDir)
                             .withArguments("help")
@@ -517,7 +517,7 @@ class AlreadyOnClasspathPluginUseIntegrationTest extends AbstractIntegrationSpec
             publishing { repositories { maven { url = uri("../$localPluginRepoPath") } } }
         """.stripIndent()
 
-        executer.inDirectory(file(pluginBundleName)).withTasks("publish").run()
+        executor.inDirectory(file(pluginBundleName)).withTasks("publish").run()
 
         file("$localPluginRepoPath/com/acme/$pluginBundleName/$version/$pluginBundleName-${version}.jar").assertExists()
         file("$localPluginRepoPath/my-plugin/my-plugin.gradle.plugin/$version/my-plugin.gradle.plugin-${version}.pom").assertExists()

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
@@ -91,15 +91,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.stream.Collectors.joining;
 import static org.gradle.api.internal.artifacts.BaseRepositoryFactory.PLUGIN_PORTAL_OVERRIDE_URL_PROPERTY;
 import static org.gradle.integtests.fixtures.RepoScriptBlockUtil.gradlePluginRepositoryMirrorUrl;
-import static org.gradle.integtests.fixtures.executer.AbstractGradleExecuter.CliDaemonArgument.DAEMON;
-import static org.gradle.integtests.fixtures.executer.AbstractGradleExecuter.CliDaemonArgument.FOREGROUND;
-import static org.gradle.integtests.fixtures.executer.AbstractGradleExecuter.CliDaemonArgument.NOT_DEFINED;
-import static org.gradle.integtests.fixtures.executer.AbstractGradleExecuter.CliDaemonArgument.NO_DAEMON;
+import static org.gradle.integtests.fixtures.executor.AbstractGradleExecutor.CliDaemonArgument.DAEMON;
+import static org.gradle.integtests.fixtures.executor.AbstractGradleExecutor.CliDaemonArgument.FOREGROUND;
+import static org.gradle.integtests.fixtures.executor.AbstractGradleExecutor.CliDaemonArgument.NOT_DEFINED;
+import static org.gradle.integtests.fixtures.executor.AbstractGradleExecutor.CliDaemonArgument.NO_DAEMON;
 import static org.gradle.internal.service.scopes.DefaultGradleUserHomeScopeServiceRegistry.REUSE_USER_HOME_SERVICES;
 import static org.gradle.util.internal.CollectionUtils.join;
 import static org.gradle.util.internal.DefaultGradleVersion.VERSION_OVERRIDE_VAR;
 
-public abstract class AbstractGradleExecuter implements GradleExecuter, ResettableExpectations {
+public abstract class AbstractGradleExecutor implements GradleExecutor, ResettableExpectations {
     private static final String DEBUG_SYSPROP = "org.gradle.integtest.debug";
     private static final String LAUNCHER_DEBUG_SYSPROP = "org.gradle.integtest.launcher.debug";
     public static final int LAUNCHER_DEBUG_PORT = 5006;
@@ -125,7 +125,7 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     protected final static Set<String> PROPAGATED_SYSTEM_PROPERTIES = new HashSet<>();
     protected boolean debugMode = false;
 
-    // TODO - don't use statics to communicate between the test runner and executer
+    // TODO - don't use statics to communicate between the test runner and executor
     public static void propagateSystemProperty(String name) {
         PROPAGATED_SYSTEM_PROPERTIES.add(name);
     }
@@ -183,8 +183,8 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     private boolean stackTraceChecksOn = true;
     private boolean jdkWarningChecksOn = false;
 
-    private final MutableActionSet<GradleExecuter> beforeExecute = new MutableActionSet<>();
-    private ImmutableActionSet<GradleExecuter> afterExecute = ImmutableActionSet.empty();
+    private final MutableActionSet<GradleExecutor> beforeExecute = new MutableActionSet<>();
+    private ImmutableActionSet<GradleExecutor> afterExecute = ImmutableActionSet.empty();
 
     protected final GradleVersion gradleVersion;
     protected final TestDirectoryProvider testDirectoryProvider;
@@ -209,15 +209,15 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     private TestFile tmpDir;
     private DurationMeasurement durationMeasurement;
 
-    protected AbstractGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider) {
+    protected AbstractGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider) {
         this(distribution, testDirectoryProvider, distribution.getVersion(), IntegrationTestBuildContext.INSTANCE);
     }
 
-    protected AbstractGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, IntegrationTestBuildContext buildContext) {
+    protected AbstractGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, IntegrationTestBuildContext buildContext) {
         this(distribution, testDirectoryProvider, distribution.getVersion(), buildContext);
     }
 
-    protected AbstractGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, GradleVersion gradleVersion, IntegrationTestBuildContext buildContext) {
+    protected AbstractGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, GradleVersion gradleVersion, IntegrationTestBuildContext buildContext) {
         this.distribution = distribution;
         this.testDirectoryProvider = testDirectoryProvider;
         this.gradleVersion = gradleVersion;
@@ -243,7 +243,7 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter reset() {
+    public GradleExecutor reset() {
         args.clear();
         tasks.clear();
         initScripts.clear();
@@ -301,27 +301,27 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public void beforeExecute(Action<? super GradleExecuter> action) {
+    public void beforeExecute(Action<? super GradleExecutor> action) {
         beforeExecute.add(action);
     }
 
     @Override
-    public void beforeExecute(@DelegatesTo(GradleExecuter.class) Closure action) {
+    public void beforeExecute(@DelegatesTo(GradleExecutor.class) Closure action) {
         beforeExecute.add(new ClosureBackedAction<>(action));
     }
 
     @Override
-    public void afterExecute(Action<? super GradleExecuter> action) {
+    public void afterExecute(Action<? super GradleExecutor> action) {
         afterExecute = afterExecute.add(action);
     }
 
     @Override
-    public void afterExecute(@DelegatesTo(GradleExecuter.class) Closure action) {
+    public void afterExecute(@DelegatesTo(GradleExecutor.class) Closure action) {
         afterExecute(new ClosureBackedAction<>(action));
     }
 
     @Override
-    public GradleExecuter inDirectory(File directory) {
+    public GradleExecutor inDirectory(File directory) {
         workingDir = directory;
         return this;
     }
@@ -331,160 +331,160 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter copyTo(GradleExecuter executer) {
-        executer.withGradleUserHomeDir(gradleUserHomeDir);
-        executer.withDaemonIdleTimeoutSecs(daemonIdleTimeoutSecs);
-        executer.withDaemonBaseDir(daemonBaseDir);
+    public GradleExecutor copyTo(GradleExecutor executor) {
+        executor.withGradleUserHomeDir(gradleUserHomeDir);
+        executor.withDaemonIdleTimeoutSecs(daemonIdleTimeoutSecs);
+        executor.withDaemonBaseDir(daemonBaseDir);
 
         if (workingDir != null) {
-            executer.inDirectory(workingDir);
+            executor.inDirectory(workingDir);
         }
         if (projectDir != null) {
-            executer.usingProjectDirectory(projectDir);
+            executor.usingProjectDirectory(projectDir);
         }
         if (ignoreMissingSettingsFile) {
-            executer.ignoreMissingSettingsFile();
+            executor.ignoreMissingSettingsFile();
         }
         if (ignoreCleanupAssertions) {
-            executer.ignoreCleanupAssertions();
+            executor.ignoreCleanupAssertions();
         }
         if (javaHome != null) {
-            executer.withJavaHome(javaHome);
+            executor.withJavaHome(javaHome);
         }
         if (jvm != null) {
-            executer.withJvm(jvm);
+            executor.withJvm(jvm);
         }
         for (File initScript : initScripts) {
-            executer.usingInitScript(initScript);
+            executor.usingInitScript(initScript);
         }
-        executer.withTasks(tasks);
-        executer.withArguments(args);
-        executer.withEnvironmentVarsIncludingJavaHome(environmentVars);
-        executer.usingExecutable(executable);
+        executor.withTasks(tasks);
+        executor.withArguments(args);
+        executor.withEnvironmentVarsIncludingJavaHome(environmentVars);
+        executor.usingExecutable(executable);
         if (quiet) {
-            executer.withQuietLogging();
+            executor.withQuietLogging();
         }
         if (taskList) {
-            executer.withTaskList();
+            executor.withTaskList();
         }
         if (dependencyList) {
-            executer.withDependencyList();
+            executor.withDependencyList();
         }
 
         if (userHomeDir != null) {
-            executer.withUserHomeDir(userHomeDir);
+            executor.withUserHomeDir(userHomeDir);
         }
 
         if (stdinPipe != null) {
-            executer.withStdinPipe(stdinPipe);
+            executor.withStdinPipe(stdinPipe);
         }
 
         if (defaultCharacterEncoding != null) {
-            executer.withDefaultCharacterEncoding(defaultCharacterEncoding);
+            executor.withDefaultCharacterEncoding(defaultCharacterEncoding);
         }
         if (noExplicitNativeServicesDir) {
-            executer.withNoExplicitNativeServicesDir();
+            executor.withNoExplicitNativeServicesDir();
         }
         if (fullDeprecationStackTrace) {
-            executer.withFullDeprecationStackTraceEnabled();
+            executor.withFullDeprecationStackTraceEnabled();
         }
         if (!useInternalDeprecationStackTraceFlag) {
-            executer.withoutInternalDeprecationStackTraceFlag();
+            executor.withoutInternalDeprecationStackTraceFlag();
         }
         if (defaultLocale != null) {
-            executer.withDefaultLocale(defaultLocale);
+            executor.withDefaultLocale(defaultLocale);
         }
-        executer.withCommandLineGradleOpts(commandLineJvmOpts);
-        executer.withBuildJvmOpts(buildJvmOpts);
+        executor.withCommandLineGradleOpts(commandLineJvmOpts);
+        executor.withBuildJvmOpts(buildJvmOpts);
         if (useOnlyRequestedJvmOpts) {
-            executer.useOnlyRequestedJvmOpts();
+            executor.useOnlyRequestedJvmOpts();
         }
-        executer.noExtraLogging();
+        executor.noExtraLogging();
 
-        expectedDeprecationWarnings.forEach(executer::expectDeprecationWarning);
+        expectedDeprecationWarnings.forEach(executor::expectDeprecationWarning);
         if (!eagerClassLoaderCreationChecksOn) {
-            executer.withEagerClassLoaderCreationCheckDisabled();
+            executor.withEagerClassLoaderCreationCheckDisabled();
         }
         if (!stackTraceChecksOn) {
-            executer.withStackTraceChecksDisabled();
+            executor.withStackTraceChecksDisabled();
         }
         if (jdkWarningChecksOn) {
-            executer.withJdkWarningChecksEnabled();
+            executor.withJdkWarningChecksEnabled();
         }
         if (useOwnUserHomeServices) {
-            executer.withOwnUserHomeServices();
+            executor.withOwnUserHomeServices();
         }
         if (requireDaemon) {
-            executer.requireDaemon();
+            executor.requireDaemon();
         }
         if (!checkDaemonCrash) {
-            executer.noDaemonCrashChecks();
+            executor.noDaemonCrashChecks();
         }
         if (gradleVersionOverride != null) {
-            executer.withGradleVersionOverride(gradleVersionOverride);
+            executor.withGradleVersionOverride(gradleVersionOverride);
         }
 
         if (isDebug()) {
-            executer.startBuildProcessInDebugger(opts -> debug.copyTo(opts));
+            executor.startBuildProcessInDebugger(opts -> debug.copyTo(opts));
         }
         if (isDebugLauncher()) {
-            executer.startLauncherInDebugger(opts -> debugLauncher.copyTo(opts));
+            executor.startLauncherInDebugger(opts -> debugLauncher.copyTo(opts));
         }
 
-        executer
+        executor
             .withProfiler(profiler)
             .withForceInteractive(interactive);
 
         if (!checkDeprecations) {
-            executer.noDeprecationChecks();
+            executor.noDeprecationChecks();
         }
 
         if (!filterJavaVersionDeprecation) {
-            executer.disableDaemonJavaVersionDeprecationFiltering();
+            executor.disableDaemonJavaVersionDeprecationFiltering();
         }
 
         if (durationMeasurement != null) {
-            executer.withDurationMeasurement(durationMeasurement);
+            executor.withDurationMeasurement(durationMeasurement);
         }
 
         if (consoleType != null) {
-            executer.withConsole(consoleType);
+            executor.withConsole(consoleType);
         }
 
-        executer.withWarningMode(warningMode);
+        executor.withWarningMode(warningMode);
 
         if (showStacktrace) {
-            executer.withStacktraceEnabled();
+            executor.withStacktraceEnabled();
         }
 
         if (renderWelcomeMessage) {
-            executer.withWelcomeMessageEnabled();
+            executor.withWelcomeMessageEnabled();
         }
 
         if (!disableToolchainDetection) {
-            executer.withToolchainDetectionEnabled();
+            executor.withToolchainDetectionEnabled();
         }
         if (!disableToolchainDownload) {
-            executer.withToolchainDownloadEnabled();
+            executor.withToolchainDownloadEnabled();
         }
 
-        executer.withTestConsoleAttached(consoleAttachment);
+        executor.withTestConsoleAttached(consoleAttachment);
 
         if (disablePluginRepositoryMirror) {
-            executer.withPluginRepositoryMirrorDisabled();
+            executor.withPluginRepositoryMirrorDisabled();
         }
 
-        return executer;
+        return executor;
     }
 
     @Override
-    public GradleExecuter usingProjectDirectory(File projectDir) {
+    public GradleExecutor usingProjectDirectory(File projectDir) {
         this.projectDir = projectDir;
         return this;
     }
 
     @Override
-    public GradleExecuter usingInitScript(File initScript) {
+    public GradleExecutor usingInitScript(File initScript) {
         if (RepoScriptBlockUtil.isMirrorEnabled()) {
             initScripts.add(initScript);
         }
@@ -497,24 +497,24 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter withGradleUserHomeDir(File userHomeDir) {
+    public GradleExecutor withGradleUserHomeDir(File userHomeDir) {
         this.gradleUserHomeDir = userHomeDir == null ? null : new TestFile(userHomeDir);
         return this;
     }
 
     @Override
-    public GradleExecuter withGradleVersionOverride(GradleVersion gradleVersion) {
+    public GradleExecutor withGradleVersionOverride(GradleVersion gradleVersion) {
         this.gradleVersionOverride = gradleVersion;
         return this;
     }
 
     @Override
-    public GradleExecuter requireOwnGradleUserHomeDir() {
+    public GradleExecutor requireOwnGradleUserHomeDir() {
         return withGradleUserHomeDir(testDirectoryProvider.getTestDirectory().file("user-home"));
     }
 
     @Override
-    public GradleExecuter requireOwnGradleUserHomeDir(String because) {
+    public GradleExecutor requireOwnGradleUserHomeDir(String because) {
         return requireOwnGradleUserHomeDir();
     }
 
@@ -645,7 +645,7 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter withUserHomeDir(File userHomeDir) {
+    public GradleExecutor withUserHomeDir(File userHomeDir) {
         this.userHomeDir = userHomeDir;
         return this;
     }
@@ -665,14 +665,14 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter withJavaHome(String javaHome) {
+    public GradleExecutor withJavaHome(String javaHome) {
         this.javaHome = javaHome;
         this.jvm = null;
         return this;
     }
 
     @Override
-    public GradleExecuter withJvm(Jvm jvm) {
+    public GradleExecutor withJvm(Jvm jvm) {
         if (jvm.getJavaVersion() == null) {
             throw new IllegalArgumentException(
                 "The provided JVM does not have a version and was likely created with Jvm.forHome(File). " +
@@ -695,7 +695,7 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter usingExecutable(String script) {
+    public GradleExecutor usingExecutable(String script) {
         this.executable = script;
         return this;
     }
@@ -705,12 +705,12 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter withStdinPipe() {
+    public GradleExecutor withStdinPipe() {
         return withStdinPipe(new PipedOutputStream());
     }
 
     @Override
-    public GradleExecuter withStdinPipe(PipedOutputStream stdInPipe) {
+    public GradleExecutor withStdinPipe(PipedOutputStream stdInPipe) {
         this.stdinPipe = stdInPipe;
         return this;
     }
@@ -728,7 +728,7 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter withDefaultCharacterEncoding(String defaultCharacterEncoding) {
+    public GradleExecutor withDefaultCharacterEncoding(String defaultCharacterEncoding) {
         this.defaultCharacterEncoding = defaultCharacterEncoding;
         return this;
     }
@@ -738,7 +738,7 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter withDefaultLocale(Locale defaultLocale) {
+    public GradleExecutor withDefaultLocale(Locale defaultLocale) {
         this.defaultLocale = defaultLocale;
         return this;
     }
@@ -752,49 +752,49 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter withQuietLogging() {
+    public GradleExecutor withQuietLogging() {
         quiet = true;
         return this;
     }
 
     @Override
-    public GradleExecuter withTaskList() {
+    public GradleExecutor withTaskList() {
         taskList = true;
         return this;
     }
 
     @Override
-    public GradleExecuter withDependencyList() {
+    public GradleExecutor withDependencyList() {
         dependencyList = true;
         return this;
     }
 
     @Override
-    public GradleExecuter withArguments(String... args) {
+    public GradleExecutor withArguments(String... args) {
         return withArguments(Arrays.asList(args));
     }
 
     @Override
-    public GradleExecuter withArguments(List<String> args) {
+    public GradleExecutor withArguments(List<String> args) {
         this.args.clear();
         this.args.addAll(args);
         return this;
     }
 
     @Override
-    public GradleExecuter withArgument(String arg) {
+    public GradleExecutor withArgument(String arg) {
         this.args.add(arg);
         return this;
     }
 
     @Override
-    public final GradleExecuter withEnvironmentVars(Map<String, ?> environment) {
+    public final GradleExecutor withEnvironmentVars(Map<String, ?> environment) {
         Preconditions.checkArgument(!environment.containsKey("JAVA_HOME"), "Cannot provide JAVA_HOME to withEnvironmentVars, use withJavaHome instead");
         return withEnvironmentVarsIncludingJavaHome(environment);
     }
 
     @Override
-    public GradleExecuter withEnvironmentVarsIncludingJavaHome(Map<String, ?> environment) {
+    public GradleExecutor withEnvironmentVarsIncludingJavaHome(Map<String, ?> environment) {
         environmentVars.clear();
         for (Map.Entry<String, ?> entry : environment.entrySet()) {
             environmentVars.put(entry.getKey(), entry.getValue().toString());
@@ -826,53 +826,53 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter withTasks(String... names) {
+    public GradleExecutor withTasks(String... names) {
         return withTasks(Arrays.asList(names));
     }
 
     @Override
-    public GradleExecuter withTasks(List<String> names) {
+    public GradleExecutor withTasks(List<String> names) {
         tasks.clear();
         tasks.addAll(names);
         return this;
     }
 
     @Override
-    public GradleExecuter withDaemonIdleTimeoutSecs(int secs) {
+    public GradleExecutor withDaemonIdleTimeoutSecs(int secs) {
         daemonIdleTimeoutSecs = secs;
         return this;
     }
 
     @Override
-    public GradleExecuter useOnlyRequestedJvmOpts() {
+    public GradleExecutor useOnlyRequestedJvmOpts() {
         useOnlyRequestedJvmOpts = true;
         return this;
     }
 
     @Override
-    public GradleExecuter withDaemonBaseDir(File daemonBaseDir) {
+    public GradleExecutor withDaemonBaseDir(File daemonBaseDir) {
         this.daemonBaseDir = daemonBaseDir;
         return this;
     }
 
     @Override
-    public GradleExecuter withReadOnlyCacheDir(File cacheDir) {
+    public GradleExecutor withReadOnlyCacheDir(File cacheDir) {
         return withReadOnlyCacheDir(cacheDir.getAbsolutePath());
     }
 
     @Override
-    public GradleExecuter withReadOnlyCacheDir(String cacheDir) {
+    public GradleExecutor withReadOnlyCacheDir(String cacheDir) {
         environmentVars.put(ArtifactCachesProvider.READONLY_CACHE_ENV_VAR, cacheDir);
         return this;
     }
 
     @Override
-    public GradleExecuter requireIsolatedDaemons() {
+    public GradleExecutor requireIsolatedDaemons() {
         return withDaemonBaseDir(testDirectoryProvider.getTestDirectory().file("daemon"));
     }
 
     @Override
-    public GradleExecuter withWorkerDaemonsExpirationDisabled() {
+    public GradleExecutor withWorkerDaemonsExpirationDisabled() {
         return withCommandLineGradleOpts("-Dorg.gradle.workers.internal.disable-daemons-expiration=true");
     }
 
@@ -887,7 +887,7 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter requireDaemon() {
+    public GradleExecutor requireDaemon() {
         this.requireDaemon = true;
         return this;
     }
@@ -914,56 +914,56 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter withOwnUserHomeServices() {
+    public GradleExecutor withOwnUserHomeServices() {
         useOwnUserHomeServices = true;
         return this;
     }
 
     @Override
-    public GradleExecuter withWarningMode(WarningMode warningMode) {
+    public GradleExecutor withWarningMode(WarningMode warningMode) {
         this.warningMode = warningMode;
         return this;
     }
 
     @Override
-    public GradleExecuter withConsole(ConsoleOutput consoleType) {
+    public GradleExecutor withConsole(ConsoleOutput consoleType) {
         this.consoleType = consoleType;
         return this;
     }
 
     @Override
-    public GradleExecuter withStacktraceEnabled() {
+    public GradleExecutor withStacktraceEnabled() {
         showStacktrace = true;
         return this;
     }
 
     @Override
-    public GradleExecuter withWelcomeMessageEnabled() {
+    public GradleExecutor withWelcomeMessageEnabled() {
         renderWelcomeMessage = true;
         return this;
     }
 
     @Override
-    public GradleExecuter withToolchainDetectionEnabled() {
+    public GradleExecutor withToolchainDetectionEnabled() {
         disableToolchainDetection = false;
         return this;
     }
 
     @Override
-    public GradleExecuter withToolchainDownloadEnabled() {
+    public GradleExecutor withToolchainDownloadEnabled() {
         disableToolchainDownload = false;
         return this;
     }
 
     @Override
-    public GradleExecuter withRepositoryMirrors() {
-        beforeExecute(gradleExecuter -> usingInitScript(RepoScriptBlockUtil.createMirrorInitScript()));
+    public GradleExecutor withRepositoryMirrors() {
+        beforeExecute(gradleExecutor -> usingInitScript(RepoScriptBlockUtil.createMirrorInitScript()));
         return this;
     }
 
     @Override
-    public GradleExecuter withGlobalRepositoryMirrors() {
-        beforeExecute(gradleExecuter -> {
+    public GradleExecutor withGlobalRepositoryMirrors() {
+        beforeExecute(gradleExecutor -> {
             TestFile userHome = testDirectoryProvider.getTestDirectory().file("user-home");
             withGradleUserHomeDir(userHome);
             userHome.file("init.d/mirrors.gradle").write(RepoScriptBlockUtil.mirrorInitScript());
@@ -972,13 +972,13 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter withPluginRepositoryMirrorDisabled() {
+    public GradleExecutor withPluginRepositoryMirrorDisabled() {
         disablePluginRepositoryMirror = true;
         return this;
     }
 
     @Override
-    public GradleExecuter ignoreCleanupAssertions() {
+    public GradleExecutor ignoreCleanupAssertions() {
         this.ignoreCleanupAssertions = true;
         return this;
     }
@@ -1152,7 +1152,7 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter ignoreMissingSettingsFile() {
+    public GradleExecutor ignoreMissingSettingsFile() {
         ignoreMissingSettingsFile = true;
         return this;
     }
@@ -1182,7 +1182,7 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     /**
-     * Returns the set of system properties that should be set on every JVM used by this executer.
+     * Returns the set of system properties that should be set on every JVM used by this executor.
      */
     protected Map<String, String> getImplicitJvmSystemProperties() {
         Map<String, String> properties = new LinkedHashMap<>();
@@ -1334,36 +1334,36 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     protected abstract ExecutionFailure doRunWithFailure();
 
     @Override
-    public GradleExecuter withCommandLineGradleOpts(Iterable<String> jvmOpts) {
+    public GradleExecutor withCommandLineGradleOpts(Iterable<String> jvmOpts) {
         CollectionUtils.addAll(commandLineJvmOpts, jvmOpts);
         return this;
     }
 
     @Override
-    public GradleExecuter withCommandLineGradleOpts(String... jvmOpts) {
+    public GradleExecutor withCommandLineGradleOpts(String... jvmOpts) {
         CollectionUtils.addAll(commandLineJvmOpts, jvmOpts);
         return this;
     }
 
     @Override
-    public AbstractGradleExecuter withBuildJvmOpts(String... jvmOpts) {
+    public AbstractGradleExecutor withBuildJvmOpts(String... jvmOpts) {
         CollectionUtils.addAll(buildJvmOpts, jvmOpts);
         return this;
     }
 
     @Override
-    public GradleExecuter withBuildJvmOpts(Iterable<String> jvmOpts) {
+    public GradleExecutor withBuildJvmOpts(Iterable<String> jvmOpts) {
         CollectionUtils.addAll(buildJvmOpts, jvmOpts);
         return this;
     }
 
     @Override
-    public GradleExecuter withBuildCacheEnabled() {
+    public GradleExecutor withBuildCacheEnabled() {
         return withArgument("--build-cache");
     }
 
     @Override
-    public GradleExecuter withConfigurationCacheEnabled() {
+    public GradleExecutor withConfigurationCacheEnabled() {
         return withArgument("--configuration-cache");
     }
 
@@ -1400,18 +1400,18 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter expectExternalDeprecatedMessage(String warning) {
+    public GradleExecutor expectExternalDeprecatedMessage(String warning) {
         return expectDeprecationWarning(ExpectedDeprecationWarning.withMessage(warning));
     }
 
     @Override
-    public GradleExecuter expectDeprecationWarning(ExpectedDeprecationWarning warning) {
+    public GradleExecutor expectDeprecationWarning(ExpectedDeprecationWarning warning) {
         expectedDeprecationWarnings.add(warning);
         return this;
     }
 
     @Override
-    public GradleExecuter expectDocumentedDeprecationWarning(String warning) {
+    public GradleExecutor expectDocumentedDeprecationWarning(String warning) {
         return expectExternalDeprecatedMessage(normalizeDocumentationLink(warning));
     }
 
@@ -1424,37 +1424,37 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter noDeprecationChecks() {
+    public GradleExecutor noDeprecationChecks() {
         checkDeprecations = false;
         return this;
     }
 
     @Override
-    public GradleExecuter disableDaemonJavaVersionDeprecationFiltering() {
+    public GradleExecutor disableDaemonJavaVersionDeprecationFiltering() {
         filterJavaVersionDeprecation = false;
         return this;
     }
 
     @Override
-    public GradleExecuter noDaemonCrashChecks() {
+    public GradleExecutor noDaemonCrashChecks() {
         checkDaemonCrash = false;
         return this;
     }
 
     @Override
-    public GradleExecuter withEagerClassLoaderCreationCheckDisabled() {
+    public GradleExecutor withEagerClassLoaderCreationCheckDisabled() {
         eagerClassLoaderCreationChecksOn = false;
         return this;
     }
 
     @Override
-    public GradleExecuter withStackTraceChecksDisabled() {
+    public GradleExecutor withStackTraceChecksDisabled() {
         stackTraceChecksOn = false;
         return this;
     }
 
     @Override
-    public GradleExecuter withJdkWarningChecksEnabled() {
+    public GradleExecutor withJdkWarningChecksEnabled() {
         jdkWarningChecksOn = true;
         return this;
     }
@@ -1464,7 +1464,7 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter noExtraLogging() {
+    public GradleExecutor noExtraLogging() {
         this.allowExtraLogging = false;
         return this;
     }
@@ -1474,27 +1474,27 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter startBuildProcessInDebugger(boolean flag) {
+    public GradleExecutor startBuildProcessInDebugger(boolean flag) {
         debug.setEnabled(flag);
         return this;
     }
 
 
     @Override
-    public GradleExecuter startBuildProcessInDebugger(Action<JavaDebugOptionsInternal> action) {
+    public GradleExecutor startBuildProcessInDebugger(Action<JavaDebugOptionsInternal> action) {
         debug.setEnabled(true);
         action.execute(debug);
         return this;
     }
 
     @Override
-    public GradleExecuter startLauncherInDebugger(boolean flag) {
+    public GradleExecutor startLauncherInDebugger(boolean flag) {
         debugLauncher.setEnabled(flag);
         return this;
     }
 
     @Override
-    public GradleExecuter startLauncherInDebugger(Action<JavaDebugOptionsInternal> action) {
+    public GradleExecutor startLauncherInDebugger(Action<JavaDebugOptionsInternal> action) {
         debugLauncher.setEnabled(true);
         action.execute(debugLauncher);
         return this;
@@ -1506,46 +1506,46 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter withProfiler(String args) {
+    public GradleExecutor withProfiler(String args) {
         profiler = args;
         return this;
     }
 
     @Override
-    public GradleExecuter withForceInteractive(boolean flag) {
+    public GradleExecutor withForceInteractive(boolean flag) {
         interactive = flag;
         return this;
     }
 
     @Override
-    public GradleExecuter withNoExplicitNativeServicesDir() {
+    public GradleExecutor withNoExplicitNativeServicesDir() {
         noExplicitNativeServicesDir = true;
         return this;
     }
 
     @Override
-    public GradleExecuter withFullDeprecationStackTraceEnabled() {
+    public GradleExecutor withFullDeprecationStackTraceEnabled() {
         fullDeprecationStackTrace = true;
         return this;
     }
 
     @Override
-    public GradleExecuter withoutInternalDeprecationStackTraceFlag() {
+    public GradleExecutor withoutInternalDeprecationStackTraceFlag() {
         useInternalDeprecationStackTraceFlag = false;
         return this;
     }
 
     @Override
-    public GradleExecuter withFileLeakDetection(String... args) {
+    public GradleExecutor withFileLeakDetection(String... args) {
         return withFileLeakDetection(checkNotNull(Jvm.current().getJavaVersion()), args);
     }
 
     @Override
-    public GradleExecuter withFileLeakDetection(JavaVersion javaVersion, String... args) {
+    public GradleExecutor withFileLeakDetection(JavaVersion javaVersion, String... args) {
         String leakDetectionVersion = javaVersion.isCompatibleWith(JavaVersion.VERSION_11) ? "1.17" : "1.14";
         String leakDetectionJar = String.format("file-leak-detector-%s-jar-with-dependencies.jar", leakDetectionVersion);
         String leakDetectorUrl = String.format("https://repo.jenkins-ci.org/releases/org/kohsuke/file-leak-detector/%s/%s", leakDetectionVersion, leakDetectionJar);
-        this.beforeExecute(executer -> {
+        this.beforeExecute(executor -> {
             File leakDetectorJar = new File(this.gradleUserHomeDir, leakDetectionJar);
             if (!leakDetectorJar.exists()) {
                 // Need to download the jar
@@ -1619,7 +1619,7 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter withDurationMeasurement(DurationMeasurement durationMeasurement) {
+    public GradleExecutor withDurationMeasurement(DurationMeasurement durationMeasurement) {
         this.durationMeasurement = durationMeasurement;
         return this;
     }
@@ -1641,17 +1641,17 @@ public abstract class AbstractGradleExecuter implements GradleExecuter, Resettab
     }
 
     @Override
-    public GradleExecuter withTestConsoleAttached() {
+    public GradleExecutor withTestConsoleAttached() {
         return withTestConsoleAttached(ConsoleAttachment.ATTACHED);
     }
 
     @Override
-    public GradleExecuter withTestConsoleAttached(ConsoleAttachment consoleAttachment) {
+    public GradleExecutor withTestConsoleAttached(ConsoleAttachment consoleAttachment) {
         this.consoleAttachment = consoleAttachment;
         return configureConsoleCommandLineArgs();
     }
 
-    protected GradleExecuter configureConsoleCommandLineArgs() {
+    protected GradleExecutor configureConsoleCommandLineArgs() {
         if (consoleAttachment == ConsoleAttachment.NOT_ATTACHED) {
             return this;
         } else {

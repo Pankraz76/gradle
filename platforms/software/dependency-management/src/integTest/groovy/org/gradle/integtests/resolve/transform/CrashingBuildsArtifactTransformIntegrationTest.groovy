@@ -86,7 +86,7 @@ task redThings {
         run("help")
 
         when:
-        def build1 = executer.withTasks("redThings").withArgument("-Dcrash=true").start()
+        def build1 = executor.withTasks("redThings").withArgument("-Dcrash=true").start()
         build1.waitForFailure()
 
         run("redThings")

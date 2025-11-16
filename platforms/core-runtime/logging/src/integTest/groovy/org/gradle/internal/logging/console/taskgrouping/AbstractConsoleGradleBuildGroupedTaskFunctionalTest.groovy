@@ -33,7 +33,7 @@ abstract class AbstractConsoleGradleBuildGroupedTaskFunctionalTest extends Abstr
         file(externalBuildPath).file('build.gradle') << externalBuildScript()
 
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         succeeds(AGGREGATE_TASK_NAME)
 
         then:

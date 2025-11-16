@@ -18,7 +18,7 @@ package org.gradle.api.tasks.javadoc
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.AvailableJavaHomes
-import org.gradle.integtests.fixtures.executer.DocumentationUtils
+import org.gradle.integtests.fixtures.executor.DocumentationUtils
 import org.gradle.integtests.fixtures.jvm.JavaToolchainFixture
 import org.gradle.internal.jvm.Jvm
 import org.gradle.internal.os.OperatingSystem
@@ -74,14 +74,14 @@ class JavadocToolchainIntegrationTest extends AbstractIntegrationSpec implements
         skipped(":javadoc")
 
         when:
-        executer.withArgument("-Ptest.javadoc.version=${jdk2.javaVersion.majorVersion}")
+        executor.withArgument("-Ptest.javadoc.version=${jdk2.javaVersion.majorVersion}")
         withInstallations(jdk1, jdk2).run(":javadoc")
         then:
         executedAndNotSkipped(":javadoc")
         file("build/docs/javadoc/Lib.html").text.contains("Some API documentation.")
 
         when:
-        executer.withArgument("-Ptest.javadoc.version=${jdk2.javaVersion.majorVersion}")
+        executor.withArgument("-Ptest.javadoc.version=${jdk2.javaVersion.majorVersion}")
         withInstallations(jdk1, jdk2).run(":javadoc")
         then:
         skipped(":javadoc")

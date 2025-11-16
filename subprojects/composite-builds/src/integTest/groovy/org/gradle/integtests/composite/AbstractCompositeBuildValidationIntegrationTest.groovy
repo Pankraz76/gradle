@@ -16,12 +16,12 @@
 
 package org.gradle.integtests.composite
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.test.fixtures.file.TestFile
 
 abstract class AbstractCompositeBuildValidationIntegrationTest extends AbstractCompositeBuildIntegrationTest {
     def validationTask(TestFile buildFile, String name, String content) {
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             buildFile << """
                 tasks.register("$name") {
                     $content

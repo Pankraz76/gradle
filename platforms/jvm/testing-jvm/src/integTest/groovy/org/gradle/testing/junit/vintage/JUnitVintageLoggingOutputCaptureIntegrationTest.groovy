@@ -52,7 +52,7 @@ class JUnitVintageLoggingOutputCaptureIntegrationTest extends AbstractJUnit4Logg
         """
 
         expect:
-        executer.withTestConsoleAttached()
+        executor.withTestConsoleAttached()
         succeeds("test")
 
         and: "all output is included/excluded in the xml report as configured"

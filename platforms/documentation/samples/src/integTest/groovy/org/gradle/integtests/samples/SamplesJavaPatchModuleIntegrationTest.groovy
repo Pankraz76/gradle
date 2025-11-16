@@ -27,12 +27,12 @@ class SamplesJavaPatchModuleIntegrationTest extends AbstractIntegrationSpec {
     @Rule Sample sample = new Sample(temporaryFolder, 'testing/patch-module')
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     def "can compile and run patched module whitebox tests with #dsl dsl"() {
         when:
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
         succeeds('build')
 
         then:

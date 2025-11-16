@@ -60,7 +60,7 @@ class StacktraceIntegrationTest extends AbstractIntegrationSpec {
     def "can enable from the command line even if it's disabled in gradle.properties"() {
         setup:
         file('gradle.properties') << 'org.gradle.logging.stacktrace=internal'
-        executer.withArgument('--stacktrace')
+        executor.withArgument('--stacktrace')
 
         when:
         fails()
@@ -72,7 +72,7 @@ class StacktraceIntegrationTest extends AbstractIntegrationSpec {
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicitly requests a daemon")
     def "emits actionable message when wrong configuration is used"() {
         setup:
-        executer.requireDaemon().requireIsolatedDaemons()
+        executor.requireDaemon().requireIsolatedDaemons()
         file('gradle.properties') << 'org.gradle.logging.stacktrace=suppress'
 
         when:

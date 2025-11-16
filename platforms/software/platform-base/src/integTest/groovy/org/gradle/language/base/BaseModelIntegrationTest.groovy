@@ -28,8 +28,8 @@ import org.gradle.platform.base.LibrarySpec
 class BaseModelIntegrationTest extends AbstractIntegrationSpec {
 
     @Override
-    protected void setupExecuter() {
-        super.setupExecuter()
+    protected void setupExecutor() {
+        super.setupExecutor()
     }
 
     def "empty containers are visible in model report"() {

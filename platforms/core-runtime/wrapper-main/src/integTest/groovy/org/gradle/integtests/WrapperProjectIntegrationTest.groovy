@@ -49,7 +49,7 @@ class WrapperProjectIntegrationTest extends AbstractWrapperIntegrationSpec {
         prepareWrapper()
 
         when:
-        def failure = wrapperExecuter.withTasks('unknown').runWithFailure()
+        def failure = wrapperExecutor.withTasks('unknown').runWithFailure()
 
         then:
         failure.assertThatDescription(CoreMatchers.startsWith("Task 'unknown' not found in root project"))
@@ -72,7 +72,7 @@ class WrapperProjectIntegrationTest extends AbstractWrapperIntegrationSpec {
             }
         """
         when:
-        def result = wrapperExecuter.inDirectory(projectDir).withTasks('assertProjectDirHasMeta').run()
+        def result = wrapperExecutor.inDirectory(projectDir).withTasks('assertProjectDirHasMeta').run()
         then:
         result.assertTaskScheduled(":assertProjectDirHasMeta")
     }
@@ -83,7 +83,7 @@ class WrapperProjectIntegrationTest extends AbstractWrapperIntegrationSpec {
         prepareWrapper()
 
         when:
-        def result = wrapperExecuter.withArguments("-PfooD=bar").withTasks('echoProperty').run()
+        def result = wrapperExecutor.withArguments("-PfooD=bar").withTasks('echoProperty').run()
 
         then:
         assertThat(result.output, containsString("fooD=bar"))

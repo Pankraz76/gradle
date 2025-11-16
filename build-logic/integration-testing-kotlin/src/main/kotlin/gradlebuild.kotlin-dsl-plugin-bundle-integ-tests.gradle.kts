@@ -13,7 +13,7 @@ tasks.withType<IntegrationTest>().configureEach {
 
 dependencies {
     integTestRuntimeOnly(project(":kotlin-dsl-plugins")) {
-        because("Tests require 'future-plugin-versions.properties' on the test classpath and the embedded executer needs them available")
+        because("Tests require 'future-plugin-versions.properties' on the test classpath and the embedded executor needs them available")
         attributes {
             attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named("future-versions-resource"))
         }

@@ -35,10 +35,10 @@ class WorkerDaemonFailureLoggingIntegrationTest extends AbstractDaemonWorkerExec
     }
 
     def "worker startup failure messages are associated with the task that starts it"() {
-        def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+        def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
         expect:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         fails("runInWorker")
 
         and:

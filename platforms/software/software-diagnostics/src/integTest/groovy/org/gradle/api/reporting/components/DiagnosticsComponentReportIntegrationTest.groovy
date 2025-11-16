@@ -31,7 +31,7 @@ class DiagnosticsComponentReportIntegrationTest extends AbstractNativeComponentR
         """
 
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         succeeds "components"
 
         then:
@@ -60,7 +60,7 @@ model {
 }
 """
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         succeeds "components"
 
         then:

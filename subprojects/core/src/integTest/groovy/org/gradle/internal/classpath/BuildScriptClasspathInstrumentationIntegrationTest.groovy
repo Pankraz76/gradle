@@ -49,7 +49,7 @@ class BuildScriptClasspathInstrumentationIntegrationTest extends AbstractIntegra
 
     @Rule
     public final RepositoryHttpServer server = new RepositoryHttpServer(temporaryFolder)
-    def buildOperations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def buildOperations = new BuildOperationsFixture(executor, testDirectoryProvider)
 
     def serializer = new DefaultInstrumentationAnalysisSerializer(new StringInterner())
 
@@ -137,8 +137,8 @@ class BuildScriptClasspathInstrumentationIntegrationTest extends AbstractIntegra
         """
 
         when:
-        executer.inDirectory(file("first")).withTasks("classes").run()
-        executer.inDirectory(file("second")).withTasks("classes").run()
+        executor.inDirectory(file("first")).withTasks("classes").run()
+        executor.inDirectory(file("second")).withTasks("classes").run()
         run("tasks")
 
         then:
@@ -221,7 +221,7 @@ class BuildScriptClasspathInstrumentationIntegrationTest extends AbstractIntegra
         """
 
         when:
-        executer.inDirectory(file("external-plugin")).withTasks("publish").run()
+        executor.inDirectory(file("external-plugin")).withTasks("publish").run()
         run("help")
 
         then:
@@ -270,7 +270,7 @@ class BuildScriptClasspathInstrumentationIntegrationTest extends AbstractIntegra
                 }
             """
         }
-        executer.inDirectory(file("subproject")).withTasks("jar").run()
+        executor.inDirectory(file("subproject")).withTasks("jar").run()
         buildFile << """
             buildscript {
                  repositories {
@@ -327,7 +327,7 @@ class BuildScriptClasspathInstrumentationIntegrationTest extends AbstractIntegra
         """
 
         when:
-        executer.inDirectory(file("subproject")).withTasks("jar").run()
+        executor.inDirectory(file("subproject")).withTasks("jar").run()
         run("tasks")
 
         then:
@@ -366,7 +366,7 @@ class BuildScriptClasspathInstrumentationIntegrationTest extends AbstractIntegra
         """
 
         when:
-        executer.inDirectory(file("subproject")).withTasks("jar").run()
+        executor.inDirectory(file("subproject")).withTasks("jar").run()
         run("tasks")
 
         then:
@@ -376,7 +376,7 @@ class BuildScriptClasspathInstrumentationIntegrationTest extends AbstractIntegra
         when:
         file("subproject/api/src/main/java/B.java").text = "import org.gradle.C; public class B extends C {}"
         file("subproject/api/src/main/java/org/gradle/C.java") << "package org.gradle; public class C {}"
-        executer.inDirectory(file("subproject")).withTasks("jar").run()
+        executor.inDirectory(file("subproject")).withTasks("jar").run()
         run("tasks")
 
         then:
@@ -405,7 +405,7 @@ class BuildScriptClasspathInstrumentationIntegrationTest extends AbstractIntegra
         """
 
         when:
-        executer.inDirectory(file("subproject")).withTasks("jar").run()
+        executor.inDirectory(file("subproject")).withTasks("jar").run()
         run("tasks")
 
         then:
@@ -415,7 +415,7 @@ class BuildScriptClasspathInstrumentationIntegrationTest extends AbstractIntegra
         when:
         file("subproject/api/src/main/java/B.java").text = "public class B extends C {}"
         file("subproject/api/src/main/java/C.java") << "public class C {}"
-        executer.inDirectory(file("subproject")).withTasks("jar").run()
+        executor.inDirectory(file("subproject")).withTasks("jar").run()
         run("tasks")
 
         then:

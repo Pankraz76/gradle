@@ -145,9 +145,9 @@ class TestInputAnnotationFailuresIntegrationTest extends AbstractIntegrationSpec
 
     def "cannot annotate type 'java.net.URL' with @Input"() {
 
-        executer.beforeExecute {
-            executer.noDeprecationChecks()
-            executer.withArgument("-Dorg.gradle.internal.max.validation.errors=20")
+        executor.beforeExecute {
+            executor.noDeprecationChecks()
+            executor.withArgument("-Dorg.gradle.internal.max.validation.errors=20")
         }
 
         given:
@@ -200,31 +200,31 @@ class TestInputAnnotationFailuresIntegrationTest extends AbstractIntegrationSpec
         fails "verify"
 
         then:
-        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer,
+        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor,
             "Type 'TaskWithInput' property 'direct' has @Input annotation used on type 'java.net.URL' or a property of this type. " +
                 "Type 'java.net.URL' is not supported on properties annotated with @Input because Java Serialization can be inconsistent for this type",
             'validation_problems', 'unsupported_value_type')
-        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer,
+        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor,
             "Type 'TaskWithInput' property 'providerInput' has @Input annotation used on type 'java.net.URL' or a property of this type. " +
                 "Type 'java.net.URL' is not supported on properties annotated with @Input because Java Serialization can be inconsistent for this type",
             'validation_problems', 'unsupported_value_type')
-        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer,
+        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor,
             "Type 'TaskWithInput' property 'propertyInput' has @Input annotation used on type 'java.net.URL' or a property of this type. " +
                 "Type 'java.net.URL' is not supported on properties annotated with @Input because Java Serialization can be inconsistent for this type",
             'validation_problems', 'unsupported_value_type')
-        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer,
+        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor,
             "Type 'TaskWithInput' property 'setPropertyInput' has @Input annotation used on type 'java.net.URL' or a property of this type. " +
                 "Type 'java.net.URL' is not supported on properties annotated with @Input because Java Serialization can be inconsistent for this type",
             'validation_problems', 'unsupported_value_type')
-        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer,
+        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor,
             "Type 'TaskWithInput' property 'listPropertyInput' has @Input annotation used on type 'java.net.URL' or a property of this type. " +
                 "Type 'java.net.URL' is not supported on properties annotated with @Input because Java Serialization can be inconsistent for this type",
             'validation_problems', 'unsupported_value_type')
-        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer,
+        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor,
             "Type 'TaskWithInput' property 'mapPropertyInput' has @Input annotation used on type 'java.net.URL' or a property of this type. " +
                 "Type 'java.net.URL' is not supported on properties annotated with @Input because Java Serialization can be inconsistent for this type",
             'validation_problems', 'unsupported_value_type')
-        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer,
+        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor,
             "Type 'TaskWithInput' property 'nestedInput.nested' has @Input annotation used on type 'java.net.URL' or a property of this type. " +
                 "Type 'java.net.URL' is not supported on properties annotated with @Input because Java Serialization can be inconsistent for this type",
             'validation_problems', 'unsupported_value_type')

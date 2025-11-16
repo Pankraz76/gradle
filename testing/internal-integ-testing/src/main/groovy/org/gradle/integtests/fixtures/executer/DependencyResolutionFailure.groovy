@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 import java.util.regex.Pattern
 

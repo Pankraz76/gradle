@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import org.gradle.exemplar.model.Command;
 import org.gradle.exemplar.model.Sample;

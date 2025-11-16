@@ -25,7 +25,7 @@ class HttpScriptPluginInEncodingtegrationSpec extends AbstractHttpScriptPluginIn
 
     def "uses encoding specified by http server"() {
         given:
-        executer.withDefaultCharacterEncoding("UTF-8")
+        executor.withDefaultCharacterEncoding("UTF-8")
 
         and:
         def scriptFile = file("script-encoding.gradle")
@@ -52,7 +52,7 @@ task check {
     def "assumes utf-8 encoding when none specified by http server"() {
         given:
         applyTrustStore()
-        executer.withDefaultCharacterEncoding("ISO-8859-15")
+        executor.withDefaultCharacterEncoding("ISO-8859-15")
 
         and:
         def scriptFile = file("script-assumed-encoding.gradle")

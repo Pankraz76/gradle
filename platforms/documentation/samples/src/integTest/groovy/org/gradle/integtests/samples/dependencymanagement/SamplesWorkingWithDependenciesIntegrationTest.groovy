@@ -30,12 +30,12 @@ class SamplesWorkingWithDependenciesIntegrationTest extends AbstractIntegrationS
     Sample sample = new Sample(testDirectoryProvider)
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     @UsesSample("dependencyManagement/workingWithDependencies-iterateDependencies")
     def "can iterate over dependencies assigned to a configuration with #dsl dsl"() {
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
 
         when:
         succeeds('iterateDeclaredDependencies')
@@ -50,7 +50,7 @@ commons-codec:commons-codec:1.7""")
 
     @UsesSample("dependencyManagement/workingWithDependencies-iterateArtifacts")
     def "can iterate over artifacts resolved for a module with #dsl dsl"() {
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
 
         when:
         succeeds('iterateResolvedArtifacts')
@@ -73,7 +73,7 @@ commons-codec:commons-codec:1.7""")
     @UsesSample("dependencyManagement/workingWithDependencies-walkGraph")
     @ToBeFixedForConfigurationCache(because = "broken file collection")
     def "can walk the dependency graph of a configuration with #dsl dsl"() {
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
 
         when:
         succeeds('walkDependencyGraph')
@@ -96,7 +96,7 @@ commons-codec:commons-codec:1.7""")
 
     @UsesSample("dependencyManagement/workingWithDependencies-accessMetadataArtifact")
     def "can accessing a module's metadata artifact with #dsl dsl"() {
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
 
         when:
         succeeds('printGuavaMetadata')

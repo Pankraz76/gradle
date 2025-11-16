@@ -20,8 +20,8 @@ import org.gradle.api.GradleException
 import org.gradle.api.Task
 import org.gradle.api.internal.TaskInternal
 import org.gradle.api.internal.project.ProjectInternal
-import org.gradle.api.internal.tasks.TaskExecuter
-import org.gradle.api.internal.tasks.TaskExecuterResult
+import org.gradle.api.internal.tasks.TaskExecutor
+import org.gradle.api.internal.tasks.TaskExecutorResult
 import org.gradle.api.internal.tasks.TaskExecutionContext
 import org.gradle.api.internal.tasks.TaskExecutionOutcome
 import org.gradle.api.internal.tasks.TaskStateInternal
@@ -29,15 +29,15 @@ import org.gradle.api.specs.Spec
 import org.gradle.groovy.scripts.ScriptSource
 import spock.lang.Specification
 
-class SkipOnlyIfTaskExecuterTest extends Specification {
+class SkipOnlyIfTaskExecutorTest extends Specification {
     private final TaskInternal task = Mock(TaskInternal)
     private final DescribingAndSpec<Task> spec = Mock(DescribingAndSpec)
     private final TaskStateInternal state = Mock(TaskStateInternal)
     private final TaskExecutionContext executionContext = Mock(TaskExecutionContext)
 
     private final ScriptSource scriptSource = Mock(ScriptSource)
-    private final TaskExecuter delegate = Mock(TaskExecuter)
-    private final SkipOnlyIfTaskExecuter executer = new SkipOnlyIfTaskExecuter(delegate)
+    private final TaskExecutor delegate = Mock(TaskExecutor)
+    private final SkipOnlyIfTaskExecutor executor = new SkipOnlyIfTaskExecutor(delegate)
 
     def setup() {
         ProjectInternal project = Mock(ProjectInternal)
@@ -60,17 +60,17 @@ class SkipOnlyIfTaskExecuterTest extends Specification {
 
     def executesTask() {
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         1 * spec.findUnsatisfiedSpec(task) >> null
-        1 * delegate.execute(task, state, executionContext) >> TaskExecuterResult.WITHOUT_OUTPUTS
+        1 * delegate.execute(task, state, executionContext) >> TaskExecutorResult.WITHOUT_OUTPUTS
         noMoreInteractions()
     }
 
     def skipsTaskWhoseOnlyIfPredicateIsFalse() {
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         1 * spec.findUnsatisfiedSpec(task) >> Mock(SelfDescribingSpec)
@@ -87,7 +87,7 @@ class SkipOnlyIfTaskExecuterTest extends Specification {
         otherTask.getOnlyIf() >> oldStyleSpec
 
         when:
-        executer.execute(otherTask, state, executionContext)
+        executor.execute(otherTask, state, executionContext)
 
         then:
         1 * oldStyleSpec.isSatisfiedBy(task) >> false
@@ -100,7 +100,7 @@ class SkipOnlyIfTaskExecuterTest extends Specification {
         GradleException thrownException = null
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         1 * spec.findUnsatisfiedSpec(task) >> { throw failure }

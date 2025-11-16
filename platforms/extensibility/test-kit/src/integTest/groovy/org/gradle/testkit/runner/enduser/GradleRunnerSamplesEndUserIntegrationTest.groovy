@@ -39,7 +39,7 @@ class GradleRunnerSamplesEndUserIntegrationTest extends BaseTestKitEndUserIntegr
     Sample sample = new Sample(testDirectoryProvider)
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
         buildFile << """
             dependencies {
                 testImplementation 'junit:junit:4.13.1'
@@ -52,7 +52,7 @@ class GradleRunnerSamplesEndUserIntegrationTest extends BaseTestKitEndUserIntegr
     @UsesSample("testKit/junitQuickstart")
     def "junitQuickstart with #dsl dsl"() {
         expect:
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
         succeeds "check"
 
         where:
@@ -62,14 +62,14 @@ class GradleRunnerSamplesEndUserIntegrationTest extends BaseTestKitEndUserIntegr
     @UsesSample("testKit/spockQuickstart")
     def spockQuickstart() {
         expect:
-        executer.inDirectory(sample.dir.file('groovy'))
+        executor.inDirectory(sample.dir.file('groovy'))
         succeeds "check"
     }
 
     @UsesSample("testKit/automaticClasspathInjectionQuickstart")
     def "automaticClasspathInjectionQuickstart with #dsl dsl"() {
         expect:
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
         succeeds "check"
 
         where:
@@ -79,7 +79,7 @@ class GradleRunnerSamplesEndUserIntegrationTest extends BaseTestKitEndUserIntegr
     @UsesSample("testKit/automaticClasspathInjectionCustomTestSourceSet")
     def "automaticClasspathInjectionCustomTestSourceSet with #dsl dsl"() {
         expect:
-        executer.inDirectory(sample.dir.file(dsl))
+        executor.inDirectory(sample.dir.file(dsl))
         succeeds "check"
 
         where:
@@ -92,7 +92,7 @@ class GradleRunnerSamplesEndUserIntegrationTest extends BaseTestKitEndUserIntegr
     def gradleVersion() {
         expect:
         RetryUtil.retry { //This test is also affected by gradle/gradle#1111 on Windows
-            executer.inDirectory(sample.dir.file('groovy'))
+            executor.inDirectory(sample.dir.file('groovy'))
             succeeds "check"
 
         }

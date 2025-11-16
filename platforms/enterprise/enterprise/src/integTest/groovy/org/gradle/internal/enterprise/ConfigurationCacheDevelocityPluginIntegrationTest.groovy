@@ -32,9 +32,9 @@ class ConfigurationCacheDevelocityPluginIntegrationTest extends AbstractIntegrat
     def configurationCache = new ConfigurationCacheFixture(this)
 
     @Override
-    void setupExecuter(){
-        super.setupExecuter()
-        executer.withConfigurationCacheEnabled()
+    void setupExecutor(){
+        super.setupExecutor()
+        executor.withConfigurationCacheEnabled()
     }
 
     def setup() {

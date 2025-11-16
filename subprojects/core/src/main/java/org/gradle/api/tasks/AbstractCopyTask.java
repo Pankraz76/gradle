@@ -36,7 +36,7 @@ import org.gradle.api.internal.file.FileResolver;
 import org.gradle.api.internal.file.collections.DirectoryFileTreeFactory;
 import org.gradle.api.internal.file.copy.ClosureBackedTransformer;
 import org.gradle.api.internal.file.copy.CopyAction;
-import org.gradle.api.internal.file.copy.CopyActionExecuter;
+import org.gradle.api.internal.file.copy.CopyActionExecutor;
 import org.gradle.api.internal.file.copy.CopySpecInternal;
 import org.gradle.api.internal.file.copy.CopySpecResolver;
 import org.gradle.api.internal.file.copy.CopySpecSource;
@@ -141,17 +141,17 @@ public abstract class AbstractCopyTask extends ConventionTask implements CopySpe
 
     @TaskAction
     protected void copy() {
-        CopyActionExecuter copyActionExecuter = createCopyActionExecuter();
+        CopyActionExecutor copyActionExecutor = createCopyActionExecutor();
         CopyAction copyAction = createCopyAction();
-        WorkResult didWork = copyActionExecuter.execute(rootSpec, copyAction);
+        WorkResult didWork = copyActionExecutor.execute(rootSpec, copyAction);
         setDidWork(didWork.getDidWork());
     }
 
-    protected CopyActionExecuter createCopyActionExecuter() {
+    protected CopyActionExecutor createCopyActionExecutor() {
         Instantiator instantiator = getInstantiator();
         FileSystem fileSystem = getFileSystem();
 
-        return new CopyActionExecuter(instantiator, getPropertyFactory(), fileSystem, false, getDocumentationRegistry());
+        return new CopyActionExecutor(instantiator, getPropertyFactory(), fileSystem, false, getDocumentationRegistry());
     }
 
     /**

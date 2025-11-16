@@ -40,11 +40,11 @@ public class ExecuteBuild extends BuildCommandOnly {
 
     private static final Logger LOGGER = Logging.getLogger(ExecuteBuild.class);
 
-    final private BuildActionExecutor<BuildActionParameters, BuildRequestContext> actionExecuter;
+    final private BuildActionExecutor<BuildActionParameters, BuildRequestContext> actionExecutor;
     private final DaemonRunningStats runningStats;
 
-    public ExecuteBuild(BuildActionExecutor<BuildActionParameters, BuildRequestContext> actionExecuter, DaemonRunningStats runningStats) {
-        this.actionExecuter = actionExecuter;
+    public ExecuteBuild(BuildActionExecutor<BuildActionParameters, BuildRequestContext> actionExecutor, DaemonRunningStats runningStats) {
+        this.actionExecutor = actionExecutor;
         this.runningStats = runningStats;
     }
 
@@ -67,7 +67,7 @@ public class ExecuteBuild extends BuildCommandOnly {
                     }
                 });
             }
-            BuildActionResult result = actionExecuter.execute(build.getAction(), build.getParameters(), buildRequestContext);
+            BuildActionResult result = actionExecutor.execute(build.getAction(), build.getParameters(), buildRequestContext);
             execution.setResult(result);
         } finally {
             buildEventConsumer.waitForFinish();

@@ -28,7 +28,7 @@ import static org.gradle.integtests.fixtures.SuggestionsMessages.repositoryHint
 class MavenLocalRepoResolveIntegrationTest extends AbstractDependencyResolutionTest {
 
     def runRetrieveTask() {
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run 'retrieve'
     }
 
@@ -96,7 +96,7 @@ class MavenLocalRepoResolveIntegrationTest extends AbstractDependencyResolutionT
         def moduleA = artifactRepo.module('group', 'projectA', '1.2').publish()
 
         when:
-        executer.withArgument("-Dmaven.repo.local=${artifactRepo.rootDir.getAbsolutePath()}")
+        executor.withArgument("-Dmaven.repo.local=${artifactRepo.rootDir.getAbsolutePath()}")
         runRetrieveTask()
 
         then:
@@ -127,7 +127,7 @@ class MavenLocalRepoResolveIntegrationTest extends AbstractDependencyResolutionT
         userRepo.module('group', 'projectA', '1.2').publishWithChangedContent()
 
         when:
-        executer.withArgument("-Dmaven.repo.local=${sysPropRepo.rootDir.getAbsolutePath()}")
+        executor.withArgument("-Dmaven.repo.local=${sysPropRepo.rootDir.getAbsolutePath()}")
         runRetrieveTask()
 
         then:

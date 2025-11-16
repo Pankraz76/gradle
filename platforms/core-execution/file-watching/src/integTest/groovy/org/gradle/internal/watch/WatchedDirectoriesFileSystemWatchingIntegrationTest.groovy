@@ -22,7 +22,7 @@ import org.gradle.test.preconditions.IntegTestPreconditions
 import org.gradle.testdistribution.LocalOnly
 import org.apache.commons.io.FileUtils
 import org.gradle.cache.GlobalCacheLocations
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.internal.service.scopes.VirtualFileSystemServices
 import org.gradle.test.fixtures.file.TestNameTestDirectoryProvider
@@ -42,7 +42,7 @@ class WatchedDirectoriesFileSystemWatchingIntegrationTest extends AbstractFileSy
     public final RepositoryHttpServer server = new RepositoryHttpServer(temporaryFolder)
 
     def setup() {
-        executer.requireDaemon()
+        executor.requireDaemon()
     }
 
     def "watches the project directory"() {
@@ -96,7 +96,7 @@ class WatchedDirectoriesFileSystemWatchingIntegrationTest extends AbstractFileSy
                 includeBuild("../includedBuild")
             """
         }
-        executer.beforeExecute {
+        executor.beforeExecute {
             inDirectory(consumer)
         }
         def expectedWatchableHierarchies = [
@@ -115,7 +115,7 @@ class WatchedDirectoriesFileSystemWatchingIntegrationTest extends AbstractFileSy
         then:
         skipped(":includedBuild:jar")
         // configuration cache registers all build directories at startup so the cache fingerprint can be checked
-        def expectedWatchableCount = GradleContextualExecuter.isConfigCache() ? 4 : 2
+        def expectedWatchableCount = GradleContextualExecutor.isConfigCache() ? 4 : 2
         assertWatchableHierarchies([ImmutableSet.of(consumer, includedBuild)] * expectedWatchableCount)
         when:
         includedBuild.file("src/main/java/NewClass.java")  << "public class NewClass {}"
@@ -140,7 +140,7 @@ class WatchedDirectoriesFileSystemWatchingIntegrationTest extends AbstractFileSy
                 }
             """
         }
-        executer.beforeExecute {
+        executor.beforeExecute {
             inDirectory(consumer)
         }
         def expectedWatchableHierarchies = [
@@ -157,7 +157,7 @@ class WatchedDirectoriesFileSystemWatchingIntegrationTest extends AbstractFileSy
         withWatchFs().run "buildInBuild", "--info"
         then:
         // configuration cache registers all build directories at startup so the cache fingerprint can be checked
-        def expectedWatchableCount = GradleContextualExecuter.isConfigCache() ? 2 : 1
+        def expectedWatchableCount = GradleContextualExecutor.isConfigCache() ? 2 : 1
         assertWatchableHierarchies([ImmutableSet.of(consumer)] * expectedWatchableCount + [ImmutableSet.of(consumer, buildInBuild)])
     }
 
@@ -234,7 +234,7 @@ class WatchedDirectoriesFileSystemWatchingIntegrationTest extends AbstractFileSy
     }
 
     def "the caches dir in the Gradle user home is part of the global caches"() {
-        def globalCachesLocation = executer.gradleUserHomeDir.file('caches').absolutePath
+        def globalCachesLocation = executor.gradleUserHomeDir.file('caches').absolutePath
         buildFile << """
             assert services.get(${GlobalCacheLocations.name}).isInsideGlobalCache('${TextUtil.escapeString(globalCachesLocation)}')
         """
@@ -259,7 +259,7 @@ class WatchedDirectoriesFileSystemWatchingIntegrationTest extends AbstractFileSy
                 into 'build'
             }
         """
-        executer.beforeExecute { inDirectory(projectDir) }
+        executor.beforeExecute { inDirectory(projectDir) }
 
         when:
         withWatchFs().run "retrieve", "--info"
@@ -297,7 +297,7 @@ class WatchedDirectoriesFileSystemWatchingIntegrationTest extends AbstractFileSy
                 into 'build'
             }
         """
-        executer.beforeExecute { inDirectory(projectDir) }
+        executor.beforeExecute { inDirectory(projectDir) }
 
         remoteModule.pom.expectHead()
         remoteModule.pom.sha1.expectGet()
@@ -332,7 +332,7 @@ class WatchedDirectoriesFileSystemWatchingIntegrationTest extends AbstractFileSy
                 includeBuild("../includedBuild")
             """
         }
-        executer.beforeExecute {
+        executor.beforeExecute {
             inDirectory(consumer)
         }
         file("consumer/gradle.properties") << "systemProp.${VirtualFileSystemServices.MAX_HIERARCHIES_TO_WATCH_PROPERTY.propertyName}=1"
@@ -382,7 +382,7 @@ class WatchedDirectoriesFileSystemWatchingIntegrationTest extends AbstractFileSy
             }
         """
         projectDir.file("input.txt").text = "input"
-        executer.inDirectory(projectDir)
+        executor.inDirectory(projectDir)
 
         when:
         run "myTask", "--info"

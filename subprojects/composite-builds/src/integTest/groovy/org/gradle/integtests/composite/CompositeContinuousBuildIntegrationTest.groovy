@@ -127,7 +127,7 @@ class CompositeContinuousBuildIntegrationTest extends AbstractContinuousIntegrat
     def "will rebuild on change for plugin supplied by included build"() {
         // to reduce contention with concurrently executing tests
         requireOwnGradleUserHomeDir()
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
 
         def includedLibrary = singleProjectBuild("plugin") {
             buildFile << """

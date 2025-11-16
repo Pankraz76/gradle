@@ -252,7 +252,7 @@ class JavaExecJavaVersionIntegrationSpec extends AbstractIntegrationSpec impleme
 
     void runWith(Jvm jvm) {
         withInstallations(jvm)
-        executer.withArgument("-DexecJavaVersion=${jvm.javaVersionMajor}")
+        executor.withArgument("-DexecJavaVersion=${jvm.javaVersionMajor}")
     }
 
     void assertExecutedWith(Jvm jvm) {

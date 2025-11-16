@@ -18,8 +18,8 @@ package org.gradle.launcher.daemon.server.scaninfo
 
 import org.gradle.api.JavaVersion
 import org.gradle.integtests.fixtures.daemon.DaemonIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.integtests.fixtures.timeout.IntegrationTestTimeout
 import org.gradle.launcher.daemon.client.SingleUseDaemonClient
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
@@ -55,7 +55,7 @@ class DaemonScanInfoIntegrationSpec extends DaemonIntegrationSpec {
         """
 
         expect:
-        executer.withArguments('help', '--continuous', '-i').run().assertTasksScheduled(':help')
+        executor.withArguments('help', '--continuous', '-i').run().assertTasksScheduled(':help')
     }
 
     //Java 9 and above needs --add-opens to make environment variable mutation work
@@ -73,8 +73,8 @@ class DaemonScanInfoIntegrationSpec extends DaemonIntegrationSpec {
         def daemon = startAForegroundDaemon()
 
         List<ExecutionResult> captureResults = []
-        captureResults << executer.withTasks('capture1').run()
-        captureResults << executer.withTasks('capture2').run()
+        captureResults << executor.withTasks('capture1').run()
+        captureResults << executor.withTasks('capture2').run()
 
         then:
         captureResults[0].assertTaskScheduled(':capture1')
@@ -99,13 +99,13 @@ class DaemonScanInfoIntegrationSpec extends DaemonIntegrationSpec {
         when:
         openJpmsModulesForConfigurationCache()
         if (continuous) {
-            executer.withArgument('waitForExpiration')
-            executer.withArgument('--continuous')
+            executor.withArgument('waitForExpiration')
+            executor.withArgument('--continuous')
         } else {
-            executer.withArgument('waitForExpiration')
+            executor.withArgument('waitForExpiration')
         }
 
-        executer.run()
+        executor.run()
 
         then:
         file(EXPIRATION_EVENT).text.startsWith "onExpirationEvent fired with: expiring daemon with TestExpirationStrategy uuid:"
@@ -128,7 +128,7 @@ class DaemonScanInfoIntegrationSpec extends DaemonIntegrationSpec {
 
         when:
         openJpmsModulesForConfigurationCache()
-        executer.withArgument('waitForExpiration').run()
+        executor.withArgument('waitForExpiration').run()
 
         then:
         file(EXPIRATION_EVENT).text.startsWith "onExpirationEvent fired with: expiring daemon with TestExpirationStrategy uuid:"
@@ -141,7 +141,7 @@ class DaemonScanInfoIntegrationSpec extends DaemonIntegrationSpec {
            ${waitForExpirationTask()}
         """
         openJpmsModulesForConfigurationCache()
-        executer.withArgument('waitForExpiration').run()
+        executor.withArgument('waitForExpiration').run()
 
         then:
         !file(EXPIRATION_EVENT).exists()
@@ -162,7 +162,7 @@ class DaemonScanInfoIntegrationSpec extends DaemonIntegrationSpec {
         when:
         startAForegroundDaemon()
         openJpmsModulesForConfigurationCache()
-        executer.withTasks('waitForExpiration').run()
+        executor.withTasks('waitForExpiration').run()
 
         then:
         file(EXPIRATION_EVENT).text.startsWith "onExpirationEvent fired with: expiring daemon with TestExpirationStrategy uuid:"
@@ -177,7 +177,7 @@ class DaemonScanInfoIntegrationSpec extends DaemonIntegrationSpec {
         """
 
         when:
-        result = executer.withArgument('--no-daemon').withTasks('capture').run()
+        result = executor.withArgument('--no-daemon').withTasks('capture').run()
 
         then:
         executed(':capture')
@@ -276,9 +276,9 @@ class DaemonScanInfoIntegrationSpec extends DaemonIntegrationSpec {
     }
 
     private void openJpmsModulesForConfigurationCache() {
-        if (JavaVersion.current().isJava9Compatible() && GradleContextualExecuter.isConfigCache()) {
+        if (JavaVersion.current().isJava9Compatible() && GradleContextualExecutor.isConfigCache()) {
             // For java.util.concurrent.CountDownLatch being serialized reflectively by configuration cache
-            executer.withArgument('-Dorg.gradle.jvmargs=--add-opens java.base/java.util.concurrent=ALL-UNNAMED --add-opens java.base/java.util.concurrent.locks=ALL-UNNAMED')
+            executor.withArgument('-Dorg.gradle.jvmargs=--add-opens java.base/java.util.concurrent=ALL-UNNAMED --add-opens java.base/java.util.concurrent.locks=ALL-UNNAMED')
         }
     }
 

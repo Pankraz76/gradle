@@ -18,7 +18,7 @@ package org.gradle.api.publish.maven
 
 import org.gradle.api.credentials.Credentials
 import org.gradle.api.credentials.PasswordCredentials
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.integtests.fixtures.publish.maven.AbstractMavenPublishIntegTest
 import org.gradle.test.fixtures.server.http.AuthScheme
 import org.gradle.test.fixtures.server.http.HttpServer
@@ -57,7 +57,7 @@ class MavenPublishHttpIntegTest extends AbstractMavenPublishIntegTest {
         buildFile << publicationBuildWithoutCredentials(version, group, mavenRemoteRepo.uri)
 
         if (!extraChecksums) {
-            executer.withArgument("-Dorg.gradle.internal.publish.checksums.insecure=true")
+            executor.withArgument("-Dorg.gradle.internal.publish.checksums.insecure=true")
             module.withoutExtraChecksums()
         }
         expectModulePublish(module, extraChecksums)
@@ -316,7 +316,7 @@ class MavenPublishHttpIntegTest extends AbstractMavenPublishIntegTest {
         expectPublishModuleWithCredentials(module, credentials)
 
         when:
-        executer.withArguments("-PmavenUsername=${credentials.username}", "-PmavenPassword=${credentials.password}")
+        executor.withArguments("-PmavenUsername=${credentials.username}", "-PmavenPassword=${credentials.password}")
 
         then:
         succeeds 'publish'
@@ -355,7 +355,7 @@ class MavenPublishHttpIntegTest extends AbstractMavenPublishIntegTest {
 
         then:
         module.assertPublishedAsJavaModule()
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             postBuildOutputContains("Configuration cache disabled because incompatible task was found.")
         }
     }
@@ -380,7 +380,7 @@ class MavenPublishHttpIntegTest extends AbstractMavenPublishIntegTest {
 
         then:
         module.assertPublishedAsJavaModule()
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             postBuildOutputContains("Configuration cache disabled because incompatible task was found.")
         }
     }

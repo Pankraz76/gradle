@@ -18,7 +18,7 @@
 
 package org.gradle.kotlin.dsl.resolver
 
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.kotlin.dsl.fixtures.AbstractKotlinIntegrationTest
 import org.gradle.test.fixtures.Flaky
 import org.gradle.test.precondition.Requires

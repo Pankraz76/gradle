@@ -549,7 +549,7 @@ class VisualStudioSoftwareModelMultiProjectIntegrationTest extends AbstractVisua
         then:
         final exeProject = projectFile("exe/exe_mainExe.vcxproj")
         exeProject.projectConfigurations.values().each {
-            def gradleFile = executer.distribution.gradleHomeDir.file("bin/gradle")
+            def gradleFile = executor.distribution.gradleHomeDir.file("bin/gradle")
             def formattedGradleFile = gradleFile.toString()
             if (OperatingSystem.current().isWindows()) {
                 // For some reason we use forward slashes even on Windows
@@ -584,7 +584,7 @@ class VisualStudioSoftwareModelMultiProjectIntegrationTest extends AbstractVisua
         then:
         final exeProject = projectFile("exe/exe_mainExe.vcxproj")
         exeProject.projectConfigurations.values().each {
-            assert it.buildCommand == "\"${FilenameUtils.separatorsToUnix(executer.distribution.gradleHomeDir.file('bin/gradle').absolutePath)}\" -p \"..\" :exe:installMain${it.name.capitalize()}Executable"
+            assert it.buildCommand == "\"${FilenameUtils.separatorsToUnix(executor.distribution.gradleHomeDir.file('bin/gradle').absolutePath)}\" -p \"..\" :exe:installMain${it.name.capitalize()}Executable"
         }
     }
 

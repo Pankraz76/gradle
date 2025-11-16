@@ -23,7 +23,7 @@ import org.gradle.integtests.fixtures.TestResources
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.integtests.fixtures.UnsupportedWithConfigurationCache
 import org.gradle.integtests.fixtures.UsesSample
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.test.fixtures.file.TestFile
 import org.junit.Rule
 
@@ -181,7 +181,7 @@ class LoggingIntegrationTest extends AbstractIntegrationSpec {
         List<String> allArgs = logLevel.args + ['-I', initScript]
 
         when:
-        executer.noExtraLogging().inDirectory(loggingDir).withArguments(allArgs)
+        executor.noExtraLogging().inDirectory(loggingDir).withArguments(allArgs)
         run "log"
         then:
         logLevel.checkOuts(result)
@@ -203,7 +203,7 @@ class LoggingIntegrationTest extends AbstractIntegrationSpec {
         List<String> allArgs = logLevel.args + ['-I', initScript] + ['-I', customLoggerInitScript]
 
         when:
-        executer.noExtraLogging().inDirectory(loggingDir).withArguments(allArgs)
+        executor.noExtraLogging().inDirectory(loggingDir).withArguments(allArgs)
         run "log"
         then:
         logLevel.checkOuts(result)
@@ -228,7 +228,7 @@ class LoggingIntegrationTest extends AbstractIntegrationSpec {
             tasks.register("run") {}
         """
 
-        executer.expectDocumentedDeprecationWarning("The Gradle.useLogger(Object) method has been deprecated. " +
+        executor.expectDocumentedDeprecationWarning("The Gradle.useLogger(Object) method has been deprecated. " +
             "This is scheduled to be removed in Gradle 10. " +
             "Consult the upgrading guide for further information: " +
             "https://docs.gradle.org/current/userguide/upgrading_version_8.html#deprecated_use_logger")
@@ -246,7 +246,7 @@ class LoggingIntegrationTest extends AbstractIntegrationSpec {
         LogLevel logLevel = sample."$level"
 
         when:
-        executer.noExtraLogging().inDirectory(sampleResources.dir).withArguments(logLevel.args)
+        executor.noExtraLogging().inDirectory(sampleResources.dir).withArguments(logLevel.args)
         run 'log'
         then:
         logLevel.checkOuts(result)
@@ -260,7 +260,7 @@ class LoggingIntegrationTest extends AbstractIntegrationSpec {
         resources.maybeCopy('LoggingIntegrationTest/multiThreaded')
 
         when:
-        executer.noExtraLogging().withArguments(logLevel.args)
+        executor.noExtraLogging().withArguments(logLevel.args)
         run 'log'
         then:
         logLevel.checkOuts(result)

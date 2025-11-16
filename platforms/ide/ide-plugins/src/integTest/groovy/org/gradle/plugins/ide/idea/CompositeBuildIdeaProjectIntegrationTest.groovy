@@ -519,7 +519,7 @@ class CompositeBuildIdeaProjectIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def idea(TestFile build = buildA) {
-        executer.inDirectory(build)
+        executor.inDirectory(build)
         succeeds(":idea")
     }
 

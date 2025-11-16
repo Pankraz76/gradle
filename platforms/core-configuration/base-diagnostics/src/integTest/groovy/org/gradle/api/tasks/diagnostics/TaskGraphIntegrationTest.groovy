@@ -189,7 +189,7 @@ Tasks graph for: :included:fromIncluded
         and: "shows the task graph for included build tasks if invoked in it's directory"
 
         when:
-        executer
+        executor
             .inDirectory(file("included"))
 
         succeeds("fromIncluded", "--task-graph")
@@ -234,7 +234,7 @@ Tasks graph for: root
         and: "does not show the task graph for buildSrc tasks if invoked directly because jar is magic"
 
         when:
-        executer
+        executor
             .inDirectory(file("buildSrc"))
 
         fails("jar", "--task-graph")
@@ -258,7 +258,7 @@ Tasks graph for: root
                 dependsOn(buildSrcTask)
             }
         """
-        executer
+        executor
             .inDirectory(file("buildSrc"))
 
         succeeds("jar", "--task-graph")
@@ -332,7 +332,7 @@ Tasks graph for: root
         and: "shows the task graph for early included build tasks if invoked in it's directory"
 
         when:
-        executer
+        executor
             .inDirectory(file("included"))
 
         succeeds("jar", "--task-graph")

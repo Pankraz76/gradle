@@ -20,7 +20,7 @@ import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.RepoScriptBlockUtil
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.integtests.fixtures.ToBeFixedForIsolatedProjects
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.reflect.validation.ValidationMessageChecker
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
 import org.gradle.test.precondition.Requires
@@ -122,7 +122,7 @@ class ParallelTaskExecutionIntegrationTest extends AbstractIntegrationSpec imple
                 }
             }
         """
-        executer.beforeExecute {
+        executor.beforeExecute {
             withArgument('--info')
         }
     }
@@ -143,7 +143,7 @@ class ParallelTaskExecutionIntegrationTest extends AbstractIntegrationSpec imple
     }
 
     void withParallelThreads(int threadCount) {
-        executer.beforeExecute {
+        executor.beforeExecute {
             withArgument("--max-workers=$threadCount")
         }
     }
@@ -256,7 +256,7 @@ class ParallelTaskExecutionIntegrationTest extends AbstractIntegrationSpec imple
 
     def "tasks are run in parallel if there are tasks without async work running in a different project using --parallel"() {
         given:
-        executer.beforeExecute {
+        executor.beforeExecute {
             withArgument("--parallel")
         }
         withParallelThreads(3)
@@ -271,7 +271,7 @@ class ParallelTaskExecutionIntegrationTest extends AbstractIntegrationSpec imple
     @ToBeFixedForConfigurationCache(skip = INVESTIGATE)
     def "tasks from same project do not run in parallel even when tasks do undeclared dependency resolution"() {
         given:
-        executer.beforeExecute {
+        executor.beforeExecute {
             withArgument("--parallel")
         }
         withParallelThreads(3)
@@ -321,7 +321,7 @@ class ParallelTaskExecutionIntegrationTest extends AbstractIntegrationSpec imple
         run ":a:aSerialPing", ":b:aPing", ":b:bPing"
 
         // when configuration is loaded from configuration cache, all tasks are executed in parallel
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             blockingServer.expectConcurrent(":a:aSerialPing", ":b:aPing", ":b:bPing")
             run ":a:aSerialPing", ":b:aPing", ":b:bPing"
         }
@@ -538,7 +538,7 @@ class ParallelTaskExecutionIntegrationTest extends AbstractIntegrationSpec imple
 
         expect:
         2.times {
-            expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer, dummyValidationProblem('InvalidPing', 'invalidInput'), 'id', 'section')
+            expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor, dummyValidationProblem('InvalidPing', 'invalidInput'), 'id', 'section')
 
             blockingServer.expect(":aInvalidPing")
             blockingServer.expectConcurrent(":bPing", ":cPing")
@@ -564,7 +564,7 @@ class ParallelTaskExecutionIntegrationTest extends AbstractIntegrationSpec imple
 
         expect:
         2.times {
-            expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer, dummyValidationProblem('InvalidPing', 'invalidInput'), 'id', 'section')
+            expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor, dummyValidationProblem('InvalidPing', 'invalidInput'), 'id', 'section')
 
             blockingServer.expectConcurrent(":aPing", ":bPing")
             blockingServer.expect(":cInvalidPing")
@@ -615,7 +615,7 @@ class ParallelTaskExecutionIntegrationTest extends AbstractIntegrationSpec imple
             }
         """)
         withParallelThreads(3)
-        executer.beforeExecute {
+        executor.beforeExecute {
             withArgument("--parallel")
         }
 

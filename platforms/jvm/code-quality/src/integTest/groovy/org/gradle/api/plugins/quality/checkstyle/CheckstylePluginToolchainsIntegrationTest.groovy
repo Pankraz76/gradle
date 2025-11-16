@@ -37,7 +37,7 @@ import static org.hamcrest.CoreMatchers.containsString
 class CheckstylePluginToolchainsIntegrationTest extends MultiVersionIntegrationSpec implements JavaToolchainFixture {
 
     def setup() {
-        executer.withArgument("--info")
+        executor.withArgument("--info")
     }
 
     def "uses jdk from toolchains set through java plugin"() {
@@ -166,7 +166,7 @@ class CheckstylePluginToolchainsIntegrationTest extends MultiVersionIntegrationS
 
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicit locale")
     def "analyze bad code with the toolchain JDK"() {
-        executer.withDefaultLocale(new Locale('en'))
+        executor.withDefaultLocale(new Locale('en'))
         badCode()
         def jdk = setupExecutorForToolchains()
         writeBuildFileWithToolchainsFromJavaPlugin(jdk)

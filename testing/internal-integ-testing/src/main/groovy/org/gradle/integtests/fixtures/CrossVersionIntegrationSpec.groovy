@@ -16,11 +16,11 @@
 package org.gradle.integtests.fixtures
 
 import org.gradle.integtests.fixtures.compatibility.CrossVersionTest
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.GradleExecuter
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
-import org.gradle.integtests.fixtures.executer.NoDaemonGradleExecuter
-import org.gradle.integtests.fixtures.executer.UnderDevelopmentGradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleExecutor
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.NoDaemonGradleExecutor
+import org.gradle.integtests.fixtures.executor.UnderDevelopmentGradleDistribution
 import org.gradle.test.fixtures.file.CleanupTestDirectory
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.fixtures.file.TestNameTestDirectoryProvider
@@ -39,7 +39,7 @@ import static spock.lang.Retry.Mode.SETUP_FEATURE_CLEANUP
 @CleanupTestDirectory
 abstract class CrossVersionIntegrationSpec extends Specification {
     @Rule TestNameTestDirectoryProvider temporaryFolder = new TestNameTestDirectoryProvider(getClass())
-    private final List<GradleExecuter> executers = []
+    private final List<GradleExecutor> executors = []
     final GradleDistribution current = new UnderDevelopmentGradleDistribution()
     static GradleDistribution previous
     private MavenFileRepository mavenRepo
@@ -53,7 +53,7 @@ abstract class CrossVersionIntegrationSpec extends Specification {
     }
 
     def cleanup() {
-        executers.each { it.cleanup() }
+        executors.each { it.cleanup() }
     }
 
     void requireOwnGradleUserHomeDir() {
@@ -91,13 +91,13 @@ abstract class CrossVersionIntegrationSpec extends Specification {
         return mavenRepo
     }
 
-    GradleExecuter version(GradleDistribution dist) {
-        def executer = new NoDaemonGradleExecuter(dist, temporaryFolder, IntegrationTestBuildContext.INSTANCE)
+    GradleExecutor version(GradleDistribution dist) {
+        def executor = new NoDaemonGradleExecutor(dist, temporaryFolder, IntegrationTestBuildContext.INSTANCE)
         if (gradleUserHomeDir) {
-            executer.withGradleUserHomeDir(gradleUserHomeDir)
+            executor.withGradleUserHomeDir(gradleUserHomeDir)
         }
-        executer.inDirectory(testDirectory)
-        executers << executer
-        return executer
+        executor.inDirectory(testDirectory)
+        executors << executor
+        return executor
     }
 }

@@ -17,7 +17,7 @@
 package org.gradle.internal.logging.console.taskgrouping
 
 import org.gradle.integtests.fixtures.console.AbstractConsoleGroupedTaskFunctionalTest
-import org.gradle.integtests.fixtures.executer.LogContent
+import org.gradle.integtests.fixtures.executor.LogContent
 
 abstract class AbstractGroupedProjectConfigureLoggingFunctionalTest extends AbstractConsoleGroupedTaskFunctionalTest {
     def "project configuration messages are grouped"() {

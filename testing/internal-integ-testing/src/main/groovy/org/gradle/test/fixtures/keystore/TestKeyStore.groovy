@@ -19,8 +19,8 @@ package org.gradle.test.fixtures.keystore
 import groovy.transform.CompileStatic
 import org.eclipse.jetty.util.ssl.SslContextFactory
 import org.gradle.api.Action
-import org.gradle.integtests.fixtures.executer.GradleExecuter
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.GradleExecutor
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.internal.Actions
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.fixtures.server.http.HttpServerFixture
@@ -115,39 +115,39 @@ class TestKeyStore {
         server.enableSsl(trustStore.path, trustStorePassword, trustStore.path, keyStorePassword, configureServer)
     }
 
-    void configureServerCert(GradleExecuter executer) {
+    void configureServerCert(GradleExecutor executor) {
         def args = getTrustStoreArguments()
         if (IntegrationTestBuildContext.embedded) {
             args.each {
-                executer.withArgument(it)
+                executor.withArgument(it)
             }
         } else {
-            executer.withBuildJvmOpts(args)
+            executor.withBuildJvmOpts(args)
         }
     }
 
-    void configureIncorrectServerCert(GradleExecuter executer) {
+    void configureIncorrectServerCert(GradleExecutor executor) {
         // intentionally use wrong trust store
         def args = getTrustStoreSettings()
             .tap { it["javax.net.ssl.trustStore"] = this.keyStore.path }
             .collect { "-D${it.key}=${it.value}".toString() }
         if (IntegrationTestBuildContext.embedded) {
             args.each {
-                executer.withArgument(it)
+                executor.withArgument(it)
             }
         } else {
-            executer.withBuildJvmOpts(args)
+            executor.withBuildJvmOpts(args)
         }
     }
 
-    void configureServerAndClientCerts(GradleExecuter executer) {
+    void configureServerAndClientCerts(GradleExecutor executor) {
         def args = getServerAndClientCertArgs()
         if (IntegrationTestBuildContext.embedded) {
             args.each {
-                executer.withArgument(it)
+                executor.withArgument(it)
             }
         } else {
-            executer.withBuildJvmOpts(args)
+            executor.withBuildJvmOpts(args)
         }
     }
 

@@ -102,7 +102,7 @@ class CppLibraryIntegrationTest extends AbstractCppIntegrationTest implements Cp
         """
 
         when:
-        executer.withArgument("--info")
+        executor.withArgument("--info")
         run "assemble"
 
         then:
@@ -139,7 +139,7 @@ class CppLibraryIntegrationTest extends AbstractCppIntegrationTest implements Cp
          """
 
         expect:
-        executer.withArgument("--info")
+        executor.withArgument("--info")
         succeeds tasks.release.assemble
 
         result.assertTasksScheduled(tasks.release.allToLink, tasks.release.extract, tasks.release.assemble)
@@ -147,7 +147,7 @@ class CppLibraryIntegrationTest extends AbstractCppIntegrationTest implements Cp
         sharedLibrary("build/lib/main/release/hello").assertHasStrippedDebugSymbolsFor(lib.sourceFileNamesWithoutHeaders)
         output.contains('compiling with feature enabled')
 
-        executer.withArgument("--info")
+        executor.withArgument("--info")
         succeeds tasks.debug.assemble
 
         result.assertTasksScheduled(tasks.debug.allToLink, tasks.debug.assemble)

@@ -17,11 +17,11 @@
 
 package org.gradle.test.fixtures.maven
 import org.gradle.api.Action
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 import org.gradle.test.fixtures.file.TestFile
 
-class M2Installation implements Action<GradleExecuter> {
+class M2Installation implements Action<GradleExecutor> {
     private final TestDirectoryProvider temporaryFolder
     private boolean initialized = false
     private TestFile userHomeDir
@@ -106,26 +106,26 @@ class M2Installation implements Action<GradleExecuter> {
         return this
     }
 
-    void execute(GradleExecuter gradleExecuter) {
+    void execute(GradleExecutor gradleExecutor) {
         init()
-        gradleExecuter.withUserHomeDir(userHomeDir)
+        gradleExecutor.withUserHomeDir(userHomeDir)
         // if call `using m2`, then we disable the automatic isolation of m2
         isolateMavenLocal = false
         if (globalMavenDirectory?.exists()) {
-            gradleExecuter.withEnvironmentVars(M2_HOME: globalMavenDirectory.absolutePath)
+            gradleExecutor.withEnvironmentVars(M2_HOME: globalMavenDirectory.absolutePath)
         }
     }
 
-    void isolateMavenLocalRepo(GradleExecuter gradleExecuter) {
-        gradleExecuter.beforeExecute {
+    void isolateMavenLocalRepo(GradleExecutor gradleExecutor) {
+        gradleExecutor.beforeExecute {
             if (isolateMavenLocal) {
                 isolatedMavenRepoForLeakageChecks = temporaryFolder.testDirectory.createDir("m2-home-should-not-be-filled")
-                setMavenLocalLocation(gradleExecuter, isolatedMavenRepoForLeakageChecks)
+                setMavenLocalLocation(gradleExecutor, isolatedMavenRepoForLeakageChecks)
             }
         }
     }
 
-    private static void setMavenLocalLocation(GradleExecuter gradleExecuter, File destination) {
-        gradleExecuter.withArgument("-Dmaven.repo.local=${destination?:''}" )
+    private static void setMavenLocalLocation(GradleExecutor gradleExecutor, File destination) {
+        gradleExecutor.withArgument("-Dmaven.repo.local=${destination?:''}" )
     }
 }

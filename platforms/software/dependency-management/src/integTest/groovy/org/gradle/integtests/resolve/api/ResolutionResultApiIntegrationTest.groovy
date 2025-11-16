@@ -409,7 +409,7 @@ baz:1.0 requested
                 }
             }
         """
-        executer.withArgument('-Dorg.gradle.api.internal.artifacts.ivyservice.resolveengine.store.cacheExpiryMs=500')
+        executor.withArgument('-Dorg.gradle.api.internal.artifacts.ivyservice.resolveengine.store.cacheExpiryMs=500')
 
         when:
         run 'resolveTwice'

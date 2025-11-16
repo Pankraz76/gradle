@@ -18,9 +18,9 @@ package org.gradle.integtests.tooling.fixture
 
 import org.apache.commons.io.output.TeeOutputStream
 import org.gradle.api.internal.jvm.JavaVersionParser
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
-import org.gradle.integtests.fixtures.executer.UnderDevelopmentGradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.UnderDevelopmentGradleDistribution
 import org.gradle.internal.classloader.ClasspathUtil
 import org.gradle.internal.classloader.DefaultClassLoaderFactory
 import org.gradle.internal.classloader.FilteringClassLoader

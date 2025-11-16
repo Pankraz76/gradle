@@ -20,7 +20,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.plugins.UnknownPluginException
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.NoDaemonGradleExecuter
+import org.gradle.integtests.fixtures.executor.NoDaemonGradleExecutor
 import org.gradle.internal.component.resolution.failure.exception.VariantSelectionByAttributesException
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.UnitTestPreconditions
@@ -133,8 +133,8 @@ class GradlePluginWithVariantsPublicationIntegrationTest extends AbstractIntegra
 
         and:
         def distribution = buildContext.distribution("6.7.1")
-        def gradle6Executer = new NoDaemonGradleExecuter(distribution, temporaryFolder, buildContext)
-        def gradle6Result = gradle6Executer.usingProjectDirectory(consumer).withTasks('greet').run()
+        def gradle6Executor = new NoDaemonGradleExecutor(distribution, temporaryFolder, buildContext)
+        def gradle6Result = gradle6Executor.usingProjectDirectory(consumer).withTasks('greet').run()
 
         then:
         gradle6Result.assertOutputContains("Hello from Gradle <7.0")

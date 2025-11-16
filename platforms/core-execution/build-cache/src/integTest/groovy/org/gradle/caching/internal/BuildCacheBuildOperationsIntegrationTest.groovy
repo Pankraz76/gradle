@@ -39,7 +39,7 @@ class BuildCacheBuildOperationsIntegrationTest extends AbstractIntegrationSpec {
     @Shared
     String remoteCacheClass = "RemoteBuildCache"
 
-    def operations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def operations = new BuildOperationsFixture(executor, testDirectoryProvider)
     def cacheOperations = new BuildCacheOperationFixtures(operations)
 
     void remote(String loadBody, String storeBody) {
@@ -47,7 +47,7 @@ class BuildCacheBuildOperationsIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def setup() {
-        executer.beforeExecute { it.withBuildCacheEnabled() }
+        executor.beforeExecute { it.withBuildCacheEnabled() }
     }
 
     void register(String className, String loadBody, String storeBody) {
@@ -188,7 +188,7 @@ class BuildCacheBuildOperationsIntegrationTest extends AbstractIntegrationSpec {
         """
         def failureMessage = "${exceptionType.name}: !"
 
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         succeeds("t")
 
         then:
@@ -232,7 +232,7 @@ class BuildCacheBuildOperationsIntegrationTest extends AbstractIntegrationSpec {
             tasks.create("t", CustomTask).paths << "out1" << "out2"
         """
 
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         succeeds("t")
 
         then:

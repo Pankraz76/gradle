@@ -107,17 +107,17 @@ task c {
         mod2.artifact.expectGet()
 
         // Start build 1 then wait until it has run task 'a'.
-        def previousExecuter = version(previous)
-        previousExecuter.withArgument("-Penable-block1")
-        previousExecuter.withTasks("c")
-        def build1 = previousExecuter.start()
+        def previousExecutor = version(previous)
+        previousExecutor.withArgument("-Penable-block1")
+        previousExecutor.withTasks("c")
+        def build1 = previousExecutor.start()
         block1.waitForAllPendingCalls()
 
         // Start build 2 then wait until it has run both 'a' and 'b'.
-        def currentExecuter = version(current)
-        currentExecuter.withArgument("-Penable-block2")
-        currentExecuter.withTasks("c")
-        def build2 = currentExecuter.start()
+        def currentExecutor = version(current)
+        currentExecutor.withArgument("-Penable-block2")
+        currentExecutor.withTasks("c")
+        def build2 = currentExecutor.start()
         block2.waitForAllPendingCalls()
 
         // Finish up build 1 and 2

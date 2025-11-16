@@ -27,7 +27,7 @@ class VersionCatalogPluginApplicationIntegrationTest extends AbstractIntegration
         def taskName = "pluginTask"
 
         pluginBuilder.addPluginWithPrintlnTask(taskName, message, "org.example.plugin")
-        pluginBuilder.publishAs("org.example.plugin:plugin:1.0.0", mavenRepo, executer)
+        pluginBuilder.publishAs("org.example.plugin:plugin:1.0.0", mavenRepo, executor)
     }
 
     def "can apply a plugin by id and version using version catalog"() {

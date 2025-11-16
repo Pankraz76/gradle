@@ -27,7 +27,7 @@ import org.gradle.internal.watch.vfs.BuildStartedFileSystemWatchingBuildOperatio
 @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicitly requests a daemon")
 class BuildOperationsFileSystemWatchingIntegrationTest extends AbstractFileSystemWatchingIntegrationTest {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
     def projectDir = file("project")
     def inputFile = projectDir.file("input.txt")
 
@@ -45,10 +45,10 @@ class BuildOperationsFileSystemWatchingIntegrationTest extends AbstractFileSyste
         """
 
         inputFile.text = "input"
-        executer.beforeExecute {
+        executor.beforeExecute {
             inDirectory(projectDir)
         }
-        executer.requireDaemon()
+        executor.requireDaemon()
     }
 
     def "emits build operations when watching is enabled"() {

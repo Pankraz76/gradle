@@ -16,8 +16,8 @@
 
 package org.gradle.kotlin.dsl.integration
 
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.kotlin.dsl.fixtures.AbstractKotlinIntegrationTest
 import org.gradle.kotlin.dsl.fixtures.clickableUrlFor
 import org.junit.Before
@@ -29,7 +29,7 @@ class KotlinStandaloneScriptWarningsIntegrationTest : AbstractKotlinIntegrationT
 
     @Before
     fun setup() {
-        executer.beforeExecute { noDeprecationChecks() }
+        executor.beforeExecute { noDeprecationChecks() }
     }
 
     @Test

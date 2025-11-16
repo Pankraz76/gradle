@@ -479,7 +479,7 @@ class XcodeSingleSwiftProjectIntegrationTest extends AbstractXcodeIntegrationSpe
         """
 
         app.writeToProject(testDirectory)
-        //executer.startBuildProcessInDebugger(true)
+        //executor.startBuildProcessInDebugger(true)
         succeeds("xcode")
 
         when:

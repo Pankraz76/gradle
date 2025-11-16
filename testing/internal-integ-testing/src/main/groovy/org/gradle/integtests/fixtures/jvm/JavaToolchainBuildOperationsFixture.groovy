@@ -39,7 +39,7 @@ trait JavaToolchainBuildOperationsFixture {
 
     void captureBuildOperations() {
         if (operations == null) {
-            operations = new BuildOperationsFixture(executer, temporaryFolder)
+            operations = new BuildOperationsFixture(executor, temporaryFolder)
         }
     }
 

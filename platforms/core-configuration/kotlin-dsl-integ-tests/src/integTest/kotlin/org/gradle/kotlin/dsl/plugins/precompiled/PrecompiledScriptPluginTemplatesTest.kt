@@ -261,7 +261,7 @@ class PrecompiledScriptPluginTemplatesTest : AbstractPrecompiledScriptPluginTest
             }
         }
 
-        executer.inDirectory(file("plugin")).withTasks("jar").run()
+        executor.inDirectory(file("plugin")).withTasks("jar").run()
 
         val pluginJar = file("plugin/build/libs/plugin.jar")
         assertThat("pluginJar was built", pluginJar.exists())
@@ -454,7 +454,7 @@ class PrecompiledScriptPluginTemplatesTest : AbstractPrecompiledScriptPluginTest
         )
 
         // Error message relies on Kotlin's Deprecated.HIDDEN
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
         buildAndFail("classes").run {
             assertHasDescription(
                 "Execution failed for task ':compileKotlin'."

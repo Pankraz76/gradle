@@ -121,7 +121,7 @@ class TestKitIntegrationTest : AbstractKotlinIntegrationTest() {
                         .withProjectDir(temporaryFolder.root)
                         .withPluginClasspath()
                         .withArguments(*arguments)
-                        .withTestKitDir(java.io.File("${executer.gradleUserHomeDir.normalisedPath}"))
+                        .withTestKitDir(java.io.File("${executor.gradleUserHomeDir.normalisedPath}"))
                         .build()
 
                 private
@@ -243,7 +243,7 @@ class TestKitIntegrationTest : AbstractKotlinIntegrationTest() {
                         .withProjectDir(projectDir)
                         .withPluginClasspath()
                         .withDebug(true)
-                        .withTestKitDir(java.io.File("${executer.gradleUserHomeDir.normalisedPath}"))
+                        .withTestKitDir(java.io.File("${executor.gradleUserHomeDir.normalisedPath}"))
                         .build()
                 }
             }

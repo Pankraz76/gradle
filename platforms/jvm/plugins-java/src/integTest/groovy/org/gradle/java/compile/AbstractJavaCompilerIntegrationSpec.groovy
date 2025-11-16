@@ -38,7 +38,7 @@ abstract class AbstractJavaCompilerIntegrationSpec extends AbstractIntegrationSp
     abstract String logStatement()
 
     def setup() {
-        executer.withArguments("-i")
+        executor.withArguments("-i")
         buildFile << """
             plugins {
                 id("java-library")

@@ -69,7 +69,7 @@ repositories {
 }
 """
         when:
-        proxyServer.configureProxy(executer, proxyScheme)
+        proxyServer.configureProxy(executor, proxyScheme)
         module.allowAll()
 
         then:
@@ -96,7 +96,7 @@ repositories {
 }
 """
         when:
-        proxyServer.configureProxy(executer, proxyScheme)
+        proxyServer.configureProxy(executor, proxyScheme)
         module.allowAll()
 
         then:
@@ -121,7 +121,7 @@ repositories {
 }
 """
         when:
-        proxyServer.configureProxy(executer, proxyScheme, proxyUserName, proxyPassword)
+        proxyServer.configureProxy(executor, proxyScheme, proxyUserName, proxyPassword)
         module.allowAll()
 
         then:
@@ -148,7 +148,7 @@ repositories {
 }
 """
         when:
-        proxyServer.configureProxy(executer, proxyScheme, proxyUserName, "not-the-password")
+        proxyServer.configureProxy(executor, proxyScheme, proxyUserName, "not-the-password")
         module.allowAll()
 
         then:
@@ -172,9 +172,9 @@ repositories {
 }
 """
         when:
-        proxyServer.configureProxy(executer, proxyScheme)
-        proxyServer.configureProxyHost(executer, "http")
-        proxyServer.configureProxyHost(executer, "https")
+        proxyServer.configureProxy(executor, proxyScheme)
+        proxyServer.configureProxyHost(executor, "http")
+        proxyServer.configureProxyHost(executor, "https")
         module.allowAll()
 
         then:
@@ -197,7 +197,7 @@ repositories {
 """
 
         when:
-        proxyServer.configureProxyHost(executer, proxyScheme == 'https' ? 'http' : 'https')
+        proxyServer.configureProxyHost(executor, proxyScheme == 'https' ? 'http' : 'https')
         module.allowAll()
 
         then:
@@ -229,7 +229,7 @@ repositories {
 
         when:
         server.authenticationScheme = authScheme
-        proxyServer.configureProxy(executer, proxyScheme, proxyUserName, proxyPassword)
+        proxyServer.configureProxy(executor, proxyScheme, proxyUserName, proxyPassword)
 
         and:
         module.pom.expectGet(repoUserName, repoPassword)

@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 import org.junit.rules.MethodRule
 import org.junit.runners.model.FrameworkMethod
 import org.junit.runners.model.Statement
 
-abstract class InitScriptExecuterFixture implements MethodRule {
+abstract class InitScriptExecutorFixture implements MethodRule {
 
-    GradleExecuter executer
+    GradleExecutor executor
     TestDirectoryProvider testDir
 
-    InitScriptExecuterFixture(GradleExecuter executer, TestDirectoryProvider testDir) {
-        this.executer = executer
+    InitScriptExecutorFixture(GradleExecutor executor, TestDirectoryProvider testDir) {
+        this.executor = executor
         this.testDir = testDir
     }
 
@@ -41,10 +41,10 @@ abstract class InitScriptExecuterFixture implements MethodRule {
         def temporaryFolder = testDir.testDirectory
         def initFile = temporaryFolder.file(this.getClass().getSimpleName() + "-init.gradle")
         initFile.text = initScriptContent()
-        executer.beforeExecute {
+        executor.beforeExecute {
             usingInitScript(initFile)
         }
-        executer.afterExecute {
+        executor.afterExecute {
             afterBuild()
         }
 

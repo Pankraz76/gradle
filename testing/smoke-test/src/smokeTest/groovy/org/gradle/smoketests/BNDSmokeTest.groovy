@@ -17,7 +17,7 @@
 package org.gradle.smoketests
 
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.test.fixtures.archive.JarTestFixture
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.UnitTestPreconditions
@@ -418,7 +418,7 @@ Bundle-Activator: com.example.Activator
 
         expect:
         def result = runner(":run")
-            .expectDeprecationWarningIf(GradleContextualExecuter.notConfigCache,
+            .expectDeprecationWarningIf(GradleContextualExecutor.notConfigCache,
                 "Invocation of Task.project at execution time has been deprecated. "+
                 "This will fail with an error in Gradle 10. "+
                 "This API is incompatible with the configuration cache, which will become the only mode supported by Gradle in a future release. "+

@@ -22,7 +22,7 @@ import org.gradle.integtests.fixtures.ToBeFixedForIsolatedProjects
 
 class ApplyPluginBuildOperationIntegrationTest extends AbstractIntegrationSpec {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "captures plugin application events"() {
         given:

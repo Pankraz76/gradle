@@ -25,16 +25,16 @@ import org.gradle.api.internal.file.FileCollectionFactory;
 import org.gradle.api.internal.file.FileOperations;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.api.internal.tasks.TaskDependencyFactory;
-import org.gradle.api.internal.tasks.TaskExecuter;
-import org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter;
+import org.gradle.api.internal.tasks.TaskExecutor;
+import org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecutor;
 import org.gradle.api.internal.tasks.execution.DefaultTaskCacheabilityResolver;
-import org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter;
-import org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter;
-import org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter;
-import org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter;
-import org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter;
-import org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter;
-import org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter;
+import org.gradle.api.internal.tasks.execution.EventFiringTaskExecutor;
+import org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecutor;
+import org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecutor;
+import org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecutor;
+import org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecutor;
+import org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecutor;
+import org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecutor;
 import org.gradle.api.internal.tasks.execution.TaskCacheabilityResolver;
 import org.gradle.execution.plan.ExecutionNodeAccessHierarchies;
 import org.gradle.execution.plan.MissingTaskDependencyDetector;
@@ -92,7 +92,7 @@ public class ProjectExecutionServices implements ServiceRegistrationProvider {
     }
 
     @Provides
-    TaskExecuter createTaskExecuter(
+    TaskExecutor createTaskExecutor(
         AsyncWorkTracker asyncWorkTracker,
         BuildOperationRunner buildOperationRunner,
         ClassLoaderHierarchyHasher classLoaderHierarchyHasher,
@@ -109,7 +109,7 @@ public class ProjectExecutionServices implements ServiceRegistrationProvider {
         InputFingerprinter inputFingerprinter,
         MissingTaskDependencyDetector missingTaskDependencyDetector
     ) {
-        TaskExecuter executer = new ExecuteActionsTaskExecuter(
+        TaskExecutor executor = new ExecuteActionsTaskExecutor(
             executionHistoryStore,
             buildOperationRunner,
             asyncWorkTracker,
@@ -126,15 +126,15 @@ public class ProjectExecutionServices implements ServiceRegistrationProvider {
             fileOperations.getFileResolver(),
             missingTaskDependencyDetector
         );
-        executer = new ProblemsTaskPathTrackingTaskExecuter(executer);
-        executer = new FinalizePropertiesTaskExecuter(executer);
-        executer = new ResolveTaskExecutionModeExecuter(repository, executer);
-        executer = new SkipTaskWithNoActionsExecuter(taskExecutionGraph, executer);
-        executer = new SkipOnlyIfTaskExecuter(executer);
-        executer = new CatchExceptionTaskExecuter(executer);
-        executer = new EventFiringTaskExecuter(
-            buildOperationRunner, taskExecutionGraph.getLegacyTaskListenerBroadcast(), listenerManager.getBroadcaster(TaskListenerInternal.class), executer);
-        return executer;
+        executor = new ProblemsTaskPathTrackingTaskExecutor(executor);
+        executor = new FinalizePropertiesTaskExecutor(executor);
+        executor = new ResolveTaskExecutionModeExecutor(repository, executor);
+        executor = new SkipTaskWithNoActionsExecutor(taskExecutionGraph, executor);
+        executor = new SkipOnlyIfTaskExecutor(executor);
+        executor = new CatchExceptionTaskExecutor(executor);
+        executor = new EventFiringTaskExecutor(
+            buildOperationRunner, taskExecutionGraph.getLegacyTaskListenerBroadcast(), listenerManager.getBroadcaster(TaskListenerInternal.class), executor);
+        return executor;
     }
 
     @Provides

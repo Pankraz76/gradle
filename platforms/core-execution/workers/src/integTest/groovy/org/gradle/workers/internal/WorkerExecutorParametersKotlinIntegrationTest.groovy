@@ -18,7 +18,7 @@ package org.gradle.workers.internal
 
 import groovy.transform.Canonical
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.workers.fixtures.WorkerExecutorFixture.IsolationMode
 import spock.lang.Issue

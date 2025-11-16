@@ -17,26 +17,26 @@
 package org.gradle.api.internal.tasks.execution;
 
 import org.gradle.api.internal.TaskInternal;
-import org.gradle.api.internal.tasks.TaskExecuter;
-import org.gradle.api.internal.tasks.TaskExecuterResult;
+import org.gradle.api.internal.tasks.TaskExecutor;
+import org.gradle.api.internal.tasks.TaskExecutorResult;
 import org.gradle.api.internal.tasks.TaskExecutionContext;
 import org.gradle.api.internal.tasks.TaskStateInternal;
 import org.gradle.api.tasks.TaskExecutionException;
 
-public class CatchExceptionTaskExecuter implements TaskExecuter {
-    private final TaskExecuter delegate;
+public class CatchExceptionTaskExecutor implements TaskExecutor {
+    private final TaskExecutor delegate;
 
-    public CatchExceptionTaskExecuter(TaskExecuter delegate) {
+    public CatchExceptionTaskExecutor(TaskExecutor delegate) {
         this.delegate = delegate;
     }
 
     @Override
-    public TaskExecuterResult execute(TaskInternal task, TaskStateInternal state, TaskExecutionContext context) {
+    public TaskExecutorResult execute(TaskInternal task, TaskStateInternal state, TaskExecutionContext context) {
         try {
             return delegate.execute(task, state, context);
         } catch (RuntimeException e) {
             state.setOutcome(new TaskExecutionException(task, e));
-            return TaskExecuterResult.WITHOUT_OUTPUTS;
+            return TaskExecutorResult.WITHOUT_OUTPUTS;
         }
     }
 }

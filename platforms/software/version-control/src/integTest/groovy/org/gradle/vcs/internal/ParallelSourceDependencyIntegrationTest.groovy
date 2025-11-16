@@ -116,11 +116,11 @@ class ParallelSourceDependencyIntegrationTest extends AbstractIntegrationSpec {
         // Only one build should clone
         repo.expectCloneSomething()
 
-        executer.withTasks('resolve')
-        def build1 = executer.start()
+        executor.withTasks('resolve')
+        def build1 = executor.start()
 
-        executer.withTasks('resolve')
-        def build2 = executer.start()
+        executor.withTasks('resolve')
+        def build2 = executor.start()
 
         build1.waitForFinish()
         build2.waitForFinish()
@@ -128,11 +128,11 @@ class ParallelSourceDependencyIntegrationTest extends AbstractIntegrationSpec {
         // Wait for each build to list versions
         httpServer.expectConcurrent(repo.listVersions(), repo.listVersions())
 
-        executer.withTasks('resolve')
-        def build3 = executer.start()
+        executor.withTasks('resolve')
+        def build3 = executor.start()
 
-        executer.withTasks('resolve')
-        def build4 = executer.start()
+        executor.withTasks('resolve')
+        def build4 = executor.start()
 
         build3.waitForFinish()
         build4.waitForFinish()

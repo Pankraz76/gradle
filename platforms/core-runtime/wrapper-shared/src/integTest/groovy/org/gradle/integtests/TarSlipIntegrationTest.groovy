@@ -52,7 +52,7 @@ class TarSlipIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def "Copy task refuses to unpack evil tar"() {
-        executer.withStacktraceEnabled()
+        executor.withStacktraceEnabled()
 
         given:
         buildFile '''

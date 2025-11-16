@@ -17,7 +17,7 @@
 package org.gradle.integtests.tooling.fixture
 
 import org.gradle.api.internal.jvm.JavaVersionParser
-import org.gradle.integtests.fixtures.executer.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleDistribution
 import org.gradle.integtests.fixtures.extensions.AbstractMultiTestInterceptor
 import org.gradle.util.GradleVersion
 import org.spockframework.runtime.extension.IMethodInvocation

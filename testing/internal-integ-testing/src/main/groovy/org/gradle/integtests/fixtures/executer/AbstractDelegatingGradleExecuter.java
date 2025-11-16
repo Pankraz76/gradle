@@ -13,37 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import org.gradle.test.fixtures.file.TestDirectoryProvider;
 import org.gradle.util.GradleVersion;
 
-public abstract class AbstractDelegatingGradleExecuter extends AbstractGradleExecuter {
+public abstract class AbstractDelegatingGradleExecutor extends AbstractGradleExecutor {
 
-    protected AbstractDelegatingGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, IntegrationTestBuildContext buildContext) {
+    protected AbstractDelegatingGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, IntegrationTestBuildContext buildContext) {
         super(distribution, testDirectoryProvider, GradleVersion.current(), buildContext);
     }
 
     @Override
     protected ExecutionResult doRun() {
-        return configureExecuter().run();
+        return configureExecutor().run();
     }
 
     @Override
     protected ExecutionFailure doRunWithFailure() {
-        return configureExecuter().runWithFailure();
+        return configureExecutor().runWithFailure();
     }
 
     @Override
     public void assertCanExecute() throws AssertionError {
-        configureExecuter().assertCanExecute();
+        configureExecutor().assertCanExecute();
     }
 
     @Override
     public GradleHandle createGradleHandle() {
-        return configureExecuter().start();
+        return configureExecutor().start();
     }
 
-    protected abstract GradleExecuter configureExecuter();
+    protected abstract GradleExecutor configureExecutor();
 
 }

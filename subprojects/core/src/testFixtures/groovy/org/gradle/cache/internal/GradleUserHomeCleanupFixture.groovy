@@ -134,9 +134,9 @@ trait GradleUserHomeCleanupFixture implements VersionSpecificCacheCleanupFixture
             return description
         }
 
-        void maybeExpectDeprecationWarning(executer) {
+        void maybeExpectDeprecationWarning(executor) {
             if (deprecationExpected) {
-                executer.expectDocumentedDeprecationWarning(
+                executor.expectDocumentedDeprecationWarning(
                     "Disabling Gradle user home cache cleanup with the 'org.gradle.cache.cleanup' property has been deprecated. " +
                         "This is scheduled to be removed in Gradle 9.0. " +
                         "Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#disabling_user_home_cache_cleanup"

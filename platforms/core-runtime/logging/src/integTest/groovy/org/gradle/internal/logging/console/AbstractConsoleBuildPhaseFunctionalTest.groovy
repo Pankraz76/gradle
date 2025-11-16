@@ -17,7 +17,7 @@
 package org.gradle.internal.logging.console
 
 import org.gradle.integtests.fixtures.console.AbstractConsoleGroupedTaskFunctionalTest
-import org.gradle.integtests.fixtures.executer.GradleHandle
+import org.gradle.integtests.fixtures.executor.GradleHandle
 import org.gradle.test.fixtures.ConcurrentTestUtil
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
 import org.junit.Rule
@@ -74,7 +74,7 @@ abstract class AbstractConsoleBuildPhaseFunctionalTest extends AbstractConsoleGr
         def task1 = server.expectAndBlock('task1')
         def task2 = server.expectAndBlock('task2')
         def buildFinished = server.expectAndBlock('build-finished')
-        gradle = executer.withTasks("hello2").start()
+        gradle = executor.withTasks("hello2").start()
 
         expect:
         settings.waitForAllPendingCalls()
@@ -162,7 +162,7 @@ abstract class AbstractConsoleBuildPhaseFunctionalTest extends AbstractConsoleGr
         def task1 = server.expectAndBlock('task1')
         def task2 = server.expectAndBlock('task2')
         def rootBuildFinished = server.expectAndBlock('root-build-finished')
-        gradle = executer.withTasks("hello2").start()
+        gradle = executor.withTasks("hello2").start()
 
         expect:
         settings.waitForAllPendingCalls()
@@ -242,7 +242,7 @@ abstract class AbstractConsoleBuildPhaseFunctionalTest extends AbstractConsoleGr
         def rootBuildScript = server.expectAndBlock('root-build-script')
         def task2 = server.expectAndBlock('task2')
         def rootBuildFinished = server.expectAndBlock('root-build-finished')
-        gradle = executer.withTasks("hello").start()
+        gradle = executor.withTasks("hello").start()
 
         expect:
         settings.waitForAllPendingCalls()
@@ -293,7 +293,7 @@ abstract class AbstractConsoleBuildPhaseFunctionalTest extends AbstractConsoleGr
         def buildFinished = server.expectAndBlock('build-finished')
 
         when:
-        gradle = executer.withTasks(":util:resolve").start()
+        gradle = executor.withTasks(":util:resolve").start()
 
         then:
         jar.waitForAllPendingCalls()
@@ -335,7 +335,7 @@ abstract class AbstractConsoleBuildPhaseFunctionalTest extends AbstractConsoleGr
         def buildFinished = server.expectAndBlock('build-finished')
 
         when:
-        gradle = executer.withTasks(":util:resolveWithoutDependencies").start()
+        gradle = executor.withTasks(":util:resolveWithoutDependencies").start()
 
         then:
         jar.waitForAllPendingCalls()

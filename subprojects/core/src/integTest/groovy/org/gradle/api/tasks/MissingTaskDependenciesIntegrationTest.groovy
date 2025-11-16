@@ -18,7 +18,7 @@ package org.gradle.api.tasks
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.reflect.validation.ValidationMessageChecker
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
 import org.gradle.util.internal.TextUtil
@@ -444,7 +444,7 @@ class MissingTaskDependenciesIntegrationTest extends AbstractIntegrationSpec imp
         // We introduced a workaround for our build in https://github.com/gradle/gradle/pull/20366.
 
         // Configuration caching resolves the inputs once more to store the result in the configuration cache.
-        int countResolvedBeforeTaskExecution = GradleContextualExecuter.configCache ? 2 : 1
+        int countResolvedBeforeTaskExecution = GradleContextualExecutor.configCache ? 2 : 1
         server.start()
         file("lib/src/MyClass.java").text = "public class MyClass {}"
 
@@ -689,7 +689,7 @@ The following types/formats are supported:
         // TODO: Fix this
         // With cc tasks can run in parallel so reporting is a bit flaky
         // and we sometimes report only the first location, but sometimes also other locations, depending on the task execution
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             def matchers = []
             for (int i = 0; i < producedConsumedLocations.length; i++) {
                 matchers += containsNormalizedString(implicitDependency {

@@ -41,7 +41,7 @@ class EclipseIntegrationTest extends AbstractEclipseIntegrationTest {
     @Test
     void canCreateAndDeleteMetaData() {
         when:
-        executer.withTasks("eclipse").run()
+        executor.withTasks("eclipse").run()
 
         assertHasExpectedContents(getClasspathFile(project:"api"), "apiClasspath.xml")
         assertHasExpectedContents(getProjectFile(project:"api"), "apiProject.xml")
@@ -83,7 +83,7 @@ class EclipseIntegrationTest extends AbstractEclipseIntegrationTest {
         assertHasExpectedContents(getFacetFile(project:"webservice"), "webserviceWtpFacet.xml")
         assertHasExpectedProperties(getJdtPropertiesFile(project:"webservice"), "webserviceJdt.properties")
 
-        executer.withTasks("cleanEclipse").run()
+        executor.withTasks("cleanEclipse").run()
     }
 
     @Test
@@ -515,7 +515,7 @@ dependencies {
     }
 
     String getActualXml(File file) {
-        def gradleUserHomeDir = executer.getGradleUserHomeDir()
+        def gradleUserHomeDir = executor.getGradleUserHomeDir()
         def homeDir = gradleUserHomeDir.absolutePath.replace(File.separator, '/')
         def pattern = Pattern.compile(Pattern.quote(homeDir) + "/caches/${CacheLayout.MODULES.getKey()}/${CacheLayout.FILE_STORE.getKey()}/([^/]+/[^/]+/[^/]+)/[a-z0-9]+/")
         def text = file.text.replaceAll(pattern, '@CACHE_DIR@/$1/@SHA1@/')

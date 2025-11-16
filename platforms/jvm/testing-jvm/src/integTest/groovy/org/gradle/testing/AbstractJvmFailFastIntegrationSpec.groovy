@@ -53,7 +53,7 @@ abstract class AbstractJvmFailFastIntegrationSpec extends AbstractTestingMultiVe
         def testExecution = server.expectConcurrentAndBlock(DEFAULT_MAX_WORKERS, FAILED_RESOURCE, OTHER_RESOURCE)
 
         when:
-        def gradleHandle = executer.withTasks(taskList).start()
+        def gradleHandle = executor.withTasks(taskList).start()
         testExecution.waitForAllPendingCalls()
 
         then:
@@ -90,7 +90,7 @@ abstract class AbstractJvmFailFastIntegrationSpec extends AbstractTestingMultiVe
         def testExecution = server.expectOptionalAndBlock(DEFAULT_MAX_WORKERS, FAILED_RESOURCE, OTHER_RESOURCE)
 
         when:
-        def gradleHandle = executer.withTasks(taskList).start()
+        def gradleHandle = executor.withTasks(taskList).start()
         testExecution.waitForAllPendingCalls()
 
         then:
@@ -117,7 +117,7 @@ abstract class AbstractJvmFailFastIntegrationSpec extends AbstractTestingMultiVe
         def testExecution = server.expectOptionalAndBlock(maxWorkers, resourceForTest.values() as String[])
 
         when:
-        def gradleHandle = executer.withTasks('test', '--fail-fast').start()
+        def gradleHandle = executor.withTasks('test', '--fail-fast').start()
         testExecution.waitForAllPendingCalls()
 
         then:
@@ -166,7 +166,7 @@ abstract class AbstractJvmFailFastIntegrationSpec extends AbstractTestingMultiVe
         def testExecution = server.expectConcurrentAndBlock(DEFAULT_MAX_WORKERS, FAILED_RESOURCE, OTHER_RESOURCE)
 
         when:
-        def gradleHandle = executer.withTasks('test', '--fail-fast').start()
+        def gradleHandle = executor.withTasks('test', '--fail-fast').start()
         testExecution.waitForAllPendingCalls()
 
         then:
@@ -179,14 +179,14 @@ abstract class AbstractJvmFailFastIntegrationSpec extends AbstractTestingMultiVe
     @Requires(IntegTestPreconditions.NotParallelExecutor)
     def "fail fast console output shows test class in work-in-progress"() {
         given:
-        executer.withConsole(ConsoleOutput.Rich).withArguments('--parallel', "--max-workers=$DEFAULT_MAX_WORKERS")
+        executor.withConsole(ConsoleOutput.Rich).withArguments('--parallel', "--max-workers=$DEFAULT_MAX_WORKERS")
         buildFile.text = generator.initBuildFile()
         generator.withFailingTest()
         generator.withNonfailingTest()
         def testExecution = server.expectConcurrentAndBlock(DEFAULT_MAX_WORKERS, FAILED_RESOURCE, OTHER_RESOURCE)
 
         when:
-        def gradleHandle = executer.withTasks('test', '--fail-fast').start()
+        def gradleHandle = executor.withTasks('test', '--fail-fast').start()
         testExecution.waitForAllPendingCalls()
 
         then:
@@ -206,7 +206,7 @@ abstract class AbstractJvmFailFastIntegrationSpec extends AbstractTestingMultiVe
         def testExecution = server.expectOptionalAndBlock(DEFAULT_MAX_WORKERS, resourceForTest.values() as String[])
 
         when:
-        def gradleHandle = executer.withTasks('test', '--fail-fast', '--tests=*OtherTest_*').start()
+        def gradleHandle = executor.withTasks('test', '--fail-fast', '--tests=*OtherTest_*').start()
         testExecution.waitForAllPendingCalls()
 
         then:

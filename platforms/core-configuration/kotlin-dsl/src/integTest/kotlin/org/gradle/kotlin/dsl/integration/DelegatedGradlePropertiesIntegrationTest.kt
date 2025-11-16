@@ -74,8 +74,8 @@ class DelegatedGradlePropertiesIntegrationTest : AbstractKotlinIntegrationTest()
         )
 
         // and: isolated gradle user home
-        executer.withGradleUserHomeDir(existing("gradle-user-home"))
-        executer.requireIsolatedDaemons()
+        executor.withGradleUserHomeDir(existing("gradle-user-home"))
+        executor.requireIsolatedDaemons()
 
         // and: gradle command line with properties
         val buildArguments = arrayOf(

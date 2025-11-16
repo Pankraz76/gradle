@@ -30,7 +30,7 @@ class SamplesArchivesIntegrationTest extends AbstractSampleIntegrationTest {
     def "can archive a directory with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
         def archivesDir = dslDir.file("build/toArchive")
         archivesDir.createDir().file("my-report.pdf").touch()
         archivesDir.createDir().file("numbers.csv").touch()
@@ -58,7 +58,7 @@ class SamplesArchivesIntegrationTest extends AbstractSampleIntegrationTest {
     def "can create an archive with a convention-based name with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
         def archivesDir = dslDir.file("build/toArchive")
         archivesDir.createDir().file("my-report.pdf").touch()
         archivesDir.createDir().file("numbers.csv").touch()
@@ -86,7 +86,7 @@ class SamplesArchivesIntegrationTest extends AbstractSampleIntegrationTest {
     def "can unpack a ZIP file with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds("unpackFiles")
@@ -105,7 +105,7 @@ class SamplesArchivesIntegrationTest extends AbstractSampleIntegrationTest {
     def "can unpack a part of a ZIP file with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds("unpackLibsDirectory")
@@ -126,7 +126,7 @@ class SamplesArchivesIntegrationTest extends AbstractSampleIntegrationTest {
     def "can create an uber JAR with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds("uberJar")
@@ -148,7 +148,7 @@ class SamplesArchivesIntegrationTest extends AbstractSampleIntegrationTest {
     def "can link tasks via their properties with #dsl dsl"() {
         given:
         def dslDir = sample.dir.file(dsl)
-        executer.inDirectory(dslDir)
+        executor.inDirectory(dslDir)
 
         when:
         succeeds("packageClasses")

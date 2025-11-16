@@ -18,7 +18,7 @@ package org.gradle.integtests.tooling
 
 import org.apache.commons.io.output.TeeOutputStream
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.integtests.tooling.fixture.TestOutputStream
 import org.gradle.integtests.tooling.fixture.TextUtil
 import org.gradle.integtests.tooling.fixture.ToolingApi
@@ -113,7 +113,7 @@ project.logger.debug("debug logging");
                 .setStandardOutput(new TeeOutputStream(stdOut, System.out))
                 .setStandardError(new TeeOutputStream(stdErr, System.err))
 
-            if (GradleContextualExecuter.configCache) {
+            if (GradleContextualExecutor.configCache) {
                 builder.addArguments("--configuration-cache")
             }
 

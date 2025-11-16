@@ -19,7 +19,7 @@ package org.gradle.integtests.resolve.artifactreuse
 
 import org.gradle.api.internal.artifacts.ivyservice.DefaultArtifactCacheMetadata
 import org.gradle.integtests.fixtures.IgnoreVersions
-import org.gradle.integtests.fixtures.executer.DefaultGradleDistribution
+import org.gradle.integtests.fixtures.executor.DefaultGradleDistribution
 import org.gradle.util.GradleVersion
 
 @IgnoreVersions({ it.artifactCacheLayoutVersion != DefaultArtifactCacheMetadata.CACHE_LAYOUT_VERSION })

@@ -277,7 +277,7 @@ class JavaApplicationInitIntegrationTest extends AbstractJvmLibraryInitIntegrati
     @Requires(IntegTestPreconditions.NotEmbeddedExecutor)
     def "command line works with different locale"() {
         setup:
-        executer.withCommandLineGradleOpts('-Duser.language=tr', '-Duser.country=TR')
+        executor.withCommandLineGradleOpts('-Duser.language=tr', '-Duser.country=TR')
 
         expect:
         succeeds('init', '--type', 'java-application', '--dsl', 'groovy')

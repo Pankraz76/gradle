@@ -33,7 +33,7 @@ class SamplesJavaQuickstartIntegrationTest extends AbstractIntegrationSpec {
     public final Sample sample = new Sample(testDirectoryProvider, 'java/quickstart')
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     def "can build jar with #dsl dsl"() {
@@ -41,7 +41,7 @@ class SamplesJavaQuickstartIntegrationTest extends AbstractIntegrationSpec {
         TestFile javaprojectDir = sample.dir.file(dsl)
 
         when: "Build and test projects"
-        executer.inDirectory(javaprojectDir).withTasks('clean', 'build').run()
+        executor.inDirectory(javaprojectDir).withTasks('clean', 'build').run()
 
         then: "Check tests have run"
         def result = new DefaultTestExecutionResult(javaprojectDir)

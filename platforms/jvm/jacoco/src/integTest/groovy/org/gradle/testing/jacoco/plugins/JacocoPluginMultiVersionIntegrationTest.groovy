@@ -37,7 +37,7 @@ class JacocoPluginMultiVersionIntegrationTest extends JacocoMultiVersionIntegrat
 
     def "generates html report only as default"() {
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         succeeds('test', 'jacocoTestReport')
 
         then:

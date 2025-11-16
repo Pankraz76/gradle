@@ -61,14 +61,14 @@ class CrossProcessFileLockIntegrationTest extends AbstractIntegrationSpec {
         expect:
         server.expectConcurrent("first", "second")
 
-        def handle1 = executer.withArguments(':a:build', '-i').start()
+        def handle1 = executor.withArguments(':a:build', '-i').start()
         poll(120) {
             assert handle1.standardOutput.contains('waiting for resource...')
         }
         //first build is waiting for resource, so the lock should be releasable now (for example: the task history lock)
 
         and:
-        def handle2 = executer.withArguments('b:build', '-is').start()
+        def handle2 = executor.withArguments('b:build', '-is').start()
         handle2.waitForFinish()
         handle1.waitForFinish()
 

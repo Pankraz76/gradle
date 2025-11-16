@@ -95,7 +95,7 @@ fun Project.addDependenciesAndConfigurations(prefix: String) {
             "${prefix}TestRuntimeOnly"(project.the<ExternalModulesExtension>().junit5Vintage)
             "${prefix}TestImplementation"(project(":internal-integ-testing"))
             "${prefix}TestFullDistributionRuntimeClasspath"(project(":distributions-full"))
-            // Add the agent JAR to the test runtime classpath so the InProcessGradleExecuter can find the module and spawn daemons.
+            // Add the agent JAR to the test runtime classpath so the InProcessGradleExecutor can find the module and spawn daemons.
             // This doesn't apply the agent to the test process.
             "${prefix}TestRuntimeOnly"(project(":instrumentation-agent"))
             "${prefix}TestAgentsClasspath"(project(":instrumentation-agent"))
@@ -133,19 +133,19 @@ fun Project.createTasks(sourceSet: SourceSet, testType: TestType) {
     createGenerateAutoTestedSamplesTestTask(sourceSet, testType)
 
     val prefix = testType.prefix
-    val defaultExecuter = "embedded"
-    // For all the other executers, add an executer specific task
-    testType.executers.forEach { executer ->
-        val taskName = "$executer${prefix.capitalize()}Test"
-        val testTask = createTestTask(taskName, executer, sourceSet, testType) {}
-        if (executer == defaultExecuter) {
-            // The test task with the default executer runs with 'check'
+    val defaultExecutor = "embedded"
+    // For all the other executors, add an executor specific task
+    testType.executors.forEach { executor ->
+        val taskName = "$executor${prefix.capitalize()}Test"
+        val testTask = createTestTask(taskName, executor, sourceSet, testType) {}
+        if (executor == defaultExecutor) {
+            // The test task with the default executor runs with 'check'
             tasks.named("check").configure { dependsOn(testTask) }
         }
     }
     // Create a variant of the test suite to force realization of component metadata
     if (testType == TestType.INTEGRATION) {
-        createTestTask(prefix + "ForceRealizeTest", defaultExecuter, sourceSet, testType) {
+        createTestTask(prefix + "ForceRealizeTest", defaultExecutor, sourceSet, testType) {
             systemProperties["org.gradle.integtest.force.realize.metadata"] = "true"
         }
     }
@@ -171,12 +171,12 @@ abstract class AgentsClasspathProvider : CommandLineArgumentProvider {
 
 
 internal
-fun Project.createTestTask(name: String, executer: String, sourceSet: SourceSet, testType: TestType, extraConfig: Action<IntegrationTest>): TaskProvider<IntegrationTest> =
+fun Project.createTestTask(name: String, executor: String, sourceSet: SourceSet, testType: TestType, extraConfig: Action<IntegrationTest>): TaskProvider<IntegrationTest> =
     tasks.register<IntegrationTest>(name) {
         val integTest = project.the<IntegrationTestExtension>()
         project.getBucketProvider().get().bucketProvider.configureTest(this, sourceSet.name)
-        description = "Runs ${testType.prefix} with $executer executer"
-        systemProperties["org.gradle.integtest.executer"] = executer
+        description = "Runs ${testType.prefix} with $executor executor"
+        systemProperties["org.gradle.integtest.executor"] = executor
         addDebugProperties()
         testClassesDirs = sourceSet.output.classesDirs
         classpath = sourceSet.runtimeClasspath
@@ -184,14 +184,14 @@ fun Project.createTestTask(name: String, executer: String, sourceSet: SourceSet,
         if (!integTest.generateDefaultAutoTestedSamplesTest.get()) {
             inputs.dir(layout.projectDirectory.dir("src/main")).withPathSensitivity(PathSensitivity.RELATIVE)
         }
-        setUpAgentIfNeeded(testType, executer)
+        setUpAgentIfNeeded(testType, executor)
     }
 
 
 private
-fun IntegrationTest.setUpAgentIfNeeded(testType: TestType, executer: String) {
-    if (executer == "embedded") {
-        // Apply the instrumentation agent to the test process when running integration tests with embedded Gradle executer.
+fun IntegrationTest.setUpAgentIfNeeded(testType: TestType, executor: String) {
+    if (executor == "embedded") {
+        // Apply the instrumentation agent to the test process when running integration tests with embedded Gradle executor.
         jvmArgumentProviders.add(project.objects.newInstance<AgentsClasspathProvider>().apply {
             agentsClasspath.from(project.configurations["${testType.prefix}TestAgentsClasspath"])
         })

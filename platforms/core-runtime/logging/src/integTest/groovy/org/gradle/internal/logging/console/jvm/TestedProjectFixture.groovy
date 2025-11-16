@@ -17,7 +17,7 @@
 package org.gradle.internal.logging.console.jvm
 
 import org.gradle.integtests.fixtures.RichConsoleStyling
-import org.gradle.integtests.fixtures.executer.GradleHandle
+import org.gradle.integtests.fixtures.executor.GradleHandle
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
 
 class TestedProjectFixture {

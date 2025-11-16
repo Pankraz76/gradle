@@ -29,7 +29,7 @@ class TaskOnlyIfReasonIntegrationTest extends AbstractIntegrationSpec {
         """)
 
         when:
-        executer.withArgument("--info")
+        executor.withArgument("--info")
         succeeds(":task")
 
         then:
@@ -59,5 +59,5 @@ class TaskOnlyIfReasonIntegrationTest extends AbstractIntegrationSpec {
         })
     }
 
-    def operations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def operations = new BuildOperationsFixture(executor, testDirectoryProvider)
 }

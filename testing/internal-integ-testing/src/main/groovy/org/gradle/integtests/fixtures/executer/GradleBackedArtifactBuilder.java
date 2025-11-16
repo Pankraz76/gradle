@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import org.gradle.internal.UncheckedException;
 import org.gradle.test.fixtures.file.TestFile;
@@ -27,14 +27,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class GradleBackedArtifactBuilder implements ArtifactBuilder {
-    private final GradleExecuter executer;
+    private final GradleExecutor executor;
     private final TestFile rootDir;
     private final Map<String, String> manifestAttributes = new LinkedHashMap<>();
 
     private Boolean shouldPreserveTimestamps;
 
-    public GradleBackedArtifactBuilder(GradleExecuter executer, File rootDir) {
-        this.executer = executer;
+    public GradleBackedArtifactBuilder(GradleExecutor executor, File rootDir) {
+        this.executor = executor;
         this.rootDir = new TestFile(rootDir);
     }
 
@@ -55,7 +55,7 @@ public class GradleBackedArtifactBuilder implements ArtifactBuilder {
 
     @Override
     public void preserveTimestamps(boolean preserveTimestamps) {
-        if (isGradleExecuterVersionLessThan("3.4")) {
+        if (isGradleExecutorVersionLessThan("3.4")) {
             throw new IllegalArgumentException("Cannot set up timestamps on Gradle before 3.4");
         }
         shouldPreserveTimestamps = preserveTimestamps;
@@ -63,9 +63,9 @@ public class GradleBackedArtifactBuilder implements ArtifactBuilder {
 
     @Override
     public void buildJar(File jarFile) {
-        String conf = isGradleExecuterVersionLessThan("3.4") ? "compile" : "implementation";
-        String destinationDir = isGradleExecuterVersionLessThan("5.1") ? "destinationDir" : "destinationDirectory";
-        String archiveName = isGradleExecuterVersionLessThan("5.0") ? "archiveName" : "archiveFileName";
+        String conf = isGradleExecutorVersionLessThan("3.4") ? "compile" : "implementation";
+        String destinationDir = isGradleExecutorVersionLessThan("5.1") ? "destinationDir" : "destinationDirectory";
+        String archiveName = isGradleExecutorVersionLessThan("5.0") ? "archiveName" : "archiveFileName";
 
         rootDir.mkdirs();
         rootDir.file("settings.gradle").touch();
@@ -91,10 +91,10 @@ public class GradleBackedArtifactBuilder implements ArtifactBuilder {
         } catch (FileNotFoundException e) {
             throw UncheckedException.throwAsUncheckedException(e);
         }
-        executer.inDirectory(rootDir).withTasks("clean", "jar", "--stacktrace").run();
+        executor.inDirectory(rootDir).withTasks("clean", "jar", "--stacktrace").run();
     }
 
-    private boolean isGradleExecuterVersionLessThan(String version) {
-        return executer.getDistribution().getVersion().compareTo(GradleVersion.version(version)) < 0;
+    private boolean isGradleExecutorVersionLessThan(String version) {
+        return executor.getDistribution().getVersion().compareTo(GradleVersion.version(version)) < 0;
     }
 }

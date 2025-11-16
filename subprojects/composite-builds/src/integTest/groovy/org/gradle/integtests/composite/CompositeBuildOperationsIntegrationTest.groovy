@@ -22,7 +22,7 @@ import org.gradle.initialization.BuildIdentifiedProgressDetails
 import org.gradle.initialization.ConfigureBuildBuildOperationType
 import org.gradle.initialization.LoadBuildBuildOperationType
 import org.gradle.integtests.fixtures.build.BuildTestFile
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.operations.trace.BuildOperationRecord
 import org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType
 import org.gradle.internal.taskgraph.CalculateTreeTaskGraphBuildOperationType
@@ -393,7 +393,7 @@ class CompositeBuildOperationsIntegrationTest extends AbstractCompositeBuildInte
     }
 
     def "generates finish build tree lifecycle operation for included builds with #description"() {
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             Assume.assumeFalse(description == "buildFinished")
         }
         given:

@@ -33,13 +33,13 @@ class AbstractHttpScriptPluginIntegrationSpec extends AbstractIntegrationSpec {
         settingsFile << "rootProject.name = 'project'"
         server.expectUserAgent(UserAgentMatcher.matchesNameAndVersion("Gradle", GradleVersion.current().getVersion()))
         server.start()
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
     }
 
     protected void applyTrustStore() {
         def keyStore = TestKeyStore.init(resources.dir)
         keyStore.enableSslWithServerCert(server)
-        keyStore.configureServerCert(executer)
+        keyStore.configureServerCert(executor)
     }
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import org.gradle.api.Action;
 import org.gradle.internal.Factory;
@@ -25,8 +25,8 @@ import org.gradle.util.GradleVersion;
 import java.util.ArrayList;
 import java.util.List;
 
-class ParallelForkingGradleExecuter extends DaemonGradleExecuter {
-    public ParallelForkingGradleExecuter(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, GradleVersion gradleVersion, IntegrationTestBuildContext buildContext) {
+class ParallelForkingGradleExecutor extends DaemonGradleExecutor {
+    public ParallelForkingGradleExecutor(GradleDistribution distribution, TestDirectoryProvider testDirectoryProvider, GradleVersion gradleVersion, IntegrationTestBuildContext buildContext) {
         super(distribution, testDirectoryProvider, gradleVersion, buildContext);
     }
 

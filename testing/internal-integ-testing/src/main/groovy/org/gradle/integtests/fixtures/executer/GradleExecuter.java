@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
@@ -37,43 +37,43 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public interface GradleExecuter extends Stoppable {
+public interface GradleExecutor extends Stoppable {
 
     /**
      * Sets the working directory to use. Defaults to the test's temporary directory.
      */
-    GradleExecuter inDirectory(File directory);
+    GradleExecutor inDirectory(File directory);
 
     /**
      * Sets the task names to execute. Defaults to an empty list.
      */
-    GradleExecuter withTasks(String... names);
+    GradleExecutor withTasks(String... names);
 
     /**
      * Sets the task names to execute. Defaults to an empty list.
      */
-    GradleExecuter withTasks(List<String> names);
+    GradleExecutor withTasks(List<String> names);
 
-    GradleExecuter withTaskList();
+    GradleExecutor withTaskList();
 
-    GradleExecuter withDependencyList();
+    GradleExecutor withDependencyList();
 
-    GradleExecuter withQuietLogging();
-
-    /**
-     * Sets the additional command-line arguments to use when executing the build. Defaults to an empty list.
-     */
-    GradleExecuter withArguments(String... args);
+    GradleExecutor withQuietLogging();
 
     /**
      * Sets the additional command-line arguments to use when executing the build. Defaults to an empty list.
      */
-    GradleExecuter withArguments(List<String> args);
+    GradleExecutor withArguments(String... args);
+
+    /**
+     * Sets the additional command-line arguments to use when executing the build. Defaults to an empty list.
+     */
+    GradleExecutor withArguments(List<String> args);
 
     /**
      * Adds an additional command-line argument to use when executing the build.
      */
-    GradleExecuter withArgument(String arg);
+    GradleExecutor withArgument(String arg);
 
     /**
      * Sets the additional environment variables to use when executing the build.
@@ -83,7 +83,7 @@ public interface GradleExecuter extends Stoppable {
      * <p>
      * Setting "JAVA_HOME" this way is not supported.
      */
-    GradleExecuter withEnvironmentVars(Map<String, ?> environment);
+    GradleExecutor withEnvironmentVars(Map<String, ?> environment);
 
     /**
      * Sets the additional environment variables to use when executing the build, allowing to pass JAVA_HOME as well.
@@ -93,36 +93,36 @@ public interface GradleExecuter extends Stoppable {
      * <p>
      * Setting "JAVA_HOME" this way is not supported.
      */
-    GradleExecuter withEnvironmentVarsIncludingJavaHome(Map<String, ?> environment);
+    GradleExecutor withEnvironmentVarsIncludingJavaHome(Map<String, ?> environment);
 
-    GradleExecuter usingInitScript(File initScript);
+    GradleExecutor usingInitScript(File initScript);
 
     /**
      * Uses the given project directory
      */
-    GradleExecuter usingProjectDirectory(File projectDir);
+    GradleExecutor usingProjectDirectory(File projectDir);
 
     /**
      * Sets the user's home dir to use when running the build. Implementations are not 100% accurate.
      */
-    GradleExecuter withUserHomeDir(File userHomeDir);
+    GradleExecutor withUserHomeDir(File userHomeDir);
 
     /**
-     * Sets the <em>Gradle</em> user home dir. Setting to null requests that the executer use the real default Gradle user home dir rather than the default used for testing.
+     * Sets the <em>Gradle</em> user home dir. Setting to null requests that the executor use the real default Gradle user home dir rather than the default used for testing.
      *
-     * This value is persistent across executions by this executer.
+     * This value is persistent across executions by this executor.
      *
      * <p>Note: does not affect the daemon base dir.</p>
      */
-    GradleExecuter withGradleUserHomeDir(File userHomeDir);
+    GradleExecutor withGradleUserHomeDir(File userHomeDir);
 
     /**
      * Sets the Gradle version for executing Gradle.
      *
      * This does not actually use a different gradle version,
-     * it just modifies result of DefaultGradleVersion.current() for the Gradle that is run by the executer.
+     * it just modifies result of DefaultGradleVersion.current() for the Gradle that is run by the executor.
      */
-    GradleExecuter withGradleVersionOverride(GradleVersion gradleVersion);
+    GradleExecutor withGradleVersionOverride(GradleVersion gradleVersion);
 
     /**
      * Sets the java home dir. Replaces any value set by {@link #withJvm(Jvm)}.
@@ -131,31 +131,31 @@ public interface GradleExecuter extends Stoppable {
      * when testing non-standard JVMs, like embedded JREs, or those not provided by
      * {@link org.gradle.integtests.fixtures.AvailableJavaHomes}.
      */
-    GradleExecuter withJavaHome(String userHomeDir);
+    GradleExecutor withJavaHome(String userHomeDir);
 
     /**
      * Sets the JVM to execute Gradle with. Replaces any value set by {@link #withJavaHome(String)}.
      *
      * @throws IllegalArgumentException If the given JVM is not probed, for example JVMs created by {@link Jvm#forHome(File)}
      */
-    GradleExecuter withJvm(Jvm jvm);
+    GradleExecutor withJvm(Jvm jvm);
 
     /**
      * Sets the executable to use. Set to null to use the real default executable (if any) rather than the default used for testing.
      */
-    GradleExecuter usingExecutable(String script);
+    GradleExecutor usingExecutable(String script);
 
     /**
      * Sets a stream to use for writing to stdin which can be retrieved with getStdinPipe().
      */
-    GradleExecuter withStdinPipe();
+    GradleExecutor withStdinPipe();
 
     /**
      * Sets a stream to use for writing to stdin.
      */
-    GradleExecuter withStdinPipe(PipedOutputStream stdInPipe);
+    GradleExecutor withStdinPipe(PipedOutputStream stdInPipe);
 
-    default GradleExecuter withStdIn(String input) {
+    default GradleExecutor withStdIn(String input) {
         return withStdinPipe(new PipedOutputStream() {
             @Override
             public void connect(PipedInputStream snk) throws IOException {
@@ -166,14 +166,14 @@ public interface GradleExecuter extends Stoppable {
     }
 
     /**
-     * Executes the requested build, asserting that the build succeeds. Resets the configuration of this executer.
+     * Executes the requested build, asserting that the build succeeds. Resets the configuration of this executor.
      *
      * @return The result.
      */
     ExecutionResult run();
 
     /**
-     * Executes the requested build, asserting that the build fails. Resets the configuration of this executer.
+     * Executes the requested build, asserting that the build fails. Resets the configuration of this executor.
      *
      * @return The result.
      */
@@ -190,57 +190,57 @@ public interface GradleExecuter extends Stoppable {
      * Adds JVM args that should be used to start any command-line `gradle` executable used to run the build. Note that this may be different to the build JVM, for example the build may run in a
      * daemon process. You should prefer using {@link #withBuildJvmOpts(String...)} over this method.
      */
-    GradleExecuter withCommandLineGradleOpts(String... jvmOpts);
+    GradleExecutor withCommandLineGradleOpts(String... jvmOpts);
 
     /**
      * See {@link #withCommandLineGradleOpts(String...)}.
      */
-    GradleExecuter withCommandLineGradleOpts(Iterable<String> jvmOpts);
+    GradleExecutor withCommandLineGradleOpts(Iterable<String> jvmOpts);
 
     /**
      * Adds JVM args that should be used by the build JVM. Does not necessarily imply that the build will be run in a separate process, or that a new build JVM will be started, only that the build
      * will run in a JVM that was started with the specified args.
      *
      * @param jvmOpts the JVM opts
-     * @return this executer
+     * @return this executor
      */
-    GradleExecuter withBuildJvmOpts(String... jvmOpts);
+    GradleExecutor withBuildJvmOpts(String... jvmOpts);
 
     /**
      * See {@link #withBuildJvmOpts(String...)}.
      */
-    GradleExecuter withBuildJvmOpts(Iterable<String> jvmOpts);
+    GradleExecutor withBuildJvmOpts(Iterable<String> jvmOpts);
 
     /**
      * Activates the build cache
      *
-     * @return this executer
+     * @return this executor
      */
-    GradleExecuter withBuildCacheEnabled();
+    GradleExecutor withBuildCacheEnabled();
 
     /**
      * Activates the configuration cache
      *
-     * @return this executer
+     * @return this executor
      */
-    GradleExecuter withConfigurationCacheEnabled();
+    GradleExecutor withConfigurationCacheEnabled();
 
     /**
      * Don't set native services dir explicitly.
      */
-    GradleExecuter withNoExplicitNativeServicesDir();
+    GradleExecutor withNoExplicitNativeServicesDir();
 
     /**
      * Enables the rendering of stack traces for deprecation logging.
      */
-    GradleExecuter withFullDeprecationStackTraceEnabled();
+    GradleExecutor withFullDeprecationStackTraceEnabled();
 
-    GradleExecuter withoutInternalDeprecationStackTraceFlag();
+    GradleExecutor withoutInternalDeprecationStackTraceFlag();
 
     /**
      * Downloads and sets up the JVM arguments for running the Gradle daemon with the file leak detector: https://github.com/jenkinsci/lib-file-leak-detector
      *
-     * NOTE: This requires running the test with at least JDK8 and the forking executer. This will apply the file leak detection version suitable for executor Java version.
+     * NOTE: This requires running the test with at least JDK8 and the forking executor. This will apply the file leak detection version suitable for executor Java version.
      * If your build sets a different Java version you can use {@link #withFileLeakDetection(JavaVersion, String...)} to specify the Java version for which the file leak detection should be enabled.
      *
      * This should not be checked-in on. This is only for local debugging.
@@ -249,70 +249,70 @@ public interface GradleExecuter extends Stoppable {
      *
      * @param args the arguments to pass the file leak detector java agent
      */
-    GradleExecuter withFileLeakDetection(String... args);
+    GradleExecutor withFileLeakDetection(String... args);
 
     /**
      * Same as {@link #withFileLeakDetection(String...)}, but allows to specify the Java version for which the file leak detection should be enabled.
      */
-    GradleExecuter withFileLeakDetection(JavaVersion javaVersion, String... args);
+    GradleExecutor withFileLeakDetection(JavaVersion javaVersion, String... args);
 
     /**
-     * Specifies that the executer should only those JVM args explicitly requested using {@link #withBuildJvmOpts(String...)} and {@link #withCommandLineGradleOpts(String...)} (where appropriate) for
+     * Specifies that the executor should only those JVM args explicitly requested using {@link #withBuildJvmOpts(String...)} and {@link #withCommandLineGradleOpts(String...)} (where appropriate) for
      * the build JVM and not attempt to provide any others.
      */
-    GradleExecuter useOnlyRequestedJvmOpts();
+    GradleExecutor useOnlyRequestedJvmOpts();
 
     /**
      * Sets the default character encoding to use.
      *
-     * Only makes sense for forking executers.
+     * Only makes sense for forking executors.
      *
-     * @return this executer
+     * @return this executor
      */
-    GradleExecuter withDefaultCharacterEncoding(String defaultCharacterEncoding);
+    GradleExecutor withDefaultCharacterEncoding(String defaultCharacterEncoding);
 
     /**
      * Sets the default locale to use.
      *
-     * Only makes sense for forking executers.
+     * Only makes sense for forking executors.
      *
-     * @return this executer
+     * @return this executor
      */
-    GradleExecuter withDefaultLocale(Locale defaultLocale);
+    GradleExecutor withDefaultLocale(Locale defaultLocale);
 
     /**
      * Set the number of seconds an idle daemon should live for.
      *
-     * @return this executer
+     * @return this executor
      */
-    GradleExecuter withDaemonIdleTimeoutSecs(int secs);
+    GradleExecutor withDaemonIdleTimeoutSecs(int secs);
 
     /**
      * Set the working space for any daemons used by the builds.
      *
-     * This value is persistent across executions by this executer.
+     * This value is persistent across executions by this executor.
      *
      * <p>Note: this does not affect the Gradle user home directory.</p>
      *
-     * @return this executer
+     * @return this executor
      */
-    GradleExecuter withDaemonBaseDir(File baseDir);
+    GradleExecutor withDaemonBaseDir(File baseDir);
 
     /**
      * Sets the path to the read-only dependency cache
      *
      * @param cacheDir the path to the RO dependency cache
-     * @return this executer
+     * @return this executor
      */
-    GradleExecuter withReadOnlyCacheDir(File cacheDir);
+    GradleExecutor withReadOnlyCacheDir(File cacheDir);
 
     /**
      * Sets the path to the read-only dependency cache
      *
      * @param cacheDir the path to the RO dependency cache
-     * @return this executer
+     * @return this executor
      */
-    GradleExecuter withReadOnlyCacheDir(String cacheDir);
+    GradleExecutor withReadOnlyCacheDir(String cacheDir);
 
     /**
      * Returns the working space for any daemons used by the builds.
@@ -322,37 +322,37 @@ public interface GradleExecuter extends Stoppable {
     /**
      * Requires that the build run in a separate daemon process.
      */
-    GradleExecuter requireDaemon();
+    GradleExecutor requireDaemon();
 
     /**
-     * Asserts that this executer will be able to run a build, given its current configuration.
+     * Asserts that this executor will be able to run a build, given its current configuration.
      *
-     * @throws AssertionError When this executer will not be able to run a build.
+     * @throws AssertionError When this executor will not be able to run a build.
      */
     void assertCanExecute() throws AssertionError;
 
     /**
      * Adds an action to be called immediately before execution, to allow extra configuration to be injected.
      */
-    void beforeExecute(Action<? super GradleExecuter> action);
+    void beforeExecute(Action<? super GradleExecutor> action);
 
     /**
      * Adds an action to be called immediately before execution, to allow extra configuration to be injected.
      */
-    void beforeExecute(@DelegatesTo(GradleExecuter.class) Closure action);
+    void beforeExecute(@DelegatesTo(GradleExecutor.class) Closure action);
 
     /**
      * Adds an action to be called immediately after execution
      */
-    void afterExecute(Action<? super GradleExecuter> action);
+    void afterExecute(Action<? super GradleExecutor> action);
 
     /**
      * Adds an action to be called immediately after execution
      */
-    void afterExecute(@DelegatesTo(GradleExecuter.class) Closure action);
+    void afterExecute(@DelegatesTo(GradleExecutor.class) Closure action);
 
     /**
-     * The directory that the executer will use for any test specific storage.
+     * The directory that the executor will use for any test specific storage.
      *
      * May or may not be the same directory as the build to be run.
      */
@@ -363,19 +363,19 @@ public interface GradleExecuter extends Stoppable {
      *
      * @implNote URLs to documentation should use /current/ as the version. This fixture will automatically replace it with the actual version tested.
      */
-    GradleExecuter expectDocumentedDeprecationWarning(String warning);
+    GradleExecutor expectDocumentedDeprecationWarning(String warning);
 
     /**
      * Do not call this method directly.
      *
      * @see #expectDocumentedDeprecationWarning(String)
      */
-    GradleExecuter expectDeprecationWarning(ExpectedDeprecationWarning warning);
+    GradleExecutor expectDeprecationWarning(ExpectedDeprecationWarning warning);
 
     /**
      * Disable deprecation warning checks.
      */
-    GradleExecuter noDeprecationChecks();
+    GradleExecutor noDeprecationChecks();
 
     /**
      * Expects a message that contains the word "deprecated" in the output.
@@ -384,7 +384,7 @@ public interface GradleExecuter extends Stoppable {
      *
      * This method is used to document builds that emit deprecation messages from external tools like javac or the Kotlin compiler.
      */
-    GradleExecuter expectExternalDeprecatedMessage(String warning);
+    GradleExecutor expectExternalDeprecatedMessage(String warning);
 
     /**
      * Disable automatic Java version deprecation warning filtering.
@@ -394,49 +394,49 @@ public interface GradleExecuter extends Stoppable {
      * cases we do not care about this warning, but when we want to explicitly test that a build
      * does emit this warning, we disable this filter.
      */
-    GradleExecuter disableDaemonJavaVersionDeprecationFiltering();
+    GradleExecutor disableDaemonJavaVersionDeprecationFiltering();
 
     /**
      * Disable crash daemon checks
      */
-    GradleExecuter noDaemonCrashChecks();
+    GradleExecutor noDaemonCrashChecks();
 
     /**
      * Disables asserting that class loaders were not eagerly created, potentially leading to performance problems.
      */
-    GradleExecuter withEagerClassLoaderCreationCheckDisabled();
+    GradleExecutor withEagerClassLoaderCreationCheckDisabled();
 
     /**
      * Disables asserting that no unexpected stacktraces are present in the output.
      */
-    GradleExecuter withStackTraceChecksDisabled();
+    GradleExecutor withStackTraceChecksDisabled();
 
     /**
      * Enables checks for warnings emitted by the JDK itself. Including illegal access warnings.
      */
-    GradleExecuter withJdkWarningChecksEnabled();
+    GradleExecutor withJdkWarningChecksEnabled();
 
     /**
-     * An executer may decide to implicitly bump the logging level, unless this is called.
+     * An executor may decide to implicitly bump the logging level, unless this is called.
      */
-    GradleExecuter noExtraLogging();
+    GradleExecutor noExtraLogging();
 
     /**
      * Configures that any daemons used by the execution are unique to the test.
      *
-     * This value is persistent across executions by this executer.
+     * This value is persistent across executions by this executor.
      *
      * <p>Note: this does not affect the Gradle user home directory.</p>
      */
-    GradleExecuter requireIsolatedDaemons();
+    GradleExecutor requireIsolatedDaemons();
 
     /**
      * Disable worker daemons expiration.
      */
-    GradleExecuter withWorkerDaemonsExpirationDisabled();
+    GradleExecutor withWorkerDaemonsExpirationDisabled();
 
     /**
-     * Returns true if this executer will share daemons with other executers.
+     * Returns true if this executor will share daemons with other executors.
      */
     boolean usesSharedDaemons();
 
@@ -444,18 +444,18 @@ public interface GradleExecuter extends Stoppable {
      * Use {@link #requireOwnGradleUserHomeDir(String because)} instead.
      */
     @Deprecated
-    GradleExecuter requireOwnGradleUserHomeDir();
+    GradleExecutor requireOwnGradleUserHomeDir();
 
     /**
      * Configures a unique gradle user home dir for the test.
      *
      * The gradle user home dir used will be underneath the {@link #getTestDirectoryProvider()} directory.
      *
-     * This value is persistent across executions by this executer.
+     * This value is persistent across executions by this executor.
      *
      * <p>Note: does not affect the daemon base dir.</p>
      */
-    GradleExecuter requireOwnGradleUserHomeDir(String because);
+    GradleExecutor requireOwnGradleUserHomeDir(String because);
 
     /**
      * The Gradle user home dir that will be used for executions.
@@ -468,29 +468,29 @@ public interface GradleExecuter extends Stoppable {
     GradleDistribution getDistribution();
 
     /**
-     * Copies the settings from this executer to the given executer.
+     * Copies the settings from this executor to the given executor.
      *
-     * @param executer The executer to copy to
-     * @return The passed in executer
+     * @param executor The executor to copy to
+     * @return The passed in executor
      */
-    GradleExecuter copyTo(GradleExecuter executer);
+    GradleExecutor copyTo(GradleExecutor executor);
 
     /**
      * Where possible, starts the Gradle build process in debug mode with the provided options.
      */
-    GradleExecuter startBuildProcessInDebugger(Action<JavaDebugOptionsInternal> action);
+    GradleExecutor startBuildProcessInDebugger(Action<JavaDebugOptionsInternal> action);
 
     /**
      * Where possible, starts the Gradle build process in suspended debug mode.
      */
-    GradleExecuter startBuildProcessInDebugger(boolean flag);
+    GradleExecutor startBuildProcessInDebugger(boolean flag);
 
-    GradleExecuter withProfiler(String profilerArg);
+    GradleExecutor withProfiler(String profilerArg);
 
     /**
      * Forces Gradle to consider the build to be interactive
      */
-    GradleExecuter withForceInteractive(boolean flag);
+    GradleExecutor withForceInteractive(boolean flag);
 
     boolean isDebug();
 
@@ -499,27 +499,27 @@ public interface GradleExecuter extends Stoppable {
     /**
      * Starts the launcher JVM (daemon client) in suspended debug mode
      */
-    GradleExecuter startLauncherInDebugger(boolean debugLauncher);
+    GradleExecutor startLauncherInDebugger(boolean debugLauncher);
 
     /**
      * Starts the launcher JVM (daemon client) in debug mode with the provided options
      */
-    GradleExecuter startLauncherInDebugger(Action<JavaDebugOptionsInternal> action);
+    GradleExecutor startLauncherInDebugger(Action<JavaDebugOptionsInternal> action);
 
     boolean isDebugLauncher();
 
     /**
      * Clears previous settings so that instance can be reused
      */
-    GradleExecuter reset();
+    GradleExecutor reset();
 
     /**
      * Measures the duration of the execution
      */
-    GradleExecuter withDurationMeasurement(DurationMeasurement durationMeasurement);
+    GradleExecutor withDurationMeasurement(DurationMeasurement durationMeasurement);
 
     /**
-     * Returns true if this executer uses a daemon
+     * Returns true if this executor uses a daemon
      */
     boolean isUseDaemon();
 
@@ -533,42 +533,42 @@ public interface GradleExecuter extends Stoppable {
      * Not calling the method in those situations will result in the inability to delete a file lock.
      * </p>
      */
-    GradleExecuter withOwnUserHomeServices();
+    GradleExecutor withOwnUserHomeServices();
 
     /**
      * Executes the build with {@code "--console=rich, auto, verbose"} argument.
      *
      * @see RichConsoleStyling
      */
-    GradleExecuter withConsole(ConsoleOutput consoleOutput);
+    GradleExecutor withConsole(ConsoleOutput consoleOutput);
 
     /**
      * Executes the build with {@code "--warning-mode=none, summary, fail, all"} argument.
      *
      * @see WarningMode
      */
-    GradleExecuter withWarningMode(WarningMode warningMode);
+    GradleExecutor withWarningMode(WarningMode warningMode);
 
     /**
      * Execute the builds with adding the {@code "--stacktrace"} argument.
      */
-    GradleExecuter withStacktraceEnabled();
+    GradleExecutor withStacktraceEnabled();
 
     /**
      * Renders the welcome message users see upon first invocation of a Gradle distribution with a given Gradle user home directory.
      * By default the message is never rendered.
      */
-    GradleExecuter withWelcomeMessageEnabled();
+    GradleExecutor withWelcomeMessageEnabled();
 
     /**
      * Specifies we should use a test console that has both stdout and stderr attached.
      */
-    GradleExecuter withTestConsoleAttached();
+    GradleExecutor withTestConsoleAttached();
 
     /**
      * Specifies we should use a test console that only has stdout attached.
      */
-    GradleExecuter withTestConsoleAttached(ConsoleAttachment consoleAttachment);
+    GradleExecutor withTestConsoleAttached(ConsoleAttachment consoleAttachment);
 
     /**
      * Apply an init script which replaces all external repositories with inner mirrors.
@@ -576,7 +576,7 @@ public interface GradleExecuter extends Stoppable {
      *
      * @see org.gradle.integtests.fixtures.RepoScriptBlockUtil
      */
-    GradleExecuter withRepositoryMirrors();
+    GradleExecutor withRepositoryMirrors();
 
     /**
      * Requires an isolated gradle user home and put an init script which replaces all external repositories with inner mirrors.
@@ -584,7 +584,7 @@ public interface GradleExecuter extends Stoppable {
      *
      * @see org.gradle.integtests.fixtures.RepoScriptBlockUtil
      */
-    GradleExecuter withGlobalRepositoryMirrors();
+    GradleExecutor withGlobalRepositoryMirrors();
 
     /**
      * Start the build with {@link org.gradle.api.internal.artifacts.BaseRepositoryFactory#PLUGIN_PORTAL_OVERRIDE_URL_PROPERTY}
@@ -592,14 +592,14 @@ public interface GradleExecuter extends Stoppable {
      *
      * @see org.gradle.integtests.fixtures.RepoScriptBlockUtil
      */
-    GradleExecuter withPluginRepositoryMirrorDisabled();
+    GradleExecutor withPluginRepositoryMirrorDisabled();
 
-    GradleExecuter ignoreMissingSettingsFile();
+    GradleExecutor ignoreMissingSettingsFile();
 
-    GradleExecuter ignoreCleanupAssertions();
+    GradleExecutor ignoreCleanupAssertions();
 
-    GradleExecuter withToolchainDetectionEnabled();
+    GradleExecutor withToolchainDetectionEnabled();
 
-    GradleExecuter withToolchainDownloadEnabled();
+    GradleExecutor withToolchainDownloadEnabled();
 
 }

@@ -51,7 +51,7 @@ class JavaToolchainDownloadSpiKotlinIntegrationTest extends AbstractIntegrationS
         file("src/main/java/Foo.java") << "public class Foo {}"
 
         when:
-        failure = executer
+        failure = executor
                 .withTasks("compileJava")
                 .requireOwnGradleUserHomeDir()
                 .withToolchainDownloadEnabled()

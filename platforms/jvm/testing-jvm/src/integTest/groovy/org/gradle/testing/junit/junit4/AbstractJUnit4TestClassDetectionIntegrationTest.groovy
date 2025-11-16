@@ -76,7 +76,7 @@ abstract class AbstractJUnit4TestClassDetectionIntegrationTest extends AbstractJ
         """.stripIndent()
 
         when:
-        executer.withTasks('test').run()
+        executor.withTasks('test').run()
 
         then:
         def results = resultsFor(testDirectory)

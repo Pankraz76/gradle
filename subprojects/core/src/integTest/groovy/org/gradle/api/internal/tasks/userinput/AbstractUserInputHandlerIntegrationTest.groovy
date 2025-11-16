@@ -22,16 +22,16 @@ import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 abstract class AbstractUserInputHandlerIntegrationTest extends AbstractIntegrationSpec {
 
     protected void interactiveExecution() {
-        executer.withStdinPipe().withForceInteractive(true)
+        executor.withStdinPipe().withForceInteractive(true)
     }
 
     protected void withRichConsole(boolean enabled) {
         if (enabled) {
-            executer.withConsole(ConsoleOutput.Rich)
+            executor.withConsole(ConsoleOutput.Rich)
         }
     }
 
     protected void withParallel() {
-        executer.withArgument('--parallel')
+        executor.withArgument('--parallel')
     }
 }

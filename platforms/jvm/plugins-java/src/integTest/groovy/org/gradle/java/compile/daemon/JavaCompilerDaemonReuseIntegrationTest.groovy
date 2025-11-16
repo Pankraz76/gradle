@@ -71,7 +71,7 @@ class JavaCompilerDaemonReuseIntegrationTest extends AbstractCompilerDaemonReuse
         assertTwoCompilerDaemonsAreRunning()
 
         when:
-        executer.withWorkerDaemonsExpirationDisabled()
+        executor.withWorkerDaemonsExpirationDisabled()
         succeeds("clean", "compileAll", "--info")
 
         then:
@@ -105,7 +105,7 @@ class JavaCompilerDaemonReuseIntegrationTest extends AbstractCompilerDaemonReuse
         assertOneCompilerDaemonIsRunning()
 
         when:
-        executer.withWorkerDaemonsExpirationDisabled()
+        executor.withWorkerDaemonsExpirationDisabled()
         succeeds("clean", "compileAll")
 
         then:
@@ -117,7 +117,7 @@ class JavaCompilerDaemonReuseIntegrationTest extends AbstractCompilerDaemonReuse
     }
 
     def "log messages from a compiler daemon are associated with the task that generates them"() {
-        def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+        def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
         withSingleProjectSources()
         buildFile << """
@@ -143,7 +143,7 @@ class JavaCompilerDaemonReuseIntegrationTest extends AbstractCompilerDaemonReuse
         assertOneCompilerDaemonIsRunning()
 
         when:
-        executer.withWorkerDaemonsExpirationDisabled()
+        executor.withWorkerDaemonsExpirationDisabled()
         succeeds("clean", "compileAll")
 
         then:

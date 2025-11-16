@@ -249,7 +249,7 @@ model {
         """
 
         and:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         succeeds "visualStudio"
 
         when:

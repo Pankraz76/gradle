@@ -917,6 +917,6 @@ class ConfigurationCacheBuildOptionsIntegrationTest extends AbstractConfiguratio
     }
 
     private void withEnvironmentVars(Map<String, String> environment) {
-        executer.withEnvironmentVars(environment)
+        executor.withEnvironmentVars(environment)
     }
 }

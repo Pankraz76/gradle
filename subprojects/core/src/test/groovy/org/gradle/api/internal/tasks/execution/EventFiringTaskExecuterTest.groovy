@@ -21,8 +21,8 @@ import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.internal.TaskInternal
 import org.gradle.api.internal.project.ProjectIdentity
 import org.gradle.api.internal.project.taskfactory.TaskIdentity
-import org.gradle.api.internal.tasks.TaskExecuter
-import org.gradle.api.internal.tasks.TaskExecuterResult
+import org.gradle.api.internal.tasks.TaskExecutor
+import org.gradle.api.internal.tasks.TaskExecutorResult
 import org.gradle.api.internal.tasks.TaskExecutionContext
 import org.gradle.api.internal.tasks.TaskStateInternal
 import org.gradle.api.tasks.TaskExecutionException
@@ -32,12 +32,12 @@ import org.gradle.internal.operations.TestBuildOperationRunner
 import org.gradle.util.Path
 import spock.lang.Specification
 
-class EventFiringTaskExecuterTest extends Specification {
+class EventFiringTaskExecutorTest extends Specification {
 
     def buildOperationRunner = new TestBuildOperationRunner()
     def taskExecutionListener = Mock(TaskExecutionListener)
     def taskListener = Mock(TaskListenerInternal)
-    def delegate = Mock(TaskExecuter)
+    def delegate = Mock(TaskExecutor)
     def task = Mock(TaskInternal)
     def projectId = ProjectIdentity.forRootProject(
         Path.ROOT,
@@ -47,11 +47,11 @@ class EventFiringTaskExecuterTest extends Specification {
     def state = new TaskStateInternal()
     def executionContext = Mock(TaskExecutionContext)
 
-    def executer = new EventFiringTaskExecuter(buildOperationRunner, taskExecutionListener, taskListener, delegate)
+    def executor = new EventFiringTaskExecutor(buildOperationRunner, taskExecutionListener, taskListener, delegate)
 
     def "notifies task listeners"() {
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         _ * task.getIdentityPath() >> Path.path(":a")
@@ -61,7 +61,7 @@ class EventFiringTaskExecuterTest extends Specification {
         1 * taskExecutionListener.beforeExecute(task)
 
         then:
-        1 * delegate.execute(task, state, executionContext) >> TaskExecuterResult.WITHOUT_OUTPUTS
+        1 * delegate.execute(task, state, executionContext) >> TaskExecutorResult.WITHOUT_OUTPUTS
 
         then:
         1 * taskExecutionListener.afterExecute(task, state)
@@ -81,7 +81,7 @@ class EventFiringTaskExecuterTest extends Specification {
         def failure = new RuntimeException()
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         _ * task.getIdentityPath() >> Path.path(":a")
@@ -105,7 +105,7 @@ class EventFiringTaskExecuterTest extends Specification {
         def failure = new RuntimeException()
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         _ * task.getIdentityPath() >> Path.path(":a")
@@ -116,7 +116,7 @@ class EventFiringTaskExecuterTest extends Specification {
         then:
         1 * delegate.execute(task, state, executionContext) >> {
             state.setOutcome(failure)
-            return TaskExecuterResult.WITHOUT_OUTPUTS
+            return TaskExecutorResult.WITHOUT_OUTPUTS
         }
 
         then:
@@ -138,14 +138,14 @@ class EventFiringTaskExecuterTest extends Specification {
         def failure = new RuntimeException()
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         _ * task.getIdentityPath() >> Path.path(":a")
         1 * taskExecutionListener.beforeExecute(task)
 
         then:
-        1 * delegate.execute(task, state, executionContext) >> TaskExecuterResult.WITHOUT_OUTPUTS
+        1 * delegate.execute(task, state, executionContext) >> TaskExecutorResult.WITHOUT_OUTPUTS
 
         then:
         1 * taskExecutionListener.afterExecute(task, state) >> {
@@ -167,7 +167,7 @@ class EventFiringTaskExecuterTest extends Specification {
         def failure2 = new RuntimeException("two")
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         _ * task.getIdentityPath() >> Path.path(":a")
@@ -176,7 +176,7 @@ class EventFiringTaskExecuterTest extends Specification {
         then:
         1 * delegate.execute(task, state, executionContext) >> {
             state.setOutcome(failure)
-            return TaskExecuterResult.WITHOUT_OUTPUTS
+            return TaskExecutorResult.WITHOUT_OUTPUTS
         }
 
         then:

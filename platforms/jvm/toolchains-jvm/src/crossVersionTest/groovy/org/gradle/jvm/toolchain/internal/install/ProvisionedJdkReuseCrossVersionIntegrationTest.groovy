@@ -19,7 +19,7 @@ package org.gradle.jvm.toolchain.internal.install
 import org.gradle.integtests.fixtures.AvailableJavaHomes
 import org.gradle.integtests.fixtures.CrossVersionIntegrationSpec
 import org.gradle.integtests.fixtures.IgnoreVersions
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.internal.jvm.Jvm
 import org.gradle.jvm.toolchain.JdkRepository
 import org.gradle.test.precondition.Requires

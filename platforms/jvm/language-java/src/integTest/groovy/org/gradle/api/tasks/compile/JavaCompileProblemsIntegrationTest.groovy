@@ -363,7 +363,7 @@ class JavaCompileProblemsIntegrationTest extends AbstractIntegrationSpec impleme
         possibleFileLocations.put(generator.sourceFile.absolutePath, 1)
 
         when:
-        executer.withArguments("--info")
+        executor.withArguments("--info")
         withInstallations(AvailableJavaHomes.getJdk(JavaVersion.VERSION_1_8))
         succeeds(":compileJava")
 
@@ -383,7 +383,7 @@ class JavaCompileProblemsIntegrationTest extends AbstractIntegrationSpec impleme
         possibleFileLocations.put(generator.sourceFile.absolutePath, 1)
 
         when:
-        executer.withArguments("--info")
+        executor.withArguments("--info")
         withInstallations(jdk)
         succeeds(":compileJava")
 

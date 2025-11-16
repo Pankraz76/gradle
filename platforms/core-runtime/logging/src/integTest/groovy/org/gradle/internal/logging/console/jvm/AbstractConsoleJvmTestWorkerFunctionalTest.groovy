@@ -40,9 +40,9 @@ abstract class AbstractConsoleJvmTestWorkerFunctionalTest extends AbstractIntegr
     BlockingHttpServer server = new BlockingHttpServer()
 
     def setup() {
-        executer.withTestConsoleAttached()
-        executer.withConsole(ConsoleOutput.Rich)
-        executer.withArguments('--parallel', "--max-workers=$MAX_WORKERS")
+        executor.withTestConsoleAttached()
+        executor.withConsole(ConsoleOutput.Rich)
+        executor.withArguments('--parallel', "--max-workers=$MAX_WORKERS")
         server.start()
     }
 
@@ -67,7 +67,7 @@ abstract class AbstractConsoleJvmTestWorkerFunctionalTest extends AbstractIntegr
         def testExecution = server.expectConcurrentAndBlock(2, SERVER_RESOURCE_1, SERVER_RESOURCE_2)
 
         when:
-        def gradleHandle = executer.withTasks('test').start()
+        def gradleHandle = executor.withTasks('test').start()
         testExecution.waitForAllPendingCalls()
 
         then:
@@ -106,7 +106,7 @@ abstract class AbstractConsoleJvmTestWorkerFunctionalTest extends AbstractIntegr
         def testExecution = server.expectConcurrentAndBlock(2, SERVER_RESOURCE_1, SERVER_RESOURCE_2)
 
         when:
-        def gradleHandle = executer.withTasks('test').start()
+        def gradleHandle = executor.withTasks('test').start()
         testExecution.waitForAllPendingCalls()
 
         then:

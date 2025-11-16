@@ -25,12 +25,12 @@ import org.gradle.api.provider.Property
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.build.BuildTestFile
 import org.gradle.integtests.fixtures.build.BuildTestFixture
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionFailure
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionFailure
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult
 import org.gradle.internal.Pair
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.tooling.BuildAction
-import org.gradle.tooling.BuildActionExecuter
+import org.gradle.tooling.BuildActionExecutor
 import org.gradle.tooling.BuildActionFailureException
 import org.gradle.tooling.BuildException
 import org.gradle.tooling.ProjectConnection
@@ -50,8 +50,8 @@ import javax.inject.Inject
  */
 @SelfType(AbstractIntegrationSpec)
 trait ToolingApiSpec {
-    ToolingApiBackedGradleExecuter getToolingApiExecutor() {
-        return (ToolingApiBackedGradleExecuter) getExecuter()
+    ToolingApiBackedGradleExecutor getToolingApiExecutor() {
+        return (ToolingApiBackedGradleExecutor) getExecutor()
     }
 
     TestFile getProjectDir() {
@@ -273,7 +273,7 @@ trait ToolingApiSpec {
             model = connection.model(type)
                 .forTasks(tasks)
                 .withArguments(args)
-                .addJvmArguments(executer.jvmArgs)
+                .addJvmArguments(executor.jvmArgs)
                 .setStandardOutput(new TeeOutputStream(output, System.out))
                 .setStandardError(new TeeOutputStream(error, System.err))
                 .get()
@@ -292,7 +292,7 @@ trait ToolingApiSpec {
 
                 connection.model(type)
                     .withArguments(args)
-                    .addJvmArguments(executer.jvmArgs)
+                    .addJvmArguments(executor.jvmArgs)
                     .setStandardOutput(new TeeOutputStream(output, System.out))
                     .setStandardError(new TeeOutputStream(error, System.err))
                     .get()
@@ -304,19 +304,19 @@ trait ToolingApiSpec {
         }
     }
 
-    def <T> T runBuildAction(BuildAction<T> buildAction, @DelegatesTo(BuildActionExecuter) Closure config = {}) {
+    def <T> T runBuildAction(BuildAction<T> buildAction, @DelegatesTo(BuildActionExecutor) Closure config = {}) {
         def model = null
         result = toolingApiExecutor.runBuildWithToolingConnection { connection ->
             def output = new ByteArrayOutputStream()
             def error = new ByteArrayOutputStream()
             def args = getAllArgs()
 
-            def actionExecuter = connection.action(buildAction)
-            config.delegate = actionExecuter
+            def actionExecutor = connection.action(buildAction)
+            config.delegate = actionExecutor
             config.call()
 
-            model = actionExecuter
-                .addJvmArguments(executer.implicitBuildJvmArgs)
+            model = actionExecutor
+                .addJvmArguments(executor.implicitBuildJvmArgs)
                 .withArguments(args)
                 .setStandardOutput(new TeeOutputStream(output, System.out))
                 .setStandardError(new TeeOutputStream(error, System.err))
@@ -331,12 +331,12 @@ trait ToolingApiSpec {
         failure = toolingApiExecutor.runFailingBuildWithToolingConnection { connection ->
             def output = new ByteArrayOutputStream()
             def error = new ByteArrayOutputStream()
-            def args = executer.allArgs.tap { remove("--no-daemon") }
+            def args = executor.allArgs.tap { remove("--no-daemon") }
             def failure
             try {
                 connection.action(buildAction)
                     .withArguments(args)
-                    .addJvmArguments(executer.implicitBuildJvmArgs)
+                    .addJvmArguments(executor.implicitBuildJvmArgs)
                     .setStandardOutput(new TeeOutputStream(output, System.out))
                     .setStandardError(new TeeOutputStream(error, System.err))
                     .run()
@@ -348,7 +348,7 @@ trait ToolingApiSpec {
         }
     }
 
-    def <T, S> Pair<T, S> runPhasedBuildAction(BuildAction<T> projectsLoadedAction, BuildAction<S> modelAction, @DelegatesTo(BuildActionExecuter) Closure config = {}) {
+    def <T, S> Pair<T, S> runPhasedBuildAction(BuildAction<T> projectsLoadedAction, BuildAction<S> modelAction, @DelegatesTo(BuildActionExecutor) Closure config = {}) {
         T projectsLoadedModel = null
         S buildModel = null
         result = toolingApiExecutor.runBuildWithToolingConnection { ProjectConnection connection ->
@@ -357,17 +357,17 @@ trait ToolingApiSpec {
             def args = getAllArgs()
 
 
-            def actionExecuter = connection.action()
+            def actionExecutor = connection.action()
                 .projectsLoaded(projectsLoadedAction, { Object model ->
                     projectsLoadedModel = model
                 }).buildFinished(modelAction, { Object model ->
                 buildModel = model
             }).build()
-            config.delegate = actionExecuter
+            config.delegate = actionExecutor
             config.call()
-            actionExecuter
+            actionExecutor
                 .withArguments(args)
-                .addJvmArguments(executer.implicitBuildJvmArgs)
+                .addJvmArguments(executor.implicitBuildJvmArgs)
                 .setStandardOutput(new TeeOutputStream(output, System.out))
                 .setStandardError(new TeeOutputStream(error, System.err))
                 .run()
@@ -384,8 +384,8 @@ trait ToolingApiSpec {
 
             connection.newTestLauncher()
                 .withJvmTestClasses(testClasses)
-                .addJvmArguments(executer.implicitBuildJvmArgs)
-                .addJvmArguments(executer.jvmArgs)
+                .addJvmArguments(executor.implicitBuildJvmArgs)
+                .addJvmArguments(executor.jvmArgs)
                 .withArguments(args)
                 .setStandardOutput(new TeeOutputStream(output, System.out))
                 .setStandardError(new TeeOutputStream(error, System.err))
@@ -395,7 +395,7 @@ trait ToolingApiSpec {
     }
 
     def List<String> getAllArgs() {
-        def args = executer.allArgs
+        def args = executor.allArgs
         args.remove("--no-daemon")
         args
     }

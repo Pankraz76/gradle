@@ -457,7 +457,7 @@ class ArtifactTransformWithFileInputsIntegrationTest extends AbstractDependencyR
 """
 
         when:
-        executer.withArgument("--continue")
+        executor.withArgument("--continue")
         fails(":a:resolve")
 
         then:

@@ -68,7 +68,7 @@ allprojects { project ->
         }
 
         when:
-        executer.withGradleUserHomeDir(file('gradle-user-home'))
+        executor.withGradleUserHomeDir(file('gradle-user-home'))
         execute(buildA, ":jar")
 
         then:

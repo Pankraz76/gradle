@@ -97,7 +97,7 @@ public class FileCopier {
     }
 
     private WorkResult doCopy(CopySpecInternal copySpec, CopyAction visitor) {
-        CopyActionExecuter visitorDriver = new CopyActionExecuter(instantiator, propertyFactory, fileSystem, false, documentationRegistry);
+        CopyActionExecutor visitorDriver = new CopyActionExecutor(instantiator, propertyFactory, fileSystem, false, documentationRegistry);
         return visitorDriver.execute(copySpec, visitor);
     }
 

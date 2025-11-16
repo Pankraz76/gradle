@@ -20,29 +20,29 @@ import org.gradle.api.Action
 import org.gradle.integtests.fixtures.AbstractContinuousIntegrationTest
 import org.gradle.integtests.fixtures.OriginFixture
 import org.gradle.integtests.fixtures.ScopeIdsFixture
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.util.internal.ClosureBackedAction
 import org.junit.Rule
 
 class ContinuousIncrementalBuildOutputOriginIntegrationTest extends AbstractContinuousIntegrationTest {
 
-    final List<Action<GradleExecuter>> afterExecute = []
+    final List<Action<GradleExecutor>> afterExecute = []
 
-    final GradleExecuter delegatingExecuter = new GradleExecuter() {
+    final GradleExecutor delegatingExecutor = new GradleExecutor() {
 
         @Delegate
-        GradleExecuter delegate = executer
+        GradleExecutor delegate = executor
 
         void afterExecute(Closure action) {
-            afterExecute << new ClosureBackedAction<GradleExecuter>(action)
+            afterExecute << new ClosureBackedAction<GradleExecutor>(action)
         }
     }
 
     @Rule
-    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(delegatingExecuter, temporaryFolder)
+    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(delegatingExecutor, temporaryFolder)
 
     @Rule
-    public final OriginFixture originBuildInvocationIdFixture = new OriginFixture(delegatingExecuter, temporaryFolder)
+    public final OriginFixture originBuildInvocationIdFixture = new OriginFixture(delegatingExecutor, temporaryFolder)
 
     String getBuildInvocationId() {
         scopeIds.buildInvocationId.asString()
@@ -53,7 +53,7 @@ class ContinuousIncrementalBuildOutputOriginIntegrationTest extends AbstractCont
     }
 
     void afterBuild() {
-        afterExecute*.execute(executer)
+        afterExecute*.execute(executor)
     }
 
     def "new ID is assigned for each execution"() {

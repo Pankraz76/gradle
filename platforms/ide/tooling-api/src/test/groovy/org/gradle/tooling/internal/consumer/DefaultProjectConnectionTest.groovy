@@ -58,6 +58,6 @@ class DefaultProjectConnectionTest extends Specification {
 
     def "can create phased build action builder"() {
         expect:
-        connection.action() instanceof DefaultBuildActionExecuter.Builder
+        connection.action() instanceof DefaultBuildActionExecutor.Builder
     }
 }

@@ -36,7 +36,7 @@ abstract class AbstractSourcesAndJavadocJarsIntegrationTest extends AbstractIdeI
 
     def setup() {
         server.start()
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         settingsFile << "rootProject.name = 'root'"
         buildFile << baseBuildScript
     }
@@ -298,7 +298,7 @@ dependencies {
     @Requires(IntegTestPreconditions.IsDaemonExecutor)
     def "does not download gradleApi() sources when sources download is disabled"() {
         given:
-        executer.withEnvironmentVars('GRADLE_REPO_OVERRIDE': "$server.uri/")
+        executor.withEnvironmentVars('GRADLE_REPO_OVERRIDE': "$server.uri/")
 
         buildFile """
             apply plugin: "java"
@@ -323,7 +323,7 @@ dependencies {
     @Requires(IntegTestPreconditions.IsDaemonExecutor)
     def "does not download gradleApi() sources when offline"() {
         given:
-        executer.withEnvironmentVars('GRADLE_REPO_OVERRIDE': "$server.uri/")
+        executor.withEnvironmentVars('GRADLE_REPO_OVERRIDE': "$server.uri/")
 
         buildFile """
             apply plugin: "java"
@@ -347,7 +347,7 @@ dependencies {
     def "sources for localGroovy() are downloaded and attached"() {
         given:
         def repo = givenGroovyExistsInGradleRepo()
-        executer.withEnvironmentVars('GRADLE_LIBS_REPO_OVERRIDE': "$repo.uri/")
+        executor.withEnvironmentVars('GRADLE_LIBS_REPO_OVERRIDE': "$repo.uri/")
 
         buildFile """
             apply plugin: "java"
@@ -379,7 +379,7 @@ dependencies {
     def "sources for localGroovy() are downloaded and attached when using gradleApi()"() {
         given:
         def repo = givenGroovyExistsInGradleRepo()
-        executer.withEnvironmentVars('GRADLE_LIBS_REPO_OVERRIDE': "$repo.uri/")
+        executor.withEnvironmentVars('GRADLE_LIBS_REPO_OVERRIDE': "$repo.uri/")
 
         buildFile """
             apply plugin: "java"
@@ -405,7 +405,7 @@ dependencies {
     def "sources for localGroovy() are downloaded and attached when using gradleTestKit()"() {
         given:
         def repo = givenGroovyExistsInGradleRepo()
-        executer.withEnvironmentVars('GRADLE_LIBS_REPO_OVERRIDE': "$repo.uri/")
+        executor.withEnvironmentVars('GRADLE_LIBS_REPO_OVERRIDE': "$repo.uri/")
 
         buildFile """
             apply plugin: "java"
@@ -426,7 +426,7 @@ dependencies {
 
     def "does not download localGroovy() sources when sources download is disabled"() {
         given:
-        executer.withEnvironmentVars('GRADLE_LIBS_REPO_OVERRIDE': "$server.uri/")
+        executor.withEnvironmentVars('GRADLE_LIBS_REPO_OVERRIDE': "$server.uri/")
 
         buildFile """
             apply plugin: "java"
@@ -450,7 +450,7 @@ dependencies {
 
     def "does not download localGroovy() sources when offline"() {
         given:
-        executer.withEnvironmentVars('GRADLE_LIBS_REPO_OVERRIDE': "$server.uri/")
+        executor.withEnvironmentVars('GRADLE_LIBS_REPO_OVERRIDE': "$server.uri/")
 
         buildFile """
             apply plugin: "java"
@@ -474,7 +474,7 @@ dependencies {
     def "does not add project repository to download localGroovy() sources"() {
         given:
         def repo = givenGroovyExistsInGradleRepo()
-        executer.withEnvironmentVars('GRADLE_LIBS_REPO_OVERRIDE': "$repo.uri/")
+        executor.withEnvironmentVars('GRADLE_LIBS_REPO_OVERRIDE': "$repo.uri/")
         settingsFile << """
             dependencyResolutionManagement { repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS }
         """

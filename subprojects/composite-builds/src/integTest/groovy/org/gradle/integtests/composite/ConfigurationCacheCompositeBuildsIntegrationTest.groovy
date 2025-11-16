@@ -31,9 +31,9 @@ class ConfigurationCacheCompositeBuildsIntegrationTest extends AbstractIntegrati
     def configurationCache = new ConfigurationCacheFixture(this)
 
     @Override
-    void setupExecuter(){
-        super.setupExecuter()
-        executer.withConfigurationCacheEnabled()
+    void setupExecutor(){
+        super.setupExecutor()
+        executor.withConfigurationCacheEnabled()
     }
 
     def "can publish Build Scan with composite build"() {

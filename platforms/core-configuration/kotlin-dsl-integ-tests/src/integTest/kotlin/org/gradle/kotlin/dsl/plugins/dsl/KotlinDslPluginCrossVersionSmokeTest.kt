@@ -84,10 +84,10 @@ class KotlinDslPluginCrossVersionSmokeTest : AbstractKotlinIntegrationTest() {
         withBuildScript("""plugins { id("some") }""")
 
         // Since we are testing an older KGP version
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
 
         // See https://github.com/gradle/gradle-private/issues/4767
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
 
         build("help").apply {
 
@@ -138,10 +138,10 @@ class KotlinDslPluginCrossVersionSmokeTest : AbstractKotlinIntegrationTest() {
         withBuildScript("""plugins { id("some") }""")
 
         // Since we are testing an older KGP version
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
 
         // See https://github.com/gradle/gradle-private/issues/4767
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
 
         build("help", ).apply {
             assertThat(output, containsString("some!"))

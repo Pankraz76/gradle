@@ -27,10 +27,10 @@ import org.gradle.launcher.exec.BuildActionResult;
 import org.gradle.launcher.exec.DefaultBuildActionParameters;
 import org.gradle.tooling.internal.provider.connection.ProviderOperationParameters;
 
-public class DaemonBuildActionExecuter implements BuildActionExecutor<ConnectionOperationParameters, ClientBuildRequestContext> {
+public class DaemonBuildActionExecutor implements BuildActionExecutor<ConnectionOperationParameters, ClientBuildRequestContext> {
     private final BuildActionExecutor<BuildActionParameters, ClientBuildRequestContext> delegate;
 
-    public DaemonBuildActionExecuter(BuildActionExecutor<BuildActionParameters, ClientBuildRequestContext> delegate) {
+    public DaemonBuildActionExecutor(BuildActionExecutor<BuildActionParameters, ClientBuildRequestContext> delegate) {
         this.delegate = delegate;
     }
 

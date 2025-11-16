@@ -43,7 +43,7 @@ class HttpBuildCacheServiceIntegrationTest extends HttpBuildCacheFixture {
             }
         """
 
-    def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+    def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def setup() {
         settingsFile << withHttpBuildCacheServer()
@@ -285,7 +285,7 @@ class HttpBuildCacheServiceIntegrationTest extends HttpBuildCacheFixture {
         settingsFile.text = useHttpBuildCache(httpBuildCacheServer.uri)
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         withBuildCache().run "jar"
 
         then:
@@ -310,7 +310,7 @@ class HttpBuildCacheServiceIntegrationTest extends HttpBuildCacheFixture {
         """
 
         when:
-        executer.withArgument("--info")
+        executor.withArgument("--info")
         withBuildCache().run "assemble"
         then:
         outputDoesNotContain("correct-username")
@@ -329,7 +329,7 @@ class HttpBuildCacheServiceIntegrationTest extends HttpBuildCacheFixture {
         """
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         withBuildCache().run "jar"
         then:
         output.contains "response status 401: Unauthorized"
@@ -347,8 +347,8 @@ class HttpBuildCacheServiceIntegrationTest extends HttpBuildCacheFixture {
         """
 
         when:
-        executer.withStacktraceEnabled()
-        executer.withStackTraceChecksDisabled()
+        executor.withStacktraceEnabled()
+        executor.withStackTraceChecksDisabled()
         withBuildCache().run "jar"
 
         then:
@@ -436,8 +436,8 @@ class HttpBuildCacheServiceIntegrationTest extends HttpBuildCacheFixture {
         }
 
         when:
-        executer.withStacktraceEnabled()
-        executer.withStackTraceChecksDisabled()
+        executor.withStacktraceEnabled()
+        executor.withStackTraceChecksDisabled()
         withBuildCache().run "jar"
         then:
         noneSkipped()
@@ -458,8 +458,8 @@ class HttpBuildCacheServiceIntegrationTest extends HttpBuildCacheFixture {
         }
 
         when:
-        executer.withStacktraceEnabled()
-        executer.withStackTraceChecksDisabled()
+        executor.withStacktraceEnabled()
+        executor.withStackTraceChecksDisabled()
         withBuildCache().run "jar"
         then:
         noneSkipped()
@@ -515,7 +515,7 @@ class HttpBuildCacheServiceIntegrationTest extends HttpBuildCacheFixture {
         }
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         withBuildCache().run "jar"
         then:
         noneSkipped()

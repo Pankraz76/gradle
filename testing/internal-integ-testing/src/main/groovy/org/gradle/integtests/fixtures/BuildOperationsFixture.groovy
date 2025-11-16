@@ -19,7 +19,7 @@ package org.gradle.integtests.fixtures
 import groovy.transform.CompileStatic
 import org.gradle.api.specs.Spec
 import org.gradle.api.specs.Specs
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.internal.operations.BuildOperationType
 import org.gradle.internal.operations.trace.BuildOperationRecord
 import org.gradle.internal.operations.trace.BuildOperationTrace
@@ -33,17 +33,17 @@ class BuildOperationsFixture extends BuildOperationTreeQueries {
     private String path
     private BuildOperationTreeFixture tree
 
-    BuildOperationsFixture(GradleExecuter executer, TestDirectoryProvider projectDir) {
-        this(executer, projectDir, "operations")
+    BuildOperationsFixture(GradleExecutor executor, TestDirectoryProvider projectDir) {
+        this(executor, projectDir, "operations")
     }
 
-    BuildOperationsFixture(GradleExecuter executer, TestDirectoryProvider projectDir, String operationsTraceName) {
+    BuildOperationsFixture(GradleExecutor executor, TestDirectoryProvider projectDir, String operationsTraceName) {
         this.path = projectDir.testDirectory.file(operationsTraceName).absolutePath
-        executer.beforeExecute {
+        executor.beforeExecute {
             this.tree = null
-            executer.withArgument("-D$BuildOperationTrace.SYSPROP=$path")
+            executor.withArgument("-D$BuildOperationTrace.SYSPROP=$path")
             // disable memory hungry tree generation
-            executer.withArgument("-D$BuildOperationTrace.TREE_SYSPROP=false")
+            executor.withArgument("-D$BuildOperationTrace.TREE_SYSPROP=false")
         }
     }
 

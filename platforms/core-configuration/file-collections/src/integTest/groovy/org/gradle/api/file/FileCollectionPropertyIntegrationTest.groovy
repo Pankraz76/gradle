@@ -91,7 +91,7 @@ class FileCollectionPropertyIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def "UPGRADED task #annotation file property is LENIENTLY implicitly finalized when task starts execution UNTIL NEXT MAJOR"() {
-        executer.requireOwnGradleUserHomeDir("temp")
+        executor.requireOwnGradleUserHomeDir("temp")
         buildFile << """
             import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty
 
@@ -116,7 +116,7 @@ class FileCollectionPropertyIntegrationTest extends AbstractIntegrationSpec {
 """
 
         expect:
-        executer.expectDocumentedDeprecationWarning("Changing property value of task ':show' property 'prop' at execution time. This behavior has been deprecated. Starting with Gradle 11, changing property value of task ':show' property 'prop' at execution time will become an error.")
+        executor.expectDocumentedDeprecationWarning("Changing property value of task ':show' property 'prop' at execution time. This behavior has been deprecated. Starting with Gradle 11, changing property value of task ':show' property 'prop' at execution time will become an error.")
         succeeds("show")
         outputContains("value: [${file('other')}]")
 

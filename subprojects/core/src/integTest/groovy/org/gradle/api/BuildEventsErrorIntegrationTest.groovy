@@ -84,7 +84,7 @@ class BuildEventsErrorIntegrationTest extends AbstractIntegrationSpec {
             }
         """
         when:
-        executer.usingInitScript(initScriptFile)
+        executor.usingInitScript(initScriptFile)
         fails "a"
 
         then:

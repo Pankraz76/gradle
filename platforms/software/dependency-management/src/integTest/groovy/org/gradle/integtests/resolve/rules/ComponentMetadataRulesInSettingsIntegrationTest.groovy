@@ -220,13 +220,13 @@ class ComponentMetadataRulesInSettingsIntegrationTest extends AbstractModuleDepe
     // fails to delete directory under Windows otherwise
     @Requires(UnitTestPreconditions.NotWindows)
     def "rules applied in settings don't apply to plugin resolution"() {
-        def pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+        def pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
         pluginPortal.start()
         def taskName = 'hello'
         def message = 'hello from plugin'
         def plugin = new PluginBuilder(file("my-plugin"))
             .addPluginWithPrintlnTask(taskName, message)
-            .publishAs("org.test", "myplugin", "1.0", pluginPortal, executer)
+            .publishAs("org.test", "myplugin", "1.0", pluginPortal, executor)
 
         settingsFile << """
             dependencyResolutionManagement {

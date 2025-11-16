@@ -112,7 +112,7 @@ dependencies {
         expectGetDynamicRevision(projectB2)
 
         then:
-        executer.withArgument("-PrefreshDynamicVersions")
+        executor.withArgument("-PrefreshDynamicVersions")
         checkResolve "group:projectA:1.+": ["group:projectA:1.2", "didn't match version 2.0"],
             "group:projectB:latest.integration": "group:projectB:2.2"
     }
@@ -222,7 +222,7 @@ dependencies {
         release.jar.expectGet()
 
         and:
-        executer.withArgument('-PlatestRevision=release')
+        executor.withArgument('-PlatestRevision=release')
 
         then:
         checkResolve "group:projectA:latest.release": ["group:projectA:2.0", "didn't match versions 2.2, 2.1"]
@@ -230,14 +230,14 @@ dependencies {
         when:
         server.resetExpectations()
         milestone.jar.expectGet()
-        executer.withArgument('-PlatestRevision=milestone')
+        executor.withArgument('-PlatestRevision=milestone')
 
         then:
         checkResolve "group:projectA:latest.milestone": ["group:projectA:2.1", "didn't match version 2.2"]
 
         when:
         server.resetExpectations()
-        executer.withArgument('-PlatestRevision=milestone')
+        executor.withArgument('-PlatestRevision=milestone')
 
         then:
         checkResolve "group:projectA:latest.milestone": ["group:projectA:2.1", "didn't match version 2.2"]
@@ -369,14 +369,14 @@ dependencies {
         expectGetDynamicRevision(projectA12)
 
         then:
-        executer.withArguments("-PaddRepo2")
+        executor.withArguments("-PaddRepo2")
         checkResolve "group:projectA:1.+": "group:projectA:1.2"
 
         when:
         server.resetExpectations()
 
         then:
-        executer.withArguments("-PaddRepo2")
+        executor.withArguments("-PaddRepo2")
         checkResolve "group:projectA:1.+": "group:projectA:1.2"
     }
 
@@ -670,7 +670,7 @@ if (project.hasProperty('noDynamicRevisionCache')) {
         checkResolve "group:projectA:1.+": "group:projectA:1.1"
 
         when: "zero expiry for dynamic revision cache"
-        executer.withArguments("-PnoDynamicRevisionCache")
+        executor.withArguments("-PnoDynamicRevisionCache")
 
         and:
         expectGetDynamicRevision(version2)
@@ -746,7 +746,7 @@ if (project.hasProperty('noDynamicRevisionCache')) {
         expectGetDynamicRevision(projectB2)
 
         and: "DynamicRevisionCache is bypassed"
-        executer.withArguments("-PnoDynamicRevisionCache")
+        executor.withArguments("-PnoDynamicRevisionCache")
 
         then:
         succeeds('checkDeps')
@@ -1289,7 +1289,7 @@ dependencies {
 }
 """
         when:
-        executer.withArgument "--offline"
+        executor.withArgument "--offline"
 
         then:
         fails "checkDeps"

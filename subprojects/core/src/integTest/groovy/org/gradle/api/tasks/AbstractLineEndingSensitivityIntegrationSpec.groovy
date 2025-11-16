@@ -30,7 +30,7 @@ abstract class AbstractLineEndingSensitivityIntegrationSpec extends AbstractInte
     public static final String TEXT_WITH_LINE_ENDINGS = "\nhere's a line\nhere's another line\n\n"
 
     def setup() {
-        executer.beforeExecute {
+        executor.beforeExecute {
             requireOwnGradleUserHomeDir("Some non-incremental transforms would otherwise reuse outputs from previous builds on the same machine")
         }
     }

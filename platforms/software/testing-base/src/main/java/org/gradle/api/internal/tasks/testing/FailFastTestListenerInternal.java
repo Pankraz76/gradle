@@ -22,15 +22,15 @@ import org.gradle.api.tasks.testing.TestOutputEvent;
 import org.gradle.api.tasks.testing.TestResult;
 
 /**
- * {@code TestListenerInternal} that causes the {@link TestExecuter} to stop at the first failed test
+ * {@code TestListenerInternal} that causes the {@link TestExecutor} to stop at the first failed test
  */
 public class FailFastTestListenerInternal implements TestListenerInternal {
-    private final TestExecuter<?> testExecuter;
+    private final TestExecutor<?> testExecutor;
     private final TestListenerInternal delegate;
     private boolean failed;
 
-    public FailFastTestListenerInternal(TestExecuter<?> testExecuter, TestListenerInternal delegate) {
-        this.testExecuter = testExecuter;
+    public FailFastTestListenerInternal(TestExecutor<?> testExecutor, TestListenerInternal delegate) {
+        this.testExecutor = testExecutor;
         this.delegate = delegate;
     }
 
@@ -45,7 +45,7 @@ public class FailFastTestListenerInternal implements TestListenerInternal {
 
         if (!failed && testResult.getResultType() == TestResult.ResultType.FAILURE) {
             failed = true;
-            testExecuter.stopNow();
+            testExecutor.stopNow();
         }
     }
 

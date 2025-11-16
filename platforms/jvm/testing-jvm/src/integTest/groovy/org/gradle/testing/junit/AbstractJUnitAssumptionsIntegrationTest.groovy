@@ -22,7 +22,7 @@ import org.gradle.testing.fixture.AbstractTestingMultiVersionIntegrationTest
 abstract class AbstractJUnitAssumptionsIntegrationTest extends AbstractTestingMultiVersionIntegrationTest {
     def "supports assumptions"() {
         given:
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         file('src/test/java/org/gradle/TestWithAssumptions.java').text = """
             package org.gradle;
 

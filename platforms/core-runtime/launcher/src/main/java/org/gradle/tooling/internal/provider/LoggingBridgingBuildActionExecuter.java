@@ -35,12 +35,12 @@ import java.io.OutputStream;
 /**
  * A {@link BuildActionExecutor} which routes Gradle logging to those listeners specified in the {@link ProviderOperationParameters} provided with a tooling api build request.
  */
-public class LoggingBridgingBuildActionExecuter implements BuildActionExecutor<ConnectionOperationParameters, ClientBuildRequestContext> {
+public class LoggingBridgingBuildActionExecutor implements BuildActionExecutor<ConnectionOperationParameters, ClientBuildRequestContext> {
     private final LoggingManagerInternal loggingManager;
     private final Stoppable stoppable;
     private final BuildActionExecutor<ConnectionOperationParameters, ClientBuildRequestContext> delegate;
 
-    public LoggingBridgingBuildActionExecuter(BuildActionExecutor<ConnectionOperationParameters, ClientBuildRequestContext> delegate, LoggingManagerInternal loggingManager, Stoppable stoppable) {
+    public LoggingBridgingBuildActionExecutor(BuildActionExecutor<ConnectionOperationParameters, ClientBuildRequestContext> delegate, LoggingManagerInternal loggingManager, Stoppable stoppable) {
         this.delegate = delegate;
         this.loggingManager = loggingManager;
         this.stoppable = stoppable;

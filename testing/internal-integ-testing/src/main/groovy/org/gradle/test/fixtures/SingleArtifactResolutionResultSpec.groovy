@@ -17,7 +17,7 @@
 package org.gradle.test.fixtures
 
 import groovy.transform.CompileStatic
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
 
 @CompileStatic
 class SingleArtifactResolutionResultSpec<T extends Module> {

@@ -24,7 +24,7 @@ import org.gradle.test.fixtures.archive.TarTestFixture
 
 class CachedTaskIntegrationTest extends AbstractIntegrationSpec implements DirectoryBuildCacheFixture {
 
-    def cacheOperations = new BuildCacheOperationFixtures(executer, temporaryFolder)
+    def cacheOperations = new BuildCacheOperationFixtures(executor, temporaryFolder)
 
     def "displays info about local build cache configuration"() {
         buildFile << defineCacheableTask()
@@ -102,7 +102,7 @@ class CachedTaskIntegrationTest extends AbstractIntegrationSpec implements Direc
         """
 
         expect:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         withBuildCache().fails "foo", "-Dfail=yes"
 
         when:
@@ -137,7 +137,7 @@ class CachedTaskIntegrationTest extends AbstractIntegrationSpec implements Direc
         withBuildCache().run "foo"
 
         // Fail with a change
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         withBuildCache().fails "foo", "-Pfail", "-Pchange"
 
         // Re-running without change should load from cache

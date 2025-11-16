@@ -26,7 +26,7 @@ class PluginVariantResolveIntegrationTest extends AbstractIntegrationSpec {
     @Issue("https://github.com/gradle/gradle/issues/13659")
     def "should report an incompatible Java version of a plugin properly (#id)"() {
         withDummyPlugin(true)
-        executer.inDirectory(file("my-plugin"))
+        executor.inDirectory(file("my-plugin"))
         run 'publishAllPublicationsToBuildRepository'
         def repoLoc = file("my-plugin/build/repo").toURI().toURL().toString()
 

@@ -25,7 +25,7 @@ class PluginApplicationErrorIntegrationTest extends AbstractIntegrationSpec {
     def "reports failure to apply plugin by id"() {
         given:
         pluginBuilder.addPlugin("throw new Exception('throwing plugin')", "broken")
-        pluginBuilder.publishTo(executer, file('external.jar'))
+        pluginBuilder.publishTo(executor, file('external.jar'))
 
         buildFile << '''
 buildscript {

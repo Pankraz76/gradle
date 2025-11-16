@@ -32,15 +32,15 @@ class BuildScanAutoApplyIntegrationTest extends AbstractIntegrationSpec {
     private static final String PLUGIN_AUTO_APPLY_VERSION = AutoAppliedDevelocityPlugin.VERSION
     private static final String PLUGIN_NEWER_VERSION = newerThanAutoApplyPluginVersion()
 
-    private final DevelocityPluginCheckInFixture fixture = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecuter())
-    private final GradleEnterprisePluginCheckInFixture gradleEnterpriseFixture = new GradleEnterprisePluginCheckInFixture(testDirectory, mavenRepo, createExecuter())
+    private final DevelocityPluginCheckInFixture fixture = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecutor())
+    private final GradleEnterprisePluginCheckInFixture gradleEnterpriseFixture = new GradleEnterprisePluginCheckInFixture(testDirectory, mavenRepo, createExecutor())
 
     def setup() {
         buildFile << """
             task dummy {}
         """
         settingsFile << fixture.pluginManagement()
-        fixture.publishDummyPlugin(executer)
+        fixture.publishDummyPlugin(executor)
     }
 
     void applyPlugin() {
@@ -297,7 +297,7 @@ class BuildScanAutoApplyIntegrationTest extends AbstractIntegrationSpec {
 
     def "does not auto-apply plugin when Gradle Enterprise plugin is applied using plugin ID"() {
         when:
-        gradleEnterpriseFixture.publishDummyPlugin(executer)
+        gradleEnterpriseFixture.publishDummyPlugin(executor)
         settingsFile << gradleEnterpriseFixture.plugins()
 
         and:
@@ -309,7 +309,7 @@ class BuildScanAutoApplyIntegrationTest extends AbstractIntegrationSpec {
 
     def "does not auto-apply plugin when Gradle Enterprise plugin is applied using plugin class name"() {
         when:
-        gradleEnterpriseFixture.publishDummyPlugin(executer)
+        gradleEnterpriseFixture.publishDummyPlugin(executor)
         settingsFile.text = """
             buildscript {
                 repositories {
@@ -331,7 +331,7 @@ class BuildScanAutoApplyIntegrationTest extends AbstractIntegrationSpec {
 
     def "does not auto-apply plugin when Gradle Enterprise plugin explicitly requested and not applied"() {
         when:
-        gradleEnterpriseFixture.publishDummyPlugin(executer)
+        gradleEnterpriseFixture.publishDummyPlugin(executor)
         settingsFile << """
             plugins {
                 id '$gradleEnterpriseFixture.id' version '${gradleEnterpriseFixture.artifactVersion}' apply false
@@ -347,7 +347,7 @@ class BuildScanAutoApplyIntegrationTest extends AbstractIntegrationSpec {
 
     def "does not auto-apply plugin when Gradle Enterprise plugin is added to initscript classpath"() {
         when:
-        gradleEnterpriseFixture.publishDummyPlugin(executer)
+        gradleEnterpriseFixture.publishDummyPlugin(executor)
         file('init.gradle') << """
             initscript {
                 repositories {

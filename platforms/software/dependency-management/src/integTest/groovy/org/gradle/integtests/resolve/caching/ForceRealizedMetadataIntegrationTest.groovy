@@ -26,7 +26,7 @@ class ForceRealizedMetadataIntegrationTest extends AbstractHttpDependencyResolut
     MavenHttpModule transitive
 
     def setup() {
-        executer.withArgument("-Dorg.gradle.integtest.force.realize.metadata=true")
+        executor.withArgument("-Dorg.gradle.integtest.force.realize.metadata=true")
 
         buildFile << """
             plugins {

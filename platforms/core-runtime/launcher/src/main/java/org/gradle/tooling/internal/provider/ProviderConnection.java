@@ -52,7 +52,7 @@ import org.gradle.launcher.configuration.BuildLayoutResult;
 import org.gradle.launcher.configuration.InitialProperties;
 import org.gradle.launcher.daemon.client.DaemonClient;
 import org.gradle.launcher.daemon.client.DaemonClientFactory;
-import org.gradle.launcher.daemon.client.NotifyDaemonClientExecuter;
+import org.gradle.launcher.daemon.client.NotifyDaemonClientExecutor;
 import org.gradle.launcher.daemon.configuration.DaemonBuildOptions;
 import org.gradle.launcher.daemon.configuration.DaemonParameters;
 import org.gradle.launcher.daemon.context.DaemonRequestContext;
@@ -117,7 +117,7 @@ public class ProviderConnection {
     private final GlobalUserInputReceiver userInputReceiver;
     private final UserInputReader userInputReader;
     private final ShutdownCoordinator shutdownCoordinator;
-    private final NotifyDaemonClientExecuter notifyDaemonClientExecuter;
+    private final NotifyDaemonClientExecutor notifyDaemonClientExecutor;
     private final IsolatableSerializerRegistry isolatableSerializerRegistry;
 
     private GradleVersion consumerVersion;
@@ -132,7 +132,7 @@ public class ProviderConnection {
         GlobalUserInputReceiver userInputReceiver,
         UserInputReader userInputReader,
         ShutdownCoordinator shutdownCoordinator,
-        NotifyDaemonClientExecuter notifyDaemonClientExecuter,
+        NotifyDaemonClientExecutor notifyDaemonClientExecutor,
         IsolatableSerializerRegistry isolatableSerializerRegistry
     ) {
         this.buildLayoutFactory = buildLayoutFactory;
@@ -144,7 +144,7 @@ public class ProviderConnection {
         this.userInputReceiver = userInputReceiver;
         this.userInputReader = userInputReader;
         this.shutdownCoordinator = shutdownCoordinator;
-        this.notifyDaemonClientExecuter = notifyDaemonClientExecuter;
+        this.notifyDaemonClientExecutor = notifyDaemonClientExecutor;
         this.isolatableSerializerRegistry = isolatableSerializerRegistry;
     }
 
@@ -250,7 +250,7 @@ public class ProviderConnection {
     public void notifyDaemonsAboutChangedPaths(List<String> changedPaths, ProviderOperationParameters providerParameters) {
         ServiceRegistry requestSpecificLoggingServices = LoggingServiceRegistry.newNestedLogging();
         Parameters params = initParams(providerParameters);
-        notifyDaemonClientExecuter.execute(requestSpecificLoggingServices, params.daemonParams.getBaseDir(), client -> client.notifyDaemonsAboutChangedPaths(changedPaths));
+        notifyDaemonClientExecutor.execute(requestSpecificLoggingServices, params.daemonParams.getBaseDir(), client -> client.notifyDaemonsAboutChangedPaths(changedPaths));
     }
 
     public void stopWhenIdle(ProviderOperationParameters providerParameters) {
@@ -313,7 +313,7 @@ public class ProviderConnection {
         if (Boolean.TRUE.equals(operationParameters.isEmbedded())) {
             loggingManager = sharedServices.get(LoggingManagerFactory.class).createLoggingManager();
             loggingManager.captureSystemSources();
-            executor = new RunInProcess(new SystemPropertySetterExecuter(new ForwardStdInToThisProcess(userInputReceiver, userInputReader, standardInput, embeddedExecutor)));
+            executor = new RunInProcess(new SystemPropertySetterExecutor(new ForwardStdInToThisProcess(userInputReceiver, userInputReader, standardInput, embeddedExecutor)));
         } else {
             ServiceRegistry requestSpecificLogging = LoggingServiceRegistry.newNestedLogging();
             loggingManager = requestSpecificLogging.get(LoggingManagerFactory.class).createLoggingManager();
@@ -322,7 +322,7 @@ public class ProviderConnection {
             stoppable.add(requestSpecificLogging);
             executor = clientServices.get(DaemonClient.class);
         }
-        return new LoggingBridgingBuildActionExecuter(new DaemonBuildActionExecuter(executor), loggingManager, stoppable);
+        return new LoggingBridgingBuildActionExecutor(new DaemonBuildActionExecutor(executor), loggingManager, stoppable);
     }
 
     private Parameters initParams(ProviderOperationParameters operationParameters) {

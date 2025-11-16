@@ -22,11 +22,11 @@ import org.gradle.internal.logging.text.StyledTextOutputFactory
 
 class DevelocityPluginRequiredServicesIntegrationTest extends AbstractIntegrationSpec {
 
-    def plugin = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecuter())
+    def plugin = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecutor())
 
     def setup() {
         settingsFile << plugin.pluginManagement() << plugin.plugins()
-        plugin.publishDummyPlugin(executer)
+        plugin.publishDummyPlugin(executor)
     }
 
     def "required services are correct"() {

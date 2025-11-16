@@ -148,7 +148,7 @@ Joe!""")
         writeSourceFile()
 
         when:
-        executer.expectDocumentedDeprecationWarning("Configuring a Java executable via a relative path. " +
+        executor.expectDocumentedDeprecationWarning("Configuring a Java executable via a relative path. " +
                 "This behavior has been deprecated. This will fail with an error in Gradle 10. " +
                 "Resolving relative file paths might yield unexpected results, there is no single clear location it would make sense to resolve against. " +
                 "Configure an absolute path to a Java executable instead. " +

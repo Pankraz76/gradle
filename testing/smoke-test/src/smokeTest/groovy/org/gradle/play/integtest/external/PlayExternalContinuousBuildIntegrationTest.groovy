@@ -58,7 +58,7 @@ class PlayExternalContinuousBuildIntegrationTest extends AbstractMultiVersionPla
     }
 
     def "build failure prior to launch does not prevent launch on subsequent build" () {
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         def original = file("app/controllers/Application.scala").text
 
         when: "source file is broken"

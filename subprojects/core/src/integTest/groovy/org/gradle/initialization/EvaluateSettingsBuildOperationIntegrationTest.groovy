@@ -22,7 +22,7 @@ import org.gradle.internal.operations.trace.BuildOperationRecord
 
 class EvaluateSettingsBuildOperationIntegrationTest extends AbstractIntegrationSpec {
 
-    final buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+    final buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "settings details are exposed"() {
         settingsFile << ""

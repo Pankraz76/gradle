@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.resolve.ivy
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.test.fixtures.ivy.IvyModule
 import org.gradle.test.fixtures.maven.MavenModule
 
@@ -48,7 +48,7 @@ class ComponentSelectionRulesErrorHandlingIntegTest extends AbstractComponentSel
 
         then:
         fails ':checkDeps'
-        GradleContextualExecuter.configCache || failure.assertHasDescription("Execution failed for task ':checkDeps'.")
+        GradleContextualExecutor.configCache || failure.assertHasDescription("Execution failed for task ':checkDeps'.")
         failure.assertHasFileName("Build file '$buildFile.path'")
         failure.assertHasLineNumber(lines + 10)
         failure.assertHasCause("There was an error while evaluating a component selection rule for org.utils:api:1.2.")
@@ -117,7 +117,7 @@ class ComponentSelectionRulesErrorHandlingIntegTest extends AbstractComponentSel
 
         then:
         fails ':checkDeps'
-        GradleContextualExecuter.configCache || failure.assertHasDescription("Execution failed for task ':checkDeps'.")
+        GradleContextualExecutor.configCache || failure.assertHasDescription("Execution failed for task ':checkDeps'.")
         failure.assertHasFileName("Build file '$buildFile.path'")
         failure.assertHasLineNumber(lines + 9)
         failure.assertHasCause("There was an error while evaluating a component selection rule for org.utils:api:1.2.")
@@ -176,7 +176,7 @@ class ComponentSelectionRulesErrorHandlingIntegTest extends AbstractComponentSel
         """
 
         expect:
-        executer.expectDocumentedDeprecationWarning("The ComponentSelectionRules.all(Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
+        executor.expectDocumentedDeprecationWarning("The ComponentSelectionRules.all(Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
         fails ':checkDeps'
         failureDescriptionStartsWith("A problem occurred evaluating root project")
         failure.assertHasFileName("Build file '$buildFile.path'")
@@ -220,9 +220,9 @@ class ComponentSelectionRulesErrorHandlingIntegTest extends AbstractComponentSel
         }
 
         then:
-        executer.expectDocumentedDeprecationWarning("The ComponentSelectionRules.all(Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
+        executor.expectDocumentedDeprecationWarning("The ComponentSelectionRules.all(Object) method has been deprecated. This is scheduled to be removed in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#dependency_management_rules")
         fails ':checkDeps'
-        GradleContextualExecuter.configCache || failure.assertHasDescription("Execution failed for task ':checkDeps'.")
+        GradleContextualExecutor.configCache || failure.assertHasDescription("Execution failed for task ':checkDeps'.")
         failure.assertHasFileName("Build file '$buildFile.path'")
         failure.assertHasLineNumber(lines + 21)
         failure.assertHasCause("There was an error while evaluating a component selection rule for org.utils:api:1.2.")

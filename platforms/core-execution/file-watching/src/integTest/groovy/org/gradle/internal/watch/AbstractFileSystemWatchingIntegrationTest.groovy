@@ -18,17 +18,17 @@ package org.gradle.internal.watch
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.FileSystemWatchingFixture
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 
 import static org.junit.Assume.assumeFalse
 
 class AbstractFileSystemWatchingIntegrationTest extends AbstractIntegrationSpec implements FileSystemWatchingFixture {
 
     def setup() {
-        assumeFalse("No shared state without a daemon", GradleContextualExecuter.noDaemon)
+        assumeFalse("No shared state without a daemon", GradleContextualExecutor.noDaemon)
 
         // Make the first build in each test drop the VFS state
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
     }
 
     static String sourceFileWithGreeting(String greeting) {

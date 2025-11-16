@@ -16,8 +16,8 @@
 package org.gradle.integtests.wrapper
 
 import org.gradle.integtests.fixtures.daemon.DaemonLogsAnalyzer
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.UnitTestPreconditions
 
@@ -28,36 +28,36 @@ class WrapperCrossVersionIntegrationTest extends AbstractWrapperCrossVersionInte
     ], reason = "see https://github.com/gradle/gradle-private/issues/3758")
     void canUseWrapperFromPreviousVersionToRunCurrentVersion() {
         when:
-        GradleExecuter executer = prepareWrapperExecuter(previous, current)
+        GradleExecutor executor = prepareWrapperExecutor(previous, current)
 
         then:
-        checkWrapperWorksWith(executer, current)
+        checkWrapperWorksWith(executor, current)
 
         cleanup:
-        cleanupDaemons(executer, current)
+        cleanupDaemons(executor, current)
     }
 
     @Requires(value = [UnitTestPreconditions.NotWindowsJavaBefore11], reason = "https://github.com/gradle/gradle-private/issues/3758")
     void canUseWrapperFromCurrentVersionToRunPreviousVersion() {
         when:
-        GradleExecuter executer = prepareWrapperExecuter(current, previous).withWarningMode(null)
+        GradleExecutor executor = prepareWrapperExecutor(current, previous).withWarningMode(null)
 
         then:
-        checkWrapperWorksWith(executer, previous)
+        checkWrapperWorksWith(executor, previous)
 
         cleanup:
-        cleanupDaemons(executer, previous)
+        cleanupDaemons(executor, previous)
     }
 
-    void checkWrapperWorksWith(GradleExecuter executer, GradleDistribution executionVersion) {
-        def result = executer.withTasks('hello').run()
+    void checkWrapperWorksWith(GradleExecutor executor, GradleDistribution executionVersion) {
+        def result = executor.withTasks('hello').run()
 
         assert result.output.contains("hello from $executionVersion.version.version")
-        assert result.output.contains("using distribution at ${executer.gradleUserHomeDir.file("wrapper/dists")}")
-        assert result.output.contains("using Gradle user home at $executer.gradleUserHomeDir")
+        assert result.output.contains("using distribution at ${executor.gradleUserHomeDir.file("wrapper/dists")}")
+        assert result.output.contains("using Gradle user home at $executor.gradleUserHomeDir")
     }
 
-    static void cleanupDaemons(GradleExecuter executer, GradleDistribution executionVersion) {
-        new DaemonLogsAnalyzer(executer.daemonBaseDir, executionVersion.version.version).killAll()
+    static void cleanupDaemons(GradleExecutor executor, GradleDistribution executionVersion) {
+        new DaemonLogsAnalyzer(executor.daemonBaseDir, executionVersion.version.version).killAll()
     }
 }

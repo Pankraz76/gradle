@@ -19,7 +19,7 @@ package org.gradle.plugins.ide
 
 import groovy.xml.XmlSlurper
 import org.gradle.integtests.fixtures.AbstractIntegrationTest
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.plugins.ide.fixtures.IdeaFixtures
 import org.gradle.plugins.ide.fixtures.IdeaModuleFixture
 import org.gradle.plugins.ide.fixtures.IdeaProjectFixture
@@ -29,7 +29,7 @@ import org.junit.Before
 abstract class AbstractIdeIntegrationTest extends AbstractIntegrationTest {
     @Before
     void setUp() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     protected ExecutionResult runTask(taskName, settingsScript = "rootProject.name = 'root'", buildScript) {
@@ -39,7 +39,7 @@ abstract class AbstractIdeIntegrationTest extends AbstractIntegrationTest {
         def buildFile = file("build.gradle")
         buildFile << buildScript
 
-        return executer.withTasks(taskName).run()
+        return executor.withTasks(taskName).run()
     }
 
     protected TestFile getFile(Map options, String filename) {

@@ -18,7 +18,7 @@ package org.gradle.smoketests
 
 import org.gradle.api.JavaVersion
 import org.gradle.integtests.fixtures.android.AndroidHome
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.reflect.validation.ValidationMessageChecker
 import org.gradle.test.fixtures.Flaky
 import org.gradle.testkit.runner.TaskOutcome
@@ -82,14 +82,14 @@ class AndroidPluginsSmokeTest extends AbstractPluginValidatingSmokeTest implemen
         assert !result.output.contains(JAVA_COMPILE_DEPRECATION_MESSAGE)
 
         and:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateStored()
         }
 
         when: 'up-to-date build'
         result = runner
             .deprecations(AndroidDeprecations) {
-                expectMultiStringNotationDeprecationIf(agpVersion, GradleContextualExecuter.isNotConfigCache())
+                expectMultiStringNotationDeprecationIf(agpVersion, GradleContextualExecutor.isNotConfigCache())
             }
             .build()
 
@@ -100,7 +100,7 @@ class AndroidPluginsSmokeTest extends AbstractPluginValidatingSmokeTest implemen
         result.task(':app:processDebugManifest').outcome == TaskOutcome.UP_TO_DATE
 
         and:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateLoaded()
         }
 
@@ -108,7 +108,7 @@ class AndroidPluginsSmokeTest extends AbstractPluginValidatingSmokeTest implemen
         abiChange.run()
         result = runner
             .deprecations(AndroidDeprecations) {
-                expectMultiStringNotationDeprecationIf(agpVersion, GradleContextualExecuter.isNotConfigCache())
+                expectMultiStringNotationDeprecationIf(agpVersion, GradleContextualExecutor.isNotConfigCache())
             }
             .build()
 
@@ -119,7 +119,7 @@ class AndroidPluginsSmokeTest extends AbstractPluginValidatingSmokeTest implemen
         result.task(':app:assembleDebug').outcome == TaskOutcome.SUCCESS
 
         and:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateLoaded()
         }
 
@@ -131,7 +131,7 @@ class AndroidPluginsSmokeTest extends AbstractPluginValidatingSmokeTest implemen
             .build()
         result = runner
             .deprecations(AndroidDeprecations) {
-                expectMultiStringNotationDeprecationIf(agpVersion, GradleContextualExecuter.isNotConfigCache())
+                expectMultiStringNotationDeprecationIf(agpVersion, GradleContextualExecutor.isNotConfigCache())
             }.build()
 
         then:
@@ -140,7 +140,7 @@ class AndroidPluginsSmokeTest extends AbstractPluginValidatingSmokeTest implemen
         result.task(':app:assembleDebug').outcome == TaskOutcome.SUCCESS
 
         and:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateLoaded()
         }
 

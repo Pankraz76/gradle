@@ -183,7 +183,7 @@ Searched in the following locations:
         sourceArtifact.expectGet()
 
         then:
-        executer.withArgument(execArg)
+        executor.withArgument(execArg)
         succeeds("verifyRefresh")
 
         where:
@@ -240,7 +240,7 @@ if (project.hasProperty('nocache')) {
         sourceArtifact.expectGet()
 
         then:
-        executer.withArgument(execArg)
+        executor.withArgument(execArg)
         succeeds("verify")
         file("sources/some-artifact-1.0-my-sources.jar").assertHasChangedSince(snapshot)
 

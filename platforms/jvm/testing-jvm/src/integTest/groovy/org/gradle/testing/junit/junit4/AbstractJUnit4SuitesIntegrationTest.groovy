@@ -149,7 +149,7 @@ abstract class AbstractJUnit4SuitesIntegrationTest extends AbstractJUnitSuitesIn
             }
         """.stripIndent()
         when:
-        executer.withTasks('test').run()
+        executor.withTasks('test').run()
 
         then:
         GenericHtmlTestExecutionResult result = new GenericHtmlTestExecutionResult(testDirectory, GenericTestExecutionResult.TestFramework.JUNIT4)
@@ -241,7 +241,7 @@ abstract class AbstractJUnit4SuitesIntegrationTest extends AbstractJUnitSuitesIn
         """.stripIndent()
 
         when:
-        executer.withTasks('test').run()
+        executor.withTasks('test').run()
 
         then:
         GenericTestExecutionResult result = resultsFor()

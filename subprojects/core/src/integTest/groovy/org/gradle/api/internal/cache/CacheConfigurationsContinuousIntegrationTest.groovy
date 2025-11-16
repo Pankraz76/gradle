@@ -33,11 +33,11 @@ class CacheConfigurationsContinuousIntegrationTest extends AbstractContinuousInt
 
     @Override
     TestFile getGradleUserHomeDir() {
-        return executer.gradleUserHomeDir
+        return executor.gradleUserHomeDir
     }
 
     def "can configure caches via init script and execute multiple builds in a session"() {
-        def initDir = new File(executer.gradleUserHomeDir, "init.d")
+        def initDir = new File(executor.gradleUserHomeDir, "init.d")
         initDir.mkdirs()
         new File(initDir, "cache-settings.gradle") << """
             beforeSettings { settings ->
@@ -85,11 +85,11 @@ class CacheConfigurationsContinuousIntegrationTest extends AbstractContinuousInt
     }
 
     def "can change cache configurations in between builds in a session"() {
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
 
         def retentionFileName = 'retention'
         def retentionFile = file(retentionFileName)
-        def initDir = new File(executer.gradleUserHomeDir, "init.d")
+        def initDir = new File(executor.gradleUserHomeDir, "init.d")
         initDir.mkdirs()
         new File(initDir, "cache-settings.gradle") << """
             beforeSettings { settings ->

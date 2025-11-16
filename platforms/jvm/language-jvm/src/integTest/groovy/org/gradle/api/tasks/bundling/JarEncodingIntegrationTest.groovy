@@ -50,8 +50,8 @@ class JarEncodingIntegrationTest extends AbstractIntegrationSpec {
         }
 
         when:
-        executer.withDefaultCharacterEncoding('windows-1252').withTasks("jar")
-        executer.run()
+        executor.withDefaultCharacterEncoding('windows-1252').withTasks("jar")
+        executor.run()
 
         then:
         def jar = new JarTestFixture(file('dest/test.jar'))
@@ -101,8 +101,8 @@ class JarEncodingIntegrationTest extends AbstractIntegrationSpec {
         """.stripIndent()
 
         when:
-        executer.withDefaultCharacterEncoding('windows-1252').withTasks('jar')
-        executer.run()
+        executor.withDefaultCharacterEncoding('windows-1252').withTasks('jar')
+        executor.run()
 
         then:
         def manifest = new JarTestFixture(file('dest/test.jar'), 'UTF-8', 'UTF-8').content('META-INF/MANIFEST.MF')
@@ -126,8 +126,8 @@ class JarEncodingIntegrationTest extends AbstractIntegrationSpec {
         file('manifest-UTF-8.txt').setText('moji: bak€', 'UTF-8')
 
         when:
-        executer.withDefaultCharacterEncoding('ISO-8859-15').withTasks('jar')
-        executer.run()
+        executor.withDefaultCharacterEncoding('ISO-8859-15').withTasks('jar')
+        executor.run()
 
         then:
         def jar = new JarTestFixture(file('dest/test.jar'), 'UTF-8', 'UTF-8')
@@ -153,8 +153,8 @@ class JarEncodingIntegrationTest extends AbstractIntegrationSpec {
         """.stripIndent()
 
         when:
-        executer.withDefaultCharacterEncoding('UTF-8').withTasks('jar')
-        executer.run()
+        executor.withDefaultCharacterEncoding('UTF-8').withTasks('jar')
+        executor.run()
 
         then:
         def jar = new JarTestFixture(file('dest/test.jar'), 'UTF-8', 'ISO-8859-15')
@@ -183,8 +183,8 @@ class JarEncodingIntegrationTest extends AbstractIntegrationSpec {
         file('manifest-ISO-8859-15.txt').setText('bake: moji€', 'ISO-8859-15')
 
         when:
-        executer.withDefaultCharacterEncoding('windows-1252').withTasks('jar')
-        executer.run()
+        executor.withDefaultCharacterEncoding('windows-1252').withTasks('jar')
+        executor.run()
 
         then:
         def jar = new JarTestFixture(file('dest/test.jar'), 'UTF-8', 'UTF-8')
@@ -225,9 +225,9 @@ class JarEncodingIntegrationTest extends AbstractIntegrationSpec {
         """.stripIndent()
 
         when:
-        executer.withDefaultCharacterEncoding('windows-1252').withTasks('jar')
-        executer.withArgument("--stacktrace")
-        executer.run()
+        executor.withDefaultCharacterEncoding('windows-1252').withTasks('jar')
+        executor.withArgument("--stacktrace")
+        executor.run()
 
         then:
         def jar = new JarFile(file('dest/test.jar'))
@@ -265,7 +265,7 @@ class JarEncodingIntegrationTest extends AbstractIntegrationSpec {
         """.stripIndent()
 
         when:
-        executer.withDefaultCharacterEncoding('UTF-8')
+        executor.withDefaultCharacterEncoding('UTF-8')
         fails 'jar'
 
         then:

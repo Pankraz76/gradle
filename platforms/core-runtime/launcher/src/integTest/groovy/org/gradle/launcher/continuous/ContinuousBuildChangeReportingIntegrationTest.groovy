@@ -212,7 +212,7 @@ class ContinuousBuildChangeReportingIntegrationTest extends AbstractContinuousIn
         def inputFile = inputDir.file("input.txt")
 
         when:
-        executer.withArgument("-q")
+        executor.withArgument("-q")
         succeeds("theTask")
         inputFile.createFile()
 

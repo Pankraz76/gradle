@@ -25,7 +25,7 @@ class SamplesWebProjectIntegrationTest extends AbstractIntegrationSpec {
     @Rule public final Sample sample = new Sample(temporaryFolder, 'webApplication/customized/groovy')
 
     def setup() {
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     def "can build war"() {

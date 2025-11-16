@@ -24,7 +24,7 @@ import org.gradle.internal.taskgraph.NodeIdentity
 
 class ConfigurationCacheTransformNodeIdBuildOperationIntegrationTest extends AbstractConfigurationCacheIntegrationTest implements ArtifactTransformTestFixture {
 
-    def buildOperations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def buildOperations = new BuildOperationsFixture(executor, testDirectoryProvider)
 
     def setup() {
         // So that dependency resolution results from previous executions do not interfere

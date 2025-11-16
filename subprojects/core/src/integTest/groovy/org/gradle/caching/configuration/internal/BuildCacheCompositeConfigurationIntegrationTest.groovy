@@ -24,15 +24,15 @@ import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.integtests.fixtures.ToBeFixedForIsolatedProjects
 import spock.lang.Issue
 
-import static org.gradle.integtests.fixtures.executer.GradleContextualExecuter.isConfigCache
-import static org.gradle.integtests.fixtures.executer.GradleContextualExecuter.isNotConfigCache
+import static org.gradle.integtests.fixtures.executor.GradleContextualExecutor.isConfigCache
+import static org.gradle.integtests.fixtures.executor.GradleContextualExecutor.isNotConfigCache
 
 /**
  * Tests build cache configuration within composite builds and buildSrc.
  */
 class BuildCacheCompositeConfigurationIntegrationTest extends AbstractIntegrationSpec {
 
-    def operations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def operations = new BuildOperationsFixture(executor, testDirectoryProvider)
 
     enum EnabledBy {
         INVOCATION_SWITCH,
@@ -46,10 +46,10 @@ class BuildCacheCompositeConfigurationIntegrationTest extends AbstractIntegratio
     def "can configure with settings.gradle - enabled by #by"() {
         // Build scripts are cached in global cache since they are compiled as ImmutableUnitOfWork,
         // so to avoid flakiness we run with own GradleUserHome
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         def enablingCode = by == EnabledBy.PROGRAMMATIC ? """\ngradle.startParameter.buildCacheEnabled = true\n""" : ""
         if (by == EnabledBy.INVOCATION_SWITCH) {
-            executer.beforeExecute {
+            executor.beforeExecute {
                 withBuildCacheEnabled()
             }
         }
@@ -152,7 +152,7 @@ class BuildCacheCompositeConfigurationIntegrationTest extends AbstractIntegratio
     @Issue("https://github.com/gradle/gradle/issues/4216")
     @ToBeFixedForIsolatedProjects(because = "allprojects")
     def "build cache service is closed only after all included builds are finished"() {
-        executer.beforeExecute { it.withBuildCacheEnabled() }
+        executor.beforeExecute { it.withBuildCacheEnabled() }
         def localCache = new TestBuildCache(file("local-cache"))
         settingsFile << localCache.localCacheConfiguration(true)
 

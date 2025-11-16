@@ -33,7 +33,7 @@ class SamplesCustomExternalTaskIntegrationTest extends AbstractSampleIntegration
     def "can test task implementation with #dsl dsl"() {
         when:
         TestFile dslDir = sample.dir.file("$dsl/task")
-        executer.inDirectory(dslDir).withTasks('check').run()
+        executor.inDirectory(dslDir).withTasks('check').run()
 
         then:
         def result = new DefaultTestExecutionResult(dslDir)
@@ -48,8 +48,8 @@ class SamplesCustomExternalTaskIntegrationTest extends AbstractSampleIntegration
         given:
         TestFile dslDir = sample.dir.file(dsl)
         TestFile producerDir = dslDir.file('task')
-        executer.inDirectory(producerDir).withTasks('publish').run()
-        executer.beforeExecute {
+        executor.inDirectory(producerDir).withTasks('publish').run()
+        executor.beforeExecute {
             inDirectory(dslDir.file('consumer'))
         }
 

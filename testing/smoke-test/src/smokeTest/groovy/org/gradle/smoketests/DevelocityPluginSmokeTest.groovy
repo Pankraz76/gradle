@@ -16,7 +16,7 @@
 
 package org.gradle.smoketests
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.enterprise.core.GradleEnterprisePluginManager
 import org.gradle.plugin.management.internal.autoapply.AutoAppliedDevelocityPlugin
 import org.gradle.test.fixtures.file.TestFile
@@ -371,7 +371,7 @@ public class MyFlakyTest {
 
     def "plugin is disabled for unsupported version #version"() {
         def expectedToFailWithConfigCacheProblem =
-            GradleContextualExecuter.configCache && VersionNumber.parse(version) < VersionNumber.parse("3.4")
+            GradleContextualExecutor.configCache && VersionNumber.parse(version) < VersionNumber.parse("3.4")
 
         when:
         usePluginVersion version

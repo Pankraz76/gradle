@@ -200,7 +200,7 @@ class ConfigurationBuildDependenciesIntegrationTest extends AbstractHttpDependen
         """
 
         expect:
-        executer.withArgument("--dry-run")
+        executor.withArgument("--dry-run")
         fails("useCompileConfiguration")
         failure.assertHasDescription("Could not determine the dependencies of task ':useCompileConfiguration'.")
         failure.assertHasCause('broken')
@@ -232,7 +232,7 @@ class ConfigurationBuildDependenciesIntegrationTest extends AbstractHttpDependen
         """
 
         expect:
-        executer.withArgument("--dry-run")
+        executor.withArgument("--dry-run")
         fails("useCompileConfiguration")
         failure.assertHasDescription("Could not determine the dependencies of task ':useCompileConfiguration'.")
         failure.assertHasCause('broken')
@@ -262,7 +262,7 @@ class ConfigurationBuildDependenciesIntegrationTest extends AbstractHttpDependen
         """
 
         expect:
-        executer.withArgument("--dry-run")
+        executor.withArgument("--dry-run")
         fails("useCompileConfiguration")
         failure.assertHasDescription("Could not determine the dependencies of task ':useCompileConfiguration'.")
         failure.assertHasCause("Could not resolve all dependencies for configuration ':compile'.")
@@ -299,7 +299,7 @@ class ConfigurationBuildDependenciesIntegrationTest extends AbstractHttpDependen
         """
 
         expect:
-        executer.withArgument("--dry-run")
+        executor.withArgument("--dry-run")
         fails("useCompileConfiguration")
         failure.assertHasDescription("Could not determine the dependencies of task ':useCompileConfiguration'.")
         failure.assertHasCause("Could not resolve all dependencies for configuration ':compile'.")
@@ -344,7 +344,7 @@ class ConfigurationBuildDependenciesIntegrationTest extends AbstractHttpDependen
         expect:
         module.pom.expectGetBroken()
 
-        executer.withArgument("--dry-run")
+        executor.withArgument("--dry-run")
         fails("useCompileConfiguration")
         failure.assertHasDescription("Could not determine the dependencies of task ':useCompileConfiguration'.")
         failure.assertHasCause("Could not resolve all dependencies for configuration ':compile'.")
@@ -393,7 +393,7 @@ class ConfigurationBuildDependenciesIntegrationTest extends AbstractHttpDependen
         """
 
         when:
-        executer.withArgument("--dry-run")
+        executor.withArgument("--dry-run")
         succeeds('useCompileConfiguration')
 
         then:
@@ -444,7 +444,7 @@ class ConfigurationBuildDependenciesIntegrationTest extends AbstractHttpDependen
 
         when:
         module.pom.expectGet()
-        executer.withArgument("--dry-run")
+        executor.withArgument("--dry-run")
         succeeds('useCompileConfiguration')
 
         then:

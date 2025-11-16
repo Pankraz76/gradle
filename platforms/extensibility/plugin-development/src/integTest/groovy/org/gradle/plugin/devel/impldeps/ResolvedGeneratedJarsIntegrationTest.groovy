@@ -27,7 +27,7 @@ import java.util.zip.ZipFile
 class ResolvedGeneratedJarsIntegrationTest extends BaseGradleImplDepsTestCodeIntegrationTest {
 
     def setup() {
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         buildFile << testablePluginProject(['java-gradle-plugin'])
     }
 

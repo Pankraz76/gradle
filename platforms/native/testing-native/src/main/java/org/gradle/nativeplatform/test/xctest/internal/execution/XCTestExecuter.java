@@ -18,7 +18,7 @@ package org.gradle.nativeplatform.test.xctest.internal.execution;
 
 import org.gradle.api.internal.tasks.testing.ClassTestDefinition;
 import org.gradle.api.internal.tasks.testing.TestDefinitionProcessor;
-import org.gradle.api.internal.tasks.testing.TestExecuter;
+import org.gradle.api.internal.tasks.testing.TestExecutor;
 import org.gradle.api.internal.tasks.testing.TestResultProcessor;
 import org.gradle.api.internal.tasks.testing.detection.TestDetector;
 import org.gradle.api.internal.tasks.testing.processors.TestMainAction;
@@ -60,7 +60,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * - Smarter/fancier test filtering
  * - Test probing (so we know which tests exist without executing them)
  */
-public abstract class XCTestExecuter implements TestExecuter<XCTestTestExecutionSpec> {
+public abstract class XCTestExecutor implements TestExecutor<XCTestTestExecutionSpec> {
     @Inject
     public abstract ClientExecHandleBuilderFactory getExecHandleFactory();
 

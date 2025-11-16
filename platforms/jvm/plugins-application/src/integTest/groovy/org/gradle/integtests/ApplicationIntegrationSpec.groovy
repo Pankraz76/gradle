@@ -16,7 +16,7 @@
 package org.gradle.integtests
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.ScriptExecuter
+import org.gradle.integtests.fixtures.ScriptExecutor
 import org.gradle.integtests.fixtures.archives.TestFileSystemSensitiveArchives
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.test.fixtures.file.TestFile
@@ -61,7 +61,7 @@ class Main {
         when:
         run 'installDist'
 
-        def builder = new ScriptExecuter()
+        def builder = new ScriptExecutor()
         builder.workingDir = file('build/install/application/bin')
         builder.executable = "application"
         if (OperatingSystem.current().windows) {
@@ -101,7 +101,7 @@ class Main {
         when:
         run 'installDist'
 
-        def builder = new ScriptExecuter()
+        def builder = new ScriptExecutor()
         builder.workingDir = file('build/install/application/bin')
         builder.executable = "application"
 
@@ -136,7 +136,7 @@ class Main {
         when:
         run 'installDist'
 
-        def builder = new ScriptExecuter()
+        def builder = new ScriptExecutor()
         builder.workingDir = file('build/install/application/bin')
         builder.executable = "application"
         builder.environment('APPLICATION_OPTS', '-Dvar3=value3')
@@ -180,7 +180,7 @@ class Main {
         when:
         run 'installDist'
 
-        def builder = new ScriptExecuter()
+        def builder = new ScriptExecutor()
         builder.workingDir = file('build/install/application/bin')
         builder.executable = "application"
 
@@ -423,7 +423,7 @@ class Main {
         installDir.file("bin/${applicationName}.bat").assertIsFile()
         installDir.file("lib/application.jar").assertIsFile()
 
-        def builder = new ScriptExecuter()
+        def builder = new ScriptExecutor()
         builder.workingDir = installDir.file('bin')
         builder.executable = applicationName
         builder.standardOutput = new ByteArrayOutputStream()
@@ -475,7 +475,7 @@ class Main {
         when:
         run 'installDist'
 
-        def builder = new ScriptExecuter()
+        def builder = new ScriptExecutor()
         builder.workingDir = file('build/install/application/bin')
         builder.executable = "application"
         def result = builder.run()

@@ -22,7 +22,7 @@ import org.gradle.caching.internal.operations.BuildCacheArchiveUnpackBuildOperat
 import org.gradle.caching.internal.operations.BuildCacheLocalLoadBuildOperationType
 import org.gradle.caching.internal.operations.BuildCacheLocalStoreBuildOperationType
 import org.gradle.caching.internal.operations.BuildCacheRemoteStoreBuildOperationType
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.internal.operations.trace.BuildOperationRecord
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 
@@ -30,8 +30,8 @@ class BuildCacheOperationFixtures {
 
     BuildOperationsFixture buildOperations
 
-    BuildCacheOperationFixtures(GradleExecuter executer, TestDirectoryProvider projectDir) {
-        this(new BuildOperationsFixture(executer, projectDir))
+    BuildCacheOperationFixtures(GradleExecutor executor, TestDirectoryProvider projectDir) {
+        this(new BuildOperationsFixture(executor, projectDir))
     }
 
     BuildCacheOperationFixtures(BuildOperationsFixture buildOperations) {

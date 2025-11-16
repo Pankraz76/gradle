@@ -19,7 +19,7 @@ package org.gradle.integtests.fixtures.extensions
 import groovy.transform.CompileStatic
 import org.gradle.integtests.fixtures.RequiredFeature
 import org.gradle.integtests.fixtures.RequiredFeatures
-import org.gradle.integtests.fixtures.executer.AbstractGradleExecuter
+import org.gradle.integtests.fixtures.executor.AbstractGradleExecutor
 import org.spockframework.runtime.extension.IMethodInvocation
 
 import java.lang.annotation.Annotation
@@ -108,7 +108,7 @@ abstract class BehindFlagFeatureInterceptor extends AbstractMultiTestInterceptor
         protected void before(IMethodInvocation invocation) {
             featureValues.each { sysProp, value ->
                 // Ensure that the system property is propagated to forked Gradle executions
-                AbstractGradleExecuter.propagateSystemProperty(sysProp)
+                AbstractGradleExecutor.propagateSystemProperty(sysProp)
                 System.setProperty(sysProp, value)
             }
         }
@@ -117,7 +117,7 @@ abstract class BehindFlagFeatureInterceptor extends AbstractMultiTestInterceptor
         protected void after() {
             featureValues.each { sysProp, value ->
                 // Stop propagating this system property
-                AbstractGradleExecuter.doNotPropagateSystemProperty(sysProp)
+                AbstractGradleExecutor.doNotPropagateSystemProperty(sysProp)
                 System.properties.remove(sysProp)
             }
         }

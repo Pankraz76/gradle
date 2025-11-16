@@ -16,11 +16,11 @@
 
 package org.gradle.integtests.fixtures.configuration
 
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 
 class ConfigurationAPIDeprecations {
-    static void expectIsVisibleMethodDeprecation(GradleExecuter executer) {
-        executer.expectDocumentedDeprecationWarning(
+    static void expectIsVisibleMethodDeprecation(GradleExecutor executor) {
+        executor.expectDocumentedDeprecationWarning(
             "The Configuration.isVisible method has been deprecated. " +
                 "This is scheduled to be removed in Gradle 10. " +
                 "Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#deprecate-visible-property"

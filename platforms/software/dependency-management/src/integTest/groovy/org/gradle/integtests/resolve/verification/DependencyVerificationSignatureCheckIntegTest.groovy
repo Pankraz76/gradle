@@ -181,7 +181,7 @@ This can indicate that a dependency has been compromised. Please carefully verif
             addTrustedKey("org:foo:1.0", validPublicKeyHexString, "pom", "pom")
         }
         if (stopInBetween) {
-            executer.stop()
+            executor.stop()
         }
         fails ":compileJava"
 
@@ -227,7 +227,7 @@ This can indicate that a dependency has been compromised. Please carefully verif
             addTrustedKey("org:foo:1.0", validPublicKeyHexString, "pom", "pom")
         }
         if (stopInBetween) {
-            executer.stop()
+            executor.stop()
         }
         fails ":compileJava"
 

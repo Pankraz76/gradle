@@ -242,7 +242,7 @@ class TestReportTaskIntegrationTest extends AbstractIntegrationSpec implements V
             .assertStderr(equalTo("This is stderr.\n"))
 
         when:
-        executer.withArguments("-DLogLessStuff=true")
+        executor.withArguments("-DLogLessStuff=true")
         run "test"
 
         then:

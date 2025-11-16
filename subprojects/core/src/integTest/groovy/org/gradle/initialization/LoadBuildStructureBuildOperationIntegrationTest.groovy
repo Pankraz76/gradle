@@ -21,7 +21,7 @@ import org.gradle.integtests.fixtures.BuildOperationsFixture
 
 class LoadBuildStructureBuildOperationIntegrationTest extends AbstractIntegrationSpec {
 
-    final buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+    final buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "multiproject settings with customizations are exposed correctly"() {
         createDirs("b", "a", "a/c", "d")

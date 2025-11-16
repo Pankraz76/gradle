@@ -28,7 +28,7 @@ class IvyPublishS3IntegrationTest extends AbstractIvyPublishIntegTest {
     public S3Server server = new S3Server(temporaryFolder)
 
     def setup() {
-        executer.withArgument("-Dorg.gradle.s3.endpoint=${server.getUri()}")
+        executor.withArgument("-Dorg.gradle.s3.endpoint=${server.getUri()}")
     }
 
     def "can publish to an S3 Ivy repository"() {

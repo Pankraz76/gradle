@@ -42,7 +42,7 @@ import static org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache.Skip
 
 class SnapshotTaskInputsOperationIntegrationTest extends AbstractIntegrationSpec implements ValidationMessageChecker {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def setup() {
         expectReindentedValidationMessage()
@@ -51,7 +51,7 @@ class SnapshotTaskInputsOperationIntegrationTest extends AbstractIntegrationSpec
 
     def "task output caching key is exposed when build cache is enabled"() {
         given:
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
 
         when:
         buildFile << customTaskCode('foo', 'bar')
@@ -576,7 +576,7 @@ class SnapshotTaskInputsOperationIntegrationTest extends AbstractIntegrationSpec
         disableProblemsApiCheck()
         createDir('foo')
         expect:
-        executer.expectDocumentedDeprecationWarning("Setting normalizer of type 'CustomFileNormalizer' on property 'inputDir'. This behavior has been deprecated. This will fail with an error in Gradle 10.")
+        executor.expectDocumentedDeprecationWarning("Setting normalizer of type 'CustomFileNormalizer' on property 'inputDir'. This behavior has been deprecated. This will fail with an error in Gradle 10.")
         succeeds("customTask")
     }
 

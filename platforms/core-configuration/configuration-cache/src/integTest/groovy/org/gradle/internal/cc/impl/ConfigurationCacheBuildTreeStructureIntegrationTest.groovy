@@ -50,7 +50,7 @@ class ConfigurationCacheBuildTreeStructureIntegrationTest extends AbstractConfig
     }
 
     def "restores only projects that have work scheduled"(List<String> tasks) {
-        def fixture = new BuildOperationsFixture(executer, temporaryFolder)
+        def fixture = new BuildOperationsFixture(executor, temporaryFolder)
         createDirs("a", "b", "c", "custom")
         settingsFile << """
             rootProject.name = 'thing'
@@ -140,7 +140,7 @@ class ConfigurationCacheBuildTreeStructureIntegrationTest extends AbstractConfig
     }
 
     def "restores only projects that have work scheduled when buildSrc present"() {
-        def fixture = new BuildOperationsFixture(executer, temporaryFolder)
+        def fixture = new BuildOperationsFixture(executor, temporaryFolder)
         createDirs("a", "b", "c")
         settingsFile << """
             rootProject.name = 'thing'
@@ -249,7 +249,7 @@ class ConfigurationCacheBuildTreeStructureIntegrationTest extends AbstractConfig
     }
 
     def "restores only builds and projects of included build that have work scheduled"(String task) {
-        def fixture = new BuildOperationsFixture(executer, temporaryFolder)
+        def fixture = new BuildOperationsFixture(executor, temporaryFolder)
         createDir("include") {
             dir("inner-include") {
                 file("settings.gradle") << """

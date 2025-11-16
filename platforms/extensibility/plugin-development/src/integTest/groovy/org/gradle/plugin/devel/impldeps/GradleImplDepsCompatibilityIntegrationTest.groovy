@@ -157,7 +157,7 @@ class GradleImplDepsCompatibilityIntegrationTest extends BaseGradleImplDepsInteg
                     def result = GradleRunner.create()
                         .withProjectDir(testProjectDir)
                         .withArguments('helloWorld')
-                        .withTestKitDir(new java.io.File("${TextUtil.normaliseFileSeparators(executer.gradleUserHomeDir.absolutePath)}"))
+                        .withTestKitDir(new java.io.File("${TextUtil.normaliseFileSeparators(executor.gradleUserHomeDir.absolutePath)}"))
                         .build()
 
                     then:

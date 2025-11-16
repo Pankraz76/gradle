@@ -33,7 +33,7 @@ abstract class AbstractToolchainGroovyCompileIntegrationTest extends AbstractApi
         Assume.assumeNotNull(jdk)
         Assert.assertTrue(GroovyCoverage.supportsJavaVersion(MultiVersionIntegrationSpec.version, jdk.javaVersion))
 
-        executer.beforeExecute {
+        executor.beforeExecute {
             withInstallations(jdk)
         }
     }

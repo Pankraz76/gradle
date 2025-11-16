@@ -16,7 +16,7 @@
 
 package org.gradle.integtests
 
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
 import org.gradle.test.fixtures.keystore.TestKeyStore
 import org.gradle.test.fixtures.server.http.BlockingHttpsServer
 import org.gradle.test.precondition.Requires
@@ -37,14 +37,14 @@ class WrapperUpgradeIntegrationTest extends AbstractWrapperIntegrationSpec {
         server.start()
 
         prepareWrapper()
-        wrapperExecuter
+        wrapperExecutor
             .withArguments(keyStore.getTrustStoreArguments())
             .withCommandLineGradleOpts("-Dorg.gradle.internal.services.base.url=https://localhost:${server.port}")
     }
 
     def "can run the wrapper task when the build was started with the wrapper"() {
         expect:
-        wrapperExecuter.withTasks('wrapper').run()
+        wrapperExecutor.withTasks('wrapper').run()
     }
 
     def "prints helpful error message on invalid version argument format: #badVersion"() {
@@ -194,7 +194,7 @@ class WrapperUpgradeIntegrationTest extends AbstractWrapperIntegrationSpec {
     }
 
     private def updateWrapperTo(String versionRequest) {
-        wrapperExecuter
+        wrapperExecutor
             .withTasks("wrapper", "--gradle-version", versionRequest, "--no-validate-url")
     }
 

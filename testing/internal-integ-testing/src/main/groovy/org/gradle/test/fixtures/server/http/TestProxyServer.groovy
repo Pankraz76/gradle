@@ -17,7 +17,7 @@ package org.gradle.test.fixtures.server.http
 
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.http.HttpRequest
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.junit.rules.ExternalResource
 import org.littleshoot.proxy.HttpFilters
 import org.littleshoot.proxy.HttpFiltersSourceAdapter
@@ -92,23 +92,23 @@ class TestProxyServer extends ExternalResource {
         proxyServer?.stop()
     }
 
-    void configureProxy(GradleExecuter executer, String proxyScheme, String userName = null, String password = null) {
-        configureProxyHost(executer, proxyScheme)
+    void configureProxy(GradleExecutor executor, String proxyScheme, String userName = null, String password = null) {
+        configureProxyHost(executor, proxyScheme)
 
         if (userName) {
-            executer.withArgument("-D${proxyScheme}.proxyUser=${userName}")
+            executor.withArgument("-D${proxyScheme}.proxyUser=${userName}")
         }
         if (password) {
-            executer.withArgument("-D${proxyScheme}.proxyPassword=${password}")
+            executor.withArgument("-D${proxyScheme}.proxyPassword=${password}")
         }
     }
 
-    void configureProxyHost(GradleExecuter executer, String proxyScheme) {
+    void configureProxyHost(GradleExecutor executor, String proxyScheme) {
         assert port > 0
-        executer.withArgument("-D${proxyScheme}.proxyHost=localhost")
-        executer.withArgument("-D${proxyScheme}.proxyPort=${port}")
+        executor.withArgument("-D${proxyScheme}.proxyHost=localhost")
+        executor.withArgument("-D${proxyScheme}.proxyPort=${port}")
         // use proxy even when accessing localhost
-        executer.withArgument("-Dhttp.nonProxyHosts=")
+        executor.withArgument("-Dhttp.nonProxyHosts=")
     }
 }
 

@@ -49,15 +49,15 @@ class CachedRelocationIntegrationTest extends AbstractIntegrationSpec implements
         originalLocation.file('settings.gradle') << localCacheConfiguration()
 
         when:
-        executer.usingProjectDirectory(originalLocation)
-        executer.withGradleUserHomeDir(originalHome)
+        executor.usingProjectDirectory(originalLocation)
+        executor.withGradleUserHomeDir(originalHome)
         withBuildCache().run "jar", "customTask"
 
         then:
         executedAndNotSkipped ":compileJava", ":jar", ":customTask"
 
         when:
-        executer.usingProjectDirectory(originalLocation)
+        executor.usingProjectDirectory(originalLocation)
         originalLocation.file("external.gradle").text = externalTaskDef("modified")
         withBuildCache().run "jar", "customTask"
 
@@ -66,22 +66,22 @@ class CachedRelocationIntegrationTest extends AbstractIntegrationSpec implements
         executedAndNotSkipped ":customTask"
 
         when:
-        executer.usingProjectDirectory(originalLocation)
+        executor.usingProjectDirectory(originalLocation)
         run "clean"
 
         def movedHome = temporaryFolder.file("moved-home")
-        executer.withGradleUserHomeDir(movedHome)
-        executer.usingProjectDirectory(originalLocation)
+        executor.withGradleUserHomeDir(movedHome)
+        executor.usingProjectDirectory(originalLocation)
         withBuildCache().run "jar", "customTask"
 
         then:
         skipped ":compileJava", ":customTask"
 
         when:
-        executer.usingProjectDirectory(originalLocation)
+        executor.usingProjectDirectory(originalLocation)
         run "clean"
 
-        executer.usingProjectDirectory(originalLocation)
+        executor.usingProjectDirectory(originalLocation)
         withBuildCache().run "jar", "customTask"
 
         then:
@@ -93,7 +93,7 @@ class CachedRelocationIntegrationTest extends AbstractIntegrationSpec implements
         movedLocation.file("build").deleteDir()
         movedLocation.file(".gradle").deleteDir()
 
-        executer.usingProjectDirectory(movedLocation)
+        executor.usingProjectDirectory(movedLocation)
         withBuildCache().run "jar", "customTask"
 
         then:

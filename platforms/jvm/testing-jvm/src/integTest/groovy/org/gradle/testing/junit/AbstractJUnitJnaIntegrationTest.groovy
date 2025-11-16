@@ -49,7 +49,7 @@ abstract class AbstractJUnitJnaIntegrationTest extends AbstractTestingMultiVersi
         """.stripIndent()
 
         when:
-        executer.withTasks('build').run()
+        executor.withTasks('build').run()
 
         then:
         DefaultTestExecutionResult result = new DefaultTestExecutionResult(testDirectory, testFramework)

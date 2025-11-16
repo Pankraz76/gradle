@@ -30,7 +30,7 @@ import spock.lang.Issue
 class SymlinkFileSystemWatchingIntegrationTest extends AbstractFileSystemWatchingIntegrationTest {
     def setup() {
         // The daemon manages the cleanup of symlinks in the VFS between builds
-        executer.requireDaemon()
+        executor.requireDaemon()
     }
 
     @Issue("https://github.com/gradle/gradle/issues/11851")
@@ -162,7 +162,7 @@ class SymlinkFileSystemWatchingIntegrationTest extends AbstractFileSystemWatchin
             }
         """
         actualProjectDir.file("settings.gradle").createFile()
-        executer.beforeExecute {
+        executor.beforeExecute {
             // Use `new File` here to avoid canonicalization of the path
             def symlinkedProjectDir = new File(symlink, "projectDir")
             assert symlinkedProjectDir.absolutePath != actualProjectDir.absolutePath

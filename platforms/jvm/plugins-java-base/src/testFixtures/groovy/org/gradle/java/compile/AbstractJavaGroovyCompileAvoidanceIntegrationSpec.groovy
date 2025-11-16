@@ -750,7 +750,7 @@ abstract class AbstractJavaGroovyCompileAvoidanceIntegrationSpec extends Abstrac
         """
 
         when:
-        executer.withArgument('-PuseCommons')
+        executor.withArgument('-PuseCommons')
         succeeds ":${language.compileTaskName}"
 
         then:
@@ -809,14 +809,14 @@ abstract class AbstractJavaGroovyCompileAvoidanceIntegrationSpec extends Abstrac
         """
 
         when:
-        executer.withArgument('-Porder=0')
+        executor.withArgument('-Porder=0')
         succeeds ":${language.compileTaskName}"
 
         then:
         noExceptionThrown()
 
         when: "Order is changed"
-        executer.withArgument('-Porder=1')
+        executor.withArgument('-Porder=1')
         fails ":${language.compileTaskName}"
 
         then:

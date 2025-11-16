@@ -27,7 +27,7 @@ class DependencyInsightReportTaskIntegrationTest extends AbstractIntegrationSpec
     def jvmVersion = JavaVersion.current().majorVersion
 
     def setup() {
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         settingsFile << """
             rootProject.name = 'insight-test'
             gradle.lifecycle.beforeProject { project ->

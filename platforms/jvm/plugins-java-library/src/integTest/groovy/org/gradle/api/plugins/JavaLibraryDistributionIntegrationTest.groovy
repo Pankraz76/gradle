@@ -138,7 +138,7 @@ class JavaLibraryDistributionIntegrationTest extends WellBehavedPluginTest {
             """
 
         expect:
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
         runAndFail 'distZip'
         failure.assertHasCause "Cannot query the value of property 'distributionBaseName' because it has no value available."
     }

@@ -62,7 +62,7 @@ abstract class WellBehavedPluginTest extends AbstractIntegrationSpec {
         applyPlugin()
 
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run "tasks"
 
         then:
@@ -217,7 +217,7 @@ abstract class WellBehavedPluginTest extends AbstractIntegrationSpec {
     }
 
     void expectTaskProjectDeprecation() {
-        executer.expectDocumentedDeprecationWarning("Invocation of Task.project at execution time has been deprecated. "+
+        executor.expectDocumentedDeprecationWarning("Invocation of Task.project at execution time has been deprecated. "+
             "This will fail with an error in Gradle 10. " +
             "This API is incompatible with the configuration cache, which will become the only mode supported by Gradle in a future release. " +
             "Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_7.html#task_project")

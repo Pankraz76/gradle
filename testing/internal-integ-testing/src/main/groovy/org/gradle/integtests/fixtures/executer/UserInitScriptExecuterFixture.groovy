@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 import org.gradle.test.fixtures.file.TestDirectoryProvider
 import org.junit.rules.MethodRule
 import org.junit.runners.model.FrameworkMethod
 import org.junit.runners.model.Statement
 
-abstract class UserInitScriptExecuterFixture implements MethodRule {
+abstract class UserInitScriptExecutorFixture implements MethodRule {
 
-    GradleExecuter executer
+    GradleExecutor executor
     TestDirectoryProvider testDir
 
-    UserInitScriptExecuterFixture(GradleExecuter executer, TestDirectoryProvider testDir) {
-        this.executer = executer
+    UserInitScriptExecutorFixture(GradleExecutor executor, TestDirectoryProvider testDir) {
+        this.executor = executor
         this.testDir = testDir
     }
 
@@ -38,20 +38,20 @@ abstract class UserInitScriptExecuterFixture implements MethodRule {
     }
 
     Statement apply(Statement base, FrameworkMethod method, Object target) {
-        configureExecuter(executer)
+        configureExecutor(executor)
         return base
     }
 
-    void configureExecuter(GradleExecuter executer) {
-        executer.requireOwnGradleUserHomeDir()
-        def temporaryFolder = executer.gradleUserHomeDir.file("init.d")
+    void configureExecutor(GradleExecutor executor) {
+        executor.requireOwnGradleUserHomeDir()
+        def temporaryFolder = executor.gradleUserHomeDir.file("init.d")
         def initFile = temporaryFolder.file(this.getClass().getSimpleName() + "-init.gradle")
-        executer.beforeExecute {
+        executor.beforeExecute {
             // On test retry the user home dir may be deleted, so verify the init script exists before each invocation
             if (!initFile.file) {
                 initFile.text = initScriptContent()
             }
         }
-        executer.afterExecute { afterBuild() }
+        executor.afterExecute { afterBuild() }
     }
 }

@@ -55,7 +55,7 @@ class JreJavaHomeScalaIntegrationTest extends MultiVersionIntegrationSpec {
                     }
                     """
         when:
-        executer.withJavaHome(jreJavaHome.absolutePath).withTasks("compileScala").run()
+        executor.withJavaHome(jreJavaHome.absolutePath).withTasks("compileScala").run()
 
         then:
         scalaClassFile("org/test/JavaClazz.class").exists()
@@ -78,7 +78,7 @@ class JreJavaHomeScalaIntegrationTest extends MultiVersionIntegrationSpec {
         def envVars = System.getenv().findAll { !(it.key in ['GRADLE_OPTS', 'JAVA_HOME', 'Path']) }
         envVars.put("Path", "C:\\Windows\\System32")
         when:
-        executer.withEnvironmentVars(envVars).withTasks("compileScala").run()
+        executor.withEnvironmentVars(envVars).withTasks("compileScala").run()
         then:
         scalaClassFile("org/test/ScalaClazz.class").exists()
     }

@@ -17,7 +17,7 @@
 package org.gradle.integtests.tooling
 
 import org.gradle.initialization.BuildCancellationToken
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionFailure
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionFailure
 import org.gradle.integtests.tooling.fixture.TestResultHandler
 import org.gradle.integtests.tooling.fixture.ToolingApiSpecification
 import org.gradle.test.fixtures.server.http.BlockingHttpServer

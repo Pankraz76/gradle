@@ -18,13 +18,13 @@ package org.gradle.api
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.ToBeFixedForIsolatedProjects
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.util.internal.ToBeImplemented
 import spock.lang.Ignore
 import spock.lang.Issue
 
-import static org.gradle.integtests.fixtures.executer.TaskOrderSpecs.any
-import static org.gradle.integtests.fixtures.executer.TaskOrderSpecs.exact
+import static org.gradle.integtests.fixtures.executor.TaskOrderSpecs.any
+import static org.gradle.integtests.fixtures.executor.TaskOrderSpecs.exact
 
 class FinalizerTaskIntegrationTest extends AbstractIntegrationSpec {
     def setup() {
@@ -439,7 +439,7 @@ class FinalizerTaskIntegrationTest extends AbstractIntegrationSpec {
 
     void 'finalizer tasks work with task excluding (#excludedTask)'() {
         setupProject()
-        executer.beforeExecute {
+        executor.beforeExecute {
             withArguments('-x', excludedTask)
         }
 
@@ -469,7 +469,7 @@ class FinalizerTaskIntegrationTest extends AbstractIntegrationSpec {
 
     void 'finalizer tasks work with --continue (#requestedTasks, #failingTask)'() {
         setupProject()
-        executer.beforeExecute {
+        executor.beforeExecute {
             withArguments('--continue')
         }
 
@@ -550,7 +550,7 @@ class FinalizerTaskIntegrationTest extends AbstractIntegrationSpec {
 
     void 'finalizer tasks are executed as expected in parallel builds'() {
         setupMultipleProjects()
-        executer.beforeExecute {
+        executor.beforeExecute {
             withArguments('--parallel')
         }
 
@@ -945,7 +945,7 @@ class FinalizerTaskIntegrationTest extends AbstractIntegrationSpec {
         expect:
         2.times {
             run(":test",  ":publish", ":integTest")
-            if (GradleContextualExecuter.isConfigCache()) {
+            if (GradleContextualExecutor.isConfigCache()) {
                 // With configuration cache tasks can run in parallel
                 result.assertTaskOrder(exact(any(":test", ":integTest"), ":finalizer"))
                 result.assertTaskOrder(exact(":cleanZip", ":zip", ":publish"))

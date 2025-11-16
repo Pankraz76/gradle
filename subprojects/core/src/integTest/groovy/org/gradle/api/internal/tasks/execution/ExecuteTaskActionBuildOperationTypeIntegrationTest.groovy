@@ -21,7 +21,7 @@ import org.gradle.integtests.fixtures.BuildOperationsFixture
 
 class ExecuteTaskActionBuildOperationTypeIntegrationTest extends AbstractIntegrationSpec {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "emits operation for each task action execution"() {
         when:

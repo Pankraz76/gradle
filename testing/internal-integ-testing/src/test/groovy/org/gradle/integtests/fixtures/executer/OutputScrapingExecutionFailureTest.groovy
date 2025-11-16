@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 class OutputScrapingExecutionFailureTest extends AbstractExecutionResultTest {
     def "can have empty output"() {
@@ -390,10 +390,10 @@ Run with  \u001B[1m--info\u001B[m or  \u001B[1m--debug\u001B[m option to get mor
 
 * Exception is:
 org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':broken'.
-        at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeActions(ExecuteActionsTaskExecuter.java:103)
-        at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:73)
+        at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecutor.executeActions(ExecuteActionsTaskExecutor.java:103)
+        at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecutor.execute(ExecuteActionsTaskExecutor.java:73)
 Caused by: java.lang.RuntimeException: broken
-        at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeActions(ExecuteActionsTaskExecuter.java:95)
+        at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecutor.executeActions(ExecuteActionsTaskExecutor.java:95)
         ... 29 more
 """
     }
@@ -404,8 +404,8 @@ Caused by: java.lang.RuntimeException: broken
 
 
 \u001B[2A\u001B[1m<\u001B[0;32;1;0;39;1m-------------> 0% INITIALIZING [0s]\u001B[m\u001B[36D\u001B[1B\u001B[1m> Evaluating settings\u001B[m\u001B[21D\u001B[1B\u001B[2A\u001B[1m<\u001B[0;32;1;0;39;1m-------------> 0% INITIALIZING [0s]\u001B[m\u001B[36D\u001B[1B\u001B[1m> Evaluating settings\u001B[m\u001B[21D\u001B[1B\u001B[2A\u001B[1m<\u001B[0;32;1;0;39;1m-------------> 0% INITIALIZING [0s]\u001B[m\u001B[36D\u001B[1B\u001B[1m> Evaluating settings\u001B[m\u001B[21D\u001B[1B\u001B[2A\u001B[1m<\u001B[0;32;1;0;39;1m-------------> 0% INITIALIZING [0s]\u001B[m\u001B[36D\u001B[1B\u001B[1m> Evaluating settings\u001B[m\u001B[21D\u001B[1B\u001B[2A\u001B[1m<\u001B[0;32;1;0;39;1m-------------> 0% INITIALIZING [0s]\u001B[m\u001B[36D\u001B[1B\u001B[1m> Evaluating settings\u001B[m\u001B[21D\u001B[1B\u001B[2A\u001B[1m<\u001B[0;32;1;0;39;1m-------------> 0% INITIALIZING [0s]\u001B[m\u001B[36D\u001B[1B\u001B[1m> Evaluating settings\u001B[m\u001B[21D\u001B[1B\u001B[2A2019-10-03T09:33:07.547+0200 [DEBUG] [org.gradle.initialization.ScriptEvaluatingSettingsProcessor] Some sort of output\u001B[0K
-2019-10-03T09:33:08.990+0200 [DEBUG] [org.gradle.api.internal.tasks.execution.ExecuteAtMostOnceTaskExecuter] Some sort of FAILURE: without status bar or work in progress
-2019-10-03T09:33:08.990+0200 [DEBUG] [org.gradle.api.internal.tasks.execution.ExecuteAtMostOnceTaskExecuter] Some more output
+2019-10-03T09:33:08.990+0200 [DEBUG] [org.gradle.api.internal.tasks.execution.ExecuteAtMostOnceTaskExecutor] Some sort of FAILURE: without status bar or work in progress
+2019-10-03T09:33:08.990+0200 [DEBUG] [org.gradle.api.internal.tasks.execution.ExecuteAtMostOnceTaskExecutor] Some more output
 2019-10-03T09:33:08.990+0200 [DEBUG] [org.gradle.execution.plan.DefaultPlanExecutor] Task worker [Thread[main,5,main]] finished, busy: 0.0 secs, idle: 0.021 secs
 \u001B[0K
 \u001B[0K
@@ -423,10 +423,10 @@ Caused by: java.lang.RuntimeException: broken
 2019-10-03T09:33:09.032+0200 [ERROR] [org.gradle.internal.buildevents.BuildExceptionReporter]
 2019-10-03T09:33:09.032+0200 [ERROR] [org.gradle.internal.buildevents.BuildExceptionReporter] * Exception is:
 2019-10-03T09:33:09.033+0200 [ERROR] [org.gradle.internal.buildevents.BuildExceptionReporter] org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':broken'.
-2019-10-03T09:33:09.033+0200 [ERROR] [org.gradle.internal.buildevents.BuildExceptionReporter]   at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeActions(ExecuteActionsTaskExecuter.java:103)
-2019-10-03T09:33:09.033+0200 [ERROR] [org.gradle.internal.buildevents.BuildExceptionReporter]   at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:73)
+2019-10-03T09:33:09.033+0200 [ERROR] [org.gradle.internal.buildevents.BuildExceptionReporter]   at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecutor.executeActions(ExecuteActionsTaskExecutor.java:103)
+2019-10-03T09:33:09.033+0200 [ERROR] [org.gradle.internal.buildevents.BuildExceptionReporter]   at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecutor.execute(ExecuteActionsTaskExecutor.java:73)
 2019-10-03T09:33:09.033+0200 [ERROR] [org.gradle.internal.buildevents.BuildExceptionReporter] Caused by: java.lang.RuntimeException: broken
-2019-10-03T09:33:09.033+0200 [ERROR] [org.gradle.internal.buildevents.BuildExceptionReporter]   at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeActions(ExecuteActionsTaskExecuter.java:95)
+2019-10-03T09:33:09.033+0200 [ERROR] [org.gradle.internal.buildevents.BuildExceptionReporter]   at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecutor.executeActions(ExecuteActionsTaskExecutor.java:95)
 2019-10-03T09:33:09.033+0200 [ERROR] [org.gradle.internal.buildevents.BuildExceptionReporter]   ... 29 more
 2019-10-03T09:33:09.033+0200 [ERROR] [org.gradle.internal.buildevents.BuildExceptionReporter]
 2019-10-03T09:33:09.033+0200 [ERROR] [org.gradle.internal.buildevents.BuildExceptionReporter]

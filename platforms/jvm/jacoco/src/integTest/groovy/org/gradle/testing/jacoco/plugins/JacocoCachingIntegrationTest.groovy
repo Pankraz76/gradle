@@ -105,7 +105,7 @@ class JacocoCachingIntegrationTest extends AbstractIntegrationSpec implements Di
         reportFile.assertDoesNotExist()
 
         when:
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         withBuildCache().run "jacocoTestReport"
         then:
         skipped ":test", ":jacocoTestReport"
@@ -131,7 +131,7 @@ class JacocoCachingIntegrationTest extends AbstractIntegrationSpec implements Di
         reportFile.assertDoesNotExist()
 
         when:
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
         withBuildCache().run "test"
         then:
         skipped ":test"

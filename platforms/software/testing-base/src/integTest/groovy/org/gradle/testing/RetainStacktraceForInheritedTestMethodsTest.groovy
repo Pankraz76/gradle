@@ -26,8 +26,8 @@ class RetainStacktraceForInheritedTestMethodsTest extends AbstractIntegrationSpe
 
     def "retainsStackTraceForInheritedTestMethods"() {
         given:
-        executer.withRepositoryMirrors()
-        executer.withStackTraceChecksDisabled()
+        executor.withRepositoryMirrors()
+        executor.withStackTraceChecksDisabled()
 
         when:
         runAndFail "test"

@@ -38,11 +38,11 @@ abstract class AbstractProjectRelocationIntegrationTest extends AbstractIntegrat
         setupProjectIn(relocatedDir)
 
         //We'll delete the relocated Java home of this daemon, which will make it unusable for future builds
-        executer.requireDaemon().requireIsolatedDaemons()
+        executor.requireDaemon().requireIsolatedDaemons()
 
         when: "task is built in the original location"
         inDirectory(originalDir)
-        executer.withJvm(originalJvm)
+        executor.withJvm(originalJvm)
         withBuildCache().run taskName
         def originalResults = extractResultsFrom(originalDir)
         then: "it is executed and cached"
@@ -57,7 +57,7 @@ abstract class AbstractProjectRelocationIntegrationTest extends AbstractIntegrat
         when: "it is executed in the new location"
         prepareForRelocation(relocatedDir)
         inDirectory(relocatedDir)
-        executer.withJavaHome(relocatedJavaHome.absolutePath)
+        executor.withJavaHome(relocatedJavaHome.absolutePath)
         withBuildCache().run taskName
         then: "it is loaded from cache"
         result.assertTaskSkipped taskName

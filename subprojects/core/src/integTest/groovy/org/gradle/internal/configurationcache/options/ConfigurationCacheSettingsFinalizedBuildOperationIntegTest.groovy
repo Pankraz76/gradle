@@ -24,7 +24,7 @@ import org.gradle.test.preconditions.IntegTestPreconditions
 @Requires(IntegTestPreconditions.NotConfigCached)
 class ConfigurationCacheSettingsFinalizedBuildOperationIntegTest extends AbstractIntegrationSpec {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "emits once when not used"() {
         given:

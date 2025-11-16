@@ -24,7 +24,7 @@ import org.gradle.internal.logging.events.StyledTextOutputEvent
 class JavaCompilerDaemonFailureIntegrationTest extends AbstractIntegrationSpec {
 
     def "startup failure messages from a compiler daemon are associated with the task that starts it"() {
-        def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+        def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
         buildFile << """
             apply plugin: "java"
@@ -41,7 +41,7 @@ class JavaCompilerDaemonFailureIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         fails("compileJava")
 
         then:

@@ -19,7 +19,7 @@ package org.gradle.nativeplatform.test.xctest.tasks;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.RegularFile;
 import org.gradle.api.file.RegularFileProperty;
-import org.gradle.api.internal.tasks.testing.TestExecuter;
+import org.gradle.api.internal.tasks.testing.TestExecutor;
 import org.gradle.api.internal.tasks.testing.filter.DefaultTestFilter;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.tasks.InputDirectory;
@@ -30,7 +30,7 @@ import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.SkipWhenEmpty;
 import org.gradle.api.tasks.testing.AbstractTestTask;
-import org.gradle.nativeplatform.test.xctest.internal.execution.XCTestExecuter;
+import org.gradle.nativeplatform.test.xctest.internal.execution.XCTestExecutor;
 import org.gradle.nativeplatform.test.xctest.internal.execution.XCTestSelection;
 import org.gradle.nativeplatform.test.xctest.internal.execution.XCTestTestExecutionSpec;
 import org.gradle.work.DisableCachingByDefault;
@@ -91,8 +91,8 @@ public abstract class XCTest extends AbstractTestTask {
     }
 
     @Override
-    protected TestExecuter<XCTestTestExecutionSpec> createTestExecuter() {
-        return getObjectFactory().newInstance(XCTestExecuter.class);
+    protected TestExecutor<XCTestTestExecutionSpec> createTestExecutor() {
+        return getObjectFactory().newInstance(XCTestExecutor.class);
     }
 
     /**

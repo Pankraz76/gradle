@@ -57,7 +57,7 @@ class FileSystemWatchingSoakTest extends DaemonIntegrationSpec implements FileSy
             }
         }
 
-        executer.beforeExecute {
+        executor.beforeExecute {
             withWatchFs()
             // running in parallel, so the soak test doesn't take this long.
             withArgument("--parallel")
@@ -118,7 +118,7 @@ class FileSystemWatchingSoakTest extends DaemonIntegrationSpec implements FileSy
 
     def "file watching works with many changes between two builds"() {
         // Use 40 minutes idle timeout since the test may be running longer with an idle daemon
-        executer.withDaemonIdleTimeoutSecs(2400)
+        executor.withDaemonIdleTimeoutSecs(2400)
         def numberOfChangedSourcesFilesPerBatch = maxFileChangesWithoutOverflow
         def numberOfChangeBatches = 500
 

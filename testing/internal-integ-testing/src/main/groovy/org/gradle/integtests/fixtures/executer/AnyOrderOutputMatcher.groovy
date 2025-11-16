@@ -16,7 +16,7 @@
 
 
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 import org.junit.Assert
 import org.gradle.internal.SystemProperties

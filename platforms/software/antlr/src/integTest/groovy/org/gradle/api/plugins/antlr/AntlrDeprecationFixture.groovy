@@ -16,11 +16,11 @@
 
 package org.gradle.api.plugins.antlr
 
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 
 trait AntlrDeprecationFixture {
-    static GradleExecuter expectPackageArgumentDeprecationWarning(GradleExecuter executer) {
-        return executer.expectDocumentedDeprecationWarning(
+    static GradleExecutor expectPackageArgumentDeprecationWarning(GradleExecutor executor) {
+        return executor.expectDocumentedDeprecationWarning(
             "Setting the '-package' argument directly on AntlrTask has been deprecated." +
                 " This will fail with an error in Gradle 10." +
                 " Use the 'packageName' property of the AntlrTask to specify the package name instead of using the '-package' argument." +

@@ -20,8 +20,8 @@ import org.gradle.api.logging.configuration.ConsoleOutput
 import org.gradle.integtests.fixtures.AbstractDependencyResolutionTest
 import org.gradle.integtests.fixtures.RichConsoleStyling
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
-import org.gradle.integtests.fixtures.executer.GradleHandle
-import org.gradle.integtests.fixtures.executer.LogContent
+import org.gradle.integtests.fixtures.executor.GradleHandle
+import org.gradle.integtests.fixtures.executor.LogContent
 import org.gradle.test.fixtures.ConcurrentTestUtil
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
 import org.junit.Rule
@@ -65,9 +65,9 @@ class RemoteDependencyResolveConsoleIntegrationTest extends AbstractDependencyRe
         def jars = server.expectConcurrentAndBlock(getM1Jar, getM2Jar)
 
         when:
-        executer.withTestConsoleAttached()
-        executer.withConsole(ConsoleOutput.Rich)
-        def build = executer.withTasks("resolve").withArguments("--max-workers=2").start()
+        executor.withTestConsoleAttached()
+        executor.withConsole(ConsoleOutput.Rich)
+        def build = executor.withTasks("resolve").withArguments("--max-workers=2").start()
         metaData.waitForAllPendingCalls()
 
         then:

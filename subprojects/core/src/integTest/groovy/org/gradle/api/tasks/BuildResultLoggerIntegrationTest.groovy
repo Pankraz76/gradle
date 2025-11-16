@@ -99,7 +99,7 @@ class BuildResultLoggerIntegrationTest extends AbstractIntegrationSpec implement
     @ToBeFixedForConfigurationCache(because = "CC doesn't save/load excluded tasks, causing noActions task to appear skipped")
     def "skipped tasks are not counted"() {
         given:
-        executer.withArguments "-x", "executedTask"
+        executor.withArguments "-x", "executedTask"
 
         when:
         run "noActions"
@@ -223,7 +223,7 @@ class BuildResultLoggerIntegrationTest extends AbstractIntegrationSpec implement
             tasks.register("invalid", InvalidTask)
         """
 
-        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer, dummyValidationProblem(), 'id', 'section')
+        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor, dummyValidationProblem(), 'id', 'section')
 
         when:
         run "invalid"

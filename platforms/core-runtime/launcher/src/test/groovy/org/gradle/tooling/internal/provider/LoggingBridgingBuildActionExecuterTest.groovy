@@ -25,7 +25,7 @@ import org.gradle.launcher.exec.BuildActionExecutor
 import org.gradle.tooling.internal.provider.connection.ProviderOperationParameters
 import spock.lang.Specification
 
-class LoggingBridgingBuildActionExecuterTest extends Specification {
+class LoggingBridgingBuildActionExecutorTest extends Specification {
     final BuildActionExecutor<ConnectionOperationParameters, BuildRequestContext> target = Mock()
     final LoggingManagerInternal loggingManager = Mock()
     final BuildAction action = Mock()
@@ -34,11 +34,11 @@ class LoggingBridgingBuildActionExecuterTest extends Specification {
     final ProviderOperationParameters providerParameters = Stub()
 
     //declared type-lessly to work around groovy eclipse plugin bug
-    final executer = new LoggingBridgingBuildActionExecuter(target, loggingManager, new CompositeStoppable())
+    final executor = new LoggingBridgingBuildActionExecutor(target, loggingManager, new CompositeStoppable())
 
     def configuresLoggingWhileActionIsExecuting() {
         when:
-        executer.execute(action, parameters, buildRequestContext)
+        executor.execute(action, parameters, buildRequestContext)
 
         then:
         1 * loggingManager.addOutputEventListener(!null)
@@ -51,7 +51,7 @@ class LoggingBridgingBuildActionExecuterTest extends Specification {
         def failure = new RuntimeException()
 
         when:
-        executer.execute(action, parameters, buildRequestContext)
+        executor.execute(action, parameters, buildRequestContext)
 
         then:
         RuntimeException e = thrown()
@@ -67,7 +67,7 @@ class LoggingBridgingBuildActionExecuterTest extends Specification {
         providerParameters.getBuildLogLevel() >> LogLevel.QUIET
 
         when:
-        executer.execute(action, parameters, buildRequestContext)
+        executor.execute(action, parameters, buildRequestContext)
 
         then:
         1 * loggingManager.setLevelInternal(LogLevel.QUIET)

@@ -46,7 +46,7 @@ class ExecutionTimeTaskConfigurationIntegrationTest extends AbstractIntegrationS
         """
 
         when:
-        executer.withArgument("--continue")
+        executor.withArgument("--continue")
         fails("broken1", "broken2", "broken3")
 
         then:

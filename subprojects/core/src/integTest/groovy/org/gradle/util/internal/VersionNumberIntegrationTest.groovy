@@ -17,7 +17,7 @@
 package org.gradle.util.internal
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.test.fixtures.dsl.GradleDsl
 
 import static org.junit.Assume.assumeFalse

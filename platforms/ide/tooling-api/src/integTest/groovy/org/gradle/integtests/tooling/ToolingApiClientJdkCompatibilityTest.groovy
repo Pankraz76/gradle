@@ -28,7 +28,7 @@ abstract class ToolingApiClientJdkCompatibilityTest extends AbstractIntegrationS
     def setup() {
         System.out.println("TAPI client is using Java " + clientJdkVersion)
 
-        executer.beforeExecute {
+        executor.beforeExecute {
             withToolchainDetectionEnabled()
         }
         buildFile << """
@@ -274,8 +274,8 @@ abstract class ToolingApiClientJdkCompatibilityTest extends AbstractIntegrationS
         Assume.assumeTrue(gradleDaemonJdk != null)
 
         when:
-        executer.withStackTraceChecksDisabled()
-        executer.ignoreCleanupAssertions()
+        executor.withStackTraceChecksDisabled()
+        executor.ignoreCleanupAssertions()
 
         then:
         withInstallations(AvailableJavaHomes.getAvailableJvms())

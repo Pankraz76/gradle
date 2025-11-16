@@ -40,7 +40,7 @@ class JavaCompileDaemonCancellationIntegrationTest extends DaemonIntegrationSpec
         if (OperatingSystem.current().windows) {
             // The killed worker on Windows will cause a broken pipe error to be printed to the console,
             // so we disable stack trace checks to avoid the test failing.
-            executer.withStackTraceChecksDisabled()
+            executor.withStackTraceChecksDisabled()
         }
 
         settingsFile << """
@@ -172,12 +172,12 @@ class JavaCompileDaemonCancellationIntegrationTest extends DaemonIntegrationSpec
     }
 
     private void startBuild(String task) {
-        executer
+        executor
             .withArgument('--debug')
             .withWorkerDaemonsExpirationDisabled()
             .withTasks(task)
 
-        client = new DaemonClientFixture(executer.start())
+        client = new DaemonClientFixture(executor.start())
     }
 
     private void cancelBuild() {
@@ -207,7 +207,7 @@ class JavaCompileDaemonCancellationIntegrationTest extends DaemonIntegrationSpec
             }
         """
     }
-    
+
     static String getDependsOnPidCapturingAnnotationProcessor() {
         return """
             dependencies {

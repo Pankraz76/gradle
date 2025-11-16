@@ -21,7 +21,7 @@ import org.gradle.launcher.exec.RunBuildBuildOperationType
 
 class BuildOperationNotificationContinuousBuildIntegrationTest extends AbstractContinuousIntegrationTest {
 
-    def notifications = new BuildOperationNotificationFixture(executer, testDirectoryProvider)
+    def notifications = new BuildOperationNotificationFixture(executor, testDirectoryProvider)
 
     def "obtains notifications about init scripts"() {
         when:

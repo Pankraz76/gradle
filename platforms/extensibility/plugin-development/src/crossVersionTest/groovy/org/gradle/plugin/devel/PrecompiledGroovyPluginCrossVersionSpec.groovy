@@ -16,7 +16,7 @@
 package org.gradle.plugin.devel
 
 import org.gradle.integtests.fixtures.CrossVersionIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleExecuter
+import org.gradle.integtests.fixtures.executor.GradleExecutor
 import org.gradle.util.GradleVersion
 import org.junit.Assume
 
@@ -89,11 +89,11 @@ class PrecompiledGroovyPluginCrossVersionSpec extends CrossVersionIntegrationSpe
         result.assertNotOutput("$PLUGIN_TASK executed")
     }
 
-    private static GradleExecuter pluginTaskExecutedWith(GradleExecuter executer) {
-        return executer.withTasks(PLUGIN_TASK)
+    private static GradleExecutor pluginTaskExecutedWith(GradleExecutor executor) {
+        return executor.withTasks(PLUGIN_TASK)
     }
 
-    private void precompiledGroovyPluginBuiltWith(GradleExecuter executer) {
+    private void precompiledGroovyPluginBuiltWith(GradleExecutor executor) {
         file("plugins/src/main/groovy/${PLUGIN_ID}.gradle") << """
             tasks.register('$PLUGIN_TASK') {
                 doLast {
@@ -119,7 +119,7 @@ class PrecompiledGroovyPluginCrossVersionSpec extends CrossVersionIntegrationSpe
             }
         """
 
-        executer.inDirectory(file("plugins")).withTasks("publish").run()
+        executor.inDirectory(file("plugins")).withTasks("publish").run()
         file('plugins').forceDeleteDir()
     }
 

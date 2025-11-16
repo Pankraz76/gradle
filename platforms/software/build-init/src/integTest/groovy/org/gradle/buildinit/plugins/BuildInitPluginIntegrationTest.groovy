@@ -445,8 +445,8 @@ Description""") // include the next header to make sure all options are listed
             foo=bar
         """
         def snapshot = gradlePropertiesFile.snapshot()
-        executer.withGradleUserHomeDir(dotGradleDir)
-        executer.withArguments("--project-cache-dir", dotGradleDir.path)
+        executor.withGradleUserHomeDir(dotGradleDir)
+        executor.withArguments("--project-cache-dir", dotGradleDir.path)
 
         then:
         succeeds "init", '--overwrite'
@@ -461,7 +461,7 @@ Description""") // include the next header to make sure all options are listed
         useTestDirectoryThatIsNotEmbeddedInAnotherBuild()
         def dotGradleDir = targetDir.file('.guh')
         dotGradleDir.mkdirs()
-        executer.withGradleUserHomeDir(dotGradleDir)
+        executor.withGradleUserHomeDir(dotGradleDir)
 
         then:
         succeeds "init", '--overwrite'

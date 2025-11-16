@@ -32,7 +32,7 @@ class CacheConfigurationsLifecycleIntegrationTest extends AbstractIntegrationSpe
 
     @Override
     TestFile getGradleUserHomeDir() {
-        return executer.gradleUserHomeDir
+        return executor.gradleUserHomeDir
     }
 
     def "does not cleanup caches when initialization fails before cache configuration"() {

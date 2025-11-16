@@ -149,7 +149,7 @@ abstract class AbstractLoggingHooksFunctionalTest extends AbstractConsoleGrouped
         """
 
         when:
-        executer.withArguments("--debug")
+        executor.withArguments("--debug")
         run("log")
         def captured = file("output.txt").text
 
@@ -163,7 +163,7 @@ abstract class AbstractLoggingHooksFunctionalTest extends AbstractConsoleGrouped
         captured.contains("[ERROR] [system.err] System.err")
 
         when:
-        executer.withArguments("--info")
+        executor.withArguments("--info")
         run("log")
         def lines = file("output.txt").text.readLines()
 
@@ -199,7 +199,7 @@ abstract class AbstractLoggingHooksFunctionalTest extends AbstractConsoleGrouped
         !lines.contains('info')
 
         when:
-        executer.withArguments("--warn")
+        executor.withArguments("--warn")
         run("log")
         lines = file("output.txt").text.readLines()
 
@@ -217,7 +217,7 @@ abstract class AbstractLoggingHooksFunctionalTest extends AbstractConsoleGrouped
         !lines.contains('lifecycle')
 
         when:
-        executer.withArguments("--quiet")
+        executor.withArguments("--quiet")
         run("log")
         lines = file("output.txt").text.readLines()
 
@@ -270,7 +270,7 @@ abstract class AbstractLoggingHooksFunctionalTest extends AbstractConsoleGrouped
         """
 
         expect:
-        executer.withArguments("--continue")
+        executor.withArguments("--continue")
         fails("brokenOut", "brokenErr", "ok")
 
         failure.assertHasFailures(2)

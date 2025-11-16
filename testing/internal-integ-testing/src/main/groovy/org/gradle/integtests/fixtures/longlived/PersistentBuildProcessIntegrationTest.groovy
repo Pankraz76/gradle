@@ -27,6 +27,6 @@ import org.gradle.test.preconditions.IntegTestPreconditions
 class PersistentBuildProcessIntegrationTest extends AbstractIntegrationSpec {
 
     def setup() {
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
     }
 }

@@ -383,7 +383,7 @@ class CompositeBuildTaskExecutionIntegrationTest extends AbstractCompositeBuildT
             succeeds(":build-logic:jar", ":app:assemble")
         }
         2.times {
-            executer.withArgument("--configure-on-demand")
+            executor.withArgument("--configure-on-demand")
             succeeds(":build-logic:jar", ":app:assemble")
         }
     }

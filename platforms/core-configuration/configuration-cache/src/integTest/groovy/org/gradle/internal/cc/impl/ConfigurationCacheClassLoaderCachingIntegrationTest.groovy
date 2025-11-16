@@ -157,7 +157,7 @@ class ConfigurationCacheClassLoaderCachingIntegrationTest extends PersistentBuil
             """
         }
         and: 'non-strict classloaders must be allowed'
-        executer.withEagerClassLoaderCreationCheckDisabled()
+        executor.withEagerClassLoaderCreationCheckDisabled()
 
         when:
         run "ok"

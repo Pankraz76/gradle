@@ -66,7 +66,7 @@ class ConfigurationCacheSkipCacheIntegrationTest extends AbstractConfigurationCa
 
         when:
         def commandLineArgs = commandLine.split("\\s+")
-        executer.withArguments(commandLineArgs)
+        executor.withArguments(commandLineArgs)
         configurationCacheRun "myTask"
 
         then:

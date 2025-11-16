@@ -326,7 +326,7 @@ class JavaGradlePluginPluginIntegrationTest extends WellBehavedPluginTest {
         """
 
         when:
-        executer.withJdkWarningChecksEnabled()
+        executor.withJdkWarningChecksEnabled()
 
         then:
         succeeds "test"

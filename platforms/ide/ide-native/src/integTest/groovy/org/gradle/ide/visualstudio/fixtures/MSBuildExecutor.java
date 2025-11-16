@@ -17,10 +17,10 @@
 package org.gradle.ide.visualstudio.fixtures;
 
 import org.apache.commons.io.FileUtils;
-import org.gradle.integtests.fixtures.executer.ExecutionFailure;
-import org.gradle.integtests.fixtures.executer.ExecutionResult;
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionFailure;
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult;
+import org.gradle.integtests.fixtures.executor.ExecutionFailure;
+import org.gradle.integtests.fixtures.executor.ExecutionResult;
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionFailure;
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult;
 import org.gradle.internal.UncheckedException;
 import org.gradle.nativeplatform.fixtures.AvailableToolChains;
 import org.gradle.nativeplatform.fixtures.msvcpp.VisualStudioLocatorTestFixture;

@@ -33,7 +33,7 @@ class ConfigurationCacheCleanupIntegrationTest
 
     def setup() {
         requireOwnGradleUserHomeDir('needs its own journal')
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
     }
 
     @Issue('https://github.com/gradle/gradle/issues/23957')

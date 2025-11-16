@@ -92,7 +92,7 @@ class InvalidConfigurationUsageIntegrationTest extends AbstractIntegrationSpec {
         """
 
         expect:
-        executer.expectDocumentedDeprecationWarning("Calling $methodName on configuration ':custom' has been deprecated. This will fail with an error in Gradle 10. This configuration does not allow this method to be called. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#configurations_allowed_usage")
+        executor.expectDocumentedDeprecationWarning("Calling $methodName on configuration ':custom' has been deprecated. This will fail with an error in Gradle 10. This configuration does not allow this method to be called. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#configurations_allowed_usage")
         succeeds('help')
 
         where:
@@ -117,8 +117,8 @@ class InvalidConfigurationUsageIntegrationTest extends AbstractIntegrationSpec {
         """
 
         expect:
-        executer.expectDocumentedDeprecationWarning("Calling $methodName on configuration ':custom' has been deprecated. This will fail with an error in Gradle 10. This configuration does not allow this method to be called. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#configurations_allowed_usage")
-        executer.expectDocumentedDeprecationWarning("The custom configuration has been deprecated for resolution. This will fail with an error in Gradle 10. Please resolve another configuration instead. For more information, please refer to https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:deprecated-configurations in the Gradle documentation.")
+        executor.expectDocumentedDeprecationWarning("Calling $methodName on configuration ':custom' has been deprecated. This will fail with an error in Gradle 10. This configuration does not allow this method to be called. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#configurations_allowed_usage")
+        executor.expectDocumentedDeprecationWarning("The custom configuration has been deprecated for resolution. This will fail with an error in Gradle 10. Please resolve another configuration instead. For more information, please refer to https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:deprecated-configurations in the Gradle documentation.")
         succeeds('help')
 
         where:
@@ -178,7 +178,7 @@ class InvalidConfigurationUsageIntegrationTest extends AbstractIntegrationSpec {
         """
 
         expect:
-        executer.expectDocumentedDeprecationWarning("The foo configuration has been deprecated for resolution. This will fail with an error in Gradle 10. Please resolve another configuration instead. For more information, please refer to https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:deprecated-configurations in the Gradle documentation.")
+        executor.expectDocumentedDeprecationWarning("The foo configuration has been deprecated for resolution. This will fail with an error in Gradle 10. Please resolve another configuration instead. For more information, please refer to https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:deprecated-configurations in the Gradle documentation.")
         succeeds("help")
     }
 

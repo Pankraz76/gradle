@@ -33,17 +33,17 @@ class RuleSourcePluginUseIntegrationSpec extends AbstractIntegrationSpec {
     def pluginBuilder = new PluginBuilder(file(ARTIFACT))
 
     @Rule
-    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     def setup() {
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
     }
 
     def "can apply a rule source only plugin via plugins container"() {
         given:
         pluginBuilder.with {
             addRuleSource(PLUGIN_ID)
-            publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executer).allowAll()
+            publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executor).allowAll()
         }
 
         and:

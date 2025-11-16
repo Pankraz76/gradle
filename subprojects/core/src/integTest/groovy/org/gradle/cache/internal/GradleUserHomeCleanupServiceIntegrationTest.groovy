@@ -18,7 +18,7 @@ package org.gradle.cache.internal
 
 import org.gradle.api.internal.cache.CacheConfigurationsInternal
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.util.GradleVersion
 
@@ -176,10 +176,10 @@ class GradleUserHomeCleanupServiceIntegrationTest extends AbstractIntegrationSpe
 
     def "always cleans up unused version-specific cache directories and corresponding #type distributions when configured"() {
         given:
-        executer.requireIsolatedDaemons() // because we want to reuse Gradle user home services
-        executer.beforeExecute {
+        executor.requireIsolatedDaemons() // because we want to reuse Gradle user home services
+        executor.beforeExecute {
             if (!IntegrationTestBuildContext.embedded) {
-                executer.withArgument("-D$REUSE_USER_HOME_SERVICES=true")
+                executor.withArgument("-D$REUSE_USER_HOME_SERVICES=true")
             }
         }
         requireOwnGradleUserHomeDir() // because we delete caches and distributions
@@ -247,6 +247,6 @@ class GradleUserHomeCleanupServiceIntegrationTest extends AbstractIntegrationSpe
 
     @Override
     TestFile getGradleUserHomeDir() {
-        return executer.gradleUserHomeDir
+        return executor.gradleUserHomeDir
     }
 }

@@ -52,12 +52,12 @@ class CacheProjectIntegrationTest extends AbstractIntegrationTest {
     @Before
     public void setUp() {
         // Use own home dir so we don't blast the shared one when we run with -C rebuild
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
 
         String version = GradleVersion.current().version
         projectDir = file("project")
         projectDir.mkdirs()
-        userHomeDir = executer.gradleUserHomeDir
+        userHomeDir = executor.gradleUserHomeDir
         buildFile = projectDir.file('build.gradle')
         visitedBaseDirs = []
         artifactsCache = projectDir.file(".gradle/$version/executionHistory/executionHistory.bin")
@@ -159,7 +159,7 @@ class CacheProjectIntegrationTest extends AbstractIntegrationTest {
     }
 
     private def testBuild(String taskName, String expected, String... args) {
-        executer.inDirectory(projectDir).withTasks(taskName).withArguments(args).run()
+        executor.inDirectory(projectDir).withTasks(taskName).withArguments(args).run()
         assertEquals(expected, projectDir.file(TEST_FILE).text)
         updateCaches()
         classFile.assertIsFile()

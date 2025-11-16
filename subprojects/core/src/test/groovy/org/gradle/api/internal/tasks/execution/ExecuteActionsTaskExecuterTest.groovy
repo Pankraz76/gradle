@@ -81,7 +81,7 @@ import static org.gradle.api.internal.file.TestFiles.virtualFileSystem
 import static org.gradle.internal.work.AsyncWorkTracker.ProjectLockRetention.RELEASE_AND_REACQUIRE_PROJECT_LOCKS
 import static org.gradle.internal.work.AsyncWorkTracker.ProjectLockRetention.RELEASE_PROJECT_LOCKS
 
-class ExecuteActionsTaskExecuterTest extends Specification {
+class ExecuteActionsTaskExecutorTest extends Specification {
     def problems = TestUtil.problemsService()
     def task = Mock(TaskInternal)
     def taskOutputs = Mock(TaskOutputsEnterpriseInternal)
@@ -161,7 +161,7 @@ class ExecuteActionsTaskExecuterTest extends Specification {
         problems
     )
 
-    def executer = new ExecuteActionsTaskExecuter(
+    def executor = new ExecuteActionsTaskExecutor(
         executionHistoryStore,
         buildOperationRunnerForTaskExecution,
         asyncWorkTracker,
@@ -210,7 +210,7 @@ class ExecuteActionsTaskExecuterTest extends Specification {
         task.hasTaskActions() >> false
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         noMoreInteractions()
@@ -227,7 +227,7 @@ class ExecuteActionsTaskExecuterTest extends Specification {
         task.hasTaskActions() >> true
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         1 * standardOutputCapture.start()
@@ -274,7 +274,7 @@ class ExecuteActionsTaskExecuterTest extends Specification {
         }
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         1 * standardOutputCapture.start()
@@ -305,7 +305,7 @@ class ExecuteActionsTaskExecuterTest extends Specification {
         }
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         1 * standardOutputCapture.start()
@@ -336,7 +336,7 @@ class ExecuteActionsTaskExecuterTest extends Specification {
         task.hasTaskActions() >> true
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         1 * standardOutputCapture.start()
@@ -365,7 +365,7 @@ class ExecuteActionsTaskExecuterTest extends Specification {
         task.hasTaskActions() >> true
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         1 * standardOutputCapture.start()
@@ -409,7 +409,7 @@ class ExecuteActionsTaskExecuterTest extends Specification {
         task.hasTaskActions() >> true
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         1 * standardOutputCapture.start()
@@ -447,7 +447,7 @@ class ExecuteActionsTaskExecuterTest extends Specification {
         }
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         1 * standardOutputCapture.start()
@@ -484,7 +484,7 @@ class ExecuteActionsTaskExecuterTest extends Specification {
         def failure = new RuntimeException("failure 1")
 
         when:
-        executer.execute(task, state, executionContext)
+        executor.execute(task, state, executionContext)
 
         then:
         1 * standardOutputCapture.start()

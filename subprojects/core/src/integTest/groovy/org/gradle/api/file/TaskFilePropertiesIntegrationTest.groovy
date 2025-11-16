@@ -18,7 +18,7 @@ package org.gradle.api.file
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 
-import static org.gradle.integtests.fixtures.executer.TaskOrderSpecs.any
+import static org.gradle.integtests.fixtures.executor.TaskOrderSpecs.any
 
 class TaskFilePropertiesIntegrationTest extends AbstractIntegrationSpec {
 

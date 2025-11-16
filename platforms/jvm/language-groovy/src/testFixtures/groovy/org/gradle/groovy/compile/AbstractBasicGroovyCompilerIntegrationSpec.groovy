@@ -21,8 +21,8 @@ import org.gradle.integtests.fixtures.FeaturePreviewsFixture
 import org.gradle.integtests.fixtures.MultiVersionIntegrationSpec
 import org.gradle.integtests.fixtures.TargetCoverage
 import org.gradle.integtests.fixtures.TestResources
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.internal.reflect.validation.ValidationMessageChecker
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.precondition.Requires
@@ -47,9 +47,9 @@ abstract class AbstractBasicGroovyCompilerIntegrationSpec extends MultiVersionIn
     }
 
     def setup() {
-        // necessary for picking up some of the output/errorOutput when forked executer is used
-        executer.withArgument("-i")
-        executer.withRepositoryMirrors()
+        // necessary for picking up some of the output/errorOutput when forked executor is used
+        executor.withArgument("-i")
+        executor.withRepositoryMirrors()
         groovyDependency = groovyModuleDependency("groovy", versionNumber)
     }
 

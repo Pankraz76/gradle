@@ -21,7 +21,7 @@ import org.gradle.process.ExecResult
 import org.gradle.process.internal.ClientExecHandleBuilder
 import org.gradle.process.internal.ExecHandle
 
-class ScriptExecuter {
+class ScriptExecutor {
     @Delegate
     ClientExecHandleBuilder builder = TestFiles.execHandleFactory().newExecHandleBuilder()
 

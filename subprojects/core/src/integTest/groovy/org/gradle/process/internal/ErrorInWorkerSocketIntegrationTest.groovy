@@ -64,7 +64,7 @@ task runBrokenWorker {
 
         then:
         failureCauseContains('No response was received from Gradle Worker but the worker process has finished')
-        executer.getGradleUserHomeDir().file('workers').listFiles().find { it.name.startsWith('worker-error') }.text.contains(MESSAGE)
+        executor.getGradleUserHomeDir().file('workers').listFiles().find { it.name.startsWith('worker-error') }.text.contains(MESSAGE)
     }
 
     def "worker won't hang when error occurs in socket connection in included build"() {
@@ -125,6 +125,6 @@ plugins {
 
         then:
         failureCauseContains('No response was received from Gradle Worker but the worker process has finished')
-        executer.getGradleUserHomeDir().file('workers').listFiles().find { it.name.startsWith('worker-error') }.text.contains(MESSAGE)
+        executor.getGradleUserHomeDir().file('workers').listFiles().find { it.name.startsWith('worker-error') }.text.contains(MESSAGE)
     }
 }

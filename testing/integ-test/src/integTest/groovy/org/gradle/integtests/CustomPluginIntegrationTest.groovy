@@ -16,7 +16,7 @@
 package org.gradle.integtests
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ArtifactBuilder
+import org.gradle.integtests.fixtures.executor.ArtifactBuilder
 
 class CustomPluginIntegrationTest extends AbstractIntegrationSpec {
     void "can reference plugin in buildSrc by id"() {

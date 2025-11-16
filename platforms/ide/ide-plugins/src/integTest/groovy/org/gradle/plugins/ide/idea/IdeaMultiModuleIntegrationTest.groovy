@@ -65,7 +65,7 @@ class IdeaMultiModuleIntegrationTest extends AbstractIdeIntegrationTest {
         """
 
         //when
-        executer.withTasks("ideaModule").run()
+        executor.withTasks("ideaModule").run()
 
         //then
         def dependencies = parseIml("api/master-api.iml").dependencies
@@ -101,7 +101,7 @@ class IdeaMultiModuleIntegrationTest extends AbstractIdeIntegrationTest {
         """
 
         //when
-        executer.withTasks("ideaModule").run()
+        executor.withTasks("ideaModule").run()
 
         //then
         def dependencies = parseIml("api/api.iml").dependencies
@@ -147,7 +147,7 @@ class IdeaMultiModuleIntegrationTest extends AbstractIdeIntegrationTest {
         """
 
         //when
-        executer.withTasks("ideaModule").run()
+        executor.withTasks("ideaModule").run()
 
         //then
         def dependencies = parseIml("library/library.iml").dependencies
@@ -202,7 +202,7 @@ class IdeaMultiModuleIntegrationTest extends AbstractIdeIntegrationTest {
         """
 
         //when
-        executer.withTasks("ideaModule").run()
+        executor.withTasks("ideaModule").run()
 
         //then
         def dependencies = parseIml("api/api.iml").dependencies
@@ -277,7 +277,7 @@ class IdeaMultiModuleIntegrationTest extends AbstractIdeIntegrationTest {
         """
 
         //when
-        executer.withTasks("idea").run()
+        executor.withTasks("idea").run()
 
         //then
         assertIprContainsCorrectModules()
@@ -347,7 +347,7 @@ class IdeaMultiModuleIntegrationTest extends AbstractIdeIntegrationTest {
         """
 
         //when
-        executer.withTasks("idea").run()
+        executor.withTasks("idea").run()
 
         //then
         def moduleFileNames = parseIprModules()
@@ -396,7 +396,7 @@ class IdeaMultiModuleIntegrationTest extends AbstractIdeIntegrationTest {
         """
 
         //when
-        executer.withTasks("idea").run()
+        executor.withTasks("idea").run()
 
         //then
         def dependencies = parseIml("one/one.iml").dependencies
@@ -459,7 +459,7 @@ class IdeaMultiModuleIntegrationTest extends AbstractIdeIntegrationTest {
         """
 
         //when
-        executer.withTasks("idea").run()
+        executor.withTasks("idea").run()
 
         //then
         def dependencies = parseIml("one/one.iml").dependencies
@@ -469,7 +469,7 @@ class IdeaMultiModuleIntegrationTest extends AbstractIdeIntegrationTest {
         dependencies = parseIml("two/two.iml").dependencies
         assert dependencies.libraries*.jarName as Set == [someLib2Jar.name] as Set
 
-        executer.withArgument("-PstrictDeps=true").withTasks("idea").run()
+        executor.withArgument("-PstrictDeps=true").withTasks("idea").run()
 
         //then
         dependencies = parseIml("one/one.iml").dependencies
@@ -504,12 +504,12 @@ class IdeaMultiModuleIntegrationTest extends AbstractIdeIntegrationTest {
             }
         """
 
-        executer.withTasks("idea").run()
+        executor.withTasks("idea").run()
         assert getFile(project: 'shared/api', "shared-api.iml").exists()
         assert getFile(project: 'contrib', "cool-contrib.iml").exists()
 
         //when
-        executer.withTasks("cleanIdea").run()
+        executor.withTasks("cleanIdea").run()
 
         //then
         assert !getFile(project: 'shared/api', "shared-api.iml").exists()
@@ -541,7 +541,7 @@ class IdeaMultiModuleIntegrationTest extends AbstractIdeIntegrationTest {
         """
 
         //when
-        executer.withTasks("idea").run()
+        executor.withTasks("idea").run()
 
         //then
         assert getFile(project: 'api', 'api.iml').exists()
@@ -565,7 +565,7 @@ class IdeaMultiModuleIntegrationTest extends AbstractIdeIntegrationTest {
         """
 
         //when
-        2.times { executer.withTasks("ideaProject").run() }
+        2.times { executor.withTasks("ideaProject").run() }
 
         //then
         String content = getFile(project: '.', 'master.ipr').text
@@ -606,7 +606,7 @@ class IdeaMultiModuleIntegrationTest extends AbstractIdeIntegrationTest {
         """
 
         //when
-        executer.withTasks("ideaModule").run()
+        executor.withTasks("ideaModule").run()
 
         //then
         def dependencies = parseIml("app/app.iml").dependencies

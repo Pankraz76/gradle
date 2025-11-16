@@ -17,8 +17,8 @@
 package org.gradle.integtests.fixtures.configurationcache
 
 import junit.framework.AssertionFailedError
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.util.internal.ConfigureUtil
 import org.hamcrest.Matcher
 

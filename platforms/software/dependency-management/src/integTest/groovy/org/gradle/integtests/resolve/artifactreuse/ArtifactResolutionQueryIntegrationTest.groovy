@@ -83,10 +83,10 @@ class ArtifactResolutionQueryIntegrationTest extends AbstractHttpDependencyResol
             }
         """
 
-        executer.requireOwnGradleUserHomeDir().requireIsolatedDaemons()
+        executor.requireOwnGradleUserHomeDir().requireIsolatedDaemons()
 
         expect:
-        def build = executer.withArguments('query:query', ':resolve:resolve', '--parallel').start()
+        def build = executor.withArguments('query:query', ':resolve:resolve', '--parallel').start()
 
         handler.waitForAllPendingCalls()
         handler.release('/sync')

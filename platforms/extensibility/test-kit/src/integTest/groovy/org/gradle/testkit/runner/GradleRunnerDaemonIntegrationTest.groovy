@@ -16,7 +16,7 @@
 
 package org.gradle.testkit.runner
 
-import org.gradle.integtests.fixtures.executer.DaemonGradleExecuter
+import org.gradle.integtests.fixtures.executor.DaemonGradleExecutor
 import org.gradle.test.fixtures.ConcurrentTestUtil
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
@@ -78,7 +78,7 @@ class GradleRunnerDaemonIntegrationTest extends BaseGradleRunnerIntegrationTest 
         nonTestKitDaemons.visible.empty
 
         when:
-        new DaemonGradleExecuter(buildContext.distribution(gradleVersion.version), testDirectoryProvider)
+        new DaemonGradleExecutor(buildContext.distribution(gradleVersion.version), testDirectoryProvider)
             .usingProjectDirectory(testDirectory)
             .withGradleUserHomeDir(testKitDir)
             .withDaemonBaseDir(defaultDaemonDir) // simulate default, our fixtures deviate from the default

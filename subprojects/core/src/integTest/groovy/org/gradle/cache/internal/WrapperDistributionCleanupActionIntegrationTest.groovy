@@ -27,10 +27,10 @@ class WrapperDistributionCleanupActionIntegrationTest extends AbstractIntegratio
 
     def "reads Gradle version from actual distribution"() {
         given:
-        def cleanupAction = new WrapperDistributionCleanupAction(executer.gradleUserHomeDir, Stub(UsedGradleVersions))
+        def cleanupAction = new WrapperDistributionCleanupAction(executor.gradleUserHomeDir, Stub(UsedGradleVersions))
 
         when:
-        def gradleVersion = cleanupAction.determineGradleVersionFromDistribution(executer.distribution.gradleHomeDir)
+        def gradleVersion = cleanupAction.determineGradleVersionFromDistribution(executor.distribution.gradleHomeDir)
 
         then:
         gradleVersion == GradleVersion.current()

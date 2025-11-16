@@ -211,7 +211,7 @@ abstract class AbstractJUnitTestExecutionIntegrationTest extends AbstractTesting
         """.stripIndent()
 
         when:
-        executer.withTasks('build').run()
+        executor.withTasks('build').run()
 
         then:
         def results = resultsFor(testDirectory)
@@ -256,7 +256,7 @@ abstract class AbstractJUnitTestExecutionIntegrationTest extends AbstractTesting
         """.stripIndent()
 
         when:
-        executer.withTasks('test').run()
+        executor.withTasks('test').run()
 
         then:
         TestFile results1 = testDirectory.file('build/test-results/test/TEST-org.gradle.SomeTest.xml')
@@ -303,7 +303,7 @@ abstract class AbstractJUnitTestExecutionIntegrationTest extends AbstractTesting
         """.stripIndent()
 
         when:
-        executer.withTasks('test').run()
+        executor.withTasks('test').run()
 
         then:
         TestFile results1 = testDirectory.file('build/test-results/test/TEST-org.gradle.SomeTest.xml')
@@ -363,7 +363,7 @@ abstract class AbstractJUnitTestExecutionIntegrationTest extends AbstractTesting
         // In a nutshell, this tests that we don't even try to load classes that are there, but that we shouldn't see.
 
         when:
-        executer
+        executor
             .withArgument("-Dorg.gradle.java.installations.paths=${AvailableJavaHomes.getAvailableJvms().collect { it.javaHome.absolutePath }.join(",")}")
             .withToolchainDetectionEnabled()
         buildFile << """
@@ -469,7 +469,7 @@ abstract class AbstractJUnitTestExecutionIntegrationTest extends AbstractTesting
     @Requires(IntegTestPreconditions.Java11HomeAvailable)
     def "test can install an irreplaceable SecurityManager"() {
         given:
-        executer
+        executor
             .withStackTraceChecksDisabled()
             .withToolchainDetectionEnabled()
         withInstallations(AvailableJavaHomes.getAvailableJvms())

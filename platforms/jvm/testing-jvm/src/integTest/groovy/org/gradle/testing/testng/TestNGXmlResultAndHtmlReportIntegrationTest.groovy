@@ -58,7 +58,7 @@ class TestNGXmlResultAndHtmlReportIntegrationTest extends AbstractIntegrationSpe
     @Shared List<Mode> modes = [outputAtSuite, outputPerTestCase]
 
     def setup() {
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         setupTestCases()
     }
 
@@ -113,7 +113,7 @@ class TestNGXmlResultAndHtmlReportIntegrationTest extends AbstractIntegrationSpe
             }
             """
         //when
-        executer.withTasks('test').runWithFailure().assertTestsFailed()
+        executor.withTasks('test').runWithFailure().assertTestsFailed()
     }
 
     def verifyTestResultWith(TestExecutionResult executionResult, TestResultOutputAssociation outputAssociation) {

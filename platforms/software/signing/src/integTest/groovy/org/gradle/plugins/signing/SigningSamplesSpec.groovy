@@ -118,7 +118,7 @@ class SigningSamplesSpec extends AbstractSampleIntegrationTest {
         inDirectory(projectDir)
 
         when:
-        executer.withEnvironmentVars([
+        executor.withEnvironmentVars([
             ORG_GRADLE_PROJECT_signingKey: secretKey,
             ORG_GRADLE_PROJECT_signingPassword: password
         ])
@@ -138,7 +138,7 @@ class SigningSamplesSpec extends AbstractSampleIntegrationTest {
         inDirectory(projectDir)
 
         when:
-        executer.withEnvironmentVars([
+        executor.withEnvironmentVars([
             ORG_GRADLE_PROJECT_signingKeyId: secretSubkeyId,
             ORG_GRADLE_PROJECT_signingKey: secretSubkey,
             ORG_GRADLE_PROJECT_signingPassword: subkeyPassword

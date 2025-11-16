@@ -25,16 +25,16 @@ import org.gradle.api.problems.internal.ProblemSummaryData
 import org.gradle.integtests.fixtures.build.BuildTestFile
 import org.gradle.integtests.fixtures.build.BuildTestFixture
 import org.gradle.integtests.fixtures.configurationcache.ConfigurationCacheBuildOperationsFixture
-import org.gradle.integtests.fixtures.executer.ArtifactBuilder
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.GradleBackedArtifactBuilder
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
-import org.gradle.integtests.fixtures.executer.GradleDistribution
-import org.gradle.integtests.fixtures.executer.GradleExecuter
-import org.gradle.integtests.fixtures.executer.InProcessGradleExecuter
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
-import org.gradle.integtests.fixtures.executer.UnderDevelopmentGradleDistribution
+import org.gradle.integtests.fixtures.executor.ArtifactBuilder
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.GradleBackedArtifactBuilder
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
+import org.gradle.integtests.fixtures.executor.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleExecutor
+import org.gradle.integtests.fixtures.executor.InProcessGradleExecutor
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.UnderDevelopmentGradleDistribution
 import org.gradle.integtests.fixtures.problems.KnownProblemIds
 import org.gradle.integtests.fixtures.problems.ReceivedProblem
 import org.gradle.integtests.fixtures.timeout.IntegrationTestTimeout
@@ -79,26 +79,26 @@ abstract class AbstractIntegrationSpec extends Specification implements Language
     protected DocumentationRegistry documentationRegistry = new DocumentationRegistry()
 
     GradleDistribution distribution = new UnderDevelopmentGradleDistribution(getBuildContext())
-    private GradleExecuter executor
+    private GradleExecutor executor
     boolean ignoreCleanupAssertions
 
     private boolean enableProblemsApiCheck = false
     protected BuildOperationsFixture buildOperationsFixture = null
 
-    GradleExecuter getExecuter() {
+    GradleExecutor getExecutor() {
         if (executor == null) {
-            executor = createExecuter()
+            executor = createExecutor()
         }
         return executor
     }
 
     /**
      * Applies configuration that needs to be applied
-     * every time an executer runs.
+     * every time an executor runs.
      *
      * May be overwritten. In most cases, the overrides should ensure to invoke the base implementation.
      */
-    protected void setupExecuter() {
+    protected void setupExecutor() {
         if (ignoreCleanupAssertions) {
             executor.ignoreCleanupAssertions()
         }
@@ -124,8 +124,8 @@ abstract class AbstractIntegrationSpec extends Specification implements Language
         // Verify that the previous test (or fixtures) has cleaned up state correctly
         m2.assertNoLeftoverState()
 
-        m2.isolateMavenLocalRepo(executer)
-        executer.beforeExecute {
+        m2.isolateMavenLocalRepo(executor)
+        executor.beforeExecute {
             withArgument("-Dorg.gradle.internal.repository.max.tentatives=$maxHttpRetries")
             if (maxUploadAttempts != null) {
                 withArgument("-Dorg.gradle.internal.network.retry.max.attempts=$maxUploadAttempts")
@@ -163,22 +163,22 @@ abstract class AbstractIntegrationSpec extends Specification implements Language
         buildOperationsFixture = null
         disableProblemsApiCheck()
 
-        executer.cleanup()
+        executor.cleanup()
         m2.cleanupState()
 
         // Verify that the test (or fixtures) has cleaned up state correctly
         m2.assertNoLeftoverState()
     }
 
-    private void recreateExecuter() {
+    private void recreateExecutor() {
         if (executor != null) {
             executor.cleanup()
         }
         executor = null
     }
 
-    GradleExecuter createExecuter() {
-        new GradleContextualExecuter(distribution, temporaryFolder, getBuildContext())
+    GradleExecutor createExecutor() {
+        new GradleContextualExecutor(distribution, temporaryFolder, getBuildContext())
     }
 
     /**
@@ -254,7 +254,7 @@ abstract class AbstractIntegrationSpec extends Specification implements Language
     }
 
     protected ConfigurationCacheBuildOperationsFixture newConfigurationCacheFixture() {
-        return new ConfigurationCacheBuildOperationsFixture(new BuildOperationsFixture(executer, temporaryFolder))
+        return new ConfigurationCacheBuildOperationsFixture(new BuildOperationsFixture(executor, temporaryFolder))
     }
 
     String relativePath(String path) {
@@ -315,47 +315,47 @@ abstract class AbstractIntegrationSpec extends Specification implements Language
         file("src/test/java/Test.java") << source
     }
 
-    protected GradleExecuter sample(Sample sample) {
+    protected GradleExecutor sample(Sample sample) {
         inDirectory(sample.dir)
     }
 
-    protected GradleExecuter inDirectory(String path) {
+    protected GradleExecutor inDirectory(String path) {
         inDirectory(file(path))
     }
 
-    protected GradleExecuter inDirectory(File directory) {
-        executer.inDirectory(directory)
+    protected GradleExecutor inDirectory(File directory) {
+        executor.inDirectory(directory)
     }
 
-    protected GradleExecuter projectDir(path) {
-        executer.usingProjectDirectory(file(path))
+    protected GradleExecutor projectDir(path) {
+        executor.usingProjectDirectory(file(path))
     }
 
     /**
      * Use requireOwnGradleUserHomeDir(because) instead
      */
     @Deprecated
-    protected GradleExecuter requireOwnGradleUserHomeDir() {
-        executer.requireOwnGradleUserHomeDir()
-        executer
+    protected GradleExecutor requireOwnGradleUserHomeDir() {
+        executor.requireOwnGradleUserHomeDir()
+        executor
     }
 
-    protected GradleExecuter requireOwnGradleUserHomeDir(String because) {
-        executer.requireOwnGradleUserHomeDir(because)
-        executer
+    protected GradleExecutor requireOwnGradleUserHomeDir(String because) {
+        executor.requireOwnGradleUserHomeDir(because)
+        executor
     }
 
     /**
      * This is expensive as it creates a complete copy of the distribution inside the test directory.
      * Only use this for testing custom modifications of a distribution.
      */
-    protected GradleExecuter requireIsolatedGradleDistribution() {
+    protected GradleExecutor requireIsolatedGradleDistribution() {
         def isolatedGradleHomeDir = getTestDirectory().file("gradle-home")
         getBuildContext().gradleHomeDir.copyTo(isolatedGradleHomeDir)
         distribution = new UnderDevelopmentGradleDistribution(getBuildContext(), isolatedGradleHomeDir)
-        recreateExecuter()
-        executer.requireIsolatedDaemons() //otherwise we might connect to a running daemon from the original installation location
-        executer
+        recreateExecutor()
+        executor.requireIsolatedDaemons() //otherwise we might connect to a running daemon from the original installation location
+        executor
     }
 
     /**
@@ -371,9 +371,9 @@ abstract class AbstractIntegrationSpec extends Specification implements Language
         def undefinedBuildDirectory = Files.createTempDirectory(tmpDir.toPath(), "gradle").toFile()
         testDirOverride = new TestFile(undefinedBuildDirectory)
         assertNoDefinedBuild(testDirectory)
-        executer.beforeExecute {
-            executer.inDirectory(testDirectory)
-            executer.ignoreMissingSettingsFile()
+        executor.beforeExecute {
+            executor.inDirectory(testDirectory)
+            executor.ignoreMissingSettingsFile()
         }
     }
 
@@ -408,8 +408,8 @@ tmpdir is currently ${System.getProperty("java.io.tmpdir")}""")
     }
 
     AbstractIntegrationSpec withBuildCache() {
-        executer.withArgument("--no-problems-report")
-        executer.withBuildCacheEnabled()
+        executor.withArgument("--no-problems-report")
+        executor.withBuildCacheEnabled()
         this
     }
 
@@ -424,19 +424,19 @@ tmpdir is currently ${System.getProperty("java.io.tmpdir")}""")
         succeeds(tasks.toArray(new String[tasks.size()]))
     }
 
-    protected GradleExecuter args(String... args) {
-        executer.withArguments(args)
+    protected GradleExecutor args(String... args) {
+        executor.withArguments(args)
     }
 
-    protected GradleExecuter withDebugLogging() {
-        executer.withArgument("-d")
+    protected GradleExecutor withDebugLogging() {
+        executor.withArgument("-d")
     }
 
     protected ExecutionResult succeeds(String... tasks) {
-        setupExecuter()
+        setupExecutor()
         resetProblemApiCheck()
 
-        result = executer.withTasks(*tasks).run()
+        result = executor.withTasks(*tasks).run()
         return result
     }
 
@@ -482,10 +482,10 @@ tmpdir is currently ${System.getProperty("java.io.tmpdir")}""")
     }
 
     protected ExecutionFailure fails(List<String> tasks) {
-        setupExecuter()
+        setupExecutor()
         resetProblemApiCheck()
 
-        failure = executer.withTasks(tasks).runWithFailure()
+        failure = executor.withTasks(tasks).runWithFailure()
 
         if (enableProblemsApiCheck && getReceivedProblems().isEmpty()) {
             throw new AssertionFailedError("Expected to find a problem emitted via the 'Problems' service for the failing build, but none was received.")
@@ -570,12 +570,12 @@ tmpdir is currently ${System.getProperty("java.io.tmpdir")}""")
     }
 
     ArtifactBuilder artifactBuilder() {
-        def executer = new InProcessGradleExecuter(distribution, temporaryFolder)
-        executer.withGradleUserHomeDir(this.executer.getGradleUserHomeDir())
+        def executor = new InProcessGradleExecutor(distribution, temporaryFolder)
+        executor.withGradleUserHomeDir(this.executor.getGradleUserHomeDir())
         for (int i = 1; ; i++) {
             def dir = getTestDirectory().file("artifacts-$i")
             if (!dir.exists()) {
-                return new GradleBackedArtifactBuilder(executer, dir)
+                return new GradleBackedArtifactBuilder(executor, dir)
             }
         }
     }
@@ -644,9 +644,9 @@ tmpdir is currently ${System.getProperty("java.io.tmpdir")}""")
         return new IvyFileRepository(file(repo))
     }
 
-    public GradleExecuter using(Action<GradleExecuter> action) {
-        action.execute(executer)
-        executer
+    public GradleExecutor using(Action<GradleExecutor> action) {
+        action.execute(executor)
+        executor
     }
 
     def createZip(String name, Closure cl) {
@@ -734,13 +734,13 @@ tmpdir is currently ${System.getProperty("java.io.tmpdir")}""")
     /**
      * Called by {@link org.gradle.integtests.fixtures.extensions.AbstractMultiTestInterceptor} when the test class is reused
      */
-    void resetExecuter() {
+    void resetExecutor() {
         this.ignoreCleanupAssertions = false
-        recreateExecuter()
+        recreateExecutor()
     }
 
     BuildOperationsFixture newBuildOperationsFixture() {
-        new BuildOperationsFixture(executer, temporaryFolder)
+        new BuildOperationsFixture(executor, temporaryFolder)
     }
 
     def resetProblemApiCheck() {
@@ -750,7 +750,7 @@ tmpdir is currently ${System.getProperty("java.io.tmpdir")}""")
 
     def enableProblemsApiCheck() {
         enableProblemsApiCheck = true
-        buildOperationsFixture = new BuildOperationsFixture(executer, temporaryFolder)
+        buildOperationsFixture = new BuildOperationsFixture(executor, temporaryFolder)
     }
 
     def disableProblemsApiCheck() {

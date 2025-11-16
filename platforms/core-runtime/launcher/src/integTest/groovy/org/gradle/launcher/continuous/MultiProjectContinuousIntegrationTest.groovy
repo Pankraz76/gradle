@@ -26,7 +26,7 @@ class MultiProjectContinuousIntegrationTest extends AbstractContinuousIntegratio
     def upstreamSource, downstreamSource
 
     def setup() {
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         settingsFile << "include 'upstream', 'downstream'"
         buildFile << """
             subprojects {

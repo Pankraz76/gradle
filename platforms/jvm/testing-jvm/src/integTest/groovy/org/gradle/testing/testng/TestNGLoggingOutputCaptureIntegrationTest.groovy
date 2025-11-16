@@ -195,7 +195,7 @@ Test suite '${testSuiteName}' -> afterTest err
         }""".stripIndent())
 
         expect:
-        executer.withTestConsoleAttached()
+        executor.withTestConsoleAttached()
         succeeds("test")
 
         and: "all output is included/excluded in the xml report as configured"

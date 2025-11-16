@@ -46,7 +46,7 @@ import org.gradle.launcher.daemon.server.api.HandleInvalidateVirtualFileSystem;
 import org.gradle.launcher.daemon.server.api.HandleReportStatus;
 import org.gradle.launcher.daemon.server.api.HandleStop;
 import org.gradle.launcher.daemon.server.exec.CleanUpVirtualFileSystemAfterBuild;
-import org.gradle.launcher.daemon.server.exec.DaemonCommandExecuter;
+import org.gradle.launcher.daemon.server.exec.DaemonCommandExecutor;
 import org.gradle.launcher.daemon.server.exec.EstablishBuildEnvironment;
 import org.gradle.launcher.daemon.server.exec.ExecuteBuild;
 import org.gradle.launcher.daemon.server.exec.ForwardClientInput;
@@ -147,7 +147,7 @@ public class DaemonServices implements ServiceRegistrationProvider {
 
     @Provides
     protected ImmutableList<DaemonCommandAction> createDaemonCommandActions(
-        BuildExecutor buildActionExecuter,
+        BuildExecutor buildActionExecutor,
         DaemonContext daemonContext,
         DaemonHealthCheck healthCheck,
         DaemonHealthStats healthStats,
@@ -176,7 +176,7 @@ public class DaemonServices implements ServiceRegistrationProvider {
             new RequestStopIfSingleUsedDaemon(),
             new ResetDeprecationLogger(),
             new WatchForDisconnection(),
-            new ExecuteBuild(buildActionExecuter, runningStats)
+            new ExecuteBuild(buildActionExecutor, runningStats)
         );
     }
 
@@ -203,7 +203,7 @@ public class DaemonServices implements ServiceRegistrationProvider {
             ),
             daemonRegistry,
             daemonContext,
-            new DaemonCommandExecuter(configuration, actions),
+            new DaemonCommandExecutor(configuration, actions),
             executorFactory,
             listenerManager
         );

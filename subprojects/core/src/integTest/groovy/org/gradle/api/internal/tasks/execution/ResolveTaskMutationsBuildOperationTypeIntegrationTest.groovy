@@ -18,11 +18,11 @@ package org.gradle.api.internal.tasks.execution
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.BuildOperationsFixture
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 
 class ResolveTaskMutationsBuildOperationTypeIntegrationTest extends AbstractIntegrationSpec {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "emits operation for task execution"() {
         when:
@@ -60,7 +60,7 @@ class ResolveTaskMutationsBuildOperationTypeIntegrationTest extends AbstractInte
         fails "t"
 
         then:
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             // Configuration caching resolves the outputs when storing to the configuration cache
             // This fails already, so we don't even get to resolving the mutations.
             failureDescriptionStartsWith("BOOM!")

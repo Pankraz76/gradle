@@ -29,9 +29,9 @@ class IvyPublishGcsIntegrationTest extends AbstractIvyPublishIntegTest {
     public GcsServer server = new GcsServer(temporaryFolder)
 
     def setup() {
-        executer.withArgument("-D${GCS_ENDPOINT_PROPERTY}=${server.uri}")
-        executer.withArgument("-D${GCS_SERVICE_PATH_PROPERTY}=/")
-        executer.withArgument("-D${GCS_DISABLE_AUTH_PROPERTY}=true")
+        executor.withArgument("-D${GCS_ENDPOINT_PROPERTY}=${server.uri}")
+        executor.withArgument("-D${GCS_SERVICE_PATH_PROPERTY}=/")
+        executor.withArgument("-D${GCS_DISABLE_AUTH_PROPERTY}=true")
     }
 
     def "can publish to a Gcs Ivy repository"() {

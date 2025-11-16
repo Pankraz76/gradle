@@ -88,6 +88,6 @@ class ArtifactCacheUnusedVersionCleanupIntegrationTest extends AbstractIntegrati
 
     @Override
     TestFile getGradleUserHomeDir() {
-        return executer.gradleUserHomeDir
+        return executor.gradleUserHomeDir
     }
 }

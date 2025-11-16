@@ -48,7 +48,7 @@ class WorkerDaemonLoggingIntegrationTest extends AbstractDaemonWorkerExecutorInt
 
     @Issue("https://github.com/gradle/gradle/issues/10122")
     def "can log many messages from action in a worker daemon"() {
-        def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+        def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
         workActionThatProducesLotsOfOutput.writeToBuildFile()
 
@@ -92,7 +92,7 @@ class WorkerDaemonLoggingIntegrationTest extends AbstractDaemonWorkerExecutorInt
 
         when:
         def handler = server.expectConcurrentAndBlock("block", "beep")
-        def gradle = executer.withTasks("block").start()
+        def gradle = executor.withTasks("block").start()
 
         then:
         handler.waitForAllPendingCalls()
@@ -113,7 +113,7 @@ class WorkerDaemonLoggingIntegrationTest extends AbstractDaemonWorkerExecutorInt
     }
 
     def "log messages from a worker daemon are associated with the task that invokes them"() {
-        def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+        def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
 
         workActionThatProducesLotsOfOutput.writeToBuildFile()
         buildFile << """

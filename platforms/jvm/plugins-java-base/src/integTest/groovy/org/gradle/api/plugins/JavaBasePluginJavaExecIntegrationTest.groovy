@@ -36,7 +36,7 @@ class JavaBasePluginJavaExecIntegrationTest extends AbstractIntegrationSpec impl
             }
         """
 
-        executer.withToolchainDetectionEnabled()
+        executor.withToolchainDetectionEnabled()
     }
 
     def "javaexec defaults to java toolchain when java-base plugin is applied"() {

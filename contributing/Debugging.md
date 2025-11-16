@@ -26,7 +26,7 @@ Be careful when stopping the test — ensure you stop the test itself, not the d
 
 ### Gradle test executors
 
-There are [several executors](../testing/internal-integ-testing/src/main/groovy/org/gradle/integtests/fixtures/executer/GradleContextualExecuter.java) available for running integration tests configured in Gradle.
+There are [several executors](../testing/internal-integ-testing/src/main/groovy/org/gradle/integtests/fixtures/executor/GradleContextualExecutor.java) available for running integration tests configured in Gradle.
 
 Most of them are forking, and you should be able to debug a test with any of them by running the test in debug mode.
 The test detects that it is running in debug mode and provides all necessary information to the forked daemon to connect to the debugger.
@@ -34,7 +34,7 @@ The test detects that it is running in debug mode and provides all necessary inf
 There is also an embedded executor that runs the test within the same JVM as the test runner.
 While this can be convenient for debugging and may offer faster execution, it's generally not recommended due to potential classloader issues, which may lead to different behavior in certain edge cases.
 
-In test code, you can access the current executer via `executer` and modify its options.
+In test code, you can access the current executor via `executor` and modify its options.
 
 ### Gradle debug options
 
@@ -48,11 +48,11 @@ Our [blog series](https://blog.gradle.org/how-gradle-works-1) about how Gradle w
 
 Simply starting the test in debug mode in the IDE with the "Debug Daemon" configuration running should suffice.
 
-Alternatively, you can explicitly enable debugging for the daemon by setting the `debugDaemon` Gradle property to any value or by modifying the test code with the `executer.startBuildProcessInDebugger` method.
+Alternatively, you can explicitly enable debugging for the daemon by setting the `debugDaemon` Gradle property to any value or by modifying the test code with the `executor.startBuildProcessInDebugger` method.
 
 ## Debugging launcher
 
-You can enable debugging for the launcher by setting the `debugLauncher` Gradle property to any value or by changing the test code with the `executer.startLauncherInDebugger` method.
+You can enable debugging for the launcher by setting the `debugLauncher` Gradle property to any value or by changing the test code with the `executor.startLauncherInDebugger` method.
 
 Note that by default, port 5006 is used for debugging the launcher, so you'll also need to start the "Debug Launcher" configuration.
 

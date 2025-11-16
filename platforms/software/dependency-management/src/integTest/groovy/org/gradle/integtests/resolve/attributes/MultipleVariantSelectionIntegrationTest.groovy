@@ -855,7 +855,7 @@ class MultipleVariantSelectionIntegrationTest extends AbstractModuleDependencyRe
                 }
             }
         """
-        executer.inDirectory(file("producer"))
+        executor.inDirectory(file("producer"))
         succeeds(":publish")
 
         // Consume the published component using the rich attributes
@@ -886,7 +886,7 @@ class MultipleVariantSelectionIntegrationTest extends AbstractModuleDependencyRe
             }
         """
 
-        executer.inDirectory(file())
+        executor.inDirectory(file())
 
         when:
         repositoryInteractions {

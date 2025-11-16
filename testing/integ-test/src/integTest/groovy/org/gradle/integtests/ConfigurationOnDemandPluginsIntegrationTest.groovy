@@ -17,12 +17,12 @@
 package org.gradle.integtests
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ProjectLifecycleFixture
+import org.gradle.integtests.fixtures.executor.ProjectLifecycleFixture
 import org.junit.Rule
 import spock.lang.Issue
 
 class ConfigurationOnDemandPluginsIntegrationTest extends AbstractIntegrationSpec {
-    @Rule ProjectLifecycleFixture fixture = new ProjectLifecycleFixture(executer, temporaryFolder)
+    @Rule ProjectLifecycleFixture fixture = new ProjectLifecycleFixture(executor, temporaryFolder)
 
     @Issue('GRADLE-3534')
     def "configures only requested projects when the #plugin plugin is applied"() {

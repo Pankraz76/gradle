@@ -25,10 +25,10 @@ import org.gradle.util.GradleVersion
 class CacheTaskOutputIntegrationTest extends AbstractIntegrationSpec {
 
     def localCache = new TestBuildCache(file("local-cache"))
-    def cacheOperations = new BuildCacheOperationFixtures(executer, temporaryFolder)
+    def cacheOperations = new BuildCacheOperationFixtures(executor, temporaryFolder)
 
     def setup() {
-        executer.beforeExecute { withBuildCacheEnabled() }
+        executor.beforeExecute { withBuildCacheEnabled() }
         settingsFile << localCache.localCacheConfiguration()
     }
 

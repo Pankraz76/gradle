@@ -25,7 +25,7 @@ import org.junit.Rule
 class SettingsPluginIntegrationSpec extends AbstractIntegrationSpec {
 
     @Rule
-    MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     @Rule
     MavenHttpPluginRepository mavenHttpRepo = new MavenHttpPluginRepository(mavenRepo)
@@ -34,7 +34,7 @@ class SettingsPluginIntegrationSpec extends AbstractIntegrationSpec {
         // Stop traversing to parent directory; otherwise embedded test execution will
         // find and load the `gradle.properties` file in the root of the source repository
         settingsFile.createFile()
-        executer.inDirectory(file("settings"))
+        executor.inDirectory(file("settings"))
         relocatedSettingsFile << "rootProject.projectDir = file('..')\n"
     }
 
@@ -73,7 +73,7 @@ class SettingsPluginIntegrationSpec extends AbstractIntegrationSpec {
         def pluginBuilder = new PluginBuilder(file("plugin"))
         def message = "hello from settings plugin"
         pluginBuilder.addSettingsPlugin("println '$message'")
-        pluginBuilder.publishAs("g", "a", "1.0", pluginPortal, createExecuter()).allowAll()
+        pluginBuilder.publishAs("g", "a", "1.0", pluginPortal, createExecutor()).allowAll()
 
         when:
         relocatedSettingsFile.text = """
@@ -96,7 +96,7 @@ class SettingsPluginIntegrationSpec extends AbstractIntegrationSpec {
         def pluginBuilder = new PluginBuilder(file("plugin"))
         def message = "hello from settings plugin"
         pluginBuilder.addSettingsPlugin("println '$message'")
-        pluginBuilder.publishAs("g", "a", "1.0", mavenHttpRepo, createExecuter()).allowAll()
+        pluginBuilder.publishAs("g", "a", "1.0", mavenHttpRepo, createExecutor()).allowAll()
 
         when:
         relocatedSettingsFile.text = """

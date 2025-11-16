@@ -636,7 +636,7 @@ class ValidatePluginsPart1IntegrationTest extends AbstractIntegrationSpec implem
         """
 
         expect:
-        executer.withArgument("-Dorg.gradle.internal.max.validation.errors=7")
+        executor.withArgument("-Dorg.gradle.internal.max.validation.errors=7")
         assertValidationFailsWith([
             error(unsupportedValueTypeConfig { type('MyTask').property('direct').annotationType(annotation).unsupportedValueType('ResolvedArtifactResult').propertyType('ResolvedArtifactResult').solution('Extract artifact metadata and annotate with @Input.').solution('Extract artifact files and annotate with @InputFiles.') }, "validation_problems", "unsupported_value_type"),
             error(unsupportedValueTypeConfig { type('MyTask').property('listPropertyInput').annotationType(annotation).unsupportedValueType('ResolvedArtifactResult').propertyType('ListProperty<ResolvedArtifactResult>').solution('Extract artifact metadata and annotate with @Input.').solution('Extract artifact files and annotate with @InputFiles.') }, "validation_problems", "unsupported_value_type"),

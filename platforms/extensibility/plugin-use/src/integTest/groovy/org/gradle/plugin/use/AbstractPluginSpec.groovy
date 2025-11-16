@@ -34,7 +34,7 @@ abstract class AbstractPluginSpec extends AbstractIntegrationSpec {
     protected static final String USE_KOTLIN = "plugins { id(\"$PLUGIN_ID\") version \"$VERSION\" }"
 
     @Rule
-    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    MavenHttpPluginRepository pluginRepo = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
     PluginBuilder pluginBuilder = new PluginBuilder(file(ARTIFACT))
 
     def setup() {
@@ -46,7 +46,7 @@ abstract class AbstractPluginSpec extends AbstractIntegrationSpec {
     ) {
         pluginBuilder.with {
             addPlugin(impl, PLUGIN_ID)
-            publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executer).allowAll().pluginModule as MavenHttpModule
+            publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executor).allowAll().pluginModule as MavenHttpModule
         }
     }
 
@@ -55,7 +55,7 @@ abstract class AbstractPluginSpec extends AbstractIntegrationSpec {
     ) {
         pluginBuilder.with {
             addSettingsPlugin(impl, PLUGIN_ID)
-            publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executer).allowAll().pluginModule as MavenHttpModule
+            publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executor).allowAll().pluginModule as MavenHttpModule
         }
     }
 

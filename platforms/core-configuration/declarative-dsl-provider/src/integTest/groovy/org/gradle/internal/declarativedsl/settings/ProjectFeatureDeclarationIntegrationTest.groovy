@@ -33,7 +33,7 @@ import org.junit.Rule
 class ProjectFeatureDeclarationIntegrationTest extends AbstractIntegrationSpec implements ProjectFeatureFixture, PolyglotTestFixture {
 
     @Rule
-    MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     @Rule
     MavenHttpPluginRepository mavenHttpRepo = new MavenHttpPluginRepository(mavenRepo)
@@ -73,7 +73,7 @@ class ProjectFeatureDeclarationIntegrationTest extends AbstractIntegrationSpec i
         pluginPortal.start()
         PluginBuilder pluginBuilder = withProjectFeaturePlugins()
         pluginBuilder.addBuildScriptContent pluginBuildScriptForJava
-        pluginBuilder.publishAs("com", "example", "1.0", pluginPortal, createExecuter()).allowAll()
+        pluginBuilder.publishAs("com", "example", "1.0", pluginPortal, createExecutor()).allowAll()
 
         settingsFile() << """
             plugins {
@@ -98,7 +98,7 @@ class ProjectFeatureDeclarationIntegrationTest extends AbstractIntegrationSpec i
     def 'can declare and configure a custom project feature from plugin published to a custom repository'() {
         given:
         PluginBuilder pluginBuilder = withProjectFeaturePlugins()
-        pluginBuilder.publishAs("com", "example", "1.0", mavenHttpRepo, createExecuter()).allowAll()
+        pluginBuilder.publishAs("com", "example", "1.0", mavenHttpRepo, createExecutor()).allowAll()
         pluginBuilder.addBuildScriptContent pluginBuildScriptForJava
 
         settingsFile() << """

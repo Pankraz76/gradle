@@ -232,7 +232,7 @@ idea {
 """
 
         when:
-        executer.withTasks("idea").run()
+        executor.withTasks("idea").run()
 
         then:
         ipr.bytecodeTargetLevel.size() == 1
@@ -264,7 +264,7 @@ idea {
 """
 
         when:
-        executer.withTasks("idea").run()
+        executor.withTasks("idea").run()
 
         then:
         ipr.bytecodeTargetLevel.size() == 1
@@ -295,7 +295,7 @@ project(':subprojectA') {
 """
 
         when:
-        executer.withTasks("idea").run()
+        executor.withTasks("idea").run()
 
         then:
         ipr.bytecodeTargetLevel.size() == 1
@@ -326,7 +326,7 @@ project(':child1') {
 """
 
         when:
-        executer.withTasks("idea").run()
+        executor.withTasks("idea").run()
 
         then:
         iml('child1').languageLevel == "JDK_1_7"
@@ -352,7 +352,7 @@ project(':child1') {
 """
 
         when:
-        executer.withTasks("idea").run()
+        executor.withTasks("idea").run()
 
         then:
         iml('child1').languageLevel == "JDK_1_7"
@@ -402,7 +402,7 @@ idea {
 """
 
         when:
-        executer.withTasks("idea").run()
+        executor.withTasks("idea").run()
 
         then:
         ipr.bytecodeTargetLevel.size() == 1

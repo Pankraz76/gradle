@@ -32,7 +32,7 @@ class CacheConfigurationsIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def "can configure caches via init script and query from settings script"() {
-        def initDir = new File(executer.gradleUserHomeDir, "init.d")
+        def initDir = new File(executor.gradleUserHomeDir, "init.d")
         initDir.mkdirs()
         new File(initDir, "cache-settings.gradle") << """
             beforeSettings { settings ->
@@ -63,7 +63,7 @@ class CacheConfigurationsIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def "cache retention timestamp is recalculated for each build execution"() {
-        def initDir = new File(executer.gradleUserHomeDir, "init.d")
+        def initDir = new File(executor.gradleUserHomeDir, "init.d")
         initDir.mkdirs()
         new File(initDir, "cache-settings.gradle") << """
             beforeSettings { settings ->
@@ -104,7 +104,7 @@ class CacheConfigurationsIntegrationTest extends AbstractIntegrationSpec {
     }
 
     def "can configure caches to a entry retention timestamp"() {
-        def initDir = new File(executer.gradleUserHomeDir, "init.d")
+        def initDir = new File(executor.gradleUserHomeDir, "init.d")
         initDir.mkdirs()
 
         def releasedDistTimestamp = daysAgoInMillis(MODIFIED_AGE_IN_DAYS_FOR_RELEASED_DISTS)

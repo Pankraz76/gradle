@@ -25,7 +25,7 @@ import org.gradle.test.fixtures.server.http.MavenHttpRepository
 
 class MavenPublishBuildOperationIntegrationTest extends AbstractMavenPublishIntegTest {
     def server = new HttpServer()
-    def buildOperations = new BuildOperationsFixture(executer, temporaryFolder)
+    def buildOperations = new BuildOperationsFixture(executor, temporaryFolder)
     def repo = new MavenHttpRepository(server, mavenRepo)
 
     def "generates build operation events while publishing"() {

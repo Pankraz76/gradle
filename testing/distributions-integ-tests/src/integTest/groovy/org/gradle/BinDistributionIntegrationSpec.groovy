@@ -24,7 +24,7 @@ import org.gradle.test.preconditions.IntegTestPreconditions
 class BinDistributionIntegrationSpec extends DistributionIntegrationSpec {
 
     def setup() {
-        executer.requireOwnGradleUserHomeDir().requireIsolatedDaemons()
+        executor.requireOwnGradleUserHomeDir().requireIsolatedDaemons()
     }
 
     @Override

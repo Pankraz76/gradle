@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
 import com.google.common.base.Joiner;
 import junit.framework.AssertionFailedError;
@@ -32,7 +32,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-import static org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult.normalizeLambdaIds;
+import static org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult.normalizeLambdaIds;
 import static org.gradle.util.Matchers.normalizedLineSeparators;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;

@@ -24,7 +24,7 @@ public class InitScriptErrorIntegrationTest extends AbstractIntegrationSpec {
 
     def "setup"() {
         initScript = file('init.gradle')
-        executer.usingInitScript(initScript)
+        executor.usingInitScript(initScript)
     }
 
     def "produces reasonable error message when init script evaluation fails with GroovyException"() {

@@ -48,7 +48,7 @@ class DifferentJnaVersionInPluginIntegrationSpec extends AbstractIntegrationSpec
                 }
             }
         """.stripIndent()
-        executer.requireOwnGradleUserHomeDir()  // Have the gradle-api-jar regenerated
+        executor.requireOwnGradleUserHomeDir()  // Have the gradle-api-jar regenerated
 
         expect:
         succeeds 'test'

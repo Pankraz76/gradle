@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.resolve.resource.sftp.ivy
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.integtests.resolve.resource.sftp.AbstractSftpDependencyResolutionTest
 
 import static org.gradle.integtests.fixtures.SuggestionsMessages.GET_HELP
@@ -226,7 +226,7 @@ Required by:
         projectA.ivy.expectMetadataRetrieveBroken()
 
         and:
-        failure = executer.withTasks('retrieve').runWithFailure()
+        failure = executor.withTasks('retrieve').runWithFailure()
 
         then:
         assertTaskFailureDescription(":retrieve")
@@ -268,7 +268,7 @@ task retrieve(type: Sync) {
     }
 
     private void assertTaskFailureDescription(String taskSelector) {
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             failureDescriptionContains("Configuration cache state could not be cached:")
             failureDescriptionContains(taskSelector)
         } else {

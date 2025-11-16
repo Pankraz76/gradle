@@ -40,7 +40,7 @@ import static org.gradle.operations.execution.CachingDisabledReasonCategory.UNKN
 import static org.gradle.operations.execution.CachingDisabledReasonCategory.VALIDATION_FAILURE
 
 class TaskCacheabilityReasonIntegrationTest extends AbstractIntegrationSpec implements DirectoryBuildCacheFixture {
-    def operations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def operations = new BuildOperationsFixture(executor, testDirectoryProvider)
 
     def setup() {
         buildFile """
@@ -390,7 +390,7 @@ class TaskCacheabilityReasonIntegrationTest extends AbstractIntegrationSpec impl
     @Requires(IntegTestPreconditions.IsEmbeddedExecutor)
     def "cacheability for task with disabled optimizations is VALIDATION_FAILURE"() {
         when:
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
         buildFile """
             import org.gradle.integtests.fixtures.validation.ValidationProblem
             import org.gradle.api.problems.Severity

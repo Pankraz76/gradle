@@ -16,7 +16,7 @@
 package org.gradle.integtests;
 
 import org.gradle.integtests.fixtures.AbstractIntegrationTest;
-import org.gradle.integtests.fixtures.executer.ExecutionFailure;
+import org.gradle.integtests.fixtures.executor.ExecutionFailure;
 import org.gradle.test.fixtures.file.TestFile;
 import org.junit.Test;
 import spock.lang.Issue;
@@ -76,11 +76,11 @@ public class ProjectLoadingIntegrationTest extends AbstractIntegrationTest {
         TestFile childBuildFile = testFile("child/build.gradle");
         childBuildFile.write("task('do-stuff')");
 
-        executer.withTasks("do-stuff").run().assertTasksScheduled(":do-stuff", ":child:do-stuff");
-        executer.withTasks(":do-stuff").run().assertTasksScheduled(":do-stuff");
+        executor.withTasks("do-stuff").run().assertTasksScheduled(":do-stuff", ":child:do-stuff");
+        executor.withTasks(":do-stuff").run().assertTasksScheduled(":do-stuff");
 
-        executer.inDirectory(testFile("child")).withTasks("do-stuff").run().assertTasksScheduled(":child:do-stuff");
-        executer.inDirectory(testFile("child")).withTasks(":do-stuff").run().assertTasksScheduled(":do-stuff");
+        executor.inDirectory(testFile("child")).withTasks("do-stuff").run().assertTasksScheduled(":child:do-stuff");
+        executor.inDirectory(testFile("child")).withTasks(":do-stuff").run().assertTasksScheduled(":do-stuff");
     }
 
     @Test

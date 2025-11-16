@@ -26,7 +26,7 @@ import static org.hamcrest.CoreMatchers.startsWith
 class NonDeclarativePluginUseIntegrationSpec extends AbstractPluginSpec {
 
     def setup() {
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
     }
 
     def "non declarative plugin implementation can access core plugins and not core impl"() {
@@ -63,7 +63,7 @@ class NonDeclarativePluginUseIntegrationSpec extends AbstractPluginSpec {
         def pluginBuilder2 = new PluginBuilder(file("plugin2"))
         pluginBuilder2.with {
             addPlugin("project.task('plugin2Task')", "test-plugin-2", "TestPlugin2")
-            publishAs(GROUP, ARTIFACT + "2", VERSION, pluginRepo, executer).allowAll()
+            publishAs(GROUP, ARTIFACT + "2", VERSION, pluginRepo, executor).allowAll()
         }
 
         publishPlugin """
@@ -121,7 +121,7 @@ class NonDeclarativePluginUseIntegrationSpec extends AbstractPluginSpec {
         def pluginBuilder2 = new PluginBuilder(file("plugin2"))
         pluginBuilder2.with {
             addPlugin("project.task('plugin2Task')", "test-plugin-2", "TestPlugin2")
-            publishAs(GROUP, ARTIFACT + "2", VERSION, pluginRepo, executer).allowAll()
+            publishAs(GROUP, ARTIFACT + "2", VERSION, pluginRepo, executor).allowAll()
         }
 
         publishPlugin("").dependsOn(GROUP, ARTIFACT + "2", VERSION).publishPom()
@@ -220,7 +220,7 @@ class NonDeclarativePluginUseIntegrationSpec extends AbstractPluginSpec {
         when:
         pluginBuilder.with {
             addPlugin(PLUGIN_ID, "other")
-            publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executer).allowAll()
+            publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executor).allowAll()
         }
 
         and:
@@ -245,7 +245,7 @@ class NonDeclarativePluginUseIntegrationSpec extends AbstractPluginSpec {
         when:
         pluginBuilder.with {
             addUnloadablePlugin(PLUGIN_ID, "OtherPlugin")
-            publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executer).allowAll()
+            publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executor).allowAll()
         }
 
         and:
@@ -266,7 +266,7 @@ class NonDeclarativePluginUseIntegrationSpec extends AbstractPluginSpec {
         when:
         pluginBuilder.with {
             addNonConstructiblePlugin(PLUGIN_ID, "OtherPlugin")
-            publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executer).allowAll()
+            publishAs(GROUP, ARTIFACT, VERSION, pluginRepo, executor).allowAll()
         }
 
         and:

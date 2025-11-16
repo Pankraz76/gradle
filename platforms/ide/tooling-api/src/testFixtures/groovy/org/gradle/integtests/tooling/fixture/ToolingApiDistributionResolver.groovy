@@ -18,8 +18,8 @@ package org.gradle.integtests.tooling.fixture
 
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.integtests.fixtures.RepoScriptBlockUtil
-import org.gradle.integtests.fixtures.executer.CommitDistribution
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.CommitDistribution
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.internal.classloader.ClasspathUtil
 import org.gradle.internal.file.locking.ExclusiveFileAccessManager
 import org.gradle.test.fixtures.file.TestFile

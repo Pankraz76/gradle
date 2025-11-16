@@ -28,7 +28,7 @@ import org.gradle.launcher.daemon.context.DaemonContext;
 import org.gradle.launcher.daemon.logging.DaemonMessages;
 import org.gradle.launcher.daemon.registry.DaemonRegistry;
 import org.gradle.launcher.daemon.server.api.DaemonStateControl;
-import org.gradle.launcher.daemon.server.exec.DaemonCommandExecuter;
+import org.gradle.launcher.daemon.server.exec.DaemonCommandExecutor;
 import org.gradle.launcher.daemon.server.expiry.DaemonExpirationListener;
 import org.gradle.launcher.daemon.server.expiry.DaemonExpirationResult;
 import org.gradle.launcher.daemon.server.expiry.DaemonExpirationStatus;
@@ -61,7 +61,7 @@ public class Daemon implements Stoppable {
     private final DaemonServerConnector connector;
     private final DaemonRegistry daemonRegistry;
     private final DaemonContext daemonContext;
-    private final DaemonCommandExecuter commandExecuter;
+    private final DaemonCommandExecutor commandExecutor;
     private final ScheduledExecutorService scheduledExecutorService;
     private final ExecutorFactory executorFactory;
     private final ListenerManager listenerManager;
@@ -80,11 +80,11 @@ public class Daemon implements Stoppable {
      * @param connector The provider of server connections for this daemon
      * @param daemonRegistry The registry that this daemon should advertise itself in
      */
-    public Daemon(DaemonServerConnector connector, DaemonRegistry daemonRegistry, DaemonContext daemonContext, DaemonCommandExecuter commandExecuter, ExecutorFactory executorFactory, ListenerManager listenerManager) {
+    public Daemon(DaemonServerConnector connector, DaemonRegistry daemonRegistry, DaemonContext daemonContext, DaemonCommandExecutor commandExecutor, ExecutorFactory executorFactory, ListenerManager listenerManager) {
         this.connector = connector;
         this.daemonRegistry = daemonRegistry;
         this.daemonContext = daemonContext;
-        this.commandExecuter = commandExecuter;
+        this.commandExecutor = commandExecutor;
         this.executorFactory = executorFactory;
         this.scheduledExecutorService = executorFactory.createScheduled("Daemon periodic checks", 1);
         this.listenerManager = listenerManager;
@@ -165,7 +165,7 @@ public class Daemon implements Stoppable {
             // 4. advertise presence in registry
 
             stateCoordinator = new DaemonStateCoordinator(executorFactory, onStartCommand, onFinishCommand, onCancelCommand);
-            connectionHandler = new DefaultIncomingConnectionHandler(commandExecuter, daemonContext, stateCoordinator, executorFactory, token);
+            connectionHandler = new DefaultIncomingConnectionHandler(commandExecutor, daemonContext, stateCoordinator, executorFactory, token);
             Runnable connectionErrorHandler = new Runnable() {
                 @Override
                 public void run() {

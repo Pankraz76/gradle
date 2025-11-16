@@ -16,7 +16,7 @@
 
 package org.gradle.smoketests
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
@@ -37,7 +37,7 @@ class AndroidProjectDeprecationSmokeTest extends AndroidProjectSmokeTest {
         def result = buildLocation(checkoutDir, agpVersion)
 
         then:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateStored()
         }
 
@@ -64,7 +64,7 @@ class AndroidProjectIncrementalCompilationSmokeTest extends AndroidProjectSmokeT
 
         then:
         result.task(":core:ui:compileProdDebugKotlin").outcome == SUCCESS
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateStored()
         }
 
@@ -74,7 +74,7 @@ class AndroidProjectIncrementalCompilationSmokeTest extends AndroidProjectSmokeT
 
         then:
         result.task(":core:ui:compileProdDebugKotlin").outcome == SUCCESS
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateLoaded()
         }
 
@@ -105,7 +105,7 @@ class AndroidProjectLintSmokeTest extends AndroidProjectSmokeTest {
             .buildAndFail()
 
         then:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateStored()
         }
         result.output.contains("Lint found errors in the project; aborting build.")
@@ -119,7 +119,7 @@ class AndroidProjectLintSmokeTest extends AndroidProjectSmokeTest {
                 .buildAndFail()
 
         then:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateLoaded()
         }
         result.output.contains("Lint found errors in the project; aborting build.")

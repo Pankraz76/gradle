@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.integtests.fixtures.executer
+package org.gradle.integtests.fixtures.executor
 
 
 import org.gradle.api.services.BuildService
@@ -41,12 +41,12 @@ import javax.inject.Inject
  * @deprecated should use build operations fixture instead.
  */
 @Deprecated
-class ProgressLoggingFixture extends InitScriptExecuterFixture {
+class ProgressLoggingFixture extends InitScriptExecutorFixture {
 
     private TestFile fixtureData
 
-    ProgressLoggingFixture(GradleExecuter executer, TestDirectoryProvider testDir) {
-        super(executer, testDir)
+    ProgressLoggingFixture(GradleExecutor executor, TestDirectoryProvider testDir) {
+        super(executor, testDir)
     }
 
     List<String> progressContent

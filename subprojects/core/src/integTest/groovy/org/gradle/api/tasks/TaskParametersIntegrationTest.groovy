@@ -25,7 +25,7 @@ import org.gradle.api.provider.SetProperty
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.TestBuildCache
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.Actions
 import org.gradle.internal.reflect.validation.ValidationMessageChecker
 import org.gradle.test.precondition.Requires
@@ -280,7 +280,7 @@ task someTask {
 someTask.inputs.property("b", 12)
 """
         and:
-        executer.withArgument("-i")
+        executor.withArgument("-i")
         run "someTask"
 
         then:
@@ -322,7 +322,7 @@ task someTask {
 }
 """
         and:
-        executer.withArgument("-i")
+        executor.withArgument("-i")
         run "someTask"
 
         then:
@@ -358,7 +358,7 @@ task someTask {
         buildFile.replace(oldValue, newValue)
 
         and:
-        executer.withArgument("-i")
+        executor.withArgument("-i")
         run "someTask"
 
         then:
@@ -401,7 +401,7 @@ task someTask {
             task invalid(type: InvalidTask)
         """
 
-        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer, dummyValidationProblem('InvalidTask', 'inputFile'), 'id', 'section')
+        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor, dummyValidationProblem('InvalidTask', 'inputFile'), 'id', 'section')
 
         when:
         run "invalid", "--info"
@@ -427,7 +427,7 @@ task someTask {
             task invalid(type: InvalidTask)
         """
 
-        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer, dummyValidationProblem('InvalidTask', 'inputFile'), 'id', 'section')
+        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor, dummyValidationProblem('InvalidTask', 'inputFile'), 'id', 'section')
 
         when:
         run "invalid"
@@ -453,7 +453,7 @@ task someTask {
             task invalid(type: InvalidTask)
         """
 
-        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executer, dummyValidationProblem('InvalidTask', 'inputFile'), 'id', 'section')
+        expectThatExecutionOptimizationDisabledWarningIsDisplayed(executor, dummyValidationProblem('InvalidTask', 'inputFile'), 'id', 'section')
 
         when:
         run "invalid"
@@ -507,7 +507,7 @@ task someTask(type: SomeTask) {
 
         when:
         buildFile.replace("v = $initialValue", "v = $newValue")
-        executer.withArgument("--info")
+        executor.withArgument("--info")
         if (isError) {
             fails 'someTask'
         } else {
@@ -891,7 +891,7 @@ task someTask(type: SomeTask) {
         fails "failingTask"
 
         then:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             failureDescriptionContains("Configuration cache state could not be cached: field `__stringInput__` of task `:failingTask` of type `FailingTask`: error writing value of type 'org.gradle.api.internal.provider.DefaultProperty'")
         } else {
             failureHasCause("Failed to calculate the value of task ':failingTask' property 'stringInput'.")

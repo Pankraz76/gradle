@@ -258,10 +258,10 @@ abstract class AbstractNativeLanguageIntegrationTest extends AbstractInstalledTo
             helloWorldApp.writeSources(projectDir.file("src/main"))
         }
         when:
-        executer.usingProjectDirectory(firstCopy)
+        executor.usingProjectDirectory(firstCopy)
         succeeds("mainExecutable")
         and:
-        executer.usingProjectDirectory(secondCopy)
+        executor.usingProjectDirectory(secondCopy)
         succeeds("mainExecutable")
         then:
         def firstOptions = linkerOptionsFor("linkMainExecutable", firstCopy)

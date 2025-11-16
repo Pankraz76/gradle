@@ -16,8 +16,8 @@
 
 package org.gradle.buildinit.plugins
 
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.GradleHandle
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.GradleHandle
 
 abstract class AbstractInteractiveInitIntegrationSpec extends AbstractInitIntegrationSpec {
     def buildTypePrompt = "Select type of build to generate:"
@@ -46,10 +46,10 @@ abstract class AbstractInteractiveInitIntegrationSpec extends AbstractInitIntegr
     String subprojectName() { 'app' }
 
     protected GradleHandle startInteractiveExecutorWithTasks(String... names) {
-        executer.withForceInteractive(true)
-        executer.withStdinPipe()
-        executer.withTasks(names)
-        executer.start()
+        executor.withForceInteractive(true)
+        executor.withStdinPipe()
+        executor.withTasks(names)
+        executor.start()
     }
 
     protected ExecutionResult closeInteractiveExecutor(GradleHandle handle) {

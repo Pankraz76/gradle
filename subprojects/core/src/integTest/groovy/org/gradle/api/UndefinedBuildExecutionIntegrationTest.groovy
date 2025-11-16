@@ -30,7 +30,7 @@ import static org.gradle.integtests.fixtures.SuggestionsMessages.STACKTRACE_MESS
 class UndefinedBuildExecutionIntegrationTest extends AbstractIntegrationSpec {
     def setup() {
         useTestDirectoryThatIsNotEmbeddedInAnotherBuild()
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
     }
 
     def "fails when attempting to execute tasks #tasks in directory with no settings or build file"() {
@@ -46,7 +46,7 @@ class UndefinedBuildExecutionIntegrationTest extends AbstractIntegrationSpec {
             GET_HELP) // Don't suggest running with --scan for a missing build
 
         testDirectory.assertIsEmptyDir()
-        assertNoProjectCaches(executer.gradleUserHomeDir)
+        assertNoProjectCaches(executor.gradleUserHomeDir)
 
         where:
         tasks << [["tasks"], ["unknown"]]
@@ -136,7 +136,7 @@ class UndefinedBuildExecutionIntegrationTest extends AbstractIntegrationSpec {
         when:
         // the default, if running from user home dir
         def gradleUserHomeDir = file(".gradle")
-        executer.withGradleUserHomeDir(gradleUserHomeDir)
+        executor.withGradleUserHomeDir(gradleUserHomeDir)
         fails("tasks")
 
         then:
@@ -209,11 +209,11 @@ class UndefinedBuildExecutionIntegrationTest extends AbstractIntegrationSpec {
         file("buildSrc/.gradle").assertIsDir()
 
         when:
-        executer.usingProjectDirectory(file("buildSrc"))
+        executor.usingProjectDirectory(file("buildSrc"))
         then:
         succeeds("jar")
         file("buildSrc/.gradle").assertIsDir()
-        executer.gradleUserHomeDir.file(BuildScopeCacheDir.UNDEFINED_BUILD).assertDoesNotExist()
+        executor.gradleUserHomeDir.file(BuildScopeCacheDir.UNDEFINED_BUILD).assertDoesNotExist()
     }
 
     def "treats empty buildSrc as undefined build"() {
@@ -221,11 +221,11 @@ class UndefinedBuildExecutionIntegrationTest extends AbstractIntegrationSpec {
         file("buildSrc").createDir()
 
         expect:
-        executer.usingProjectDirectory(file("buildSrc"))
+        executor.usingProjectDirectory(file("buildSrc"))
         fails("tasks")
 
         file("buildSrc").assertIsEmptyDir()
-        assertNoProjectCaches(executer.gradleUserHomeDir)
+        assertNoProjectCaches(executor.gradleUserHomeDir)
     }
 
     def "treats empty buildSrc inside a build as undefined build"() {
@@ -236,17 +236,17 @@ class UndefinedBuildExecutionIntegrationTest extends AbstractIntegrationSpec {
         expect:
         succeeds("tasks")
 
-        executer.usingProjectDirectory(file("buildSrc"))
+        executor.usingProjectDirectory(file("buildSrc"))
         fails("tasks")
 
         file("buildSrc").assertIsEmptyDir()
-        executer.gradleUserHomeDir.file(BuildScopeCacheDir.UNDEFINED_BUILD).assertDoesNotExist()
+        executor.gradleUserHomeDir.file(BuildScopeCacheDir.UNDEFINED_BUILD).assertDoesNotExist()
     }
 
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicitly requires a daemon")
     def "does not fail when executing #flag in undefined build"() {
         when:
-        executer.requireDaemon().requireIsolatedDaemons()
+        executor.requireDaemon().requireIsolatedDaemons()
         succeeds(flag)
 
         then:

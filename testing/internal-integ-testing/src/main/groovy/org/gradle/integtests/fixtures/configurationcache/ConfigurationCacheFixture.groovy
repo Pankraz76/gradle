@@ -21,8 +21,8 @@ import org.gradle.configuration.project.ConfigureProjectBuildOperationType
 import org.gradle.initialization.StartParameterBuildOptions
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.BuildOperationsFixture
-import org.gradle.integtests.fixtures.executer.ExecutionFailure
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.ExecutionFailure
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 
 class ConfigurationCacheFixture {
     static final String ISOLATED_PROJECTS_MESSAGE = "Isolated projects is an incubating feature."
@@ -36,7 +36,7 @@ class ConfigurationCacheFixture {
 
     ConfigurationCacheFixture(AbstractIntegrationSpec spec) {
         this.spec = spec
-        buildOperations = new BuildOperationsFixture(spec.executer, spec.temporaryFolder)
+        buildOperations = new BuildOperationsFixture(spec.executor, spec.temporaryFolder)
         configurationCacheBuildOperations = new ConfigurationCacheBuildOperationsFixture(buildOperations)
         problems = new ConfigurationCacheProblemsExecutionResultFixture(spec.testDirectory)
     }
@@ -334,7 +334,7 @@ class ConfigurationCacheFixture {
     }
 
     private boolean isQuietLogging() {
-        spec.executer instanceof GradleContextualExecuter && GradleContextualExecuter.configCache
+        spec.executor instanceof GradleContextualExecutor && GradleContextualExecutor.configCache
     }
 
     private void assertHasRecreateReason(HasBuildActions details, HasInvalidationReason invalidationDetails) {

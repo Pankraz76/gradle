@@ -32,7 +32,7 @@ class ArtifactTransformParallelIntegrationTest extends AbstractDependencyResolut
 
         setupBuild(new BuildTestFile(testDirectory, "root"))
 
-        executer.beforeExecute {
+        executor.beforeExecute {
             withArgument("--max-workers=10")
         }
     }
@@ -320,7 +320,7 @@ class ArtifactTransformParallelIntegrationTest extends AbstractDependencyResolut
         server.expect(server.get("test2-2.3.jar"))
 
         when:
-        def build = executer.withTasks(':resolve').start()
+        def build = executor.withTasks(':resolve').start()
 
         // 4 concurrent operations -> both artifacts are being downloaded and both local files are being transformed
         handle.waitForAllPendingCalls()
@@ -424,7 +424,7 @@ class ArtifactTransformParallelIntegrationTest extends AbstractDependencyResolut
         server.expect("lib1.jar")
 
         when:
-        def handle = executer.withArguments("--parallel").withTasks("app1:resolve", "app2:resolve").start()
+        def handle = executor.withArguments("--parallel").withTasks("app1:resolve", "app2:resolve").start()
         then:
         handle.waitForFinish()
     }
@@ -477,7 +477,7 @@ class ArtifactTransformParallelIntegrationTest extends AbstractDependencyResolut
         server.expectConcurrent(buildNames.collect { "resolveStarted_" + it })
         def transformations = server.expectConcurrentAndBlock(3, buildNames.collect { it + "-1.0.jar" } as String[])
         def buildHandles = builds.collect {
-            executer.inDirectory(it).withTasks("resolve").start()
+            executor.inDirectory(it).withTasks("resolve").start()
         }
 
         for (build in builds) {

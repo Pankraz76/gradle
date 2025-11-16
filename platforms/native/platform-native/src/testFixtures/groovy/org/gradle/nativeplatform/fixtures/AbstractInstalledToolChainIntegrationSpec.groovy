@@ -48,9 +48,9 @@ abstract class AbstractInstalledToolChainIntegrationSpec extends AbstractIntegra
                   }
             }
         """
-        executer.beforeExecute({
+        executor.beforeExecute({
             usingInitScript(initScript)
-            toolChain.configureExecuter(it)
+            toolChain.configureExecutor(it)
         })
     }
 

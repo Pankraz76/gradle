@@ -950,7 +950,7 @@ class AlignmentIntegrationTest extends AbstractAlignmentSpec {
     def "virtual platform missing modules are cached across builds"() {
         // Disable daemon, so that the second run executes with the file cache
         // and therefore make sure that we read the "missing" status from disk
-        executer.withArgument('--no-daemon')
+        executor.withArgument('--no-daemon')
 
         repository {
             path 'xml -> core'
@@ -1023,7 +1023,7 @@ class AlignmentIntegrationTest extends AbstractAlignmentSpec {
     def "published platform can be found in a different repository"() {
         // Disable daemon, so that the second run executes with the file cache
         // and therefore make sure that we read the "missing" status from disk
-        executer.withArgument('--no-daemon')
+        executor.withArgument('--no-daemon')
 
         // An empty repository, that will only return misses
         def emptyRepo = mavenHttpRepo("nothing")

@@ -85,7 +85,7 @@ class CompositeBuildContinueOnSingleFailureIntegrationTest extends AbstractCompo
         dependsOn gradle.includedBuild('buildB').task(':succeeds')
     }
 """
-        executer.withArguments(CONTINUE_COMMAND_LINE_OPTION)
+        executor.withArguments(CONTINUE_COMMAND_LINE_OPTION)
         fails(buildA, ":delegate")
 
         then:
@@ -110,7 +110,7 @@ class CompositeBuildContinueOnSingleFailureIntegrationTest extends AbstractCompo
         dependsOn delegateWithSuccess, delegateWithFailure
     }
 """
-        executer.withArguments(CONTINUE_COMMAND_LINE_OPTION)
+        executor.withArguments(CONTINUE_COMMAND_LINE_OPTION)
         fails(buildA, ":delegate")
 
         then:
@@ -133,7 +133,7 @@ class CompositeBuildContinueOnSingleFailureIntegrationTest extends AbstractCompo
         dependsOn gradle.includedBuild('buildB').task(':included')
     }
 """
-        executer.withArguments(CONTINUE_COMMAND_LINE_OPTION)
+        executor.withArguments(CONTINUE_COMMAND_LINE_OPTION)
         fails(buildA, ":delegate")
 
         then:
@@ -156,7 +156,7 @@ class CompositeBuildContinueOnSingleFailureIntegrationTest extends AbstractCompo
 """
         dependency "org.test:buildB:1.0"
 
-        executer.withArguments("--continue")
+        executor.withArguments("--continue")
         execute(buildA, ":assemble")
 
         then:

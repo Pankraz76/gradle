@@ -28,11 +28,11 @@ class WrapperIntegrationTest extends AbstractWrapperIntegrationSpec {
         prepareWrapper()
         def gradleUserHome = testDirectory.file('some-custom-user-home')
         when:
-        def executer = wrapperExecuter.withGradleUserHomeDir(gradleUserHome)
-        result = executer.withTasks("hello").run()
+        def executor = wrapperExecutor.withGradleUserHomeDir(gradleUserHome)
+        result = executor.withTasks("hello").run()
         then:
         result.assertTaskScheduled(":hello")
-        executer.stop()
+        executor.stop()
 
         when:
         // Delete important file in distribution
@@ -45,7 +45,7 @@ class WrapperIntegrationTest extends AbstractWrapperIntegrationSpec {
             }
         }
         and:
-        result = executer.withTasks("hello").run()
+        result = executor.withTasks("hello").run()
         then:
         deletedSomething
         result.assertHasErrorOutput("does not appear to contain a Gradle distribution.")

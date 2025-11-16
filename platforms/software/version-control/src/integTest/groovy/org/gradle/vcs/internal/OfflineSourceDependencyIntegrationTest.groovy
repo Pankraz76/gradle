@@ -70,7 +70,7 @@ class OfflineSourceDependencyIntegrationTest extends AbstractIntegrationSpec {
         succeeds('resolve')
 
         when:
-        executer.withArgument('--offline')
+        executor.withArgument('--offline')
         succeeds('resolve')
 
         then:
@@ -79,7 +79,7 @@ class OfflineSourceDependencyIntegrationTest extends AbstractIntegrationSpec {
 
     def "fails when previous checkout is not available"() {
         when:
-        executer.withArgument('--offline')
+        executor.withArgument('--offline')
         fails('resolve')
 
         then:

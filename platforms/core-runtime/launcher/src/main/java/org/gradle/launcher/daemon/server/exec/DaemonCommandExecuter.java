@@ -25,12 +25,12 @@ import org.gradle.launcher.daemon.server.api.DaemonCommandExecution;
 import org.gradle.launcher.daemon.server.api.DaemonConnection;
 import org.gradle.launcher.daemon.server.api.DaemonStateControl;
 
-public class DaemonCommandExecuter {
+public class DaemonCommandExecutor {
 
     private final DaemonServerConfiguration configuration;
     private final ImmutableList<DaemonCommandAction> actions;
 
-    public DaemonCommandExecuter(DaemonServerConfiguration configuration, ImmutableList<DaemonCommandAction> actions) {
+    public DaemonCommandExecutor(DaemonServerConfiguration configuration, ImmutableList<DaemonCommandAction> actions) {
         this.configuration = configuration;
         this.actions = actions;
     }

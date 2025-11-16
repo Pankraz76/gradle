@@ -134,7 +134,7 @@ class ConfigurationRoleUsageIntegrationTest extends AbstractIntegrationSpec impl
         """
 
         expect:
-        executer.expectDocumentedDeprecationWarning("The testConf configuration has been deprecated for resolution. This will fail with an error in Gradle 10. Please resolve the anotherConf configuration instead. For more information, please refer to https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:deprecated-configurations in the Gradle documentation.")
+        executor.expectDocumentedDeprecationWarning("The testConf configuration has been deprecated for resolution. This will fail with an error in Gradle 10. Please resolve the anotherConf configuration instead. For more information, please refer to https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:deprecated-configurations in the Gradle documentation.")
         succeeds 'resolve'
     }
 
@@ -455,7 +455,7 @@ class ConfigurationRoleUsageIntegrationTest extends AbstractIntegrationSpec impl
 
         when: "the build fails"
         if (configuration == "archives") {
-            executer.noDeprecationChecks() // False positive since failure message contains "deprecated"
+            executor.noDeprecationChecks() // False positive since failure message contains "deprecated"
         }
         fails 'help'
 
@@ -489,7 +489,7 @@ class ConfigurationRoleUsageIntegrationTest extends AbstractIntegrationSpec impl
 
         when: "the build fails because the configuration is not allowed to change"
         if (configuration == "archives") {
-            executer.noDeprecationChecks() // False positive since failure message contains "deprecated"
+            executor.noDeprecationChecks() // False positive since failure message contains "deprecated"
         }
         fails 'help'
 
@@ -709,7 +709,7 @@ class ConfigurationRoleUsageIntegrationTest extends AbstractIntegrationSpec impl
             }
         """
         expect:
-        executer.expectDocumentedDeprecationWarning("The testConf configuration has been deprecated for dependency declaration. This will fail with an error in Gradle 10. Please use the anotherConf configuration instead. For more information, please refer to https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:deprecated-configurations in the Gradle documentation.")
+        executor.expectDocumentedDeprecationWarning("The testConf configuration has been deprecated for dependency declaration. This will fail with an error in Gradle 10. Please use the anotherConf configuration instead. For more information, please refer to https://docs.gradle.org/current/userguide/declaring_dependencies.html#sec:deprecated-configurations in the Gradle documentation.")
         succeeds 'help'
     }
     // endregion Migrating configurations

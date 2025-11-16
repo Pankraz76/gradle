@@ -166,7 +166,7 @@ Hello world!
         def hash = Hashing.sha1().hashFile(fakeDep).toString()
         def hashOfBootJar = '1234' // for demo purpose
         def invalidPath = "org.spring/core/1.0/$hash/artifact-1.0./../../../../boot/2.0/$hashOfBootJar/pwned.txt"
-        def invalidLocation = executer.gradleUserHomeDir.file(cachePath + invalidPath).canonicalFile
+        def invalidLocation = executor.gradleUserHomeDir.file(cachePath + invalidPath).canonicalFile
 
         server.allowGetOrHead("/repo/org/boot/2.0/$hashOfBootJar/pwned.txt", fakeDep)
 
@@ -198,7 +198,7 @@ Hello world!
         // Code block used to verify what happens if the build succeeds
         def hash = Hashing.sha1().hashFile(fakeDep).toString()
         def invalidPath = "org.spring/../../../../../core/1.0/$hash/artifact-1.0./../../../../.ssh/pwned.txt"
-        def invalidLocation = executer.gradleUserHomeDir.file(cachePath + invalidPath).canonicalFile
+        def invalidLocation = executor.gradleUserHomeDir.file(cachePath + invalidPath).canonicalFile
 
         server.allowGetOrHead('/repo/org/.ssh/pwned.txt', fakeDep)
 
@@ -238,7 +238,7 @@ Hello world!
 """
         def hash = Hashing.sha1().hashFile(fakeDep).toString()
         def invalidPath = "org.spring/../../../../../core/1.0/$hash/artifact-1.0./../../../../.ssh/pwned.txt"
-        def invalidLocation = executer.gradleUserHomeDir.file(cachePath + invalidPath).canonicalFile
+        def invalidLocation = executor.gradleUserHomeDir.file(cachePath + invalidPath).canonicalFile
 
         testDep.allowAll()
         abusedCoordinates.allowAll()
@@ -307,10 +307,10 @@ public class Base {}
     }
 
     def relocateCachesAndChangeGradleHome() {
-        def otherHome = executer.gradleUserHomeDir.parentFile.createDir('other-home')
+        def otherHome = executor.gradleUserHomeDir.parentFile.createDir('other-home')
         def otherCacheDir = otherHome.toPath().resolve(DefaultCacheScopeMapping.GLOBAL_CACHE_DIR_NAME)
         Files.createDirectory(otherCacheDir)
         Files.move(getMetadataCacheDir().toPath(), otherCacheDir.resolve(CacheLayout.MODULES.key))
-        executer.withGradleUserHomeDir(otherHome)
+        executor.withGradleUserHomeDir(otherHome)
     }
 }

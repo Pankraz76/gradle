@@ -40,7 +40,7 @@ class DeprecatedTLSVersionDependencyResolutionIntegrationTest extends AbstractHt
             it.addExcludeProtocols("TLSv1.2", "TLSv1.3")
             it.setIncludeProtocols("TLSv1", "TLSv1.1")
         }
-        keyStore.configureServerCert(executer)
+        keyStore.configureServerCert(executor)
         def module = mavenHttpRepo.module('group', 'projectA', '1.2').publish()
 
         and:
@@ -51,7 +51,7 @@ class DeprecatedTLSVersionDependencyResolutionIntegrationTest extends AbstractHt
         module.allowAll()
 
         then:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         fails('checkDeps')
 
         and:
@@ -75,7 +75,7 @@ class DeprecatedTLSVersionDependencyResolutionIntegrationTest extends AbstractHt
             it.addExcludeProtocols("TLSv1.3")
             it.setIncludeProtocols("TLSv1.2")
         }
-        keyStore.configureServerCert(executer)
+        keyStore.configureServerCert(executor)
         def module = mavenHttpRepo.module('group', 'projectA', '1.2').publish()
 
         and:
@@ -86,7 +86,7 @@ class DeprecatedTLSVersionDependencyResolutionIntegrationTest extends AbstractHt
         module.allowAll()
 
         and:
-        executer.withArgument("-Dhttps.protocols=TLSv1.3")
+        executor.withArgument("-Dhttps.protocols=TLSv1.3")
 
         then:
         fails('checkDeps')

@@ -25,7 +25,7 @@ class ScopeIdsIntegrationTest extends AbstractIntegrationSpec {
 
     // Note: this fixture implies some assertions that are important for this test
     @Rule
-    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(executer, temporaryFolder)
+    public final ScopeIdsFixture scopeIds = new ScopeIdsFixture(executor, temporaryFolder)
 
     def "advertises ids"() {
         expect:
@@ -140,7 +140,7 @@ class ScopeIdsIntegrationTest extends AbstractIntegrationSpec {
         file("build.gradle") << ""
         succeeds("help")
         file("g/init.d/i.gradle") << scopeIds.initScriptContent()
-        executer.withGradleUserHomeDir(file("g"))
+        executor.withGradleUserHomeDir(file("g"))
         succeeds("help")
 
         then:

@@ -18,8 +18,8 @@ package org.gradle.integtests.tooling
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.Sample
 import org.gradle.integtests.fixtures.UsesSample
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.test.fixtures.file.LeaksFileHandles
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
@@ -106,7 +106,7 @@ repositories {
     maven { url = "${buildContext.localRepository.toURI()}" }
 }
 run {
-    args = ["${TextUtil.escapeString(buildContext.gradleHomeDir.absolutePath)}", "${TextUtil.escapeString(executer.gradleUserHomeDir.absolutePath)}"]
+    args = ["${TextUtil.escapeString(buildContext.gradleHomeDir.absolutePath)}", "${TextUtil.escapeString(executor.gradleUserHomeDir.absolutePath)}"]
     systemProperty 'org.gradle.daemon.idletimeout', 10000
     systemProperty 'org.gradle.daemon.registry.base', "${TextUtil.escapeString(projectDir.file("daemon").absolutePath)}"
 }
@@ -133,7 +133,7 @@ repositories {
     }
 
     private ExecutionResult run(String task = 'run', File dir = sample.dir) {
-        result = new GradleContextualExecuter(distribution, temporaryFolder, getBuildContext())
+        result = new GradleContextualExecutor(distribution, temporaryFolder, getBuildContext())
             .inDirectory(dir)
             .withTasks(task)
             .run()

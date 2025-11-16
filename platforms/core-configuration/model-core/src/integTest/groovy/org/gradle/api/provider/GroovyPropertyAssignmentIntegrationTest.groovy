@@ -17,7 +17,7 @@
 package org.gradle.api.provider
 
 
-import static org.gradle.integtests.fixtures.executer.GradleContextualExecuter.configCache
+import static org.gradle.integtests.fixtures.executor.GradleContextualExecutor.configCache
 
 class GroovyPropertyAssignmentIntegrationTest extends AbstractProviderOperatorIntegrationTest {
     def "eager object properties assignment for #description"() {
@@ -67,7 +67,7 @@ class GroovyPropertyAssignmentIntegrationTest extends AbstractProviderOperatorIn
 
         expect:
         deprecationValues.forEach {
-            executer.expectDocumentedDeprecationWarning("Assigning String value '$it' to property of enum type 'MyEnum'. This behavior has been deprecated. This will fail with an error in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#deprecated_string_to_enum_coercion_for_rich_properties")
+            executor.expectDocumentedDeprecationWarning("Assigning String value '$it' to property of enum type 'MyEnum'. This behavior has been deprecated. This will fail with an error in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_8.html#deprecated_string_to_enum_coercion_for_rich_properties")
         }
         runAndAssert("myTask", expectedResult)
 

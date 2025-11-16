@@ -17,14 +17,14 @@
 package org.gradle.launcher.continuous
 
 import org.gradle.integtests.fixtures.AbstractContinuousIntegrationTest
-import org.gradle.integtests.fixtures.executer.GradleExecuter
-import org.gradle.integtests.fixtures.executer.GradleHandle
-import org.gradle.integtests.fixtures.executer.UnexpectedBuildFailure
+import org.gradle.integtests.fixtures.executor.GradleExecutor
+import org.gradle.integtests.fixtures.executor.GradleHandle
+import org.gradle.integtests.fixtures.executor.UnexpectedBuildFailure
 import spock.lang.Specification
 
 
 class ContinuousIntegrationTestFixtureTest extends Specification {
-    def gradleExecuter = Stub(GradleExecuter)
+    def gradleExecutor = Stub(GradleExecutor)
 
     def "successful build should be parsed"() {
         given:
@@ -110,27 +110,27 @@ Waiting for changes to input files... (ctrl-d then enter to exit)
 
     private AbstractContinuousIntegrationTest testCase() {
         ContinuousIntegrationTestFixture fixture = new ContinuousIntegrationTestFixture()
-        fixture.executer = gradleExecuter
+        fixture.executor = gradleExecutor
         return fixture
     }
 
     private static class ContinuousIntegrationTestFixture extends AbstractContinuousIntegrationTest {
-        GradleExecuter executer
+        GradleExecutor executor
 
         @Override
-        GradleExecuter createExecuter() {
-            return executer
+        GradleExecutor createExecutor() {
+            return executor
         }
     }
 
     private GradleHandle setupStubs(AbstractContinuousIntegrationTest sampleTest) {
         sampleTest.results = [] // fields are null for some reason, perhaps Spock internally modifies constructors
         def gradleHandle = Stub(GradleHandle)
-        gradleExecuter.withStdinPipe() >> gradleExecuter
-        gradleExecuter.withTasks(_) >> gradleExecuter
-        gradleExecuter.withForceInteractive(_) >> gradleExecuter
-        gradleExecuter.withArgument(_) >> gradleExecuter
-        gradleExecuter.start() >> gradleHandle
+        gradleExecutor.withStdinPipe() >> gradleExecutor
+        gradleExecutor.withTasks(_) >> gradleExecutor
+        gradleExecutor.withForceInteractive(_) >> gradleExecutor
+        gradleExecutor.withArgument(_) >> gradleExecutor
+        gradleExecutor.start() >> gradleHandle
         gradleHandle.getErrorOutput() >> ''
         gradleHandle.isRunning() >>> [true, false]
         gradleHandle

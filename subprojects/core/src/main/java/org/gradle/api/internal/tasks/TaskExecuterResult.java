@@ -23,7 +23,7 @@ import org.gradle.internal.execution.caching.CachingState;
 import java.util.List;
 import java.util.Optional;
 
-public interface TaskExecuterResult {
+public interface TaskExecutorResult {
     /**
      * Returns the reasons for executing this task. An empty list means the task was not executed.
      */
@@ -44,7 +44,7 @@ public interface TaskExecuterResult {
      */
     CachingState getCachingState();
 
-    TaskExecuterResult WITHOUT_OUTPUTS = new TaskExecuterResult() {
+    TaskExecutorResult WITHOUT_OUTPUTS = new TaskExecutorResult() {
         @Override
         public List<String> getExecutionReasons() {
             return ImmutableList.of();

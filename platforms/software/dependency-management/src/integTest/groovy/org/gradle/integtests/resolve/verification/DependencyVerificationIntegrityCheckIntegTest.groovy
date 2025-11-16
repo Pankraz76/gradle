@@ -353,7 +353,7 @@ This can indicate that a dependency has been compromised. Please carefully verif
 
         when:
         //TODO: remove this once dependency verification stops triggering dependency resolution at execution time
-        executer.withBuildJvmOpts("-Dorg.gradle.configuration-cache.internal.task-execution-access-pre-stable=true")
+        executor.withBuildJvmOpts("-Dorg.gradle.configuration-cache.internal.task-execution-access-pre-stable=true")
         fails "resolve"
 
         then:
@@ -666,7 +666,7 @@ If the artifacts are trustworthy, you will need to update the gradle/verificatio
 
         then:
         noExceptionThrown()
-        executer.stop()
+        executor.stop()
 
         when:
         def group = new File(CacheLayout.FILE_STORE.getPath(metadataCacheDir), "org")
@@ -724,7 +724,7 @@ This can indicate that a dependency has been compromised. Please carefully verif
         then:
         noExceptionThrown()
         if (stop) {
-            executer.stop()
+            executor.stop()
         }
 
         when:
@@ -1089,7 +1089,7 @@ This can indicate that a dependency has been compromised. Please carefully verif
         when:
         mod.pom.expectGet()
         mod.artifact.expectGet()
-        executer.withArguments("-I", "init.gradle")
+        executor.withArguments("-I", "init.gradle")
         fails 'noop'
 
         then:
@@ -1157,7 +1157,7 @@ This can indicate that a dependency has been compromised. Please carefully verif
   - monitor-1.0.pom (org:monitor:1.0) from repository maven"""))
 
         when:
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
         fails "resolveCompileClasspath"
 
         then:

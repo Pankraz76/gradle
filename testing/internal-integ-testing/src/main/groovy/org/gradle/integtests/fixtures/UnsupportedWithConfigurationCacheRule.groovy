@@ -16,7 +16,7 @@
 
 package org.gradle.integtests.fixtures
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
@@ -30,7 +30,7 @@ class UnsupportedWithConfigurationCacheRule implements TestRule {
     @Override
     Statement apply(Statement base, Description description) {
         def annotation = description.getAnnotation(UnsupportedWithConfigurationCache.class)
-        if (GradleContextualExecuter.isNotConfigCache() || annotation == null) {
+        if (GradleContextualExecutor.isNotConfigCache() || annotation == null) {
             return base
         }
         def enabledBottomSpec = isEnabledBottomSpec(annotation.bottomSpecs(), { description.className.endsWith(".$it") })

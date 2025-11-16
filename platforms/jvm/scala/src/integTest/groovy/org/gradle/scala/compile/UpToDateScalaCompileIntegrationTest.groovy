@@ -75,20 +75,20 @@ class UpToDateScalaCompileIntegrationTest extends AbstractIntegrationSpec implem
 
         buildFile(scalaProjectBuildScript(ScalaBasePlugin.DEFAULT_ZINC_VERSION, ScalaCoverage.getLatestSupportedScala2Version()))
         when:
-        executer.withJvm(jdk17)
+        executor.withJvm(jdk17)
         run 'compileScala'
 
         then:
         executedAndNotSkipped(':compileScala')
 
         when:
-        executer.withJvm(jdk17)
+        executor.withJvm(jdk17)
         run 'compileScala'
         then:
         skipped ':compileScala'
 
         when:
-        executer.withJvm(jdk21)
+        executor.withJvm(jdk21)
         run 'compileScala', '--info'
         then:
         executedAndNotSkipped(':compileScala')

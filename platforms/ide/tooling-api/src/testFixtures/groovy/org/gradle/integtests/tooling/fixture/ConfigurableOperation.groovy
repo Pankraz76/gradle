@@ -16,8 +16,8 @@
 
 package org.gradle.integtests.tooling.fixture
 
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.OutputScrapingExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.OutputScrapingExecutionResult
 import org.gradle.tooling.ModelBuilder
 import org.gradle.tooling.ProgressListener
 

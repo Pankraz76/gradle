@@ -36,7 +36,7 @@ class ConfigurationAPIDeprecationsIntegrationTest extends AbstractIntegrationSpe
         """
 
         expect:
-        ConfigurationAPIDeprecations.expectIsVisibleMethodDeprecation(executer)
+        ConfigurationAPIDeprecations.expectIsVisibleMethodDeprecation(executor)
         succeeds "test"
     }
 }

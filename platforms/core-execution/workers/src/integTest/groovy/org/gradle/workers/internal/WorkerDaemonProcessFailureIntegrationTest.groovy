@@ -40,7 +40,7 @@ class WorkerDaemonProcessFailureIntegrationTest extends AbstractDaemonWorkerExec
         if (OperatingSystem.current().windows) {
             // The killed worker on Windows will cause a broken pipe error to be printed to the console,
             // so we disable stack trace checks to avoid the test failing.
-            executer.withStackTraceChecksDisabled()
+            executor.withStackTraceChecksDisabled()
         }
 
         settingsFile << """
@@ -144,7 +144,7 @@ class WorkerDaemonProcessFailureIntegrationTest extends AbstractDaemonWorkerExec
         def handler = blockingHttpServer.expectAndBlock("between")
 
         when:
-        def gradle = executer.withTasks("compileJava").start()
+        def gradle = executor.withTasks("compileJava").start()
 
         then:
         handler.waitForAllPendingCalls()
@@ -196,7 +196,7 @@ class WorkerDaemonProcessFailureIntegrationTest extends AbstractDaemonWorkerExec
         def handler = blockingHttpServer.expectAndBlock("after")
 
         when:
-        def gradle = executer.withTasks("compileJava").start()
+        def gradle = executor.withTasks("compileJava").start()
 
         then:
         handler.waitForAllPendingCalls()

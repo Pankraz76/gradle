@@ -22,12 +22,12 @@ import org.gradle.tooling.internal.consumer.connection.ConsumerActionExecutor
 import org.gradle.tooling.internal.protocol.ResultHandlerVersion1
 
 class DefaultAsyncConsumerActionExecutorTest extends ConcurrentSpec {
-    def actionExecuter = Mock(ConsumerActionExecutor) {
-        getDisplayName() >> "[executer]"
+    def actionExecutor = Mock(ConsumerActionExecutor) {
+        getDisplayName() >> "[executor]"
     }
     def action = Mock(ConsumerAction)
     def handler = Mock(ResultHandlerVersion1)
-    def connection = new DefaultAsyncConsumerActionExecutor(actionExecuter, executorFactory)
+    def connection = new DefaultAsyncConsumerActionExecutor(actionExecutor, executorFactory)
 
     def cleanup() {
         connection.stop()
@@ -41,7 +41,7 @@ class DefaultAsyncConsumerActionExecutorTest extends ConcurrentSpec {
         }
 
         then:
-        1 * actionExecuter.run(action) >> {
+        1 * actionExecutor.run(action) >> {
             thread.blockUntil.dispatched
             instant.actionStarted
             return "result"
@@ -63,7 +63,7 @@ class DefaultAsyncConsumerActionExecutorTest extends ConcurrentSpec {
         }
 
         then:
-        1 * actionExecuter.run(action) >> {
+        1 * actionExecutor.run(action) >> {
             throw failure
         }
         1 * handler.onFailure(failure)
@@ -76,6 +76,6 @@ class DefaultAsyncConsumerActionExecutorTest extends ConcurrentSpec {
 
         then:
         IllegalStateException e = thrown()
-        e.message == 'Cannot use [executer] as it has been stopped.'
+        e.message == 'Cannot use [executor] as it has been stopped.'
     }
 }

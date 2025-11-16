@@ -31,7 +31,7 @@ import java.util.List;
  * That is, this operation does not represent just the execution of task actions.
  *
  * This operation can fail _and_ yield a result.
- * If the operation gets as far as invoking the task executer
+ * If the operation gets as far as invoking the task executor
  * (i.e. beforeTask callbacks did not fail), then a result is expected.
  * If the task execution fails, or if afterTask callbacks fail, an operation failure is expected _in addition_.
  */

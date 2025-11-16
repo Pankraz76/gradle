@@ -36,7 +36,7 @@ class GroovySecurityManagerIssuesIntegrationTest extends AbstractIntegrationSpec
                 testCompile 'junit:junit:4.13'
             }
             """
-        executer.withArguments("-i")
+        executor.withArguments("-i")
 
         expect:
         succeeds("test")

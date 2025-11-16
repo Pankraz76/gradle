@@ -136,7 +136,7 @@ class TextResourceIntegrationTest extends AbstractIntegrationSpec {
         def resourceFile = file("web-file.txt")
         def keyStore = TestKeyStore.init(resource.dir)
         keyStore.enableSslWithServerCert(server)
-        keyStore.configureServerCert(executer)
+        keyStore.configureServerCert(executor)
 
         server.expectGet("/myConfig-${uuid}.txt", resourceFile)
         server.start()

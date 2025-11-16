@@ -16,8 +16,8 @@
 
 package org.gradle.performance.fixture
 
-import org.gradle.integtests.fixtures.executer.DefaultGradleDistribution
-import org.gradle.integtests.fixtures.executer.GradleDistribution
+import org.gradle.integtests.fixtures.executor.DefaultGradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleDistribution
 import org.gradle.integtests.fixtures.versions.ReleasedVersionDistributions
 import org.gradle.performance.results.ResultsStoreHelper
 import org.gradle.util.GradleVersion

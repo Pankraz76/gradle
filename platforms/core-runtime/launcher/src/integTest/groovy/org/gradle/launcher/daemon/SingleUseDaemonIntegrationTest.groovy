@@ -43,12 +43,12 @@ class SingleUseDaemonIntegrationTest extends AbstractIntegrationSpec implements 
         // This is not really testing real world behavior because it's impossible to get non-forking scenarios to work in most builds
         // because the wrapper requires a single use daemon.
 
-        executer.withArgument("--no-daemon")
-        executer.requireIsolatedDaemons()
-        executer.useOnlyRequestedJvmOpts()
-        executer.requireDaemon()
-        executer.withCommandLineGradleOpts(DaemonParameters.DEFAULT_JVM_ARGS)
-        executer.withCommandLineGradleOpts("-Djava.io.tmpdir=${tmpdir}")
+        executor.withArgument("--no-daemon")
+        executor.requireIsolatedDaemons()
+        executor.useOnlyRequestedJvmOpts()
+        executor.requireDaemon()
+        executor.withCommandLineGradleOpts(DaemonParameters.DEFAULT_JVM_ARGS)
+        executor.withCommandLineGradleOpts("-Djava.io.tmpdir=${tmpdir}")
 
         file('gradle.properties').writeProperties('org.gradle.jvmargs': DaemonParameters.DEFAULT_JVM_ARGS.join(" ") + " -Djava.io.tmpdir=${tmpdir} -ea")
     }
@@ -128,7 +128,7 @@ assert java.lang.management.ManagementFactory.runtimeMXBean.inputArguments.conta
         file('build.gradle') << "println 'javaHome=' + org.gradle.internal.jvm.Jvm.current().javaHome.absolutePath"
 
         when:
-        executer.withJvm(differentJdk)
+        executor.withJvm(differentJdk)
         succeeds()
 
         then:
@@ -143,7 +143,7 @@ assert java.lang.management.ManagementFactory.runtimeMXBean.inputArguments.conta
         captureJavaHome()
 
         when:
-        executer.withJvm(otherJdk)
+        executor.withJvm(otherJdk)
         withInstallations(otherJdk).succeeds()
         assertDaemonUsedJvm(otherJdk)
 
@@ -154,7 +154,7 @@ assert java.lang.management.ManagementFactory.runtimeMXBean.inputArguments.conta
     def "forks build to run when immutable jvm args set regardless of the environment"() {
         when:
         buildRequestsJvmArgs('-Xmx64m')
-        executer.withCommandLineGradleOpts('-Xmx64m', '-Xms64m')
+        executor.withCommandLineGradleOpts('-Xmx64m', '-Xms64m')
 
         and:
         file('build.gradle') << """
@@ -232,6 +232,6 @@ assert System.getProperty('some-prop') == 'some-value'
     }
 
     private def getDaemons() {
-        return new DaemonLogsAnalyzer(executer.daemonBaseDir)
+        return new DaemonLogsAnalyzer(executor.daemonBaseDir)
     }
 }

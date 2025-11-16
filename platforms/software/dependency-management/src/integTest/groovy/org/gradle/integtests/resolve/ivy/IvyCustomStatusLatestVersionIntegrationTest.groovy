@@ -119,7 +119,7 @@ task retrieve(type: Sync) {
         file('libs').assertHasDescendants("projectA-1.0.jar")
 
         when:
-        executer.withArgument("-PreleaseVersion=1.1")
+        executor.withArgument("-PreleaseVersion=1.1")
         run 'retrieve'
 
         then:
@@ -193,7 +193,7 @@ task retrieve(type: Sync) {
         project2.jar.expectHead()
 
         and:
-        executer.withArgument("--refresh-dependencies")
+        executor.withArgument("--refresh-dependencies")
         run 'retrieve'
 
         then:

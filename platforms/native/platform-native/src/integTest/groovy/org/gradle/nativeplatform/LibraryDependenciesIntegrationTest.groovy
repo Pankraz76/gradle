@@ -247,7 +247,7 @@ project(":lib") {
 """
 
         when:
-        executer.withArgument('--configure-on-demand')
+        executor.withArgument('--configure-on-demand')
         succeeds ":exe:installMainExecutable"
 
         then:

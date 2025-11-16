@@ -30,7 +30,7 @@ class KotlinScriptCacheCleanupIntegrationTest
     def "cleanup deletes old script cache entries"() {
         given:
         requireOwnGradleUserHomeDir()
-        executer.requireIsolatedDaemons()
+        executor.requireIsolatedDaemons()
 
         and: 'seed script cache to have a baseline to compare against'
         buildKotlinFile.text = """

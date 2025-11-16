@@ -21,8 +21,8 @@ import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 class ModelReportIntegrationTest extends AbstractIntegrationSpec {
 
     @Override
-    protected void setupExecuter() {
-        super.setupExecuter()
+    protected void setupExecutor() {
+        super.setupExecutor()
     }
 
     def setup() {
@@ -263,7 +263,7 @@ model {
 """
         buildFile
         when:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run "model"
 
         then:

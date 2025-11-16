@@ -330,7 +330,7 @@ task resolveDependencies {
         """
 
         when:
-        executer.withArgument("--parallel")
+        executor.withArgument("--parallel")
         fails "a", "b"
 
         then:

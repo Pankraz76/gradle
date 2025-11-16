@@ -111,7 +111,7 @@ class PrecompiledScriptPluginAccessorSettingEvaluationTest : AbstractPrecompiled
 
     private
     fun buildWithGradleUserHome(gradleUserHomeDir: File, vararg arguments: String) =
-        gradleExecuterFor(arguments)
+        gradleExecutorFor(arguments)
             .withGradleUserHomeDir(gradleUserHomeDir)
             .withOwnUserHomeServices()
             .run()

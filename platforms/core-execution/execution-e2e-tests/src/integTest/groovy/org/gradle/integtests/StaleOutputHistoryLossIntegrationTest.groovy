@@ -21,9 +21,9 @@ import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.OtherGradleVersionFixture
 import org.gradle.integtests.fixtures.StaleOutputJavaProject
 import org.gradle.integtests.fixtures.UnsupportedWithConfigurationCache
-import org.gradle.integtests.fixtures.executer.ExecutionResult
-import org.gradle.integtests.fixtures.executer.GradleExecuter
-import org.gradle.integtests.fixtures.executer.NoDaemonGradleExecuter
+import org.gradle.integtests.fixtures.executor.ExecutionResult
+import org.gradle.integtests.fixtures.executor.GradleExecutor
+import org.gradle.integtests.fixtures.executor.NoDaemonGradleExecutor
 import org.gradle.integtests.fixtures.timeout.IntegrationTestTimeout
 import spock.lang.Issue
 
@@ -33,14 +33,14 @@ import static org.gradle.util.internal.GFileUtils.forceDelete
 @IntegrationTestTimeout(240)
 class StaleOutputHistoryLossIntegrationTest extends AbstractIntegrationSpec implements OtherGradleVersionFixture {
 
-    private GradleExecuter mostRecentReleaseExecuter
+    private GradleExecutor mostRecentReleaseExecutor
 
     def cleanup() {
-        mostRecentReleaseExecuter?.cleanup()
+        mostRecentReleaseExecutor?.cleanup()
     }
 
     def setup() {
-        mostRecentReleaseExecuter = new NoDaemonGradleExecuter(otherVersion, temporaryFolder, buildContext)
+        mostRecentReleaseExecutor = new NoDaemonGradleExecutor(otherVersion, temporaryFolder, buildContext)
         buildFile << "apply plugin: 'base'\n"
     }
 
@@ -190,7 +190,7 @@ class StaleOutputHistoryLossIntegrationTest extends AbstractIntegrationSpec impl
 
         when:
         // Build everything first
-        mostRecentReleaseExecuter.withArguments(arguments)
+        mostRecentReleaseExecutor.withArguments(arguments)
         result = runWithMostRecentFinalRelease(JAR_TASK_NAME)
 
         then:
@@ -205,7 +205,7 @@ class StaleOutputHistoryLossIntegrationTest extends AbstractIntegrationSpec impl
         javaProjects.each {
             forceDelete(it.redundantSourceFile)
         }
-        executer.withArguments(arguments)
+        executor.withArguments(arguments)
         succeeds(singleTask)
 
         then:
@@ -217,7 +217,7 @@ class StaleOutputHistoryLossIntegrationTest extends AbstractIntegrationSpec impl
 
         when:
         // Build everything
-        executer.withArguments(arguments)
+        executor.withArguments(arguments)
         succeeds JAR_TASK_NAME
 
         then:
@@ -553,7 +553,7 @@ class StaleOutputHistoryLossIntegrationTest extends AbstractIntegrationSpec impl
     }
 
     private ExecutionResult runWithMostRecentFinalRelease(String... tasks) {
-        result = mostRecentReleaseExecuter.withTasks(tasks).run()
+        result = mostRecentReleaseExecutor.withTasks(tasks).run()
         result
     }
 

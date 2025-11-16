@@ -26,7 +26,7 @@ import static org.gradle.api.problems.fixtures.ReportingScript.getProblemReporti
 import static org.gradle.util.internal.TextUtil.escapeString
 
 class ProblemsApiBuildOperationIntegrationTest extends AbstractIntegrationSpec {
-    def buildOperations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def buildOperations = new BuildOperationsFixture(executor, testDirectoryProvider)
 
     def withReportProblemTask(@GroovyBuildScriptLanguage String taskActionMethodBody) {
         buildFile getProblemReportingScript(taskActionMethodBody)

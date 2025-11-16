@@ -29,7 +29,7 @@ assert java.lang.management.ManagementFactory.runtimeMXBean.inputArguments.conta
 """
 
         given:
-        executer.useOnlyRequestedJvmOpts()
+        executor.useOnlyRequestedJvmOpts()
 
         expect:
         succeeds()
@@ -39,7 +39,7 @@ assert java.lang.management.ManagementFactory.runtimeMXBean.inputArguments.conta
     def "JVM args from gradle.properties packaged in distribution override defaults"() {
         setup:
         requireIsolatedGradleDistribution()
-        executer.useOnlyRequestedJvmOpts()
+        executor.useOnlyRequestedJvmOpts()
 
         file('build.gradle') << """
             def inputArguments = java.lang.management.ManagementFactory.runtimeMXBean.inputArguments
@@ -59,7 +59,7 @@ assert java.lang.management.ManagementFactory.runtimeMXBean.inputArguments.conta
 
     def "uses defaults for max/min heap size when JAVA_TOOL_OPTIONS is set (#javaToolOptions)"() {
         setup:
-        executer.requireDaemon().requireIsolatedDaemons()
+        executor.requireDaemon().requireIsolatedDaemons()
         boolean java9orAbove = JavaVersion.current().java9Compatible
 
         buildFile """
@@ -86,9 +86,9 @@ assert java.lang.management.ManagementFactory.runtimeMXBean.inputArguments.conta
         """
 
         when:
-        // This prevents the executer fixture from adding "default" values to the build jvm options
-        executer.useOnlyRequestedJvmOpts()
-        executer.withEnvironmentVars(JAVA_TOOL_OPTIONS: javaToolOptions)
+        // This prevents the executor fixture from adding "default" values to the build jvm options
+        executor.useOnlyRequestedJvmOpts()
+        executor.withEnvironmentVars(JAVA_TOOL_OPTIONS: javaToolOptions)
         run "verify"
 
         then:
@@ -104,7 +104,7 @@ assert java.lang.management.ManagementFactory.runtimeMXBean.inputArguments.conta
         file('build.gradle') << """
 println 'Started'
 """
-        executer.useOnlyRequestedJvmOpts()
+        executor.useOnlyRequestedJvmOpts()
 
         when:
         file('gradle.properties') << 'org.gradle.jvmargs=-XshowSettings'

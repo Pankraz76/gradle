@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.integtests.fixtures.executer;
+package org.gradle.integtests.fixtures.executor;
 
-public interface GradleExecuterDecorator {
-    GradleExecuter decorate(GradleExecuter executer);
+public interface GradleExecutorDecorator {
+    GradleExecutor decorate(GradleExecutor executor);
 }

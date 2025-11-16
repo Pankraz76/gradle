@@ -87,15 +87,15 @@ tasks.block2.mustRunAfter tasks.b
         mod2.artifact.expectGet()
 
         // Start build 1 then wait until it has run task 'a'.
-        executer.withTasks("a", "block1", "b")
-        executer.withArgument("--info")
-        def build1 = executer.start()
+        executor.withTasks("a", "block1", "b")
+        executor.withArgument("--info")
+        def build1 = executor.start()
         block1.waitForAllPendingCalls()
 
         // Start build 2 then wait until it has run both 'a' and 'b'.
-        executer.withTasks("a", "b", "block2")
-        executer.withArgument("--info")
-        def build2 = executer.start()
+        executor.withTasks("a", "b", "block2")
+        executor.withArgument("--info")
+        def build2 = executor.start()
         block2.waitForAllPendingCalls()
 
         // Finish up build 1 and 2

@@ -23,7 +23,7 @@ abstract class AbstractJUnitIgnoreClassIntegrationTest extends AbstractTestingMu
 
     def "can handle class level ignored tests"() {
         given:
-        executer.noExtraLogging()
+        executor.noExtraLogging()
         file('src/test/java/org/gradle/IgnoredTest.java') << """
             package org.gradle;
 

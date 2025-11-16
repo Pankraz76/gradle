@@ -20,7 +20,7 @@ import org.fusesource.jansi.Ansi
 import org.gradle.api.logging.LogLevel
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.integtests.fixtures.console.AbstractConsoleGroupedTaskFunctionalTest
-import org.gradle.integtests.fixtures.executer.LogContent
+import org.gradle.integtests.fixtures.executor.LogContent
 
 import static org.hamcrest.CoreMatchers.containsString
 
@@ -70,7 +70,7 @@ BUILD SUCCESSFUL in [ \\dms]+
         """
 
         when:
-        executer.withArgument("--quiet")
+        executor.withArgument("--quiet")
         succeeds('success')
 
         then:
@@ -107,7 +107,7 @@ BUILD SUCCESSFUL in [ \\dms]+
         """
 
         expect:
-        executer.withArguments("-Dorg.gradle.logging.level=${level}")
+        executor.withArguments("-Dorg.gradle.logging.level=${level}")
         fails("broken")
 
         and:
@@ -147,7 +147,7 @@ BUILD SUCCESSFUL in [ \\dms]+
         """
 
         expect:
-        executer.withArguments("-Dorg.gradle.logging.level=${level}")
+        executor.withArguments("-Dorg.gradle.logging.level=${level}")
         fails("broken")
 
         and:

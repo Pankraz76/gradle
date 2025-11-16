@@ -23,7 +23,7 @@ import org.gradle.internal.watch.options.FileSystemWatchingSettingsFinalizedProg
 @LocalOnly
 class FileSystemWatchingSettingsFinalizedBuildOperationIntegrationTest extends AbstractFileSystemWatchingIntegrationTest {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "emits once when not used"() {
         given:

@@ -112,7 +112,7 @@ dependencies {
         createIncludedBuild()
 
         // when:
-        def result = executer.withTasks("eclipse").run()
+        def result = executor.withTasks("eclipse").run()
 
         // then:
         result.error == ""
@@ -257,7 +257,7 @@ apply plugin: "eclipse-wtp"
 apply plugin: "groovy"
         """
 
-        executer.withTasks("eclipse").run()
+        executor.withTasks("eclipse").run()
     }
 
 	private static Set getHandleFilenames(projectModules) {

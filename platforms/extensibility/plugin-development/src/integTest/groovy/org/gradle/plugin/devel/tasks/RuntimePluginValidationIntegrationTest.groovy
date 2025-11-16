@@ -116,7 +116,7 @@ class RuntimePluginValidationIntegrationTest extends AbstractIntegrationSpec imp
         """
 
         expect:
-        executer.withArgument("-Dorg.gradle.internal.max.validation.errors=10")
+        executor.withArgument("-Dorg.gradle.internal.max.validation.errors=10")
         assertValidationFailsWith([
             error(incorrectUseOfInputAnnotationConfig { type('MyTask').property('file').propertyType('File') }, 'validation_problems', 'incorrect_use_of_input_annotation'),
             error(incorrectUseOfInputAnnotationConfig { type('MyTask').property('fileCollection').propertyType('FileCollection') }, 'validation_problems', 'incorrect_use_of_input_annotation'),
@@ -234,7 +234,7 @@ class RuntimePluginValidationIntegrationTest extends AbstractIntegrationSpec imp
         """
 
         expect:
-        executer.withArgument("-Dorg.gradle.internal.max.validation.errors=10")
+        executor.withArgument("-Dorg.gradle.internal.max.validation.errors=10")
         assertValidationFailsWith([
             error(missingAnnotationConfig { type('MyTask').property("doubleIterableOptions${iterableSymbol}${iterableSymbol}.notAnnotated").missingInputOrOutput() }, 'validation_problems', 'missing_annotation'),
             error(missingAnnotationConfig { type('MyTask').property("iterableMappedOptions${iterableSymbol}${getKeySymbolFor("alma")}${iterableSymbol}.notAnnotated").missingInputOrOutput() }, 'validation_problems', 'missing_annotation'),

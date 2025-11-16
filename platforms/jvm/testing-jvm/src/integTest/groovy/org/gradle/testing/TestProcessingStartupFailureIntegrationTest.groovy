@@ -52,7 +52,7 @@ class TestProcessingStartupFailureIntegrationTest extends AbstractIntegrationSpe
         """
 
         addMyTestForJunit5()
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
 
         when:
         fails('test')
@@ -137,7 +137,7 @@ class TestProcessingStartupFailureIntegrationTest extends AbstractIntegrationSpe
             }
         """
         when:
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         fails('test')
 
         then: "Task failure is reported"

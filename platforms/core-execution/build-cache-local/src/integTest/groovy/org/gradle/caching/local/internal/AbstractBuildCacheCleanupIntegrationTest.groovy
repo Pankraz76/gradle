@@ -23,7 +23,7 @@ import org.gradle.integtests.fixtures.BuildOperationsFixture
 import org.gradle.integtests.fixtures.DirectoryBuildCacheFixture
 import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.integtests.fixtures.cache.FileAccessTimeJournalFixture
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.internal.hash.Hashing
 import org.gradle.test.fixtures.file.TestFile
 
@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit
 abstract class AbstractBuildCacheCleanupIntegrationTest extends AbstractIntegrationSpec implements DirectoryBuildCacheFixture, FileAccessTimeJournalFixture, GradleUserHomeCleanupFixture {
     private final static int DEFAULT_RETENTION_PERIOD_DAYS = 7
 
-    def operations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def operations = new BuildOperationsFixture(executor, testDirectoryProvider)
     def hashStringLength = Hashing.defaultFunction().hexDigits
 
     abstract String getBuildCacheName();
@@ -122,7 +122,7 @@ abstract class AbstractBuildCacheCleanupIntegrationTest extends AbstractIntegrat
 
         when:
         lastCleanupCheck = markCacheLastCleaned(twoDaysAgo())
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
         run()
 
         then:
@@ -154,7 +154,7 @@ abstract class AbstractBuildCacheCleanupIntegrationTest extends AbstractIntegrat
 
         when:
         lastCleanupCheck = markCacheLastCleaned(twoDaysAgo())
-        executer.noDeprecationChecks()
+        executor.noDeprecationChecks()
         run()
 
         then:
@@ -262,7 +262,7 @@ abstract class AbstractBuildCacheCleanupIntegrationTest extends AbstractIntegrat
     }
 
     private long initializeHome() {
-        executer.requireIsolatedDaemons() // needs to stop daemon
+        executor.requireIsolatedDaemons() // needs to stop daemon
         requireOwnGradleUserHomeDir() // needs its own journal
         run() // Make sure cache directory is initialized
         run '--stop' // ensure daemon does not cache file access times in memory
@@ -295,6 +295,6 @@ abstract class AbstractBuildCacheCleanupIntegrationTest extends AbstractIntegrat
 
     @Override
     TestFile getGradleUserHomeDir() {
-        return executer.gradleUserHomeDir
+        return executor.gradleUserHomeDir
     }
 }

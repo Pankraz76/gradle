@@ -336,7 +336,7 @@ task someTask {
         // Change to different value
         when:
         buildFile.replace('new CustomType("value1 ignore me")', 'new CustomType("value2")')
-        executer.withArgument("-i")
+        executor.withArgument("-i")
         run "someTask"
 
         then:
@@ -390,7 +390,7 @@ task someTask {
         buildFile.replace("[new CustomType('123'), new ScriptType('abc'), pluginValue] as $type", "[new CustomType('abc'), new ScriptType('123'), pluginValue] as $type")
 
         and:
-        executer.withArgument("-i")
+        executor.withArgument("-i")
         run "someTask"
 
         then:
@@ -408,7 +408,7 @@ task someTask {
         otherScript.replace('new ScriptPluginType("abc")', 'new ScriptPluginType("1234")')
 
         and:
-        executer.withArgument("-i")
+        executor.withArgument("-i")
         run "someTask"
 
         then:

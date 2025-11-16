@@ -253,7 +253,7 @@ abstract class AbstractJUnitTestFailureIntegrationTest extends AbstractTestingMu
         """.stripIndent()
 
         when:
-        def failure = executer.withTasks('build').runWithFailure()
+        def failure = executor.withTasks('build').runWithFailure()
 
         then:
         if (VersionNumber.parse(version) > VersionNumber.parse("4.4")) {

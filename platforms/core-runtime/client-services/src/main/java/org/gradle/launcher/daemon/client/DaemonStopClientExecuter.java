@@ -30,11 +30,11 @@ import java.util.function.Consumer;
  */
 @NullMarked
 @ServiceScope(Scope.Global.class)
-public class DaemonStopClientExecuter {
+public class DaemonStopClientExecutor {
 
     private final DaemonClientFactory daemonClientFactory;
 
-    public DaemonStopClientExecuter(DaemonClientFactory daemonClientFactory) {
+    public DaemonStopClientExecutor(DaemonClientFactory daemonClientFactory) {
         this.daemonClientFactory = daemonClientFactory;
     }
 

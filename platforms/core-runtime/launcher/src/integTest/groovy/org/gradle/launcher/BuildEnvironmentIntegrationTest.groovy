@@ -17,7 +17,7 @@
 package org.gradle.launcher
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.test.fixtures.file.DoesNotSupportNonAsciiPaths
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
@@ -33,7 +33,7 @@ class BuildEnvironmentIntegrationTest extends AbstractIntegrationSpec {
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "explicit locale")
     def "builds can be executed with different default locales"() {
         given:
-        executer.withDefaultLocale(locale)
+        executor.withDefaultLocale(locale)
 
         and:
         buildFile.setText("""
@@ -56,7 +56,7 @@ task check {
     def "locale props given on the command line are respected"() {
         given:
         def nonDefaultLocale = getNonDefaultLocale()
-        executer.withArguments("-Duser.language=$nonDefaultLocale.language", "-Duser.country=$nonDefaultLocale.country")
+        executor.withArguments("-Duser.language=$nonDefaultLocale.language", "-Duser.country=$nonDefaultLocale.country")
 
         and:
         buildFile.setText("""
@@ -123,7 +123,7 @@ task check {
         """
 
         when:
-        executer.withArguments("-Djava.security.properties=${customPropertiesFile}")
+        executor.withArguments("-Djava.security.properties=${customPropertiesFile}")
         succeeds("help")
 
         then:
@@ -140,7 +140,7 @@ task check {
         given:
         def nonDefaultEncoding = ["UTF-8", "US-ASCII"].collect { Charset.forName(it) }.find { it != Charset.defaultCharset() }
 
-        executer.withArgument("-Dfile.encoding=${nonDefaultEncoding.name()}")
+        executor.withArgument("-Dfile.encoding=${nonDefaultEncoding.name()}")
 
         and:
         buildFile.setText("""
@@ -163,9 +163,9 @@ task check {
         [new Locale('de'), new Locale('en')].find { it != Locale.default }
     }
 
-    def executerEncoding(String inputEncoding) {
+    def executorEncoding(String inputEncoding) {
         if (inputEncoding) {
-            executer.withDefaultCharacterEncoding(inputEncoding)
+            executor.withDefaultCharacterEncoding(inputEncoding)
         }
     }
 
@@ -173,7 +173,7 @@ task check {
     @Requires(value = IntegTestPreconditions.NotEmbeddedExecutor, reason = "requests explicit encoding")
     def "build default encoding matches specified"(String inputEncoding, String expectedEncoding) {
         given:
-        executerEncoding inputEncoding
+        executorEncoding inputEncoding
 
         and:
         buildFile.write """
@@ -200,7 +200,7 @@ task check {
     @Unroll("forked java processes inherit default encoding - input = #inputEncoding, expectedEncoding: #expectedEncoding")
     def "forked java processes inherit default encoding"() {
         given:
-        executerEncoding inputEncoding
+        executorEncoding inputEncoding
 
         and:
         file("src", "main", "java").mkdirs()
@@ -214,7 +214,7 @@ task check {
                     System.out.println("default encoding: " + Charset.defaultCharset().name());
                 }
             }
-        """, executer.getDefaultCharacterEncoding()
+        """, executor.getDefaultCharacterEncoding()
 
         and:
         buildFile.write """
@@ -241,14 +241,14 @@ task check {
 
     @Override
     protected ExecutionResult succeeds(String... tasks) {
-        executer.useOnlyRequestedJvmOpts()
+        executor.useOnlyRequestedJvmOpts()
         return super.succeeds(tasks)
     }
 
     @Issue("GRADLE-3470")
     def "command-line options are not affected by locale"() {
         given:
-        executer.withCommandLineGradleOpts("-Duser.language=${turkishLocale.language}", "-Duser.country=${turkishLocale.country}")
+        executor.withCommandLineGradleOpts("-Duser.language=${turkishLocale.language}", "-Duser.country=${turkishLocale.country}")
         expect:
         succeeds 'help', '--console=PLAIN'
     }
@@ -257,12 +257,12 @@ task check {
     @Requires(IntegTestPreconditions.NotEmbeddedExecutor)
     def "system properties from gradle.properties are available to init scripts for buildSrc"() {
         given:
-        executer.requireOwnGradleUserHomeDir()
-        executer.gradleUserHomeDir.file("init.gradle") << """
+        executor.requireOwnGradleUserHomeDir()
+        executor.gradleUserHomeDir.file("init.gradle") << """
             println 'running init script'
             assert System.getProperty('foo') == 'bar'
         """
-        executer.gradleUserHomeDir.file("gradle.properties") << "systemProp.foo=bar"
+        executor.gradleUserHomeDir.file("gradle.properties") << "systemProp.foo=bar"
         // Add something to buildSrc to have it evaluated
         file("buildSrc/settings.gradle") << """
             assert System.getProperty('foo') == 'bar'

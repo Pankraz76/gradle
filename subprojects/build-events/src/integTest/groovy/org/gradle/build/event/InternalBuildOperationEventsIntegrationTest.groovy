@@ -41,7 +41,7 @@ class InternalBuildOperationEventsIntegrationTest extends AbstractIntegrationSpe
             task a
             task b
         """
-        executer.beforeExecute {
+        executor.beforeExecute {
             usingInitScript(initScript)
         }
 
@@ -87,7 +87,7 @@ class InternalBuildOperationEventsIntegrationTest extends AbstractIntegrationSpe
         buildFile << """
             task a
         """
-        executer.beforeExecute {
+        executor.beforeExecute {
             usingInitScript(initScript)
         }
 

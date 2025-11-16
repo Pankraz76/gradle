@@ -337,7 +337,7 @@ class ConfigurationCacheValueSourceIntegrationTest extends AbstractConfiguration
         """
 
         when:
-        executer.withEnvironmentVars(ci: "1")
+        executor.withEnvironmentVars(ci: "1")
         configurationCacheRun("-Dci=1", "build")
 
         then:
@@ -345,7 +345,7 @@ class ConfigurationCacheValueSourceIntegrationTest extends AbstractConfiguration
         outputContains("ON CI")
 
         when: "changing the value of the input doesn't invalidate cache"
-        executer.withEnvironmentVars(ci: "2")
+        executor.withEnvironmentVars(ci: "2")
         configurationCacheRun("-Dci=2", "build")
 
         then:

@@ -16,7 +16,7 @@
 package org.gradle.integtests.tooling
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleDistribution
+import org.gradle.integtests.fixtures.executor.GradleDistribution
 import org.gradle.integtests.fixtures.versions.ReleasedVersionDistributions
 import org.gradle.integtests.tooling.fixture.ToolingApi
 import org.gradle.tooling.ProjectConnection
@@ -58,7 +58,7 @@ class ToolingApiUnsupportedVersionIntegrationTest extends AbstractIntegrationSpe
 
         then:
         UnsupportedVersionException e = thrown()
-        e.message == "The version of Gradle you are using (Gradle distribution '${distroZip}') does not support the BuildActionExecuter API. Support for this is available in Gradle 1.8 and all later versions."
+        e.message == "The version of Gradle you are using (Gradle distribution '${distroZip}') does not support the BuildActionExecutor API. Support for this is available in Gradle 1.8 and all later versions."
     }
 
     def "tooling api reports an error when running tests using a gradle version does not implement the tooling api"() {

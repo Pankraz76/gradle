@@ -16,7 +16,7 @@
 
 package org.gradle.api
 
-import org.gradle.integtests.fixtures.executer.TaskOrderSpecs
+import org.gradle.integtests.fixtures.executor.TaskOrderSpecs
 import spock.lang.Issue
 
 class DestroyerTaskCommandLineOrderIntegrationTest extends AbstractCommandLineOrderTaskIntegrationTest {

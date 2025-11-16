@@ -41,7 +41,7 @@ class HttpsToHttpRedirectResolveIntegrationTest extends AbstractRedirectResolveI
     void beforeServerStart() {
         keyStore = TestKeyStore.init(resources.dir)
         keyStore.enableSslWithServerCert(server)
-        keyStore.configureServerCert(executer)
+        keyStore.configureServerCert(executor)
     }
 
     def "refuses resolves module artifacts via HTTPS to HTTP redirect"() {

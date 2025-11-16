@@ -28,7 +28,7 @@ import org.gradle.api.internal.file.collections.FileSystemMirroringFileTree
 import org.gradle.api.internal.provider.AbstractProperty
 import org.gradle.api.internal.tasks.testing.TestCompleteEvent
 import org.gradle.api.internal.tasks.testing.TestDescriptorInternal
-import org.gradle.api.internal.tasks.testing.TestExecuter
+import org.gradle.api.internal.tasks.testing.TestExecutor
 import org.gradle.api.internal.tasks.testing.TestExecutionSpec
 import org.gradle.api.internal.tasks.testing.TestFramework
 import org.gradle.api.internal.tasks.testing.TestResultProcessor
@@ -62,7 +62,7 @@ class TestTest extends AbstractConventionTaskTest {
     private TestFile binResultsDir
     private TestFile reportDir
 
-    def testExecuterMock = Mock(TestExecuter)
+    def testExecutorMock = Mock(TestExecutor)
     def testFrameworkMock = Mock(TestFramework)
 
 
@@ -106,7 +106,7 @@ class TestTest extends AbstractConventionTaskTest {
         test.executeTests()
 
         then:
-        1 * testExecuterMock.execute(_ as TestExecutionSpec, _ as TestResultProcessor) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
+        1 * testExecutorMock.execute(_ as TestExecutionSpec, _ as TestResultProcessor) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
             oneSuccessfulTest(processor)
         }
     }
@@ -122,7 +122,7 @@ class TestTest extends AbstractConventionTaskTest {
 
         then:
         1 * testReporter.generateReport(_ as TestResultsProvider, reportDir)
-        1 * testExecuterMock.execute(_ as TestExecutionSpec, _ as TestResultProcessor) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
+        1 * testExecutorMock.execute(_ as TestExecutionSpec, _ as TestResultProcessor) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
             oneSuccessfulTest(processor)
         }
     }
@@ -136,7 +136,7 @@ class TestTest extends AbstractConventionTaskTest {
 
         then:
         reportDir.assertContainsDescendants("index.html")
-        1 * testExecuterMock.execute(_ as TestExecutionSpec, _ as TestResultProcessor) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
+        1 * testExecutorMock.execute(_ as TestExecutionSpec, _ as TestResultProcessor) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
             oneSuccessfulTest(processor)
         }
     }
@@ -150,7 +150,7 @@ class TestTest extends AbstractConventionTaskTest {
         test.executeTests()
 
         then:
-        1 * testExecuterMock.execute(_ as TestExecutionSpec, _ as TestResultProcessor) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
+        1 * testExecutorMock.execute(_ as TestExecutionSpec, _ as TestResultProcessor) >> { TestExecutionSpec testExecutionSpec, TestResultProcessor processor ->
             oneSuccessfulTest(processor)
         }
     }
@@ -302,7 +302,7 @@ class TestTest extends AbstractConventionTaskTest {
 
     private void configureTask() {
         test.useTestFramework(testFrameworkMock)
-        test.setTestExecuter(testExecuterMock)
+        test.setTestExecutor(testExecutorMock)
 
         test.setTestClassesDirs(TestFiles.fixed(classesDir))
         test.getReports().getJunitXml().outputLocation.set(resultsDir)

@@ -73,7 +73,7 @@ class ParallelDownloadsIntegrationTest extends AbstractHttpDependencyResolutionT
             blockingServer.get(m4.artifact.path).sendFile(m4.artifact.file))
 
         expect:
-        executer.withArguments('--max-workers', '4')
+        executor.withArguments('--max-workers', '4')
         succeeds("resolve")
 
         where:
@@ -128,7 +128,7 @@ class ParallelDownloadsIntegrationTest extends AbstractHttpDependencyResolutionT
             blockingServer.get(m4.jar.path).sendFile(m4.jar.file))
 
         expect:
-        executer.withArguments('--max-workers', '4')
+        executor.withArguments('--max-workers', '4')
         succeeds("resolve")
     }
 
@@ -174,8 +174,8 @@ class ParallelDownloadsIntegrationTest extends AbstractHttpDependencyResolutionT
             blockingServer.get(m4.artifact.path).sendFile(m4.artifact.file))
 
         expect:
-        executer.withArguments('--max-workers', '2')
-        def build = executer.withTasks("resolve").start()
+        executor.withArguments('--max-workers', '2')
+        def build = executor.withTasks("resolve").start()
 
         metadataRequests.waitForAllPendingCalls()
         metadataRequests.release(2)
@@ -254,7 +254,7 @@ class ParallelDownloadsIntegrationTest extends AbstractHttpDependencyResolutionT
             blockingServer.get(m4.jar.path).sendFile(m4.jar.file))
 
         expect:
-        executer.withArguments('--max-workers', '4')
+        executor.withArguments('--max-workers', '4')
         succeeds("resolve")
     }
 
@@ -317,8 +317,8 @@ class ParallelDownloadsIntegrationTest extends AbstractHttpDependencyResolutionT
         )
 
         then:
-        executer.withArguments('--max-workers', '4')
-        def build = executer.withTasks("resolve").start()
+        executor.withArguments('--max-workers', '4')
+        def build = executor.withTasks("resolve").start()
 
         getChildrenConcurrently.waitForAllPendingCalls()
         getChildrenConcurrently.releaseAll()

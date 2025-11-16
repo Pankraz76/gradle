@@ -40,7 +40,7 @@ class GradleImplDepsPerformanceIntegrationTest extends BaseGradleImplDepsIntegra
         expect:
         RetryUtil.retry {
             succeeds 'resolveDependencies'
-            executer.gradleUserHomeDir.deleteDir()
+            executor.gradleUserHomeDir.deleteDir()
         }
     }
 
@@ -60,7 +60,7 @@ class GradleImplDepsPerformanceIntegrationTest extends BaseGradleImplDepsIntegra
         expect:
         RetryUtil.retry {
             succeeds 'resolveDependencies'
-            executer.gradleUserHomeDir.deleteDir()
+            executor.gradleUserHomeDir.deleteDir()
         }
     }
 

@@ -18,7 +18,7 @@ package org.gradle.integtests.internal.component.resolution.failure
 
 import org.gradle.api.internal.catalog.problems.ResolutionFailureProblemId
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.component.resolution.failure.exception.AbstractResolutionFailureException
 import org.gradle.internal.component.resolution.failure.exception.ArtifactSelectionException
 import org.gradle.internal.component.resolution.failure.exception.ConflictingConstraintsException
@@ -76,7 +76,7 @@ class ResolutionFailureHandlerIntegrationTest extends AbstractIntegrationSpec {
             additionalData.asMap['problemId'] == ResolutionFailureProblemId.NO_VERSION_SATISFIES.name()
             additionalData.asMap['problemDisplayName'] == "No version satisfies the constraints"
         }
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             verifyAll(receivedProblem(1)) {
                 fqid == 'validation:configuration-cache:error-writing-value-of-type-org-gradle-api-internal-file-collections-defaultconfigurablefilecollection'
                 contextualLabel == 'error writing value of type \'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection\''
@@ -186,7 +186,7 @@ class ResolutionFailureHandlerIntegrationTest extends AbstractIntegrationSpec {
             additionalData.asMap['problemId'] == ResolutionFailureProblemId.AMBIGUOUS_VARIANTS.name()
             additionalData.asMap['problemDisplayName'] == "Multiple variants exist that would match the request"
         }
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             verifyAll(receivedProblem(1)) {
                 fqid == 'validation:configuration-cache:error-writing-value-of-type-org-gradle-api-internal-file-collections-defaultconfigurablefilecollection'
                 contextualLabel == 'error writing value of type \'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection\''
@@ -255,7 +255,7 @@ class ResolutionFailureHandlerIntegrationTest extends AbstractIntegrationSpec {
             additionalData.asMap['problemId'] == ResolutionFailureProblemId.NO_COMPATIBLE_VARIANTS.name()
             additionalData.asMap['problemDisplayName'] == "No variants exist that would match the request"
         }
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             verifyAll(receivedProblem(1)) {
                 fqid == 'validation:configuration-cache:error-writing-value-of-type-org-gradle-api-internal-file-collections-defaultconfigurablefilecollection'
                 contextualLabel == 'error writing value of type \'org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection\''

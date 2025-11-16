@@ -35,7 +35,7 @@ import org.gradle.util.GradleVersion
 
 class ConfigurationCacheBuildOperationsIntegrationTest extends AbstractConfigurationCacheIntegrationTest {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "emits no load/store build operations when configuration cache is not used"() {
         given:

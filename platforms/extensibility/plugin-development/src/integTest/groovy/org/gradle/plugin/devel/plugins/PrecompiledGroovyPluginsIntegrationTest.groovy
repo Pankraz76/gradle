@@ -264,7 +264,7 @@ class PrecompiledGroovyPluginsIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.inDirectory(file("plugin")).withTasks("publish").run()
+        executor.inDirectory(file("plugin")).withTasks("publish").run()
         mavenRepo.module('com.example', 'plugin', '1.0').assertPublished()
         file('plugin').forceDeleteDir()
 
@@ -444,7 +444,7 @@ class PrecompiledGroovyPluginsIntegrationTest extends AbstractIntegrationSpec {
         """
 
         when:
-        executer.usingInitScript(initScript)
+        executor.usingInitScript(initScript)
 
         then:
         succeeds("help")
@@ -922,7 +922,7 @@ class PrecompiledGroovyPluginsIntegrationTest extends AbstractIntegrationSpec {
         ]
 
         when:
-        result = executer.inDirectory(firstDir).withTasks('help').withArgument("--build-cache").run()
+        result = executor.inDirectory(firstDir).withTasks('help').withArgument("--build-cache").run()
 
         then:
         outputContains('my-plugin applied')
@@ -931,7 +931,7 @@ class PrecompiledGroovyPluginsIntegrationTest extends AbstractIntegrationSpec {
         }
 
         when:
-        result = executer.inDirectory(secondDir).withTasks('help').withArgument("--build-cache").run()
+        result = executor.inDirectory(secondDir).withTasks('help').withArgument("--build-cache").run()
 
         then:
         outputContains('my-plugin applied')
@@ -943,7 +943,7 @@ class PrecompiledGroovyPluginsIntegrationTest extends AbstractIntegrationSpec {
         secondDir.file("buildSrc/src/main/groovy/my-plugin.gradle") << """
             println 'content changed'
         """
-        result = executer.inDirectory(secondDir).withTasks('help').withArgument("--build-cache").run()
+        result = executor.inDirectory(secondDir).withTasks('help').withArgument("--build-cache").run()
 
         then:
         outputContains('my-plugin applied')
@@ -1054,14 +1054,14 @@ class PrecompiledGroovyPluginsIntegrationTest extends AbstractIntegrationSpec {
         def configurationCacheFixture = new ConfigurationCacheFixture(this)
 
         when:
-        executer.withConfigurationCacheEnabled()
+        executor.withConfigurationCacheEnabled()
         run("help")
 
         then:
         configurationCacheFixture.assertStateStored()
 
         when:
-        executer.withConfigurationCacheEnabled()
+        executor.withConfigurationCacheEnabled()
         run("help")
 
         then:
@@ -1087,7 +1087,7 @@ class PrecompiledGroovyPluginsIntegrationTest extends AbstractIntegrationSpec {
             rootProject.name = 'plugins'
         """)
 
-        executer.inDirectory(pluginsDir).withTasks("jar").run()
+        executor.inDirectory(pluginsDir).withTasks("jar").run()
             .assertNotOutput("No valid plugin descriptors were found in META-INF/gradle-plugins")
         def pluginJar = pluginsDir.file("build/libs/plugins.jar").assertExists()
         def movedJar = file('plugins.jar')

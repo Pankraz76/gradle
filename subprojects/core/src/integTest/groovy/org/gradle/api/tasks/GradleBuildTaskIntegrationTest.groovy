@@ -20,13 +20,13 @@ import org.gradle.initialization.RunNestedBuildBuildOperationType
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.BuildOperationsFixture
 import org.gradle.integtests.fixtures.ToBeFixedForIsolatedProjects
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.test.fixtures.server.http.BlockingHttpServer
 import org.junit.Rule
 
 class GradleBuildTaskIntegrationTest extends AbstractIntegrationSpec {
 
-    def buildOperations = new BuildOperationsFixture(executer, testDirectoryProvider)
+    def buildOperations = new BuildOperationsFixture(executor, testDirectoryProvider)
 
     def "handles properties which are not String when calling GradleBuild"() {
         given:
@@ -40,7 +40,7 @@ class GradleBuildTaskIntegrationTest extends AbstractIntegrationSpec {
         file('other/settings.gradle').createFile()
         file('other/build.gradle') << 'assert foo==true'
 
-        executer.expectDocumentedDeprecationWarning("Using non-String project properties: property 'foo' has value of type java.lang.Boolean. This behavior has been deprecated. This will fail with an error in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#deprecated-gradle-build-non-string-properties")
+        executor.expectDocumentedDeprecationWarning("Using non-String project properties: property 'foo' has value of type java.lang.Boolean. This behavior has been deprecated. This will fail with an error in Gradle 10. Consult the upgrading guide for further information: https://docs.gradle.org/current/userguide/upgrading_version_9.html#deprecated-gradle-build-non-string-properties")
 
         when:
         run 'buildInBuild'
@@ -269,7 +269,7 @@ class GradleBuildTaskIntegrationTest extends AbstractIntegrationSpec {
             task log { }
         """
 
-        def runs = GradleContextualExecuter.isConfigCache() ? 2 : 1
+        def runs = GradleContextualExecutor.isConfigCache() ? 2 : 1
         runs.times {
             barrier.expectConcurrent("child-build-started", "1-started", "2-started")
             barrier.expectConcurrent("child-build-finished", "1-finished", "2-finished")
@@ -277,7 +277,7 @@ class GradleBuildTaskIntegrationTest extends AbstractIntegrationSpec {
 
         when:
         runs.times {
-            executer.withArgument("--parallel")
+            executor.withArgument("--parallel")
             run 'otherBuild'
         }
 

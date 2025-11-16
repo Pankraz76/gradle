@@ -16,7 +16,7 @@
 
 package org.gradle.smoketests
 
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 
 import static org.gradle.testkit.runner.TaskOutcome.FROM_CACHE
 import static org.gradle.testkit.runner.TaskOutcome.NO_SOURCE
@@ -43,7 +43,7 @@ class AndroidProjectCachingSmokeTest extends AbstractAndroidProjectSmokeTest {
         def result = buildLocation(originalDir, agpVersion)
 
         then:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateStored()
         }
 
@@ -51,7 +51,7 @@ class AndroidProjectCachingSmokeTest extends AbstractAndroidProjectSmokeTest {
         result = buildCachedLocation(originalDir, agpVersion)
 
         then:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateLoaded()
         }
 
@@ -59,7 +59,7 @@ class AndroidProjectCachingSmokeTest extends AbstractAndroidProjectSmokeTest {
         result = buildCachedLocation(originalDir, agpVersion)
 
         then:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateLoaded()
         }
 
@@ -67,14 +67,14 @@ class AndroidProjectCachingSmokeTest extends AbstractAndroidProjectSmokeTest {
         result = buildLocation(relocatedDir, agpVersion)
 
         then:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateStored()
         }
 
         and:
         def expectedResults = AndroidPluginExpectations.EXPECTED_RESULTS_8_13_0
         // workaround for com.google.android.gms.oss-licenses-plugin not being compatible with configuration cache
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             expectedResults.entrySet().removeIf { it.key.contains("Oss") }
         }
 
@@ -93,7 +93,7 @@ class AndroidProjectCachingSmokeTest extends AbstractAndroidProjectSmokeTest {
         result = buildCachedLocation(relocatedDir, agpVersion)
 
         then:
-        if (GradleContextualExecuter.isConfigCache()) {
+        if (GradleContextualExecutor.isConfigCache()) {
             result.assertConfigurationCacheStateLoaded()
         }
 

@@ -27,11 +27,11 @@ import static org.gradle.cache.internal.scopes.DefaultCacheScopeMapping.GLOBAL_C
 @SelfType(AbstractIntegrationSpec)
 trait CachingIntegrationFixture {
     TestFile getUserHomeCacheDir() {
-        return executer.gradleUserHomeDir.file(GLOBAL_CACHE_DIR_NAME)
+        return executor.gradleUserHomeDir.file(GLOBAL_CACHE_DIR_NAME)
     }
 
     TestFile getGradleVersionedCacheDir() {
-        return executer.gradleUserHomeDir.file(GLOBAL_CACHE_DIR_NAME, GradleVersion.current().getVersion())
+        return executor.gradleUserHomeDir.file(GLOBAL_CACHE_DIR_NAME, GradleVersion.current().getVersion())
     }
 
     TestFile getMetadataCacheDir() {
@@ -39,7 +39,7 @@ trait CachingIntegrationFixture {
     }
 
     void markForArtifactCacheCleanup() {
-        executer.withArgument("-Dorg.gradle.internal.cleanup.external.max.age=-1")
+        executor.withArgument("-Dorg.gradle.internal.cleanup.external.max.age=-1")
         TestFile gcFile = metadataCacheDir.file("gc.properties")
         gcFile.createFile()
         assert gcFile.setLastModified(0)

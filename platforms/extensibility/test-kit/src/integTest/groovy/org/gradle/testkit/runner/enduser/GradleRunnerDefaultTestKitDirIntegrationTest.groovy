@@ -29,7 +29,7 @@ import org.gradle.util.internal.TextUtil
 class GradleRunnerDefaultTestKitDirIntegrationTest extends BaseGradleRunnerIntegrationTest implements TestKitDependencyBlock {
 
     def setup() {
-        executer.beforeExecute {
+        executor.beforeExecute {
             usingInitScript(file("tempDirInit.gradle") << """
                 allprojects {
                     tasks.withType(Test) {

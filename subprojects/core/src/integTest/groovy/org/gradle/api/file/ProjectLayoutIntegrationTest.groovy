@@ -343,7 +343,7 @@ class ProjectLayoutIntegrationTest extends AbstractIntegrationSpec {
         """
 
         expect:
-        executer.withStacktraceEnabled()
+        executor.withStacktraceEnabled()
         fails('help')
         errorOutput.contains('java.lang.NullPointerException')
 

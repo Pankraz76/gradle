@@ -51,7 +51,7 @@ class JavaCompileLineEndingSensitivityIntegrationTest extends AbstractIntegratio
         writeJavaSourceWithUnixLineEndings()
 
         when:
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
         succeeds compileTask
 
         then:
@@ -62,7 +62,7 @@ class JavaCompileLineEndingSensitivityIntegrationTest extends AbstractIntegratio
         succeeds "clean"
 
         and:
-        executer.withBuildCacheEnabled()
+        executor.withBuildCacheEnabled()
         succeeds compileTask
 
         then:

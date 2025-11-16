@@ -17,7 +17,7 @@
 package org.gradle.plugins.ide.idea
 
 import org.gradle.integtests.fixtures.TestResources
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.plugins.ide.AbstractIdeIntegrationTest
 import org.junit.Rule
 import org.junit.Test

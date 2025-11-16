@@ -77,7 +77,7 @@ class VisualStudioFileCustomizationIntegrationTest extends AbstractVisualStudioI
         assert projectFile.headerFiles == app.headerFiles*.withPath("../../../src/main").sort()
         assert projectFile.sourceFiles == ['../../../build.gradle'] + app.sourceFiles*.withPath("../../../src/main").sort()
         projectFile.projectConfigurations.values().each {
-            def gradleHomeDir = executer.distribution.gradleHomeDir.file("bin/gradle")
+            def gradleHomeDir = executor.distribution.gradleHomeDir.file("bin/gradle")
             def formattedGradleHomeDir = gradleHomeDir.toString()
             if (OperatingSystem.current().isWindows()) {
                 // For some reason we use forward slashes even on Windows

@@ -39,9 +39,9 @@ class ResolvingWithPluginManagementSpec extends AbstractDependencyResolutionTest
 
         pluginBuilder.addPluginWithPrintlnTask(taskName, message, "org.example.plugin")
         if (repository instanceof MavenRepository) {
-            pluginBuilder.publishAs("org.example.plugin:plugin:1.0", repository, executer)
+            pluginBuilder.publishAs("org.example.plugin:plugin:1.0", repository, executor)
         } else if (repository instanceof IvyRepository) {
-            pluginBuilder.publishAs("org.example.plugin:plugin:1.0", repository, executer)
+            pluginBuilder.publishAs("org.example.plugin:plugin:1.0", repository, executor)
         }
     }
 

@@ -28,7 +28,7 @@ import org.junit.Rule
 @PolyglotDslTest
 class ProjectTypeDeclarationIntegrationTest extends AbstractIntegrationSpec implements ProjectTypeFixture, PolyglotTestFixture {
     @Rule
-    MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     @Rule
     MavenHttpPluginRepository mavenHttpRepo = new MavenHttpPluginRepository(mavenRepo)
@@ -65,7 +65,7 @@ class ProjectTypeDeclarationIntegrationTest extends AbstractIntegrationSpec impl
         given:
         pluginPortal.start()
         def pluginBuilder = withProjectTypePlugins()
-        pluginBuilder.publishAs("com", "example", "1.0", pluginPortal, createExecuter()).allowAll()
+        pluginBuilder.publishAs("com", "example", "1.0", pluginPortal, createExecutor()).allowAll()
 
         settingsFile() << """
             plugins {
@@ -92,7 +92,7 @@ class ProjectTypeDeclarationIntegrationTest extends AbstractIntegrationSpec impl
     def 'can declare and configure a custom project type from plugin published to a custom repository'() {
         given:
         def pluginBuilder = withProjectTypePlugins()
-        pluginBuilder.publishAs("com", "example", "1.0", mavenHttpRepo, createExecuter()).allowAll()
+        pluginBuilder.publishAs("com", "example", "1.0", mavenHttpRepo, createExecutor()).allowAll()
 
         settingsFile() << """
             pluginManagement {

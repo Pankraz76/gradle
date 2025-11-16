@@ -33,11 +33,11 @@ import static org.gradle.internal.enterprise.GradleEnterprisePluginConfig.BuildS
 @Requires(IntegTestPreconditions.NotConfigCached)
 class DevelocityPluginConfigurationCachingIntegrationTest extends AbstractIntegrationSpec {
 
-    def plugin = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecuter())
+    def plugin = new DevelocityPluginCheckInFixture(testDirectory, mavenRepo, createExecutor())
 
     def setup() {
         settingsFile << plugin.pluginManagement() << plugin.plugins()
-        plugin.publishDummyPlugin(executer)
+        plugin.publishDummyPlugin(executor)
         buildFile << """
             task t
         """
@@ -177,10 +177,10 @@ class DevelocityPluginConfigurationCachingIntegrationTest extends AbstractIntegr
     }
 
     private void runInteractive(String task, String answer) {
-        executer.withForceInteractive(true)
-        executer.withStdinPipe()
-        executer.withTasks(task, "--configuration-cache")
-        def handle = executer.start()
+        executor.withForceInteractive(true)
+        executor.withStdinPipe()
+        executor.withTasks(task, "--configuration-cache")
+        def handle = executor.start()
         ConcurrentTestUtil.poll(60) {
             assert handle.standardOutput.contains("there? [yes, no]")
         }

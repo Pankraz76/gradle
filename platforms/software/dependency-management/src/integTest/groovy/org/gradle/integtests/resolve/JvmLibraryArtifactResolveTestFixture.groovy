@@ -19,7 +19,7 @@ package org.gradle.integtests.resolve
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.internal.artifacts.DefaultModuleIdentifier
 import org.gradle.api.internal.artifacts.repositories.resolver.MavenUniqueSnapshotComponentIdentifier
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.internal.component.external.model.DefaultModuleComponentIdentifier
 import org.gradle.test.fixtures.file.TestFile
 
@@ -155,7 +155,7 @@ class VerificationException extends org.gradle.internal.exceptions.DefaultMultiC
         ${checkComponentResultArtifacts("componentResult", "sources", expectedSources)}
         ${checkComponentResultArtifacts("componentResult", "javadoc", expectedJavadoc)}
 """
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             buildFile << """
 task $taskName {
     def root = configurations.${config}.incoming.resolutionResult.rootComponent
@@ -208,7 +208,7 @@ task $taskName {
         assert componentResult instanceof UnresolvedComponentResult
         def failure = componentResult.failure
 """
-        if (GradleContextualExecuter.configCache) {
+        if (GradleContextualExecutor.configCache) {
             buildFile << """
 task verify {
     def result = provider {

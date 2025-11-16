@@ -26,7 +26,7 @@ class BuildSrcPluginIntegrationTest extends AbstractIntegrationSpec {
     @Issue("GRADLE-2001")
     def "can use plugin from buildSrc that changes"() {
         given:
-        executer.requireIsolatedDaemons() // make sure we get the same daemon both times
+        executor.requireIsolatedDaemons() // make sure we get the same daemon both times
 
         buildFile << "apply plugin: 'test-plugin'"
 

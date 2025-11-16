@@ -24,7 +24,7 @@ import org.gradle.api.tasks.OutputFile
 abstract class AbstractFilePropertyKotlinInterOpIntegrationTest extends AbstractFilePropertyLanguageInterOpIntegrationTest {
     def setup() {
         usesKotlin(pluginDir)
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
     }
 
     abstract void taskDefinition()

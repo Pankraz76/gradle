@@ -33,9 +33,9 @@ class MavenPublishS3ErrorsIntegrationTest extends AbstractMavenPublishIntegTest 
     public final S3Server server = new S3Server(temporaryFolder)
 
     def setup() {
-        executer.withArgument('-d')
-        executer.withArgument("-Dorg.gradle.s3.endpoint=${server.uri}")
-        executer.withStackTraceChecksDisabled()
+        executor.withArgument('-d')
+        executor.withArgument("-Dorg.gradle.s3.endpoint=${server.uri}")
+        executor.withStackTraceChecksDisabled()
     }
 
     def "should fail with an authentication error"() {

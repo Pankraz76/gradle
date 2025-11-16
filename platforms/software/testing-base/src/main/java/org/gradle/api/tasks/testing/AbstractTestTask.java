@@ -29,7 +29,7 @@ import org.gradle.api.internal.tasks.testing.DefaultTestTaskReports;
 import org.gradle.api.internal.tasks.testing.FailFastTestListenerInternal;
 import org.gradle.api.internal.tasks.testing.MultiTestReportGenerator;
 import org.gradle.api.internal.tasks.testing.TestEventReporterFactoryInternal;
-import org.gradle.api.internal.tasks.testing.TestExecuter;
+import org.gradle.api.internal.tasks.testing.TestExecutor;
 import org.gradle.api.internal.tasks.testing.TestExecutionSpec;
 import org.gradle.api.internal.tasks.testing.TestReportGenerator;
 import org.gradle.api.internal.tasks.testing.TestResultProcessor;
@@ -233,11 +233,11 @@ public abstract class AbstractTestTask extends ConventionTask implements Verific
     protected abstract TestEventReporterFactory getTestEventReporterFactory();
 
     /**
-     * Creates test executer. For internal use only.
+     * Creates test executor. For internal use only.
      *
      * @since 4.4
      */
-    protected abstract TestExecuter<? extends TestExecutionSpec> createTestExecuter();
+    protected abstract TestExecutor<? extends TestExecutionSpec> createTestExecutor();
 
     /**
      * Creates test execution specification. For internal use only.
@@ -529,16 +529,16 @@ public abstract class AbstractTestTask extends ConventionTask implements Verific
             false,
             false
         ))) {
-            TestExecuter<TestExecutionSpec> testExecuter = Cast.uncheckedNonnullCast(createTestExecuter());
+            TestExecutor<TestExecutionSpec> testExecutor = Cast.uncheckedNonnullCast(createTestExecutor());
             TestListenerInternal resultProcessorDelegate = reporterAsListener;
             if (failFast) {
-                resultProcessorDelegate = new FailFastTestListenerInternal(testExecuter, resultProcessorDelegate);
+                resultProcessorDelegate = new FailFastTestListenerInternal(testExecutor, resultProcessorDelegate);
             }
 
             TestResultProcessor resultProcessor = new StateTrackingTestResultProcessor(resultProcessorDelegate);
 
             try {
-                testExecuter.execute(executionSpec, resultProcessor);
+                testExecutor.execute(executionSpec, resultProcessor);
             } finally {
                 parentProgressLogger.completed();
                 testWorkerProgressListener.completeAll();

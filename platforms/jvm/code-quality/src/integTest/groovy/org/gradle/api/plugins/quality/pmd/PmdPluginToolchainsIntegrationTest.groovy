@@ -30,7 +30,7 @@ import org.junit.Assume
 class PmdPluginToolchainsIntegrationTest extends AbstractPmdPluginVersionIntegrationTest implements JavaToolchainFixture {
 
     def setup() {
-        executer.withArgument("--info")
+        executor.withArgument("--info")
     }
 
     def "uses jdk from toolchains set through java plugin"() {

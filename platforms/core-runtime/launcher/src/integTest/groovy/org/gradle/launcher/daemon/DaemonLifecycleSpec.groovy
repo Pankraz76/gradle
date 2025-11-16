@@ -128,7 +128,7 @@ class DaemonLifecycleSpec extends AbstractDaemonLifecycleSpec {
         then:
         busy()
         daemonContext {
-            File registry = new DaemonDir(executer.daemonBaseDir).registry
+            File registry = new DaemonDir(executor.daemonBaseDir).registry
             deleteFile(registry)
         }
 
@@ -158,7 +158,7 @@ class DaemonLifecycleSpec extends AbstractDaemonLifecycleSpec {
 
         when:
         daemonContext {
-            File registry = new DaemonDir(executer.daemonBaseDir).registry
+            File registry = new DaemonDir(executor.daemonBaseDir).registry
             deleteFile(registry)
         }
 
@@ -174,7 +174,7 @@ class DaemonLifecycleSpec extends AbstractDaemonLifecycleSpec {
         then:
         busy()
         daemonContext {
-            File registry = new DaemonDir(executer.daemonBaseDir).registry
+            File registry = new DaemonDir(executor.daemonBaseDir).registry
             deleteFile(registry)
         }
         startBuild()
@@ -182,7 +182,7 @@ class DaemonLifecycleSpec extends AbstractDaemonLifecycleSpec {
 
         then:
         daemonContext(0) {
-            assert (new DaemonDir(executer.daemonBaseDir).registry.exists())
+            assert (new DaemonDir(executor.daemonBaseDir).registry.exists())
         }
 
         when:
@@ -206,7 +206,7 @@ class DaemonLifecycleSpec extends AbstractDaemonLifecycleSpec {
         then:
         busy()
         daemonContext {
-            registry = new DaemonDir(executer.daemonBaseDir).registry
+            registry = new DaemonDir(executor.daemonBaseDir).registry
             deleteFile(registry)
         }
 
@@ -304,7 +304,7 @@ class DaemonLifecycleSpec extends AbstractDaemonLifecycleSpec {
         busy()
         // Cause the daemon to want to stop
         daemonContext {
-            File registry = new DaemonDir(executer.daemonBaseDir).registry
+            File registry = new DaemonDir(executor.daemonBaseDir).registry
             deleteFile(registry)
         }
 

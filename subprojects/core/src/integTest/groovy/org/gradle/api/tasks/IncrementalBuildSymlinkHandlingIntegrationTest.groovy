@@ -34,8 +34,8 @@ class IncrementalBuildSymlinkHandlingIntegrationTest extends AbstractIntegration
         expectReindentedValidationMessage()
 
         // Must run on isolated daemons so that symlink data can be properly cleaned up between builds
-        executer.requireDaemon()
-        executer.requireIsolatedDaemons()
+        executor.requireDaemon()
+        executor.requireIsolatedDaemons()
 
         buildFile << """
 // This is a workaround to bust the JVM's file canonicalization cache

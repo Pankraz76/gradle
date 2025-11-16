@@ -18,7 +18,7 @@ package org.gradle.api.tasks
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.AvailableJavaHomes
-import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.integtests.fixtures.executor.GradleContextualExecutor
 import org.gradle.integtests.fixtures.jvm.JavaToolchainBuildOperationsFixture
 import org.gradle.integtests.fixtures.jvm.JavaToolchainFixture
 import org.gradle.integtests.fixtures.versions.KotlinGradlePluginVersions
@@ -441,7 +441,7 @@ class JavaToolchainBuildOperationsIntegrationTest extends AbstractIntegrationSpe
         then:
         executedAndNotSkipped(":compileKotlin", ":test")
         println(eventsOnCompile)
-        if (GradleContextualExecuter.notConfigCache) {
+        if (GradleContextualExecutor.notConfigCache) {
             assertToolchainUsages(eventsOnCompile, jdkMetadata, "JavaLauncher", "JavaCompiler")
         }
         // Even though we only configure the toolchain within the `kotlin` block,

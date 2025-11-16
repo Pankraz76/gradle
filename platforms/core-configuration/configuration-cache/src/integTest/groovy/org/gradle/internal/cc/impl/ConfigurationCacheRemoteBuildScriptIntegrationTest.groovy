@@ -102,7 +102,7 @@ class ConfigurationCacheRemoteBuildScriptIntegrationTest extends AbstractConfigu
         """
 
         and:
-        executer.withArgument("--offline")
+        executor.withArgument("--offline")
         configurationCacheRun 'ok'
 
         then:
@@ -112,7 +112,7 @@ class ConfigurationCacheRemoteBuildScriptIntegrationTest extends AbstractConfigu
         outputDoesNotContain 'update remote script'
 
         when:
-        executer.withArgument("--offline")
+        executor.withArgument("--offline")
         configurationCacheRun 'ok'
 
         then:

@@ -18,8 +18,8 @@ package org.gradle.api.internal.tasks.execution;
 import org.gradle.api.internal.TaskInternal;
 import org.gradle.api.internal.file.FileCollectionFactory;
 import org.gradle.api.internal.tasks.TaskDependencyFactory;
-import org.gradle.api.internal.tasks.TaskExecuter;
-import org.gradle.api.internal.tasks.TaskExecuterResult;
+import org.gradle.api.internal.tasks.TaskExecutor;
+import org.gradle.api.internal.tasks.TaskExecutorResult;
 import org.gradle.api.internal.tasks.TaskExecutionContext;
 import org.gradle.api.internal.tasks.TaskExecutionOutcome;
 import org.gradle.api.internal.tasks.TaskStateInternal;
@@ -46,10 +46,10 @@ import java.util.Optional;
 import static org.gradle.internal.execution.Execution.ExecutionOutcome.EXECUTED_INCREMENTALLY;
 
 /**
- * A {@link TaskExecuter} which executes the actions of a task.
+ * A {@link TaskExecutor} which executes the actions of a task.
  */
 @SuppressWarnings("deprecation")
-public class ExecuteActionsTaskExecuter implements TaskExecuter {
+public class ExecuteActionsTaskExecutor implements TaskExecutor {
 
     private final ExecutionHistoryStore executionHistoryStore;
     private final BuildOperationRunner buildOperationRunner;
@@ -66,7 +66,7 @@ public class ExecuteActionsTaskExecuter implements TaskExecuter {
     private final PathToFileResolver fileResolver;
     private final MissingTaskDependencyDetector missingTaskDependencyDetector;
 
-    public ExecuteActionsTaskExecuter(
+    public ExecuteActionsTaskExecutor(
         ExecutionHistoryStore executionHistoryStore,
         BuildOperationRunner buildOperationRunner,
         AsyncWorkTracker asyncWorkTracker,
@@ -99,7 +99,7 @@ public class ExecuteActionsTaskExecuter implements TaskExecuter {
     }
 
     @Override
-    public TaskExecuterResult execute(TaskInternal task, TaskStateInternal state, TaskExecutionContext context) {
+    public TaskExecutorResult execute(TaskInternal task, TaskStateInternal state, TaskExecutionContext context) {
         TaskExecution work = new TaskExecution(
             task,
             context,
@@ -121,11 +121,11 @@ public class ExecuteActionsTaskExecuter implements TaskExecuter {
             return executeIfValid(task, state, context, work);
         } catch (WorkValidationException ex) {
             state.setOutcome(ex);
-            return TaskExecuterResult.WITHOUT_OUTPUTS;
+            return TaskExecutorResult.WITHOUT_OUTPUTS;
         }
     }
 
-    private TaskExecuterResult executeIfValid(TaskInternal task, TaskStateInternal state, TaskExecutionContext context, TaskExecution work) {
+    private TaskExecutorResult executeIfValid(TaskInternal task, TaskStateInternal state, TaskExecutionContext context, TaskExecution work) {
         ExecutionEngine.Request request = executionEngine.createRequest(work);
         context.getTaskExecutionMode().getRebuildReason().ifPresent(request::forceNonIncremental);
         request.withValidationContext(context.getValidationContext());
@@ -134,7 +134,7 @@ public class ExecuteActionsTaskExecuter implements TaskExecuter {
             success -> state.setOutcome(convertOutcome(success.getOutcome())),
             failure -> state.setOutcome(new TaskExecutionException(task, failure))
         );
-        return new TaskExecuterResult() {
+        return new TaskExecutorResult() {
             @Override
             public Optional<OriginMetadata> getReusedOutputOriginMetadata() {
                 return result.getReusedOutputOriginMetadata();

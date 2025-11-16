@@ -24,14 +24,14 @@ import org.gradle.test.fixtures.plugin.PluginBuilder
 
 class ResolveConfigurationRepositoriesBuildOperationIntegrationTest extends AbstractHttpDependencyResolutionTest {
 
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     @SuppressWarnings("GroovyUnusedDeclaration")
-    def operationNotificationsFixture = new BuildOperationNotificationsFixture(executer, temporaryFolder)
+    def operationNotificationsFixture = new BuildOperationNotificationsFixture(executor, temporaryFolder)
 
     def "repositories used when resolving project configurations are exposed via build operation (repo: #repo)"() {
         setup:
-        executer.beforeExecute { executer.withPluginRepositoryMirrorDisabled() }
+        executor.beforeExecute { executor.withPluginRepositoryMirrorDisabled() }
         m2.generateUserSettingsFile(m2.mavenRepo())
         using m2
         buildFile << """
@@ -613,7 +613,7 @@ class ResolveConfigurationRepositoriesBuildOperationIntegrationTest extends Abst
         def message = 'from plugin'
         def taskName = 'pluginTask'
         pluginBuilder.addPluginWithPrintlnTask(taskName, message, id)
-        pluginBuilder.publishAs(coordinates, mavenRepo, executer)
+        pluginBuilder.publishAs(coordinates, mavenRepo, executor)
     }
 
 }

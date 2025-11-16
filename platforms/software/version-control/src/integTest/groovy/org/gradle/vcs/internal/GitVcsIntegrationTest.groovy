@@ -377,8 +377,8 @@ The following types/formats are supported:
 
         when:
         // Start the build then wait until the first configuration is resolved.
-        executer.withTasks("assemble")
-        def build = executer.start()
+        executor.withTasks("assemble")
+        def build = executor.start()
         block.waitForAllPendingCalls()
 
         // Change the head of the repo

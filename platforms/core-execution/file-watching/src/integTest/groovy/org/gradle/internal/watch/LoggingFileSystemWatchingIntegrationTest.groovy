@@ -29,7 +29,7 @@ import org.gradle.test.fixtures.ConcurrentTestUtil
 class LoggingFileSystemWatchingIntegrationTest extends AbstractFileSystemWatchingIntegrationTest {
 
     def setup() {
-        executer.requireDaemon()
+        executor.requireDaemon()
     }
 
     def "verbose VFS logging can be enabled"() {
@@ -107,6 +107,6 @@ class LoggingFileSystemWatchingIntegrationTest extends AbstractFileSystemWatchin
     }
 
     private DaemonFixture getDaemon() {
-        new DaemonLogsAnalyzer(executer.daemonBaseDir).daemon
+        new DaemonLogsAnalyzer(executor.daemonBaseDir).daemon
     }
 }

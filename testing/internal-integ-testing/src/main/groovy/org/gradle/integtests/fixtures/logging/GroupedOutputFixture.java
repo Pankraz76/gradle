@@ -17,7 +17,7 @@
 package org.gradle.integtests.fixtures.logging;
 
 import org.apache.commons.lang3.StringUtils;
-import org.gradle.integtests.fixtures.executer.LogContent;
+import org.gradle.integtests.fixtures.executor.LogContent;
 
 import java.util.Arrays;
 import java.util.HashMap;

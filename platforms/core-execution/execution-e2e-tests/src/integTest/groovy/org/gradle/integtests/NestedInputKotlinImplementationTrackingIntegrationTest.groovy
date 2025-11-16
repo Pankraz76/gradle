@@ -120,7 +120,7 @@ class NestedInputKotlinImplementationTrackingIntegrationTest extends AbstractInt
         }
 
         when:
-        executer.inDirectory(project1)
+        executor.inDirectory(project1)
         withBuildCache().run 'myTask'
 
         then:
@@ -128,7 +128,7 @@ class NestedInputKotlinImplementationTrackingIntegrationTest extends AbstractInt
         project1.file('build/tmp/myTask/output.txt').text == "hello"
 
         when:
-        executer.inDirectory(project2)
+        executor.inDirectory(project2)
         withBuildCache().run 'myTask'
 
         then:
@@ -192,7 +192,7 @@ class NestedInputKotlinImplementationTrackingIntegrationTest extends AbstractInt
 
         when:
         if (['1.8', '1.9'].contains(kotlinLanguageVersion)) {
-            executer.expectExternalDeprecatedMessage("w: Language version $kotlinLanguageVersion is deprecated and its support will be removed in a future version of Kotlin")
+            executor.expectExternalDeprecatedMessage("w: Language version $kotlinLanguageVersion is deprecated and its support will be removed in a future version of Kotlin")
         }
         run "myTask"
 

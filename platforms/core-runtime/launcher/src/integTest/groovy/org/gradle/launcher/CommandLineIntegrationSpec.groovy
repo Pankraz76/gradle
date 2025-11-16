@@ -32,13 +32,13 @@ import spock.lang.Timeout
 class CommandLineIntegrationSpec extends AbstractIntegrationSpec {
 
     def setup() {
-        executer.requireDaemon().requireIsolatedDaemons()  // otherwise exception gets thrown in testing infrastructure
+        executor.requireDaemon().requireIsolatedDaemons()  // otherwise exception gets thrown in testing infrastructure
     }
 
     @Requires(IntegTestPreconditions.NotParallelExecutor)
     def "reasonable failure message when --max-workers=#value"() {
         when:
-        executer.withArgument("--max-workers=$value")
+        executor.withArgument("--max-workers=$value")
 
         then:
         fails "help"
@@ -52,7 +52,7 @@ class CommandLineIntegrationSpec extends AbstractIntegrationSpec {
 
     def "reasonable failure message when org.gradle.workers.max=#value"() {
         when:
-        executer.withArgument("-Dorg.gradle.workers.max=$value")
+        executor.withArgument("-Dorg.gradle.workers.max=$value")
 
         then:
         fails "help"
@@ -71,7 +71,7 @@ class CommandLineIntegrationSpec extends AbstractIntegrationSpec {
         JDWPUtil jdwpClient = new JDWPUtil(5005)
 
         when:
-        def gradle = executer.withArgument("-Dorg.gradle.debug=true").withTasks("help").start()
+        def gradle = executor.withArgument("-Dorg.gradle.debug=true").withTasks("help").start()
 
         then:
         ConcurrentTestUtil.poll() {
@@ -89,7 +89,7 @@ class CommandLineIntegrationSpec extends AbstractIntegrationSpec {
         JDWPUtil jdwpClient = new JDWPUtil()
 
         when:
-        def gradle = executer
+        def gradle = executor
             .withArgument("-Dorg.gradle.debug=true")
             .withArgument("-Dorg.gradle.debug.port=${jdwpClient.port}")
             .withTasks("help").start()
@@ -132,7 +132,7 @@ class CommandLineIntegrationSpec extends AbstractIntegrationSpec {
     }
 
     private startWithDebug(int port, String host) {
-        executer.withArgument("-Dorg.gradle.debug=true")
+        executor.withArgument("-Dorg.gradle.debug=true")
             .withArgument("-Dorg.gradle.debug.port=" + port)
             .withArgument("-Dorg.gradle.debug.host=" + host)
             .withTasks("help")
@@ -199,7 +199,7 @@ class CommandLineIntegrationSpec extends AbstractIntegrationSpec {
         jdwpClient.listen(false)
 
         when:
-        def handle = executer.withArguments("-Dorg.gradle.debug=true", "-Dorg.gradle.debug.server=false", "-Dorg.gradle.debug.port=${jdwpClient.port}").withTasks("help").start()
+        def handle = executor.withArguments("-Dorg.gradle.debug=true", "-Dorg.gradle.debug.server=false", "-Dorg.gradle.debug.port=${jdwpClient.port}").withTasks("help").start()
 
         and:
         jdwpClient.accept()
@@ -222,7 +222,7 @@ class CommandLineIntegrationSpec extends AbstractIntegrationSpec {
         jdwpClient.listen(false)
 
         when:
-        def handle = executer.withArguments("-Dorg.gradle.debug=true", "-Dorg.gradle.debug.suspend=false", "-Dorg.gradle.debug.server=false", "-Dorg.gradle.debug.port=${jdwpClient.port}").withTasks("help").start()
+        def handle = executor.withArguments("-Dorg.gradle.debug=true", "-Dorg.gradle.debug.suspend=false", "-Dorg.gradle.debug.server=false", "-Dorg.gradle.debug.port=${jdwpClient.port}").withTasks("help").start()
 
         and:
         jdwpClient.accept()

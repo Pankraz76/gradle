@@ -33,7 +33,7 @@ abstract class BasicZincScalaCompilerIntegrationTest extends MultiVersionIntegra
     def setup() {
         args("-PscalaVersion=$version")
         buildFile << buildScript()
-        executer.withRepositoryMirrors()
+        executor.withRepositoryMirrors()
     }
 
     def compileGoodCode() {

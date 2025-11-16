@@ -135,7 +135,7 @@ class BuildEventsParallelIntegrationTest extends AbstractIntegrationSpec {
         server.expect("handle:b")
         server.expect("serviceClosed")
 
-        def build = executer.withTasks("b").start()
+        def build = executor.withTasks("b").start()
 
         handleA.waitForAllPendingCalls()
         // Increase the chance of the test to detect a broken implementation that doesn't wait for events to be processed before closing the service.

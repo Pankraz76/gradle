@@ -104,7 +104,7 @@ class PmdPluginIncrementalAnalysisIntegrationTest extends AbstractPmdPluginVersi
         } else {
             // the expected message exposed only in debug mode
             // however, the debug output also contains a stacktrace from PMD internals
-            executer.withStackTraceChecksDisabled()
+            executor.withStackTraceChecksDisabled()
             succeeds('pmdMain', '--debug')
         }
 

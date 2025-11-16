@@ -17,21 +17,21 @@ package org.gradle.api.internal.tasks.execution
 
 import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.internal.TaskInternal
-import org.gradle.api.internal.tasks.TaskExecuter
+import org.gradle.api.internal.tasks.TaskExecutor
 import org.gradle.api.internal.tasks.TaskExecutionContext
 import org.gradle.api.internal.tasks.TaskExecutionOutcome
 import org.gradle.api.internal.tasks.TaskStateInternal
 import spock.lang.Specification
 
-class SkipTaskWithNoActionsExecuterTest extends Specification {
+class SkipTaskWithNoActionsExecutorTest extends Specification {
     final TaskInternal task = Mock()
     final TaskStateInternal state = Mock()
     final TaskExecutionContext executionContext = Mock()
-    final TaskExecuter target = Mock()
+    final TaskExecutor target = Mock()
     final TaskInternal dependency = Mock()
     final TaskStateInternal dependencyState = Mock()
     final TaskExecutionGraph taskExecutionGraph = Mock()
-    final SkipTaskWithNoActionsExecuter executor = new SkipTaskWithNoActionsExecuter(taskExecutionGraph, target)
+    final SkipTaskWithNoActionsExecutor executor = new SkipTaskWithNoActionsExecutor(taskExecutionGraph, target)
 
     def setup() {
         _ * taskExecutionGraph.getDependencies(task) >> ([dependency] as Set)

@@ -68,7 +68,7 @@ abstract class AbstractJUnitTestListenerIntegrationTest extends AbstractTestingM
         """.stripIndent()
 
         when:
-        def result = executer.withTasks("test").run()
+        def result = executor.withTasks("test").run()
 
         then:
         containsLine(result.getOutput(), "START [Gradle Test Run :test] [Gradle Test Run :test]")
@@ -93,7 +93,7 @@ abstract class AbstractJUnitTestListenerIntegrationTest extends AbstractTestingM
 
         when:
         testDirectory.file('src/test/java/SomeOtherTest.java').delete()
-        result = executer.withTasks("test").run()
+        result = executor.withTasks("test").run()
 
         then:
         result.assertNotOutput("SomeOtherTest")

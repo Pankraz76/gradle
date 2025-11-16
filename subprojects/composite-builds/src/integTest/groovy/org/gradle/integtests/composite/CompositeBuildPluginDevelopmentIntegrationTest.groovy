@@ -18,7 +18,7 @@ package org.gradle.integtests.composite
 
 
 import org.gradle.integtests.fixtures.build.BuildTestFile
-import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
+import org.gradle.integtests.fixtures.executor.IntegrationTestBuildContext
 import org.gradle.integtests.fixtures.timeout.IntegrationTestTimeout
 import spock.lang.Issue
 
@@ -424,7 +424,7 @@ class CompositeBuildPluginDevelopmentIntegrationTest extends AbstractCompositeBu
                 }
             }
         """
-        executer.inDirectory(pluginBuild).withArguments('--include-build', pluginDependencyA.absolutePath).withTasks('publish').run()
+        executor.inDirectory(pluginBuild).withArguments('--include-build', pluginDependencyA.absolutePath).withTasks('publish').run()
     }
 
     private void publishPlugin() {
@@ -438,7 +438,7 @@ class CompositeBuildPluginDevelopmentIntegrationTest extends AbstractCompositeBu
                 }
             }
         """
-        executer.inDirectory(pluginBuild).withTasks('publish').run()
+        executor.inDirectory(pluginBuild).withTasks('publish').run()
     }
 
     def "detects dependency cycle between included builds required for buildscript classpath"() {

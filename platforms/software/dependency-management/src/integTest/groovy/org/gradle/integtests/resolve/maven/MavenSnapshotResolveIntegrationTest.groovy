@@ -374,7 +374,7 @@ task retrieve(type: Sync) {
         expectChangedModuleServed(nonUniqueVersionModule)
 
         and: "Resolve dependencies with cache expired"
-        executer.withArguments("-PnoTimeout")
+        executor.withArguments("-PnoTimeout")
         runRetrieveTask()
 
         then:
@@ -613,7 +613,7 @@ task retrieve(type: Sync) {
     }
 
     def runRetrieveTask() {
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         run 'retrieve'
     }
 
@@ -689,7 +689,7 @@ task retrieve(type: Sync) {
         projectB2.artifact.expectGet()
 
         and:
-        executer.withArguments("-PbypassCache")
+        executor.withArguments("-PbypassCache")
         runRetrieveTask()
 
         then: "Gets updated metadata"
@@ -766,7 +766,7 @@ task retrieve(type: Sync) {
         projectA.artifact.expectGetMissing()
 
         then:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         fails 'retrieve'
 
         and:
@@ -778,7 +778,7 @@ Searched in the following locations:
         server.resetExpectations()
 
         then:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         fails 'retrieve'
 
         and:
@@ -807,7 +807,7 @@ task retrieve(type: Sync) {
         metaData.expectGetBroken()
 
         then:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         fails 'retrieve'
 
         and:
@@ -1012,7 +1012,7 @@ task retrieve(type: Sync) {
         published.missing()
 
         and:
-        executer.withArgument("--no-problems-report")
+        executor.withArgument("--no-problems-report")
         fails('retrieve')
 
         then:

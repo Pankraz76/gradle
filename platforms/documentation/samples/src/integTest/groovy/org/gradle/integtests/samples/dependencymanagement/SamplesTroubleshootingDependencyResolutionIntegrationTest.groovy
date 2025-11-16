@@ -33,7 +33,7 @@ class SamplesTroubleshootingDependencyResolutionIntegrationTest extends Abstract
 
         given:
         def sampleDir = sample.dir.file(dsl)
-        executer.inDirectory(sampleDir)
+        executor.inDirectory(sampleDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)
@@ -50,7 +50,7 @@ class SamplesTroubleshootingDependencyResolutionIntegrationTest extends Abstract
 
         given:
         def sampleDir = sample.dir.file(dsl)
-        executer.inDirectory(sampleDir)
+        executor.inDirectory(sampleDir)
 
         when:
         succeeds(COPY_LIBS_TASK_NAME)

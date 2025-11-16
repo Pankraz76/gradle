@@ -134,11 +134,11 @@ tasks.block2.mustRunAfter tasks.blueThings
 
         when:
         // Block until first build has produced red things
-        def build1 = executer.withTasks("redThings", "block1", "blueThings").start()
+        def build1 = executor.withTasks("redThings", "block1", "blueThings").start()
         block1.waitForAllPendingCalls()
 
         // Block until second build has produced blue things
-        def build2 = executer.withTasks("redThings", "blueThings", "block2").start()
+        def build2 = executor.withTasks("redThings", "blueThings", "block2").start()
         block2.waitForAllPendingCalls()
 
         // Finish up first build while second build is still running
@@ -192,8 +192,8 @@ tasks.blueThings.mustRunAfter tasks.redThings
 
         when:
         // Run two builds concurrently
-        def build1 = executer.withTasks("block1", "redThings", "blueThings").start()
-        def build2 = executer.withTasks("block2", "redThings", "blueThings").start()
+        def build1 = executor.withTasks("block1", "redThings", "blueThings").start()
+        def build2 = executor.withTasks("block2", "redThings", "blueThings").start()
 
         // Block until both builds are ready to start resolving
         block.waitForAllPendingCalls()
@@ -247,8 +247,8 @@ tasks.blueThings.mustRunAfter tasks.redThings
 
         when:
         // Block until both builds are ready to start resolving
-        def build1 = executer.withTasks("block1", "redThings", "blueThings").start()
-        def build2 = executer.withTasks("block2", "redThings", "blueThings").start()
+        def build1 = executor.withTasks("block1", "redThings", "blueThings").start()
+        def build2 = executor.withTasks("block2", "redThings", "blueThings").start()
 
         // Resolve concurrently
         block.waitForAllPendingCalls()

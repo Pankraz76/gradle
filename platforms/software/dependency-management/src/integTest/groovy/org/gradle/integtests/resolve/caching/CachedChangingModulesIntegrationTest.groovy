@@ -87,7 +87,7 @@ class CachedChangingModulesIntegrationTest extends AbstractHttpDependencyResolut
         module.publishWithChangedContent()
         server.resetExpectations()
         then:
-        executer.withArgument("--offline")
+        executor.withArgument("--offline")
         run 'retrieve'
     }
 
@@ -157,7 +157,7 @@ class CachedChangingModulesIntegrationTest extends AbstractHttpDependencyResolut
         module.publishWithChangedContent()
         server.resetExpectations()
         then:
-        executer.withArgument("--offline")
+        executor.withArgument("--offline")
         run 'retrieve'
     }
 
@@ -230,7 +230,7 @@ class CachedChangingModulesIntegrationTest extends AbstractHttpDependencyResolut
         module.publishWithChangedContent()
         server.resetExpectations()
         then:
-        executer.withArgument("--offline")
+        executor.withArgument("--offline")
         run 'retrieve'
     }
 }

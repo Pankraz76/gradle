@@ -35,7 +35,7 @@ import java.util.regex.Pattern
 class SourceDependencyBuildOperationIntegrationTest extends AbstractIntegrationSpec {
     @Rule
     GitFileRepository repo = new GitFileRepository('buildB', temporaryFolder.getTestDirectory())
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def "generates configure, task graph and run tasks operations for source dependency build with #display"() {
         given:

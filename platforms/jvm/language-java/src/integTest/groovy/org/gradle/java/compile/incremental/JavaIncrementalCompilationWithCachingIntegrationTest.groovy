@@ -60,7 +60,7 @@ class JavaIncrementalCompilationWithCachingIntegrationTest extends AbstractJavaG
         buildFile << "dependencies { implementation 'org.apache.commons:commons-lang3:3.8' }\n"
         source("class A {}")
         withBuildCache().run language.compileTaskName
-        executer.stop()
+        executor.stop()
         file("user-home/caches").deleteDir()
         def cachedBuild =  withBuildCache().run "clean", language.compileTaskName
         cachedBuild.groupedOutput.task(":compileJava").outcome == "FROM_CACHE"

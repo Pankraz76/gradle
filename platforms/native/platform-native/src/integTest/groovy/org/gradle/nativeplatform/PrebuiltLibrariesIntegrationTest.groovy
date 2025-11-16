@@ -53,7 +53,7 @@ model {
 
     private void preBuildLibrary() {
         file('libs/settings.gradle').write('')
-        executer.inDirectory(file("libs"))
+        executor.inDirectory(file("libs"))
         run "assemble"
     }
 

@@ -21,7 +21,7 @@ import org.gradle.api.internal.tasks.execution.ExecuteTaskBuildOperationType
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.BuildOperationsFixture
 import org.gradle.integtests.fixtures.build.BuildTestFile
-import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.integtests.fixtures.executor.ExecutionResult
 import org.gradle.internal.operations.BuildOperationType
 import org.gradle.launcher.exec.RunBuildBuildOperationType
 import org.gradle.test.fixtures.file.TestFile
@@ -32,7 +32,7 @@ import org.gradle.test.fixtures.file.TestFile
 abstract class AbstractCompositeBuildIntegrationTest extends AbstractIntegrationSpec {
     protected BuildTestFile buildA
     List<File> includedBuilds = []
-    def operations = new BuildOperationsFixture(executer, temporaryFolder)
+    def operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     def setup() {
         buildTestFixture.withBuildInSubDir()
@@ -108,13 +108,13 @@ abstract class AbstractCompositeBuildIntegrationTest extends AbstractIntegration
     }
 
     protected ExecutionResult succeeds(BuildTestFile build, String... tasks) {
-        executer.inDirectory(build)
+        executor.inDirectory(build)
         return succeeds(tasks)
     }
 
     protected void fails(BuildTestFile build, String task, Iterable<String> arguments = []) {
         prepare(arguments)
-        executer.inDirectory(build)
+        executor.inDirectory(build)
         fails(task)
         assertSingleBuildOperationsTreeOfType(RunBuildBuildOperationType)
     }
@@ -125,7 +125,7 @@ abstract class AbstractCompositeBuildIntegrationTest extends AbstractIntegration
             includeBuild(it)
         }
         for (String arg : arguments) {
-            executer.withArgument(arg)
+            executor.withArgument(arg)
         }
     }
 

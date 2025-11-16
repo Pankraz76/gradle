@@ -27,12 +27,12 @@ import spock.lang.Issue
 
 class PluginManagementWithSettingsPluginIntegrationTest extends AbstractIntegrationSpec {
     @Rule
-    MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executer, mavenRepo)
+    MavenHttpPluginRepository pluginPortal = MavenHttpPluginRepository.asGradlePluginPortal(executor, mavenRepo)
 
     @Override
     def setup() {
         // To ensure no cached plugin resolution state at the start of each test
-        executer.requireOwnGradleUserHomeDir()
+        executor.requireOwnGradleUserHomeDir()
     }
 
     @Issue("https://github.com/gradle/gradle/issues/19852")
@@ -138,7 +138,7 @@ class PluginManagementWithSettingsPluginIntegrationTest extends AbstractIntegrat
         """
 
         when:
-        executer.withArguments("-I", initScript.absolutePath)
+        executor.withArguments("-I", initScript.absolutePath)
         run("pluginTask")
 
         then:
@@ -195,7 +195,7 @@ class PluginManagementWithSettingsPluginIntegrationTest extends AbstractIntegrat
         def repo = new MavenFileRepository(file("project-plugins"))
         def pluginBuilder = new PluginBuilder(file("test-project-plugin"))
         pluginBuilder.addPluginWithPrintlnTask("pluginTask", "external plugin", "test.test-plugin")
-        pluginBuilder.publishAs("test:test:1.0", repo, executer)
+        pluginBuilder.publishAs("test:test:1.0", repo, executor)
         return repo
     }
 
@@ -213,7 +213,7 @@ class PluginManagementWithSettingsPluginIntegrationTest extends AbstractIntegrat
         """
         def pluginBuilder = new PluginBuilder(dir)
         pluginBuilder.addPluginId("test.remote-settings-plugin", "SettingsPlugin")
-        pluginBuilder.publishAs("test:remote-settings-plugin:1.0", pluginPortal, executer)
+        pluginBuilder.publishAs("test:remote-settings-plugin:1.0", pluginPortal, executor)
         pluginPortal.expectPluginResolution("test.remote-settings-plugin", "1.0", "test", "remote-settings-plugin", "1.0")
     }
 

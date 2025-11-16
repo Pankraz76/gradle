@@ -31,9 +31,9 @@ abstract class AbstractHttpDependencyResolutionTest extends AbstractDependencyRe
     public final RepositoryHttpServer server = new RepositoryHttpServer(temporaryFolder)
 
     def setup() {
-        executer.beforeExecute {
-            executer.withArgument("-D${SOCKET_TIMEOUT_SYSTEM_PROPERTY}=60000")
-            executer.withArgument("-D${CONNECTION_TIMEOUT_SYSTEM_PROPERTY}=60000")
+        executor.beforeExecute {
+            executor.withArgument("-D${SOCKET_TIMEOUT_SYSTEM_PROPERTY}=60000")
+            executor.withArgument("-D${CONNECTION_TIMEOUT_SYSTEM_PROPERTY}=60000")
         }
     }
 

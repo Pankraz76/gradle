@@ -391,7 +391,7 @@ task someTask {
         buildFile.replace("[BuildSrcEnum.E1, ScriptEnum.E1, pluginValue] as $type", "[BuildSrcEnum.E2, pluginValue] as $type")
 
         and:
-        executer.withArgument("-i")
+        executor.withArgument("-i")
         run "someTask"
 
         then:
@@ -409,7 +409,7 @@ task someTask {
         otherScript.replace("ext.pluginValue = ScriptPluginEnum.E1", "ext.pluginValue = ScriptPluginEnum.E2")
 
         and:
-        executer.withArgument("-i")
+        executor.withArgument("-i")
         run "someTask"
 
         then:

@@ -31,7 +31,7 @@ import static org.gradle.util.internal.TextUtil.normaliseLineSeparators
 class TestTaskJdkRelocationIntegrationTest extends AbstractTaskRelocationIntegrationTest implements JavaToolchainFixture {
 
     def setup() {
-        executer.beforeExecute {
+        executor.beforeExecute {
             withInstallations(AvailableJavaHomes.jdk11)
         }
     }

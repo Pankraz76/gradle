@@ -25,7 +25,7 @@ import org.gradle.util.internal.ToBeImplemented
 
 class OverlappingOutputsIntegrationTest extends AbstractIntegrationSpec implements DirectoryBuildCacheFixture {
 
-    def cacheOperations = new BuildCacheOperationFixtures(new BuildOperationsFixture(executer, temporaryFolder))
+    def cacheOperations = new BuildCacheOperationFixtures(new BuildOperationsFixture(executor, temporaryFolder))
 
     def setup() {
         buildFile << """

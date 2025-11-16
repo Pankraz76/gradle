@@ -31,13 +31,13 @@ class CancellationBuildOperationIntegrationTest extends AbstractIntegrationSpec 
 
     @Rule
     BlockingHttpServer server = new BlockingHttpServer()
-    BuildOperationsFixture operations = new BuildOperationsFixture(executer, temporaryFolder)
+    BuildOperationsFixture operations = new BuildOperationsFixture(executor, temporaryFolder)
 
     @Requires(IntegTestPreconditions.NotEmbeddedExecutor)
     @UnsupportedWithConfigurationCache(because = "captures worker threads in shared state")
     def "task operations are closed even when interrupting the execution workers"() {
         server.start()
-        executer.withStackTraceChecksDisabled()
+        executor.withStackTraceChecksDisabled()
         def parallelTaskCount = 5
         buildFile << """
           ext.workerThreads = new HashSet<>()

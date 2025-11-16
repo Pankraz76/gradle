@@ -21,8 +21,8 @@ import org.gradle.testing.fixture.TestNGCoverage
 
 abstract class AbstractIncrementalTestIntegrationTest extends AbstractTestingMultiVersionIntegrationTest {
     def setup() {
-        executer.noExtraLogging()
-        executer.withRepositoryMirrors()
+        executor.noExtraLogging()
+        executor.withRepositoryMirrors()
         buildFile << """
             apply plugin: 'java'
 
