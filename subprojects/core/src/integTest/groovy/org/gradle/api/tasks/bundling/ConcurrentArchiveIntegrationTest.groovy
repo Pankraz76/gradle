@@ -384,12 +384,12 @@ class ConcurrentArchiveIntegrationTest extends AbstractIntegrationSpec {
                 archiveFile = file('test.tar')
                 destinationDir = file('build/extract')
             }
-            interface ExtracterParameters extends WorkParameters {
+            interface ExtractorParameters extends WorkParameters {
                 RegularFileProperty getArchiveFile()
                 DirectoryProperty getDestinationDir()
                 Property<Integer> getIndex()
             }
-            abstract class Extracter implements WorkAction<ExtracterParameters> {
+            abstract class Extractor implements WorkAction<ExtractorParameters> {
                 @Inject
                 abstract FileSystemOperations getFileSystemOperations()
 
@@ -398,7 +398,7 @@ class ConcurrentArchiveIntegrationTest extends AbstractIntegrationSpec {
 
                 @Override
                 void execute() {
-                    // This synchronizes all extracters so they try to start at the same time
+                    // This synchronizes all extractors so they try to start at the same time
                     ${server.callFromBuild("wait")}
                     archiveOperations.tarTree(parameters.archiveFile).visit { fcd ->
                         // This signals that the extraction has started. We're inside the lock at this point.
@@ -426,7 +426,7 @@ class ConcurrentArchiveIntegrationTest extends AbstractIntegrationSpec {
                 @TaskAction
                 void extract() {
                     3.times { int i ->
-                        workerExecutor.noIsolation().submit(Extracter) {
+                        workerExecutor.noIsolation().submit(Extractor) {
                             archiveFile = this.getArchiveFile()
                             destinationDir = this.getDestinationDir().dir("thread_" + i)
                             index = i
@@ -439,35 +439,35 @@ class ConcurrentArchiveIntegrationTest extends AbstractIntegrationSpec {
         def waiting = server.expectConcurrentAndBlock(3, "wait", "wait", "wait")
 
         def handle = executer.withTasks("extract").start()
-        // Wait for all extracters to be ready
+        // Wait for all extractors to be ready
         waiting.waitForAllPendingCalls()
 
-        def firstExtracter = server.expectAndBlock("extract")
-        // release the extracters so they start trying to extract concurrently
+        def firstExtractor = server.expectAndBlock("extract")
+        // release the extractors so they start trying to extract concurrently
         waiting.releaseAll()
-        // wait for the first extracter to start extracting
-        firstExtracter.waitForAllPendingCalls()
+        // wait for the first extractor to start extracting
+        firstExtractor.waitForAllPendingCalls()
 
         // If we've made it here successfully, then no concurrent extracts have been seen
-        def secondExtracter = server.expectAndBlock("extract")
-        // release the first extracter so it can finish
-        firstExtracter.releaseAll()
+        def secondExtractor = server.expectAndBlock("extract")
+        // release the first extractor so it can finish
+        firstExtractor.releaseAll()
         // wait for the next one
-        secondExtracter.waitForAllPendingCalls()
+        secondExtractor.waitForAllPendingCalls()
 
         // If we've made it here successfully, then no concurrent extracts have been seen
-        def lastExtracter = server.expectAndBlock("extract")
-        // release the second extracter so it can finish
-        secondExtracter.releaseAll()
+        def lastExtractor = server.expectAndBlock("extract")
+        // release the second extractor so it can finish
+        secondExtractor.releaseAll()
         // wait for the last one
-        lastExtracter.waitForAllPendingCalls()
+        lastExtractor.waitForAllPendingCalls()
         // release the last one so it can finish
-        lastExtracter.releaseAll()
+        lastExtractor.releaseAll()
 
         // wait for the build to finish
         handle.waitForFinish()
         then:
-        // we should have extracted the file into a different directory for each extracter
+        // we should have extracted the file into a different directory for each extractor
         file("build/extract/thread_0/file.txt").assertExists()
         file("build/extract/thread_1/file.txt").assertExists()
         file("build/extract/thread_2/file.txt").assertExists()
