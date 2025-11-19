@@ -20,6 +20,7 @@ import org.gradle.api.Action
 import org.gradle.test.fixtures.file.TestNameTestDirectoryProvider
 import org.junit.Rule
 import spock.lang.Specification
+import static org.apache.commons.io.IOUtils.closeQuietly;
 
 import static org.gradle.internal.IoActions.*
 
