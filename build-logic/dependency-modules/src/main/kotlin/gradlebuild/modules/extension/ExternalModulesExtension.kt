@@ -22,11 +22,10 @@ abstract class ExternalModulesExtension(bundleGroovyMajor: Int) {
 
     val groovyVersion = when (bundleGroovyMajor) {
         4 -> "4.0.29"
-        // This is expected to contain Groovy 5 soon, once it's released or we need to test it.
+        // This is expected to contain Groovy 5 soon, once it's released, or we need to test it.
         else -> error("Unsupported Groovy major version: $bundleGroovyMajor")
     }
 
-    val configurationCacheReportVersion = "1.27"
     val gradleIdeStarterVersion = "0.8.2"
     val kotlinVersion = "2.2.21"
 
@@ -57,7 +56,7 @@ abstract class ExternalModulesExtension(bundleGroovyMajor: Int) {
     val commonsIo = "commons-io:commons-io"
     val commonsLang = "org.apache.commons:commons-lang3"
     val commonsMath = "org.apache.commons:commons-math3"
-    val configurationCacheReport = "org.gradle.buildtool.internal:configuration-cache-report:$configurationCacheReportVersion"
+    val configurationCacheReport = "org.gradle.buildtool.internal:configuration-cache-report:1.27"
     val develocityTestAnnotation = "com.gradle:develocity-testing-annotations"
     val eclipseSisuPlexus = "org.eclipse.sisu:org.eclipse.sisu.plexus"
     val errorProneAnnotations = "com.google.errorprone:error_prone_annotations"
