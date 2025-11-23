@@ -34,7 +34,7 @@ dependencies {
             params(8)
         }
     }
-    implementation("commons-io:commons-io:2.14.0")
+    implementation("commons-io:commons-io:2.6")
     implementation("commons-collections:commons-collections:3.2.2")
 }
 // end::config-component-metadata-rule[]

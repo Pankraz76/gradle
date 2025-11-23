@@ -24,7 +24,6 @@ import org.gradle.api.XmlProvider;
 import org.gradle.api.internal.DomNode;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.internal.Cast;
-import org.gradle.internal.IoActions;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.file.PathToFileResolver;
 import org.gradle.internal.xml.XmlTransformer;
