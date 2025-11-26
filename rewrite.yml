@@ -1,0 +1,17 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: org.gradle.openrewrite.SanityCheck
+displayName: Apply all Java & Gradle best practices
+description: Comprehensive code quality recipe combining modernization, security, and best practices.
+tags:
+  - java
+  - gradle
+  - static-analysis
+  - cleanup
+recipeList:
+  - org.openrewrite.gradle.EnableGradleBuildCache
+  - org.openrewrite.gradle.EnableGradleParallelExecution
+  # - org.openrewrite.gradle.GradleBestPractices
+  # - org.openrewrite.java.format.NormalizeLineBreaks
+  # - org.openrewrite.java.format.RemoveTrailingWhitespace
+---
