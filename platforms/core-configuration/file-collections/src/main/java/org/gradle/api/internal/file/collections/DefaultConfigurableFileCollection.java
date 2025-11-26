@@ -58,9 +58,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * A {@link org.gradle.api.file.FileCollection} which resolves a set of paths relative to a {@link org.gradle.api.internal.file.FileResolver}.
@@ -197,7 +199,9 @@ public class DefaultConfigurableFileCollection extends CompositeFileCollection i
 
     @Override
     public Set<Object> getFrom() {
-        return filesWrapper;
+        return filesWrapper.stream()
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
     }
 
     @Override
@@ -769,7 +773,10 @@ public class DefaultConfigurableFileCollection extends CompositeFileCollection i
         private Set<Object> delegate() {
             Set<Object> sources = new LinkedHashSet<>();
             value.collectSource(sources);
-            return sources;
+            // Filter out null values from the collected sources
+            return sources.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
         }
 
         @Override
