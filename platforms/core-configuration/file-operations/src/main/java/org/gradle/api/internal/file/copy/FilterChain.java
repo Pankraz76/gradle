@@ -116,12 +116,10 @@ public class FilterChain implements Transformer<InputStream, InputStream> {
             public Reader transform(Reader original) {
                 try {
                     Template template;
-                    try {
+                    try (original) {
                         SimpleTemplateEngine engine = new SimpleTemplateEngine();
                         engine.setEscapeBackslash(escapeBackslash.get());
                         template = engine.createTemplate(original);
-                    } finally {
-                        original.close();
                     }
                     StringWriter writer = new StringWriter();
                     // SimpleTemplateEngine expects to be able to mutate the map internally.

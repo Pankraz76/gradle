@@ -89,13 +89,10 @@ public class ArgWriter implements ArgCollector {
         argsFile.getParentFile().mkdirs();
         try {
             // TODO(https://github.com/gradle/gradle/issues/29303)
-            @SuppressWarnings("DefaultCharset") // This method is documented as "uses platform text encoding"
-            PrintWriter writer = new PrintWriter(argsFile);
-            try {
+            // This method is documented as "uses platform text encoding"
+            try (PrintWriter writer = new PrintWriter(argsFile)) {
                 ArgWriter argWriter = argWriterFactory.apply(writer);
                 argWriter.args(args);
-            } finally {
-                writer.close();
             }
         } catch (IOException e) {
             throw new UncheckedIOException(String.format("Could not write options file '%s'.", argsFile.getAbsolutePath()), e);

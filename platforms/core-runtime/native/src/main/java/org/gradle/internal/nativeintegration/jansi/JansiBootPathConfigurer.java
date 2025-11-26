@@ -64,12 +64,9 @@ public class JansiBootPathConfigurer {
     private void copyLibrary(InputStream lib, File libFile) {
         try {
             try {
-                FileOutputStream outputStream = new FileOutputStream(libFile);
 
-                try {
+                try (FileOutputStream outputStream = new FileOutputStream(libFile)) {
                     IOUtils.copy(lib, outputStream);
-                } finally {
-                    outputStream.close();
                 }
             } finally {
                 lib.close();

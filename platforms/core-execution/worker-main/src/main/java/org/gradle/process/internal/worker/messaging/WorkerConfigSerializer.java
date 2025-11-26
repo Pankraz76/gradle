@@ -82,9 +82,7 @@ public class WorkerConfigSerializer implements Serializer<WorkerConfig> {
 
     private static Action<? super WorkerProcessContext> deserializeWorker(byte[] serializedWorker, ClassLoader loader) throws IOException {
         ByteArrayInputStream bais = new ByteArrayInputStream(serializedWorker);
-        ObjectInputStream in = null;
-        try {
-            in = new ClassLoaderObjectInputStream(bais, loader);
+        try (ObjectInputStream in = new ClassLoaderObjectInputStream(bais, loader)) {
 
             @SuppressWarnings("unchecked")
             Action<? super WorkerProcessContext> workerAction = (Action<? super WorkerProcessContext>) in.readObject();
@@ -103,33 +101,15 @@ public class WorkerConfigSerializer implements Serializer<WorkerConfig> {
                 message = "Unsupported worker JDK version: " + JavaVersion.current().getMajorVersion();
             }
             throw new GradleException(message, e);
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    LOGGER.debug("Error closing ObjectInputStream", e);
-                }
-            }
         }
     }
 
     private static byte[] serializeWorker(Action<? super WorkerProcessContext> action) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream out = null;
-        try {
-            out = new ObjectOutputStream(baos);
+        try (ObjectOutputStream out = new ObjectOutputStream(baos)) {
             out.writeObject(action);
 
             return baos.toByteArray();
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    LOGGER.debug("Error closing ObjectOutputStream", e);
-                }
-            }
         }
     }
 }
