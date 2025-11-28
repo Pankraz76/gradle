@@ -82,20 +82,20 @@ public class ArgWriter implements ArgCollector {
         return args -> generateArgsFile(argsFile, argWriterFactory, args);
     }
 
+    /**
+     * @implSpec This method is documented as "uses platform text encoding".
+     *
+     * Investigate platform text encoding behavior: <a href="https://github.com/gradle/gradle/issues/30304">#30304</a>
+     */
+    @SuppressWarnings("DefaultCharset")
     private static List<String> generateArgsFile(File argsFile, Function<PrintWriter, ArgWriter> argWriterFactory, List<String> args) {
         if (args.isEmpty()) {
             return args;
         }
         argsFile.getParentFile().mkdirs();
         try {
-            // TODO(https://github.com/gradle/gradle/issues/29303)
-            @SuppressWarnings("DefaultCharset") // This method is documented as "uses platform text encoding"
-            PrintWriter writer = new PrintWriter(argsFile);
-            try {
-                ArgWriter argWriter = argWriterFactory.apply(writer);
-                argWriter.args(args);
-            } finally {
-                writer.close();
+            try (PrintWriter writer = new PrintWriter(argsFile)) { // TODO(https://github.com/gradle/gradle/issues/30304)
+                argWriterFactory.apply(writer).args(args);
             }
         } catch (IOException e) {
             throw new UncheckedIOException(String.format("Could not write options file '%s'.", argsFile.getAbsolutePath()), e);

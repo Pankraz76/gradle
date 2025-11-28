@@ -25,7 +25,6 @@ import org.gradle.api.internal.artifacts.verification.model.ChecksumKind;
 import org.gradle.api.internal.artifacts.verification.model.IgnoredKey;
 import org.gradle.api.internal.artifacts.verification.verifier.DependencyVerifier;
 import org.gradle.api.internal.artifacts.verification.verifier.DependencyVerifierBuilder;
-import org.gradle.internal.UncheckedException;
 import org.gradle.internal.component.external.model.DefaultModuleComponentIdentifier;
 import org.gradle.internal.component.external.model.ModuleComponentArtifactIdentifier;
 import org.gradle.internal.component.external.model.ModuleComponentFileArtifactIdentifier;
@@ -39,7 +38,6 @@ import org.xml.sax.ext.DefaultHandler2;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -77,21 +75,15 @@ import static org.gradle.api.internal.artifacts.verification.serializer.Dependen
 
 public class DependencyVerificationsXmlReader {
     public static void readFromXml(InputStream in, DependencyVerifierBuilder builder) {
-        try {
+        try (InputStream inputStream = in) {
             SAXParser saxParser = createSecureParser();
             XMLReader xmlReader = saxParser.getXMLReader();
             VerifiersHandler handler = new VerifiersHandler(builder);
             xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
             xmlReader.setContentHandler(handler);
-            xmlReader.parse(new InputSource(in));
+            xmlReader.parse(new InputSource(inputStream));
         } catch (Exception e) {
             throw new DependencyVerificationException("Unable to read dependency verification metadata", e);
-        } finally {
-            try {
-                in.close();
-            } catch (IOException e) {
-                throw UncheckedException.throwAsUncheckedException(e);
-            }
         }
     }
 

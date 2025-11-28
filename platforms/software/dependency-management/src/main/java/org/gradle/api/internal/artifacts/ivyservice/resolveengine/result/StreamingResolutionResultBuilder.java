@@ -30,6 +30,7 @@ import org.gradle.api.internal.attributes.ImmutableAttributes;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.gradle.cache.internal.BinaryStore;
+import org.gradle.cache.internal.BinaryStore.BinaryData;
 import org.gradle.cache.internal.Store;
 import org.gradle.internal.Factory;
 import org.gradle.internal.resolve.ModuleVersionResolveException;
@@ -48,6 +49,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.gradle.internal.UncheckedException.throwAsUncheckedException;
+
 
 public class StreamingResolutionResultBuilder implements DependencyGraphVisitor {
     private final static byte ROOT = 1;
@@ -100,9 +102,7 @@ public class StreamingResolutionResultBuilder implements DependencyGraphVisitor 
     }
 
     public MinimalResolutionResult getResolutionResult(Set<UnresolvedDependency> dependencyLockingFailures) {
-        BinaryStore.BinaryData data = store.done();
-        GraphFactory graphSource = new GraphFactory(data, failures, cache, dependencyResultSerializerFactory, componentResultSerializer, dependencyLockingFailures);
-        return new MinimalResolutionResult(graphSource::create, rootAttributes);
+        return new MinimalResolutionResult(new GraphFactory(store.done(), failures, cache, dependencyResultSerializerFactory, componentResultSerializer, dependencyLockingFailures)::create, rootAttributes);
     }
 
     @Override
@@ -161,7 +161,7 @@ public class StreamingResolutionResultBuilder implements DependencyGraphVisitor 
         private final static Logger LOG = Logging.getLogger(GraphFactory.class);
         private final AdhocHandlingComponentResultSerializer componentResultSerializer;
 
-        private final BinaryStore.BinaryData data;
+        private final BinaryData data;
         private final Map<ComponentSelector, ModuleVersionResolveException> failures;
         private final Store<ResolvedDependencyGraph> cache;
         private final Object lock = new Object();
@@ -169,7 +169,7 @@ public class StreamingResolutionResultBuilder implements DependencyGraphVisitor 
         private final Set<UnresolvedDependency> dependencyLockingFailures;
 
         GraphFactory(
-            BinaryStore.BinaryData data,
+            BinaryData data,
             Map<ComponentSelector, ModuleVersionResolveException> failures,
             Store<ResolvedDependencyGraph> cache,
             Factory<DependencyResultSerializer> dependencyResultSerializerFactory,
@@ -188,14 +188,10 @@ public class StreamingResolutionResultBuilder implements DependencyGraphVisitor 
         public ResolvedDependencyGraph create() {
             synchronized (lock) {
                 return cache.load(() -> {
-                    try {
-                        return data.read(this::deserialize);
-                    } finally {
-                        try {
-                            data.close();
-                        } catch (IOException e) {
-                            throw throwAsUncheckedException(e);
-                        }
+                    try (BinaryData resource = data) {
+                        return resource.read(this::deserialize);
+                    } catch (IOException e) {
+                        throw throwAsUncheckedException(e); // todo why this double trouble?
                     }
                 });
             }
@@ -217,22 +213,19 @@ public class StreamingResolutionResultBuilder implements DependencyGraphVisitor 
                             long rootVariantId = decoder.readSmallLong();
                             long rootComponentId = decoder.readSmallLong();
                             builder.addDependencyLockingFailures(rootComponentId, rootVariantId, dependencyLockingFailures);
-                            ResolvedDependencyGraph graph = builder.getResolvedGraph(rootComponentId, rootVariantId);
                             LOG.debug("Loaded resolution results ({}) from {}", clock.getElapsed(), data);
-                            return graph;
+                            return builder.getResolvedGraph(rootComponentId, rootVariantId);
                         case COMPONENT:
                             componentResultSerializer.readComponentResult(decoder, builder);
                             break;
                         case NODE_DEPENDENCIES:
-                            long fromVariantId = decoder.readSmallLong();
-                            long fromComponentId = decoder.readSmallLong();
                             int size = decoder.readSmallInt();
                             if (size > 0) {
                                 List<ResolvedGraphDependency> deps = new ArrayList<>(size);
                                 for (int i = 0; i < size; i++) {
                                     deps.add(dependencyResultSerializer.read(decoder, failures));
                                 }
-                                builder.visitOutgoingEdges(fromComponentId, fromVariantId, deps);
+                                builder.visitOutgoingEdges(decoder.readSmallLong(), decoder.readSmallLong(), deps);
                             }
                             break;
                         default:
