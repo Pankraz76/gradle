@@ -338,14 +338,14 @@ public class DefaultDeleter implements Deleter {
         /**
          * Whether or not the entry with this handling should be kept or deleted.
          */
-        public boolean shouldKeepEntry() {
+        private boolean shouldKeepEntry() {
             return shouldKeepEntry;
         }
 
         /**
          * Whether or not this entry should be followed if it is a symlinked directory.
          */
-        public boolean shouldFollowLinkedDirectory() {
+        private boolean shouldFollowLinkedDirectory() {
             return shouldFollowLinkedDirectory;
         }
 
