@@ -7,6 +7,7 @@ import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
 import org.gradle.util.internal.VersionNumber
+import java.lang.System.getenv
 
 /*
  * Copyright 2022 the original author or authors.
@@ -131,7 +132,13 @@ project.plugins.withType<JavaBasePlugin> {
                 checks = errorproneExtension.disabledChecks.map {
                     it.associateWith { CheckSeverity.OFF }
                 }
-
+                if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
+                    errorproneArgs.addAll(
+                        "-XepPatchLocation:IN_PLACE",
+                        "-XepPatchChecks:" +
+                            "EffectivelyPrivate"
+                    )
+                }
                 nullaway {
                     checkContracts = true
                     isJSpecifyMode = true
