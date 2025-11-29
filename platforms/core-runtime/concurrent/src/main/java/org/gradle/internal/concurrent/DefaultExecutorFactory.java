@@ -137,7 +137,7 @@ public class DefaultExecutorFactory implements ExecutorFactory, Stoppable {
     }
 
     private class TrackedThreadPoolManagedExecutor extends ManagedThreadPoolExecutorImpl {
-        private TrackedThreadPoolManagedExecutor(ThreadPoolExecutor delegate, ExecutorPolicy executorPolicy) {
+        public TrackedThreadPoolManagedExecutor(ThreadPoolExecutor delegate, ExecutorPolicy executorPolicy) {
             super(delegate, executorPolicy);
         }
 

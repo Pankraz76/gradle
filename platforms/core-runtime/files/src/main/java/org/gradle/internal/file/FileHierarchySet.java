@@ -376,7 +376,7 @@ public abstract class FileHierarchySet {
             return false;
         }
 
-        private void visitHierarchy(int depth, NodeVisitor visitor) {
+        public void visitHierarchy(int depth, NodeVisitor visitor) {
             visitor.visitNode(depth, this);
             for (Node child : children) {
                 child.visitHierarchy(depth + 1, visitor);

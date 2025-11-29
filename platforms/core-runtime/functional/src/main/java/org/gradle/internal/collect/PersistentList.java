@@ -95,7 +95,7 @@ public abstract class PersistentList<T> implements Iterable<T> {
         private final T head;
         private final PersistentList<T> tail;
 
-        private Cons(T head, PersistentList<T> tail) {
+        public Cons(T head, PersistentList<T> tail) {
             this.head = head;
             this.tail = tail;
         }
@@ -146,7 +146,7 @@ public abstract class PersistentList<T> implements Iterable<T> {
         private static class PersistentListIterator<T> extends AbstractIterator<T> {
             PersistentList<T> next;
 
-            private PersistentListIterator(Cons<T> next) {
+            public PersistentListIterator(Cons<T> next) {
                 this.next = next;
             }
 
