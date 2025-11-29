@@ -120,11 +120,6 @@ project.plugins.withType<JavaBasePlugin> {
                 checks = errorproneExtension.disabledChecks.map {
                     it.associateWith { OFF }
                 }
-                errorproneArgs.addAll(
-                    "-XepPatchLocation:IN_PLACE",
-                    "-XepPatchChecks:" +
-                        "MissingOverride"
-                )
             }
         }
     }
