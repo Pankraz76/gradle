@@ -48,6 +48,8 @@ import java.security.AccessControlException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import static java.lang.Thread.interrupted;
+
 /**
  * Processes tests in a remote process with the given {@link TestDefinitionProcessor} until a stop command is received.  Requires that
  * methods willed be called sequentially in the following order:
@@ -180,7 +182,7 @@ public class TestWorker<D extends TestDefinition> implements Action<WorkerProces
                     throw e;
                 } finally {
                     // Clean the interrupted status
-                    Thread.interrupted();
+                    interrupted();
                 }
             }
         });
@@ -197,7 +199,7 @@ public class TestWorker<D extends TestDefinition> implements Action<WorkerProces
                     state = State.STOPPED;
                     // Clean the interrupted status
                     // because some test class processors do work here, e.g. JUnitPlatform
-                    Thread.interrupted();
+                    interrupted();
                 }
             }
         });
