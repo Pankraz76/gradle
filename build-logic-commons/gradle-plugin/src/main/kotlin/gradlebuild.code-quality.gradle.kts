@@ -54,7 +54,6 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
 
         // NEVER
         "AssignmentExpression", // Not using it is more a matter of taste.
-        "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
         "InjectOnConstructorOfAbstractClass", // We use abstract injection as a pattern
         "InlineMeSuggester", // Only suppression seems to actually "fix" this, so make it global
         "JavaUtilDate", // We are fine with using Date
