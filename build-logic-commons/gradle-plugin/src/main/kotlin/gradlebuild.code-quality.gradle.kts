@@ -131,7 +131,7 @@ project.plugins.withType<JavaBasePlugin> {
                 errorproneArgs.addAll(
                     "-XepPatchLocation:IN_PLACE",
                     "-XepPatchChecks:" +
-                        "EffectivelyPrivate"
+                        "MissingOverride"
                 )
             }
         }
@@ -153,7 +153,7 @@ tasks.withType<JavaCompile>().configureEach {
         }
 //                error(
 //                    "ReturnValueIgnored",
-//                    "EffectivelyPrivate",
+//                    "MissingOverride",
 //                    "SelfAssignment",
 //                    "StringJoin",
 //                    "UnnecessarilyFullyQualified",
@@ -162,7 +162,7 @@ tasks.withType<JavaCompile>().configureEach {
             errorproneArgs.addAll(
                 "-XepPatchLocation:IN_PLACE",
                 "-XepPatchChecks:" +
-                    "EffectivelyPrivate"
+                    "MissingOverride"
             )
         if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
         }
