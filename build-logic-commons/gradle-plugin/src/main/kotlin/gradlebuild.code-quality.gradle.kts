@@ -133,23 +133,6 @@ project.plugins.withType<JavaBasePlugin> {
                 checks = errorproneExtension.disabledChecks.map {
                     it.associateWith { OFF }
                 }
-                disableAllWarnings = true
-                allErrorsAsWarnings = true
-//                error(
-//                    "ReturnValueIgnored",
-//                    "EffectivelyPrivate",
-//                    "SelfAssignment",
-//                    "StringJoin",
-//                    "UnnecessarilyFullyQualified",
-//                    "UnnecessaryLambda",
-//                )
-                    errorproneArgs.addAll(
-                        "-XepPatchLocation:IN_PLACE",
-                        "-XepPatchChecks:" +
-                            "EffectivelyPrivate"
-                    )
-                if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
-                }
                 nullaway {
                     checkContracts = true
                     isJSpecifyMode = true
@@ -163,7 +146,23 @@ project.plugins.withType<JavaBasePlugin> {
 tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
         disableWarningsInGeneratedCode = true
+        disableAllWarnings = true
         allErrorsAsWarnings = true
+//                error(
+//                    "ReturnValueIgnored",
+//                    "EffectivelyPrivate",
+//                    "SelfAssignment",
+//                    "StringJoin",
+//                    "UnnecessarilyFullyQualified",
+//                    "UnnecessaryLambda",
+//                )
+        if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
+            errorproneArgs.addAll(
+                "-XepPatchLocation:IN_PLACE",
+                "-XepPatchChecks:" +
+                    "EffectivelyPrivate"
+            )
+        }
     }
 }
 
