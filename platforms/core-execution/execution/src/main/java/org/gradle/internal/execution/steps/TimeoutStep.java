@@ -64,7 +64,7 @@ public class TimeoutStep<C extends Context, R extends Result> implements Step<C,
             return executeWithoutTimeout(work, context);
         } finally {
             if (timeoutHandler.start(currentThread(), timeout, work, currentBuildOperationRef.get()).stop()) {
-                //noinspection ResultOfMethodCallIgnored
+                //noinspection ResultOfMethodCallIgnored // CheckReturnValue
                 interrupted();
                 //noinspection ThrowFromFinallyBlock
                 throw new GradleException("Timeout has been exceeded");
