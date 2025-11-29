@@ -212,8 +212,11 @@ public class GUtil {
 
     public static Properties loadProperties(File propertyFile) {
         try {
-            try (FileInputStream inputStream = new FileInputStream(propertyFile)) {
+            FileInputStream inputStream = new FileInputStream(propertyFile);
+            try {
                 return loadProperties(inputStream);
+            } finally {
+                inputStream.close();
             }
         } catch (IOException e) {
             throw UncheckedException.throwAsUncheckedException(e);
@@ -244,8 +247,11 @@ public class GUtil {
 
     public static void saveProperties(Properties properties, File propertyFile) {
         try {
-            try (FileOutputStream propertiesFileOutputStream = new FileOutputStream(propertyFile)) {
+            FileOutputStream propertiesFileOutputStream = new FileOutputStream(propertyFile);
+            try {
                 properties.store(propertiesFileOutputStream, null);
+            } finally {
+                propertiesFileOutputStream.close();
             }
         } catch (IOException e) {
             throw UncheckedException.throwAsUncheckedException(e);

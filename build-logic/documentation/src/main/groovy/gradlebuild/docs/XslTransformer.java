@@ -50,8 +50,11 @@ public class XslTransformer {
         if (destDir.length() > 0) {
             transformer.setParameter("base.dir", destDir + "/");
         }
-        try (FileOutputStream outstr = new FileOutputStream(dest)) {
+        FileOutputStream outstr = new FileOutputStream(dest);
+        try {
             transformer.transform(new StreamSource(source), new StreamResult(outstr));
+        } finally {
+            outstr.close();
         }
     }
 }

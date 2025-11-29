@@ -76,8 +76,11 @@ public class WrapperExecutor {
     }
 
     private static void loadProperties(File propertiesFile, Properties properties) throws IOException {
-        try (InputStream inStream = new FileInputStream(propertiesFile)) {
+        InputStream inStream = new FileInputStream(propertiesFile);
+        try {
             properties.load(inStream);
+        } finally {
+            inStream.close();
         }
     }
 

@@ -148,9 +148,12 @@ public class SystemApplicationClassLoaderWorker implements Callable<Void> {
         @Override
         public void execute(Throwable throwable) {
             try {
-                try (PrintStream ps = new PrintStream(errorLog)) {
+                final PrintStream ps = new PrintStream(errorLog);
+                try {
                     ps.println("Encountered unrecoverable error:");
                     throwable.printStackTrace(ps);
+                } finally {
+                    ps.close();
                 }
             } catch (FileNotFoundException e) {
                 // ignore this, we won't be able to get any logs

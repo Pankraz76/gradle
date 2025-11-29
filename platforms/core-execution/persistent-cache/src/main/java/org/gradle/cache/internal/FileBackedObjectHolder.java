@@ -113,8 +113,11 @@ public class FileBackedObjectHolder<T> implements ObjectHolder<T> {
             }
             chmod.chmod(cacheFile.getParentFile(), 0700); // read-write-execute for user only
             chmod.chmod(cacheFile, 0600); // read-write for user only
-            try (OutputStreamBackedEncoder encoder = new OutputStreamBackedEncoder(new BufferedOutputStream(new FileOutputStream(cacheFile)))) {
+            OutputStreamBackedEncoder encoder = new OutputStreamBackedEncoder(new BufferedOutputStream(new FileOutputStream(cacheFile)));
+            try {
                 serializer.write(encoder, newValue);
+            } finally {
+                encoder.close();
             }
         } catch (Exception e) {
             throw new GradleException(String.format("Could not write cache value to '%s'.", cacheFile), e);
@@ -126,8 +129,11 @@ public class FileBackedObjectHolder<T> implements ObjectHolder<T> {
             return null;
         }
         try {
-            try (InputStreamBackedDecoder decoder = new InputStreamBackedDecoder(new BufferedInputStream(new FileInputStream(cacheFile)))) {
+            InputStreamBackedDecoder decoder = new InputStreamBackedDecoder(new BufferedInputStream(new FileInputStream(cacheFile)));
+            try {
                 return serializer.read(decoder);
+            } finally {
+                decoder.close();
             }
         } catch (Exception e) {
             throw new GradleException(String.format("Could not read cache value from '%s'.", cacheFile), e);

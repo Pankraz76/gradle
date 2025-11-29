@@ -134,8 +134,11 @@ public class Install {
 
             forceFetch(tmpZipFile, distributionUrl);
 
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(tmpZipFile), "UTF-8"))) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(tmpZipFile), "UTF-8"));
+            try {
                 return reader.readLine();
+            } finally {
+                reader.close();
             }
         } catch (Exception e) {
             logger.log("Could not fetch hash for " + safeUri(distribution) + ".");
@@ -176,7 +179,8 @@ public class Install {
 
     static String calculateSha256Sum(File file) throws Exception {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-        try (InputStream fis = new FileInputStream(file)) {
+        InputStream fis = new FileInputStream(file);
+        try {
             int n = 0;
             byte[] buffer = new byte[4096];
             while (n != -1) {
@@ -185,6 +189,8 @@ public class Install {
                     md.update(buffer, 0, n);
                 }
             }
+        } finally {
+            fis.close();
         }
 
         byte[] byteData = md.digest();
@@ -312,7 +318,8 @@ public class Install {
     }
 
     private void unzip(File zip, File dest) throws IOException {
-        try (ZipFile zipFile = new ZipFile(zip)) {
+        ZipFile zipFile = new ZipFile(zip);
+        try {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
             while (entries.hasMoreElements()) {
@@ -324,10 +331,15 @@ public class Install {
                     continue;
                 }
 
-                try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(destFile))) {
+                OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(destFile));
+                try {
                     copyInputStream(zipFile.getInputStream(entry), outputStream);
+                } finally {
+                    outputStream.close();
                 }
             }
+        } finally {
+            zipFile.close();
         }
     }
 

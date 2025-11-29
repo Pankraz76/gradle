@@ -147,7 +147,10 @@ abstract class ToolingApiClientJdkCompatibilityTest extends AbstractIntegrationS
                     GradleConnector connector = GradleConnector.newConnector();
                     connector.useGradleVersion(gradleVersion);
 
-                    try (ProjectConnection connection = connector.forProjectDirectory(projectLocation).useGradleUserHomeDir(gradleUserHome).connect()) {
+                    ProjectConnection connection = null;
+
+                    try {
+                        connection = connector.forProjectDirectory(projectLocation).useGradleUserHomeDir(gradleUserHome).connect();
 
                         ByteArrayOutputStream out = new ByteArrayOutputStream();
                         ByteArrayOutputStream err = new ByteArrayOutputStream();
@@ -162,6 +165,9 @@ abstract class ToolingApiClientJdkCompatibilityTest extends AbstractIntegrationS
                         assert out.toString().contains("Hello from");
                         System.err.println(err.toString());
                     } finally {
+                        if (connection != null) {
+                            connection.close();
+                        }
                         connector.disconnect();
                     }
                 }

@@ -61,8 +61,11 @@ public abstract class AbstractFileTreeElement implements FileTreeElement {
     @Override
     public void copyTo(OutputStream output) {
         try {
-            try (InputStream inputStream = open()) {
+            InputStream inputStream = open();
+            try {
                 IOUtils.copyLarge(inputStream, output);
+            } finally {
+                inputStream.close();
             }
         } catch (IOException e) {
             throw UncheckedException.throwAsUncheckedException(e);
@@ -94,8 +97,11 @@ public abstract class AbstractFileTreeElement implements FileTreeElement {
     }
 
     private void copyFile(File target) throws IOException {
-        try (FileOutputStream outputStream = new FileOutputStream(target)) {
+        FileOutputStream outputStream = new FileOutputStream(target);
+        try {
             copyTo(outputStream);
+        } finally {
+            outputStream.close();
         }
     }
 

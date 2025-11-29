@@ -131,9 +131,12 @@ public class UriTextResource implements TextResource {
             }
             return file.length() == 0;
         }
+        Reader reader = getAsReader();
         try {
-            try (Reader reader = getAsReader()) {
+            try {
                 return reader.read() == -1;
+            } finally {
+                reader.close();
             }
         } catch (Exception e) {
             throw ResourceExceptions.failure(sourceUri, String.format("Could not read %s.", getDisplayName()), e);
@@ -153,9 +156,12 @@ public class UriTextResource implements TextResource {
                 throw ResourceExceptions.failure(sourceUri, String.format("Could not read %s.", getDisplayName()), e);
             }
         }
+        Reader reader = getAsReader();
         try {
-            try (Reader reader = getAsReader()) {
+            try {
                 return IOUtils.toString(reader);
+            } finally {
+                reader.close();
             }
         } catch (Exception e) {
             throw ResourceExceptions.failure(sourceUri, String.format("Could not read %s.", getDisplayName()), e);
@@ -195,8 +201,11 @@ public class UriTextResource implements TextResource {
             return file.exists();
         }
         try {
-            try (Reader reader = openReader()) {
+            Reader reader = openReader();
+            try {
                 return true;
+            } finally {
+                reader.close();
             }
         } catch (FileNotFoundException e) {
             return false;

@@ -29,6 +29,8 @@ import org.gradle.internal.serialize.Decoder;
 import org.gradle.internal.serialize.Encoder;
 import org.gradle.internal.serialize.Serializer;
 import org.gradle.process.internal.worker.WorkerProcessContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -40,6 +42,8 @@ import java.io.ObjectOutputStream;
  * Serializes and de-serializes {@link WorkerConfig}s.
  */
 public class WorkerConfigSerializer implements Serializer<WorkerConfig> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WorkerConfigSerializer.class);
 
     @Override
     public WorkerConfig read(Decoder decoder) throws IOException {
@@ -78,7 +82,9 @@ public class WorkerConfigSerializer implements Serializer<WorkerConfig> {
 
     private static Action<? super WorkerProcessContext> deserializeWorker(byte[] serializedWorker, ClassLoader loader) throws IOException {
         ByteArrayInputStream bais = new ByteArrayInputStream(serializedWorker);
-        try (ObjectInputStream in = new ClassLoaderObjectInputStream(bais, loader)) {
+        ObjectInputStream in = null;
+        try {
+            in = new ClassLoaderObjectInputStream(bais, loader);
 
             @SuppressWarnings("unchecked")
             Action<? super WorkerProcessContext> workerAction = (Action<? super WorkerProcessContext>) in.readObject();
@@ -97,15 +103,33 @@ public class WorkerConfigSerializer implements Serializer<WorkerConfig> {
                 message = "Unsupported worker JDK version: " + JavaVersion.current().getMajorVersion();
             }
             throw new GradleException(message, e);
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    LOGGER.debug("Error closing ObjectInputStream", e);
+                }
+            }
         }
     }
 
     private static byte[] serializeWorker(Action<? super WorkerProcessContext> action) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try (ObjectOutputStream out = new ObjectOutputStream(baos)) {
+        ObjectOutputStream out = null;
+        try {
+            out = new ObjectOutputStream(baos);
             out.writeObject(action);
 
             return baos.toByteArray();
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    LOGGER.debug("Error closing ObjectOutputStream", e);
+                }
+            }
         }
     }
 }

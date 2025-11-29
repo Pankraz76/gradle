@@ -144,8 +144,9 @@ public class DefaultJavaToolchainProvisioningService implements JavaToolchainPro
                 File downloadFolder = cacheDirProvider.getDownloadLocation();
                 ExternalResource resource = wrapInOperation("Examining toolchain URI " + uri, () -> downloader.getResourceFor(uri, authentications));
                 File archiveFile = new File(downloadFolder, buildFileNameWithDetails(uri, resource, spec));
-                try (FileLock fileLock = cacheDirProvider.acquireWriteLock(archiveFile, "Downloading toolchain")) {
-                    boolean archiveAlreadyExists = archiveFile.exists();
+                final FileLock fileLock = cacheDirProvider.acquireWriteLock(archiveFile, "Downloading toolchain");
+                boolean archiveAlreadyExists = archiveFile.exists();
+                try {
                     if (!archiveAlreadyExists) {
                         wrapInOperation("Downloading toolchain from URI " + uri, () -> {
                             downloader.download(uri, archiveFile, resource);
@@ -166,6 +167,8 @@ public class DefaultJavaToolchainProvisioningService implements JavaToolchainPro
                             throw e;
                         }
                     }
+                } finally {
+                    fileLock.close();
                 }
             } catch (Exception e) {
                 throw new ToolchainDownloadException(spec, uri, e);

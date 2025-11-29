@@ -114,7 +114,8 @@ public class RestFilter implements Filter {
             }
         }
 
-        try (FileOutputStream out = new FileOutputStream(file)) {
+        FileOutputStream out = new FileOutputStream(file);
+        try {
             if (_maxPutSize > 0) {
                 int length = request.getContentLength();
                 if (length > _maxPutSize) {
@@ -125,6 +126,8 @@ public class RestFilter implements Filter {
             } else {
                 IO.copy(request.getInputStream(), out);
             }
+        } finally {
+            out.close();
         }
 
         response.setStatus(HttpServletResponse.SC_NO_CONTENT);

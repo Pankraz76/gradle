@@ -38,22 +38,31 @@ public class OnDemandFileAccess extends AbstractFileAccess {
 
     @Override
     public <T> T readFile(Supplier<? extends T> action) throws LockTimeoutException, FileIntegrityViolationException {
-        try (FileLock lock = manager.lock(targetFile, mode(FileLockManager.LockMode.Shared), displayName)) {
+        FileLock lock = manager.lock(targetFile, mode(FileLockManager.LockMode.Shared), displayName);
+        try {
             return lock.readFile(action);
+        } finally {
+            lock.close();
         }
     }
 
     @Override
     public void updateFile(Runnable action) throws LockTimeoutException, FileIntegrityViolationException {
-        try (FileLock lock = manager.lock(targetFile, mode(FileLockManager.LockMode.Exclusive), displayName)) {
+        FileLock lock = manager.lock(targetFile, mode(FileLockManager.LockMode.Exclusive), displayName);
+        try {
             lock.updateFile(action);
+        } finally {
+            lock.close();
         }
     }
 
     @Override
     public void writeFile(Runnable action) throws LockTimeoutException {
-        try (FileLock lock = manager.lock(targetFile, mode(FileLockManager.LockMode.Exclusive), displayName)) {
+        FileLock lock = manager.lock(targetFile, mode(FileLockManager.LockMode.Exclusive), displayName);
+        try {
             lock.writeFile(action);
+        } finally {
+            lock.close();
         }
     }
 }

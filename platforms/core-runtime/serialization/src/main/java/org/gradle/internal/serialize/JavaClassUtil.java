@@ -74,12 +74,15 @@ public class JavaClassUtil {
      * @throws IOException If the stream contents are malformed.
      */
     public static int getClassMajorVersion(InputStream is) throws IOException {
-        try (DataInputStream data = new DataInputStream(is)) {
+        DataInputStream data = new DataInputStream(is);
+        try {
             if (MAGIC_BYTES != data.readInt()) {
                 throw new IOException("Invalid .class file header");
             }
             data.readUnsignedShort(); // Minor
             return data.readUnsignedShort(); // Major
+        } finally {
+            data.close();
         }
     }
 }

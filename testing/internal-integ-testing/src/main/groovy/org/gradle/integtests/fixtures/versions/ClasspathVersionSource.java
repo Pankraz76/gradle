@@ -51,8 +51,11 @@ public class ClasspathVersionSource implements Factory<Properties> {
 
         try {
             Properties properties = new Properties();
-            try (InputStream stream = resource.openStream()) {
+            InputStream stream = resource.openStream();
+            try {
                 properties.load(stream);
+            } finally {
+                stream.close();
             }
             return properties;
         } catch (IOException e) {

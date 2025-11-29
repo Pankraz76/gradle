@@ -32,8 +32,11 @@ public abstract class AbstractPersistableConfigurationObject implements Persista
     @Override
     public void load(File inputFile) {
         try {
-            try (InputStream inputStream = new BufferedInputStream(new FileInputStream(inputFile))) {
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(inputFile));
+            try {
                 load(inputStream);
+            } finally {
+                inputStream.close();
             }
         } catch (Exception e) {
             throw UncheckedException.throwAsUncheckedException(e);
@@ -64,8 +67,11 @@ public abstract class AbstractPersistableConfigurationObject implements Persista
     @Override
     public void store(File outputFile) {
         try {
-            try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile))) {
+            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
+            try {
                 store(outputStream);
+            } finally {
+                outputStream.close();
             }
         } catch (IOException e) {
             throw UncheckedException.throwAsUncheckedException(e);

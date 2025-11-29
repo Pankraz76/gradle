@@ -70,15 +70,21 @@ public class DefaultNestedBuildTree implements NestedBuildTree {
     public <T> T run(Function<? super BuildTreeLifecycleController, T> buildAction) {
         StartParameterInternal startParameter = buildDefinition.getStartParameter();
         BuildRequestMetaData buildRequestMetaData = new DefaultBuildRequestMetaData(Time.currentTimeMillis());
-        try (BuildSessionState session = new BuildSessionState(userHomeDirServiceRegistry, crossBuildSessionState, startParameter, buildRequestMetaData, ClassPath.EMPTY, buildCancellationToken, buildRequestMetaData.getClient(), new NoOpBuildEventConsumer())) {
+        BuildSessionState session = new BuildSessionState(userHomeDirServiceRegistry, crossBuildSessionState, startParameter, buildRequestMetaData, ClassPath.EMPTY, buildCancellationToken, buildRequestMetaData.getClient(), new NoOpBuildEventConsumer());
+        try {
             session.getServices().get(BuildLayoutValidator.class).validate(startParameter);
             BuildTreeModelControllerServices.Supplier modelServices = session.getServices().get(BuildTreeModelControllerServices.class).servicesForNestedBuildTree(startParameter);
             // Let the nested build tree inherits the same invocation ID
-            try (BuildTreeState buildTree = new BuildTreeState(buildInvocationScopeId, session.getServices(), modelServices)) {
+            BuildTreeState buildTree = new BuildTreeState(buildInvocationScopeId, session.getServices(), modelServices);
+            try {
                 RootOfNestedBuildTree rootBuild = new RootOfNestedBuildTree(buildDefinition, identityPath, owner, buildTree);
                 rootBuild.attach();
                 return rootBuild.run(buildAction);
+            } finally {
+                buildTree.close();
             }
+        } finally {
+            session.close();
         }
     }
 }

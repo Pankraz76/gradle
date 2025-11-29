@@ -78,8 +78,9 @@ public class DaemonJavaToolchainProvisioningService implements JavaToolchainProv
                 File downloadFolder = cacheDirProvider.getDownloadLocation();
                 ExternalResource resource = downloader.getResourceFor(uri);
                 File archiveFile = new File(downloadFolder, buildFileNameWithDetails(uri, resource, spec));
-                try (FileLock fileLock = cacheDirProvider.acquireWriteLock(archiveFile, "Downloading toolchain")) {
-                    boolean archiveAlreadyExists = archiveFile.exists();
+                final FileLock fileLock = cacheDirProvider.acquireWriteLock(archiveFile, "Downloading toolchain");
+                boolean archiveAlreadyExists = archiveFile.exists();
+                try {
                     if (!archiveAlreadyExists) {
                         downloader.download(uri, archiveFile, resource);
                     }
@@ -98,6 +99,8 @@ public class DaemonJavaToolchainProvisioningService implements JavaToolchainProv
                     }
                     progressLogger.completed("Installed toolchain", false);
                     return installedToolchainFile;
+                } finally {
+                    fileLock.close();
                 }
             } catch (Exception e) {
                 progressLogger.completed("Failed to installed toolchain", true);

@@ -95,7 +95,8 @@ public class CustomClasspathFileTransformer implements ClasspathFileTransformer 
         }
 
         final File lockFile = new File(destDir, destFileName + ".lock");
-        try (FileLock fileLock = exclusiveLockFor(lockFile)) {
+        final FileLock fileLock = exclusiveLockFor(lockFile);
+        try {
             if (receipt.isFile()) {
                 // Lock was acquired after a concurrent writer had already finished.
                 return transformed;
@@ -107,6 +108,8 @@ public class CustomClasspathFileTransformer implements ClasspathFileTransformer 
                 throw new UncheckedIOException(format("Failed to create receipt for instrumented classpath file '%s/%s'.", destDirName, destFileName), e);
             }
             return transformed;
+        } finally {
+            fileLock.close();
         }
     }
 

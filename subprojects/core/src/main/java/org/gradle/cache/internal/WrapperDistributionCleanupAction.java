@@ -210,11 +210,14 @@ public class WrapperDistributionCleanupAction implements MonitoredCleanupAction 
         if (zipEntry == null) {
             return null;
         }
-        try (InputStream in = zipFile.getInputStream(zipEntry)) {
+        InputStream in = zipFile.getInputStream(zipEntry);
+        try {
             Properties properties = new Properties();
             properties.load(in);
             String versionString = properties.getProperty(DefaultGradleVersion.VERSION_NUMBER_PROPERTY);
             return GradleVersion.version(versionString);
+        } finally {
+            in.close();
         }
     }
 

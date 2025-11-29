@@ -25,6 +25,7 @@ import org.gradle.api.internal.artifacts.verification.model.ChecksumKind;
 import org.gradle.api.internal.artifacts.verification.model.IgnoredKey;
 import org.gradle.api.internal.artifacts.verification.verifier.DependencyVerifier;
 import org.gradle.api.internal.artifacts.verification.verifier.DependencyVerifierBuilder;
+import org.gradle.internal.UncheckedException;
 import org.gradle.internal.component.external.model.DefaultModuleComponentIdentifier;
 import org.gradle.internal.component.external.model.ModuleComponentArtifactIdentifier;
 import org.gradle.internal.component.external.model.ModuleComponentFileArtifactIdentifier;
@@ -73,18 +74,18 @@ import static org.gradle.api.internal.artifacts.verification.serializer.Dependen
 import static org.gradle.api.internal.artifacts.verification.serializer.DependencyVerificationXmlTags.VERIFY_METADATA;
 import static org.gradle.api.internal.artifacts.verification.serializer.DependencyVerificationXmlTags.VERIFY_SIGNATURES;
 import static org.gradle.api.internal.artifacts.verification.serializer.DependencyVerificationXmlTags.VERSION;
-import static org.gradle.internal.UncheckedException.throwAsUncheckedException;
 
 public class DependencyVerificationsXmlReader {
     public static void readFromXml(InputStream in, DependencyVerifierBuilder builder) {
-        try {
-            XMLReader xmlReader = createSecureParser().getXMLReader();
+        try (InputStream is = in) {
+            SAXParser saxParser = createSecureParser();
+            XMLReader xmlReader = saxParser.getXMLReader();
             VerifiersHandler handler = new VerifiersHandler(builder);
             xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
             xmlReader.setContentHandler(handler);
-            xmlReader.parse(new InputSource(in));
+            xmlReader.parse(new InputSource(is));
         } catch (IOException e) {
-            throw throwAsUncheckedException(e);
+            throw UncheckedException.throwAsUncheckedException(e);
         } catch (Exception e) {
             throw new DependencyVerificationException("Unable to read dependency verification metadata", e);
         }
