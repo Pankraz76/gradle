@@ -133,6 +133,7 @@ project.plugins.withType<JavaBasePlugin> {
                 checks = errorproneExtension.disabledChecks.map {
                     it.associateWith { OFF }
                 }
+                disableAllWarnings = true
                 allErrorsAsWarnings = true
 //                error(
 //                    "ReturnValueIgnored",
