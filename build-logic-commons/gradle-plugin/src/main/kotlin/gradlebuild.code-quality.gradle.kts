@@ -3,7 +3,6 @@ import gradlebuild.nullaway.NullawayCompatibilityRule
 import gradlebuild.nullaway.NullawayState
 import gradlebuild.nullaway.NullawayStatusTask
 import groovy.lang.GroovySystem
-import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.CheckSeverity.ERROR
 import net.ltgt.gradle.errorprone.CheckSeverity.OFF
 import net.ltgt.gradle.errorprone.errorprone
@@ -54,7 +53,6 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "EnumOrdinal", // This violation is ubiquitous, though most are benign.
         "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals()
         "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
-
         // NEVER
         "AssignmentExpression", // Not using it is more a matter of taste.
         "InjectOnConstructorOfAbstractClass", // We use abstract injection as a pattern
@@ -64,7 +62,6 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "MissingSummary", // We have another mechanism to check Javadocs on public API
         "StringSplitter", // We are fine with using String.split() as is
     )
-
     nullawayEnabled.convention(false)
 }
 
@@ -79,16 +76,6 @@ dependencies {
 project.plugins.withType<JavaBasePlugin> {
     project.extensions.getByName<SourceSetContainer>("sourceSets").configureEach {
         val isMainSourceSet = (name == "main")
-
-        val extension = this.extensions.create<ErrorProneSourceSetExtension>(
-            "errorprone",
-            project.objects.property<Boolean>()
-        ).apply {
-            // Enable it only for the main source set by default, as incremental Groovy
-            // joint-compilation doesn't work with the Error Prone annotation processor
-            enabled.convention(isMainSourceSet)
-        }
-
         if (isMainSourceSet) {
             val nullawayAttributeValue = errorproneExtension.nullawayEnabled.map { if (it) NullawayState.ENABLED else NullawayState.DISABLED }
 
@@ -109,7 +96,14 @@ project.plugins.withType<JavaBasePlugin> {
                 }
             }
         }
-
+        val extension = this.extensions.create<ErrorProneSourceSetExtension>(
+            "errorprone",
+            project.objects.property<Boolean>()
+        ).apply {
+            // Enable it only for the main source set by default, as incremental Groovy
+            // joint-compilation doesn't work with the Error Prone annotation processor
+            enabled.convention(isMainSourceSet)
+        }
         @Suppress("UnstableApiUsage")
         fun addErrorProneDependency(dep: String) {
             project.dependencies.addProvider(
@@ -117,11 +111,9 @@ project.plugins.withType<JavaBasePlugin> {
                 extension.enabled.filter { it }.map { dep }
             )
         }
-
         // don't forget to update the version in distributions-dependencies/build.gradle.kts
         addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0")
         addErrorProneDependency("com.uber.nullaway:nullaway:0.12.10")
-
         project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
             options.errorprone {
                 isEnabled = extension.enabled
@@ -184,13 +176,12 @@ tasks.check {
 
 val rules by configurations.creating {
     isCanBeConsumed = false
-
     attributes {
         attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements.RESOURCES))
     }
 }
 
-val groovyVersion = GroovySystem.getVersion()
+val groovyVersion: String? = GroovySystem.getVersion()
 val isAtLeastGroovy4 = VersionNumber.parse(groovyVersion).major >= 4
 val codenarcVersion = if (isAtLeastGroovy4) "3.6.0-groovy-4.0" else "3.6.0"
 
@@ -203,7 +194,6 @@ dependencies {
     }
     codenarc("org.codenarc:CodeNarc:$codenarcVersion")
     codenarc(embeddedKotlin("stdlib"))
-
     components {
         withModule<CodeNarcRule>("org.codenarc:CodeNarc") {
             params(groovyVersion)
@@ -216,9 +206,8 @@ fun configFile(fileName: String) = resources.text.fromFile(rules.asFileTree.filt
 checkstyle {
     toolVersion = "10.25.0"
     config = configFile("checkstyle.xml")
-    val projectDirectory = layout.projectDirectory
     configDirectory = rules.elements.map {
-        projectDirectory.dir(it.single().asFile.absolutePath).dir("checkstyle")
+        layout.projectDirectory.dir(it.single().asFile.absolutePath).dir("checkstyle")
     }
 }
 
@@ -253,8 +242,7 @@ abstract class CodeNarcRule @Inject constructor(
     override fun execute(context: ComponentMetadataContext) {
         context.details.allVariants {
             withDependencies {
-                val isAtLeastGroovy4 = VersionNumber.parse(groovyVersion).major >= 4
-                val groovyGroup = if (isAtLeastGroovy4) "org.apache.groovy" else "org.codehaus.groovy"
+                val groovyGroup = if (VersionNumber.parse(groovyVersion).major >= 4) "org.apache.groovy" else "org.codehaus.groovy"
                 removeAll { it.group == groovyGroup }
                 add("$groovyGroup:groovy") {
                     version { prefer(groovyVersion) }
