@@ -128,6 +128,11 @@ project.plugins.withType<JavaBasePlugin> {
                 checks = errorproneExtension.disabledChecks.map {
                     it.associateWith { OFF }
                 }
+                errorproneArgs.addAll(
+                    "-XepPatchLocation:IN_PLACE",
+                    "-XepPatchChecks:" +
+                        "EffectivelyPrivate"
+                )
             }
         }
     }
@@ -154,12 +159,12 @@ tasks.withType<JavaCompile>().configureEach {
 //                    "UnnecessarilyFullyQualified",
 //                    "UnnecessaryLambda",
 //                )
-        if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
             errorproneArgs.addAll(
                 "-XepPatchLocation:IN_PLACE",
                 "-XepPatchChecks:" +
                     "EffectivelyPrivate"
             )
+        if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
         }
     }
 }
