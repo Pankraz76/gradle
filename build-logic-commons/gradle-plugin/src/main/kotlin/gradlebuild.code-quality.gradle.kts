@@ -67,12 +67,6 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
     nullawayEnabled.convention(false)
 }
 
-nullaway {
-    // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
-    // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
-    annotatedPackages.add("org.gradle")
-}
-
 dependencies {
     attributesSchema {
         attribute(NullawayAttributes.nullawayAttribute) {
@@ -133,11 +127,6 @@ project.plugins.withType<JavaBasePlugin> {
                 checks = errorproneExtension.disabledChecks.map {
                     it.associateWith { OFF }
                 }
-                nullaway {
-                    checkContracts = true
-                    isJSpecifyMode = true
-                    severity = errorproneExtension.nullawayEnabled.map { if (it) CheckSeverity.ERROR else OFF }
-                }
             }
         }
     }
@@ -148,6 +137,14 @@ tasks.withType<JavaCompile>().configureEach {
         disableWarningsInGeneratedCode = true
         disableAllWarnings = true
         allErrorsAsWarnings = true
+        nullaway {
+            // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
+            // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
+            annotatedPackages.add("org.gradle")
+            checkContracts = true
+            isJSpecifyMode = true
+            severity = errorproneExtension.nullawayEnabled.map { if (it) CheckSeverity.ERROR else OFF }
+        }
 //                error(
 //                    "ReturnValueIgnored",
 //                    "EffectivelyPrivate",
