@@ -4,6 +4,7 @@ import gradlebuild.nullaway.NullawayState
 import gradlebuild.nullaway.NullawayStatusTask
 import groovy.lang.GroovySystem
 import net.ltgt.gradle.errorprone.CheckSeverity
+import net.ltgt.gradle.errorprone.CheckSeverity.ERROR
 import net.ltgt.gradle.errorprone.CheckSeverity.OFF
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
@@ -136,14 +137,14 @@ tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
         disableWarningsInGeneratedCode = true
         disableAllWarnings = true
-        allErrorsAsWarnings = true
+        //allErrorsAsWarnings = true
         nullaway {
             // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
             // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
             annotatedPackages.add("org.gradle")
             checkContracts = true
             isJSpecifyMode = true
-            severity = errorproneExtension.nullawayEnabled.map { if (it) CheckSeverity.ERROR else OFF }
+            severity = errorproneExtension.nullawayEnabled.map { if (it) ERROR else OFF }
         }
 //                error(
 //                    "ReturnValueIgnored",
