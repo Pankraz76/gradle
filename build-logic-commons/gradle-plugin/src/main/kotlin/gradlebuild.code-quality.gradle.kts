@@ -143,14 +143,14 @@ tasks.withType<JavaCompile>().configureEach {
             isJSpecifyMode = true
             severity = errorproneExtension.nullawayEnabled.map { if (it) ERROR else OFF }
         }
-//                error(
+                error(
+                    "MissingOverride",
 //                    "ReturnValueIgnored",
-//                    "MissingOverride",
 //                    "SelfAssignment",
 //                    "StringJoin",
 //                    "UnnecessarilyFullyQualified",
 //                    "UnnecessaryLambda",
-//                )
+                )
             errorproneArgs.addAll(
                 "-XepPatchLocation:IN_PLACE",
                 "-XepPatchChecks:" +
