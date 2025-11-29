@@ -352,7 +352,6 @@ public class DefaultDeleter implements Deleter {
         /**
          * How to handle descendants.
          */
-        //@SuppressWarnings("EffectivelyPrivate")
         abstract Handling getDescendantHandling();
     }
 }
