@@ -133,7 +133,14 @@ project.plugins.withType<JavaBasePlugin> {
                 checks = errorproneExtension.disabledChecks.map {
                     it.associateWith { OFF }
                 }
-                // error("EffectivelyPrivate")
+//                error(
+//                    "ReturnValueIgnored",
+//                    "EffectivelyPrivate",
+//                    "SelfAssignment",
+//                    "StringJoin",
+//                    "UnnecessarilyFullyQualified",
+//                    "UnnecessaryLambda",
+//                )
                 if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
                     errorproneArgs.addAll(
                         "-XepPatchLocation:IN_PLACE",
