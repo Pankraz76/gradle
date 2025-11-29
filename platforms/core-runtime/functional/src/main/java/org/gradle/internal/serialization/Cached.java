@@ -89,7 +89,7 @@ public abstract class Cached<T> {
 
         private final Try<T> result;
 
-        public Fixed(Try<T> result) {
+        private Fixed(Try<T> result) {
             this.result = result;
         }
 
