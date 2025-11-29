@@ -4,6 +4,7 @@ import gradlebuild.nullaway.NullawayState
 import gradlebuild.nullaway.NullawayStatusTask
 import groovy.lang.GroovySystem
 import net.ltgt.gradle.errorprone.CheckSeverity
+import net.ltgt.gradle.errorprone.CheckSeverity.OFF
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
 import org.gradle.util.internal.VersionNumber
@@ -130,7 +131,7 @@ project.plugins.withType<JavaBasePlugin> {
             options.errorprone {
                 isEnabled = extension.enabled
                 checks = errorproneExtension.disabledChecks.map {
-                    it.associateWith { CheckSeverity.OFF }
+                    it.associateWith { OFF }
                 }
                 // error("EffectivelyPrivate")
                 if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
@@ -143,7 +144,7 @@ project.plugins.withType<JavaBasePlugin> {
                 nullaway {
                     checkContracts = true
                     isJSpecifyMode = true
-                    severity = errorproneExtension.nullawayEnabled.map { if (it) CheckSeverity.ERROR else CheckSeverity.OFF }
+                    severity = errorproneExtension.nullawayEnabled.map { if (it) CheckSeverity.ERROR else OFF }
                 }
             }
         }
