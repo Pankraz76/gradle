@@ -141,12 +141,12 @@ project.plugins.withType<JavaBasePlugin> {
 //                    "UnnecessarilyFullyQualified",
 //                    "UnnecessaryLambda",
 //                )
-                if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
                     errorproneArgs.addAll(
                         "-XepPatchLocation:IN_PLACE",
                         "-XepPatchChecks:" +
                             "EffectivelyPrivate"
                     )
+                if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
                 }
                 nullaway {
                     checkContracts = true
