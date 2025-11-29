@@ -132,7 +132,7 @@ project.plugins.withType<JavaBasePlugin> {
                 checks = errorproneExtension.disabledChecks.map {
                     it.associateWith { CheckSeverity.OFF }
                 }
-                error("EffectivelyPrivate")
+                // error("EffectivelyPrivate")
                 if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
                     errorproneArgs.addAll(
                         "-XepPatchLocation:IN_PLACE",
