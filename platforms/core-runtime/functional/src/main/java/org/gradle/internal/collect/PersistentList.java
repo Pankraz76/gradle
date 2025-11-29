@@ -146,7 +146,7 @@ public abstract class PersistentList<T> implements Iterable<T> {
         private static class PersistentListIterator<T> extends AbstractIterator<T> {
             PersistentList<T> next;
 
-            public PersistentListIterator(Cons<T> next) {
+            private PersistentListIterator(Cons<T> next) {
                 this.next = next;
             }
 
