@@ -138,15 +138,6 @@ tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
         disableWarningsInGeneratedCode = true
         disableAllWarnings = true
-        //allErrorsAsWarnings = true
-        nullaway {
-            // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
-            // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
-            annotatedPackages.add("org.gradle")
-            checkContracts = true
-            isJSpecifyMode = true
-            severity = errorproneExtension.nullawayEnabled.map { if (it) ERROR else OFF }
-        }
         error("MissingOverride")
         if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
             errorproneArgs.addAll(
@@ -154,6 +145,14 @@ tasks.withType<JavaCompile>().configureEach {
                 "-XepPatchChecks:" +
                     "MissingOverride"
             )
+        }
+        nullaway {
+            // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
+            // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
+            annotatedPackages.add("org.gradle")
+            checkContracts = true
+            isJSpecifyMode = true
+            severity = errorproneExtension.nullawayEnabled.map { if (it) ERROR else OFF }
         }
     }
 }
