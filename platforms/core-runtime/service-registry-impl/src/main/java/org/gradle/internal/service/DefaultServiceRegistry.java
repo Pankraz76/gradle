@@ -390,24 +390,7 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
         }
     }
 
-    private class RegistrationWrapper implements AnnotatedServiceLifecycleHandler.Registration {
-        private final SingletonService serviceProvider;
 
-        public RegistrationWrapper(SingletonService serviceProvider) {
-            this.serviceProvider = serviceProvider;
-        }
-
-        @Override
-        public List<Class<?>> getDeclaredTypes() {
-            return serviceProvider.getDeclaredServiceTypes();
-        }
-
-        @Override
-        public Object getInstance() {
-            serviceRequested();
-            return serviceProvider.getPreparedInstance();
-        }
-    }
 
     private static Class<?> unwrap(Type type) {
         if (type instanceof Class) {
@@ -425,7 +408,7 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
     }
 
 
-    private static abstract class FactoryService extends SingletonService {
+    private static abstract class FactoryService extends OwnServices.SingletonService {
         private final ServiceAccessToken accessToken;
         private Service[] paramServices;
         private Service decorates;
@@ -1030,69 +1013,5 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
         }
     }
 
-    private static class ClassInspector {
-        private final ConcurrentMap<Class<?>, ClassDetails> classes = new ConcurrentHashMap<Class<?>, ClassDetails>();
 
-        /**
-         * Does the given class have the given annotation somewhere in its hierarchy?
-         */
-        boolean hasAnnotation(Class<?> type, Class<? extends Annotation> annotationType) {
-            return getDetailsForClass(type).hasAnnotation(annotationType);
-        }
-
-        Set<Class<?>> getHierarchy(Class<?> type) {
-            return getDetailsForClass(type).types;
-        }
-
-        private ClassDetails getDetailsForClass(Class<?> type) {
-            ClassDetails classDetails = classes.get(type);
-            if (classDetails == null) {
-                // Multiple thread may calculate this at the same time, which is ok. All threads should end up with the same details object
-                ClassDetails newDetails = new ClassDetails(type);
-                classDetails = classes.putIfAbsent(type, newDetails);
-                if (classDetails == null) {
-                    classDetails = newDetails;
-                }
-            }
-            return classDetails;
-        }
-
-        private static class ClassDetails {
-            private final Set<Class<?>> types = new HashSet<Class<?>>();
-            private final ConcurrentMap<Class<? extends Annotation>, Boolean> annotations = new ConcurrentHashMap<Class<? extends Annotation>, Boolean>();
-
-            public ClassDetails(Class<?> type) {
-                collectTypes(type, types);
-            }
-
-            private void collectTypes(@Nullable Class<?> type, Set<Class<?>> types) {
-                if (type == null || !types.add(type)) {
-                    return;
-                }
-                collectTypes(type.getSuperclass(), types);
-                for (Class<?> serviceInterface : type.getInterfaces()) {
-                    collectTypes(serviceInterface, types);
-                }
-            }
-
-            public boolean hasAnnotation(Class<? extends Annotation> annotationType) {
-                Boolean present = annotations.get(annotationType);
-                if (present == null) {
-                    // Multiple threads may calculate this at the same time, which is ok
-                    present = locateAnnotation(annotationType);
-                    annotations.putIfAbsent(annotationType, present);
-                }
-                return present;
-            }
-
-            private boolean locateAnnotation(Class<? extends Annotation> annotation) {
-                for (Class<?> type : types) {
-                    if (type.getAnnotation(annotation) != null) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-    }
 }
