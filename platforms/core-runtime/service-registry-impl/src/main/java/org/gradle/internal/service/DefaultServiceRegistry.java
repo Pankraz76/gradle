@@ -597,31 +597,7 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
         }
     }
 
-    private static class FixedInstanceService extends OwnServices.SingletonService {
-        public FixedInstanceService(DefaultServiceRegistry owner, ServiceAccessScope accessScope, Class<?> serviceType, Object serviceInstance) {
-            super(owner, accessScope, singletonList(serviceType));
-            setInstance(serviceInstance);
-        }
 
-        private String getDisplayNameImpl(Object serviceInstance) {
-            return format("Service", serviceTypes) + " with implementation " + format(serviceInstance.getClass());
-        }
-
-        @Override
-        protected void instanceRealized(Object instance) {
-            owner.ownServices.instanceRealized(getDeclaredServiceTypes(), () -> getDisplayNameImpl(instance), instance);
-        }
-
-        @Override
-        public String getDisplayName() {
-            return getDisplayNameImpl(getInstance());
-        }
-
-        @Override
-        protected Object createServiceInstance() {
-            throw new UnsupportedOperationException();
-        }
-    }
 
     private static class ConstructorService extends FactoryService {
         @Nullable
