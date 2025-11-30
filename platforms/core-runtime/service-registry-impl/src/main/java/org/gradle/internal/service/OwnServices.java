@@ -71,7 +71,7 @@ class OwnServices implements ServiceProvider {
     private final AtomicReference<ServicesSnapshot> services = new AtomicReference<>(EMPTY);
 
     public OwnServices() {
-        providersByType.put(ServiceRegistry.class, Collections.<ServiceProvider>singletonList(new DefaultServiceRegistry.ThisAsService(ServiceAccess.getPublicScope())));
+        providersByType.put(ServiceRegistry.class, Collections.<ServiceProvider>singletonList(new ThisAsService(ServiceAccess.getPublicScope())));
     }
 
     @Override
@@ -131,20 +131,20 @@ class OwnServices implements ServiceProvider {
         stoppable.stop();
     }
 
-    public void add(DefaultServiceRegistry.SingletonService serviceProvider) {
+    public void add(SingletonService serviceProvider) {
         assertMutable();
         stoppable.add(serviceProvider);
         collectProvidersForClassHierarchy(inspector, serviceProvider.getDeclaredServiceTypes(), serviceProvider);
         notifyAnnotationHandler(serviceProvider);
     }
 
-    private void notifyAnnotationHandler(DefaultServiceRegistry.SingletonService serviceProvider) {
+    private void notifyAnnotationHandler(SingletonService serviceProvider) {
         for (AnnotatedServiceLifecycleHandler annotationHandler : services.updateAndGet(it -> it.addService(serviceProvider)).lifecycleHandlers) {
             notifyAnnotationHandler(annotationHandler, serviceProvider);
         }
     }
 
-    public void collectProvidersForClassHierarchy(DefaultServiceRegistry.ClassInspector inspector, List<Class<?>> declaredServiceTypes, ServiceProvider serviceProvider) {
+    public void collectProvidersForClassHierarchy(ClassInspector inspector, List<Class<?>> declaredServiceTypes, ServiceProvider serviceProvider) {
         for (Class<?> serviceType : declaredServiceTypes) {
             for (Class<?> type : inspector.getHierarchy(serviceType)) {
                 if (type.equals(Object.class)) {
@@ -196,21 +196,21 @@ class OwnServices implements ServiceProvider {
 
     void annotationHandlerCreated(AnnotatedServiceLifecycleHandler annotationHandler) {
         ServicesSnapshot snapshot = services.updateAndGet(it -> it.addLifecycleHandler(annotationHandler));
-        DefaultServiceRegistry.ServiceList list = snapshot.services;
+        ServiceList list = snapshot.services;
         while (list != null) {
             notifyAnnotationHandler(annotationHandler, list.service);
             list = list.next;
         }
     }
 
-    private void notifyAnnotationHandler(AnnotatedServiceLifecycleHandler annotationHandler, DefaultServiceRegistry.SingletonService candidate) {
+    private void notifyAnnotationHandler(AnnotatedServiceLifecycleHandler annotationHandler, SingletonService candidate) {
         if (annotationHandler.getImplicitAnnotation() != null) {
-            annotationHandler.whenRegistered(annotationHandler.getImplicitAnnotation(), new DefaultServiceRegistry.RegistrationWrapper(candidate));
+            annotationHandler.whenRegistered(annotationHandler.getImplicitAnnotation(), new RegistrationWrapper(candidate));
         } else {
             List<Class<?>> declaredServiceTypes = candidate.getDeclaredServiceTypes();
             for (Class<? extends Annotation> annotation : annotationHandler.getAnnotations()) {
                 if (anyTypeHasAnnotation(annotation, declaredServiceTypes)) {
-                    annotationHandler.whenRegistered(annotation, new DefaultServiceRegistry.RegistrationWrapper(candidate));
+                    annotationHandler.whenRegistered(annotation, new RegistrationWrapper(candidate));
                 }
             }
         }
@@ -248,7 +248,7 @@ class OwnServices implements ServiceProvider {
             this.lifecycleHandlers = lifecycleHandlers;
         }
 
-        ServicesSnapshot addService(DefaultServiceRegistry.SingletonService service) {
+        ServicesSnapshot addService(SingletonService service) {
             return new ServicesSnapshot(
                 new ServiceList(service, services),
                 lifecycleHandlers
@@ -270,11 +270,173 @@ class OwnServices implements ServiceProvider {
         }
     }
 
+    private static abstract class ManagedObjectServiceProvider implements ServiceProvider, Service {
+        protected final DefaultServiceRegistry owner;
+        private final Queue<ServiceProvider> dependents = new ConcurrentLinkedQueue<ServiceProvider>();
+        private volatile Object instance;
+
+        protected ManagedObjectServiceProvider(DefaultServiceRegistry owner) {
+            this.owner = owner;
+        }
+
+        abstract List<Class<?>> getDeclaredServiceTypes();
+
+        protected void instanceRealized(Object instance) {
+            owner.ownServices.instanceRealized(getDeclaredServiceTypes(), this::getDisplayName, instance);
+        }
+
+        protected void setInstance(Object instance) {
+            instanceRealized(instance);
+            // Only expose the instance after we're done with initialization.
+            this.instance = instance;
+        }
+
+        public final Object getInstance() {
+            Object result = instance;
+            if (result == null) {
+                synchronized (this) {
+                    result = instance;
+                    if (result == null) {
+                        setInstance(createServiceInstance());
+                        result = instance;
+                    }
+                }
+            }
+            return result;
+        }
+
+        /**
+         * Subclasses implement this method to create the service instance. It is never called concurrently and may not return null.
+         */
+        protected abstract Object createServiceInstance();
+
+        @Override
+        public final void requiredBy(ServiceProvider serviceProvider) {
+            if (fromSameRegistry(serviceProvider)) {
+                dependents.add(serviceProvider);
+            }
+        }
+
+        private boolean fromSameRegistry(ServiceProvider serviceProvider) {
+            return serviceProvider instanceof ManagedObjectServiceProvider && ((ManagedObjectServiceProvider) serviceProvider).owner == owner;
+        }
+
+        @Override
+        public final synchronized void stop() {
+            try {
+                if (instance != null) {
+                    CompositeStoppable.stoppable(dependents).add(instance).stop();
+                }
+            } finally {
+                dependents.clear();
+                instance = null;
+            }
+        }
+    }
+
+
+    static abstract class SingletonService extends ManagedObjectServiceProvider {
+        private enum BindState {UNBOUND, BINDING, BOUND}
+
+        protected final ServiceAccessScope accessScope;
+        protected final List<? extends Type> serviceTypes;
+        private final List<Class<?>> serviceTypesAsClasses;
+
+        BindState state = BindState.UNBOUND;
+
+        SingletonService(DefaultServiceRegistry owner, ServiceAccessScope accessScope, List<? extends Type> serviceTypes) {
+            super(owner);
+
+            if (serviceTypes.isEmpty()) {
+                throw new IllegalArgumentException("Expected at least one declared service type");
+            }
+
+            this.accessScope = accessScope;
+            this.serviceTypes = serviceTypes;
+            serviceTypesAsClasses = collect(serviceTypes, DefaultServiceRegistry::unwrap);
+        }
+
+        @Override
+        List<Class<?>> getDeclaredServiceTypes() {
+            return serviceTypesAsClasses;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return format("Service", serviceTypes);
+        }
+
+        @Override
+        public String toString() {
+            return getDisplayName();
+        }
+
+        @Override
+        public Object get() {
+            return getInstance();
+        }
+
+        private Object getPreparedInstance() {
+            return prepare().get();
+        }
+
+        private Service prepare() {
+            if (state == BindState.BOUND) {
+                return this;
+            }
+            synchronized (this) {
+                if (state == BindState.BINDING) {
+                    throw new ServiceValidationException("Cycle in dependencies of " + getDisplayName() + " detected");
+                }
+                if (state == BindState.UNBOUND) {
+                    state = BindState.BINDING;
+                    try {
+                        bind();
+                        state = BindState.BOUND;
+                    } catch (RuntimeException e) {
+                        state = BindState.UNBOUND;
+                        throw e;
+                    }
+                }
+                return this;
+            }
+        }
+
+        /**
+         * Do any preparation work and validation to ensure that {@link #createServiceInstance()} can be called later.
+         * This method is never called concurrently.
+         */
+        protected void bind() {
+        }
+
+        @Override
+        public Service getService(Type serviceType, @Nullable ServiceAccessToken token) {
+            if (!accessScope.contains(token)) {
+                return null;
+            }
+            if (!isSatisfiedByAny(serviceType, serviceTypes)) {
+                return null;
+            }
+            return prepare();
+        }
+
+        @Override
+        public Visitor getAll(Class<?> serviceType, @Nullable ServiceAccessToken token, Visitor visitor) {
+            if (!accessScope.contains(token)) {
+                return visitor;
+            }
+            if (isAssignableFromAnyType(serviceType, serviceTypesAsClasses)) {
+                visitor.visit(prepare());
+            }
+            return visitor;
+        }
+    }
+
     private static class ServiceList {
-        final DefaultServiceRegistry.SingletonService service;
+        final SingletonService service;
         final @Nullable ServiceList next;
 
-        ServiceList(DefaultServiceRegistry.SingletonService head, @Nullable ServiceList next) {
+        ServiceList(SingletonService head, @Nullable ServiceList next) {
             this.service = head;
             this.next = next;
         }
