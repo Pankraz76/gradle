@@ -277,7 +277,7 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
 
     private <T> void add(ServiceAccessScope accessScope, Class<? extends T> serviceType, T serviceInstance) {
         assertMutable();
-        ownServices.add(new FixedInstanceService(this, accessScope, serviceType, serviceInstance));
+        ownServices.add(new OwnServices.FixedInstanceService(this, accessScope, serviceType, serviceInstance));
     }
 
     /**

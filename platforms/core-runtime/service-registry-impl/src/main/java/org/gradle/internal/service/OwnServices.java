@@ -576,7 +576,7 @@ class OwnServices implements ServiceProvider {
         }
     }
 
-    private static class FixedInstanceService extends OwnServices.SingletonService {
+    static class FixedInstanceService extends OwnServices.SingletonService {
         public FixedInstanceService(DefaultServiceRegistry owner, ServiceAccessScope accessScope, Class<?> serviceType, Object serviceInstance) {
             super(owner, accessScope, singletonList(serviceType));
             setInstance(serviceInstance);
