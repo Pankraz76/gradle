@@ -391,9 +391,10 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
     }
 
     private class OwnServices implements ServiceProvider {
+        private final ServicesSnapshot EMPTY = new ServicesSnapshot(null, new AnnotatedServiceLifecycleHandler[0]);
         private final Map<Class<?>, List<ServiceProvider>> providersByType = new HashMap<Class<?>, List<ServiceProvider>>(16, 0.5f);
         private final CompositeStoppable stoppable = CompositeStoppable.stoppable();
-        private final AtomicReference<ServicesSnapshot> services = new AtomicReference<>(ServicesSnapshot.EMPTY);
+        private final AtomicReference<ServicesSnapshot> services = new AtomicReference<>(EMPTY);
 
         public OwnServices() {
             providersByType.put(ServiceRegistry.class, Collections.<ServiceProvider>singletonList(new ThisAsService(ServiceAccess.getPublicScope())));
@@ -460,8 +461,11 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
             assertMutable();
             stoppable.add(serviceProvider);
             collectProvidersForClassHierarchy(inspector, serviceProvider.getDeclaredServiceTypes(), serviceProvider);
-            ServicesSnapshot snapshot = services.updateAndGet(it -> it.addService(serviceProvider));
-            for (AnnotatedServiceLifecycleHandler annotationHandler : snapshot.lifecycleHandlers) {
+            notifyAnnotationHandler(serviceProvider);
+        }
+
+        private void notifyAnnotationHandler(SingletonService serviceProvider) {
+            for (AnnotatedServiceLifecycleHandler annotationHandler : services.updateAndGet(it -> it.addService(serviceProvider)).lifecycleHandlers) {
                 notifyAnnotationHandler(annotationHandler, serviceProvider);
             }
         }
@@ -1429,8 +1433,6 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
      * rarely (once per lifecycle handler).
      */
     private static class ServicesSnapshot {
-        static final ServicesSnapshot EMPTY = new ServicesSnapshot(null, new AnnotatedServiceLifecycleHandler[0]);
-
         final @Nullable ServiceList services;
         final AnnotatedServiceLifecycleHandler[] lifecycleHandlers;
 
