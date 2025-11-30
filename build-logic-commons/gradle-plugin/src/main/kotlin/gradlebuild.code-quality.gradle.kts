@@ -146,12 +146,12 @@ tasks.withType<JavaCompile>().configureEach {
 //                    "UnnecessarilyFullyQualified",
 //                    "UnnecessaryLambda",
                 )
+        if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
             errorproneArgs.addAll(
                 "-XepPatchLocation:IN_PLACE",
                 "-XepPatchChecks:" +
                     "MissingOverride"
             )
-        if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
         }
     }
 }
