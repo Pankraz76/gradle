@@ -122,6 +122,13 @@ project.plugins.withType<JavaBasePlugin> {
                     it.associateWith { OFF }
                 }
                 error("MissingOverride")
+                if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
+                    errorproneArgs.addAll(
+                        "-XepPatchLocation:IN_PLACE",
+                        "-XepPatchChecks:" +
+                            "MissingOverride"
+                    )
+                }
             }
         }
     }
