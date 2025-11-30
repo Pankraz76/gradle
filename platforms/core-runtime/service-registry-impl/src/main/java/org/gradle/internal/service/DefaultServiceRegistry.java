@@ -17,6 +17,7 @@ package org.gradle.internal.service;
 
 import org.gradle.internal.concurrent.CompositeStoppable;
 import org.gradle.internal.concurrent.Stoppable;
+import org.gradle.internal.service.OwnServices.ClassInspector;
 import org.jspecify.annotations.Nullable;
 
 import java.io.Closeable;
