@@ -211,7 +211,7 @@ class OwnServices implements ServiceProvider {
             List<Class<?>> declaredServiceTypes = candidate.getDeclaredServiceTypes();
             for (Class<? extends Annotation> annotation : annotationHandler.getAnnotations()) {
                 if (anyTypeHasAnnotation(annotation, declaredServiceTypes)) {
-                    annotationHandler.whenRegistered(annotation, new RegistrationWrapper(candidate));
+                    annotationHandler.whenRegistered(annotation, new DefaultServiceRegistry.RegistrationWrapper(candidate));
                 }
             }
         }
@@ -443,24 +443,7 @@ class OwnServices implements ServiceProvider {
         }
     }
 
-    class RegistrationWrapper implements AnnotatedServiceLifecycleHandler.Registration {
-        private final SingletonService serviceProvider;
 
-        public RegistrationWrapper(SingletonService serviceProvider) {
-            this.serviceProvider = serviceProvider;
-        }
-
-        @Override
-        public List<Class<?>> getDeclaredTypes() {
-            return serviceProvider.getDeclaredServiceTypes();
-        }
-
-        @Override
-        public Object getInstance() {
-            serviceRequested();
-            return serviceProvider.getPreparedInstance();
-        }
-    }
 
     static class ClassInspector {
         private final ConcurrentMap<Class<?>, ClassDetails> classes = new ConcurrentHashMap<Class<?>, ClassDetails>();

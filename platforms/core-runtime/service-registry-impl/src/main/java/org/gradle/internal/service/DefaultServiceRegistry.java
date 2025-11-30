@@ -858,4 +858,22 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
         }
     }
 
+    static class RegistrationWrapper implements AnnotatedServiceLifecycleHandler.Registration {
+        private final OwnServices.SingletonService serviceProvider;
+
+        public RegistrationWrapper(OwnServices.SingletonService serviceProvider) {
+            this.serviceProvider = serviceProvider;
+        }
+
+        @Override
+        public List<Class<?>> getDeclaredTypes() {
+            return serviceProvider.getDeclaredServiceTypes();
+        }
+
+        @Override
+        public Object getInstance() {
+            serviceRequested();
+            return serviceProvider.getPreparedInstance();
+        }
+    }
 }
