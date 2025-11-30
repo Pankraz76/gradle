@@ -872,7 +872,7 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
 
         @Override
         public Object getInstance() {
-            serviceRequested();
+            serviceRequested(); // todo breaks code extraction.
             return serviceProvider.getPreparedInstance();
         }
     }
