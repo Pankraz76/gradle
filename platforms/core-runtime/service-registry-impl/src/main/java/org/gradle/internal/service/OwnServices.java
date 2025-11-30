@@ -363,7 +363,7 @@ class OwnServices implements ServiceProvider {
 
         @Override
         public String getDisplayName() {
-            return format("Service", serviceTypes);
+            return TypeStringFormatter.format("Service", serviceTypes);
         }
 
         @Override

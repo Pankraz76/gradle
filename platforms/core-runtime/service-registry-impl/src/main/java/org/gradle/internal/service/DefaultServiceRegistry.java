@@ -921,26 +921,6 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
         }
     }
 
-    private static String format(Type type) {
-        return TypeStringFormatter.format(type);
-    }
-
-    private static String format(String qualifier, List<? extends Type> types) {
-        if (types.size() == 1) {
-            return qualifier + " " + format(types);
-        } else {
-            return qualifier + "s " + format(types);
-        }
-    }
-
-    private static String format(List<? extends Type> types) {
-        if (types.size() == 1) {
-            return TypeStringFormatter.format(types.get(0));
-        } else {
-            return join(", ", types, TypeStringFormatter::format);
-        }
-    }
-
 
 
 

@@ -18,10 +18,14 @@ package org.gradle.internal.service;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 
-class TypeStringFormatter {
+import static org.gradle.util.internal.CollectionUtils.join;
 
-    static String format(Type type) {
+@FunctionalInterface
+public interface TypeStringFormatter {
+
+    default String format(Type type) {
         if (type instanceof Class) {
             Class<?> aClass = (Class) type;
             Class<?> enclosingClass = aClass.getEnclosingClass();
@@ -36,8 +40,9 @@ class TypeStringFormatter {
             StringBuilder builder = new StringBuilder();
             builder.append(format(parameterizedType.getRawType()));
             builder.append("<");
-            for (int i = 0; i < parameterizedType.getActualTypeArguments().length; i++) {
-                Type typeParam = parameterizedType.getActualTypeArguments()[i];
+            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+            for (int i = 0; i < actualTypeArguments.length; i++) {
+                Type typeParam = actualTypeArguments[i];
                 if (i > 0) {
                     builder.append(", ");
                 }
@@ -49,4 +54,23 @@ class TypeStringFormatter {
 
         return type.toString();
     }
+
+    default String format(String qualifier, List<? extends Type> types) {
+        if (types.size() == 1) {
+            return qualifier + " " + formatTypes(types);
+        } else {
+            return qualifier + "s " + formatTypes(types);
+        }
+    }
+
+    default String formatTypes(List<? extends Type> types) {
+        if (types.size() == 1) {
+            return format(types.get(0));
+        } else {
+            return join(", ", types, this::format);
+        }
+    }
+
+    // Functional interface method - can be used as a method reference
+    String formatType(Type type);
 }
