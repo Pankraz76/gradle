@@ -55,6 +55,7 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
         "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
         // NEVER
         "AssignmentExpression", // Not using it is more a matter of taste.
+        "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
         "InjectOnConstructorOfAbstractClass", // We use abstract injection as a pattern
         "InlineMeSuggester", // Only suppression seems to actually "fix" this, so make it global
         "JavaUtilDate", // We are fine with using Date
@@ -120,6 +121,7 @@ project.plugins.withType<JavaBasePlugin> {
                 checks = errorproneExtension.disabledChecks.map {
                     it.associateWith { OFF }
                 }
+                error("MissingOverride")
             }
         }
     }
@@ -138,14 +140,7 @@ tasks.withType<JavaCompile>().configureEach {
             isJSpecifyMode = true
             severity = errorproneExtension.nullawayEnabled.map { if (it) ERROR else OFF }
         }
-                error(
-                    "MissingOverride",
-//                    "ReturnValueIgnored",
-//                    "SelfAssignment",
-//                    "StringJoin",
-//                    "UnnecessarilyFullyQualified",
-//                    "UnnecessaryLambda",
-                )
+        error("MissingOverride")
         if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
             errorproneArgs.addAll(
                 "-XepPatchLocation:IN_PLACE",
