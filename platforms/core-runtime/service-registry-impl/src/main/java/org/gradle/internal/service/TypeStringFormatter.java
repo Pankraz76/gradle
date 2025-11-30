@@ -55,7 +55,7 @@ public interface TypeStringFormatter {
         return type.toString();
     }
 
-    default String format(String qualifier, List<? extends Type> types) {
+    static String format(String qualifier, List<? extends Type> types) {
         if (types.size() == 1) {
             return qualifier + " " + formatTypes(types);
         } else {
@@ -63,7 +63,7 @@ public interface TypeStringFormatter {
         }
     }
 
-    default String formatTypes(List<? extends Type> types) {
+    static String formatTypes(List<? extends Type> types) {
         if (types.size() == 1) {
             return format(types.get(0));
         } else {
