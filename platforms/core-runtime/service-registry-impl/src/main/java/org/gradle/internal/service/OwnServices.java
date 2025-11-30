@@ -526,4 +526,53 @@ class OwnServices implements ServiceProvider {
             }
         }
     }
+
+    private class ThisAsService implements ServiceProvider, Service {
+
+        private final ServiceAccessScope accessScope;
+
+        private ThisAsService(ServiceAccessScope accessScope) {
+            this.accessScope = accessScope;
+        }
+
+        @Override
+        public Service getService(Type serviceType, @Nullable ServiceAccessToken token) {
+            if (!accessScope.contains(token)) {
+                return null;
+            }
+            if (serviceType.equals(ServiceRegistry.class)) {
+                return this;
+            }
+            return null;
+        }
+
+        @Override
+        public Visitor getAll(Class<?> serviceType, @Nullable ServiceAccessToken token, Visitor visitor) {
+            if (!accessScope.contains(token)) {
+                return visitor;
+            }
+            if (serviceType.equals(ServiceRegistry.class)) {
+                visitor.visit(this);
+            }
+            return visitor;
+        }
+
+        @Override
+        public void stop() {
+        }
+
+        @Override
+        public String getDisplayName() {
+            return "ServiceRegistry " + DefaultServiceRegistry.this.getDisplayName();
+        }
+
+        @Override
+        public Object get() {
+            return DefaultServiceRegistry.this;
+        }
+
+        @Override
+        public void requiredBy(ServiceProvider serviceProvider) {
+        }
+    }
 }
