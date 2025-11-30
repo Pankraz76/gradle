@@ -25,7 +25,7 @@ import static org.gradle.util.internal.CollectionUtils.join;
 @FunctionalInterface
 public interface TypeStringFormatter {
 
-    default String format(Type type) {
+    static String format(Type type) {
         if (type instanceof Class) {
             Class<?> aClass = (Class) type;
             Class<?> enclosingClass = aClass.getEnclosingClass();

@@ -650,7 +650,7 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
                 return super.getDisplayName();
             }
 
-            return format("Service", serviceTypes) + " via " + format(getConstructor().getDeclaringClass()) + " constructor";
+            return format("Service", serviceTypes) + " via " + TypeStringFormatter.format(getConstructor().getDeclaringClass()) + " constructor";
         }
 
         @Override
@@ -920,8 +920,5 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
             throw new ServiceValidationException("Locating services with type Object is not supported.");
         }
     }
-
-
-
 
 }
