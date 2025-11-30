@@ -597,7 +597,7 @@ public class DefaultServiceRegistry implements CloseableServiceRegistry, Contain
         }
     }
 
-    private static class FixedInstanceService extends SingletonService {
+    private static class FixedInstanceService extends OwnServices.SingletonService {
         public FixedInstanceService(DefaultServiceRegistry owner, ServiceAccessScope accessScope, Class<?> serviceType, Object serviceInstance) {
             super(owner, accessScope, singletonList(serviceType));
             setInstance(serviceInstance);
