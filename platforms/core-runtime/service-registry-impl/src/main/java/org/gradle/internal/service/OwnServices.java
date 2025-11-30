@@ -45,6 +45,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static java.util.Collections.singletonList;
+import static org.gradle.internal.service.TypeStringFormatter.format;
 import static org.gradle.util.internal.CollectionUtils.collect;
 import static org.gradle.util.internal.CollectionUtils.join;
 
@@ -363,7 +364,7 @@ class OwnServices implements ServiceProvider {
 
         @Override
         public String getDisplayName() {
-            return TypeStringFormatter.format("Service", serviceTypes);
+            return format("Service", serviceTypes);
         }
 
         @Override
@@ -600,5 +601,68 @@ class OwnServices implements ServiceProvider {
         protected Object createServiceInstance() {
             throw new UnsupportedOperationException();
         }
+    }
+
+    private static boolean isAssignableFromAnyType(Class<?> targetType, List<Class<?>> candidateTypes) {
+        for (Class<?> candidate : candidateTypes) {
+            if (targetType.isAssignableFrom(candidate)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isSatisfiedByAny(Type expected, List<? extends Type> candidates) {
+        for (Type candidate : candidates) {
+            if (isSatisfiedBy(expected, candidate)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isSatisfiedBy(Type expected, Type actual) {
+        if (expected.equals(actual)) {
+            return true;
+        }
+        if (expected instanceof Class) {
+            return isSatisfiedBy((Class<?>) expected, actual);
+        }
+        if (expected instanceof ParameterizedType) {
+            return isSatisfiedBy((ParameterizedType) expected, actual);
+        }
+        return false;
+    }
+
+    private static boolean isSatisfiedBy(Class<?> expectedClass, Type actual) {
+        if (actual instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) actual;
+            if (parameterizedType.getRawType() instanceof Class) {
+                return expectedClass.isAssignableFrom((Class) parameterizedType.getRawType());
+            }
+        } else if (actual instanceof Class) {
+            Class<?> other = (Class<?>) actual;
+            return expectedClass.isAssignableFrom(other);
+        }
+        return false;
+    }
+
+    private static boolean isSatisfiedBy(ParameterizedType expectedParameterizedType, Type actual) {
+        Type expectedRawType = expectedParameterizedType.getRawType();
+        if (actual instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) actual;
+            if (!isSatisfiedBy(expectedRawType, parameterizedType.getRawType())) {
+                return false;
+            }
+            Type[] expectedTypeArguments = expectedParameterizedType.getActualTypeArguments();
+            for (int i = 0; i < parameterizedType.getActualTypeArguments().length; i++) {
+                Type type = parameterizedType.getActualTypeArguments()[i];
+                if (!isSatisfiedBy(expectedTypeArguments[i], type)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }
