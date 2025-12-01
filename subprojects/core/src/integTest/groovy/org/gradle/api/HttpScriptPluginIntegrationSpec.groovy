@@ -20,6 +20,7 @@ import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.internal.deprecation.Documentation
 import org.gradle.util.internal.GUtil
 import spock.lang.Issue
+import sun.nio.cs.UTF_8
 
 import static org.junit.Assert.fail
 
