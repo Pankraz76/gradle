@@ -19,6 +19,7 @@ package org.gradle.buildinit.plugins.internal
 import org.gradle.api.internal.DocumentationRegistry
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.test.fixtures.file.TestFile
+import sun.nio.cs.UTF_8
 
 import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitDsl.GROOVY
 

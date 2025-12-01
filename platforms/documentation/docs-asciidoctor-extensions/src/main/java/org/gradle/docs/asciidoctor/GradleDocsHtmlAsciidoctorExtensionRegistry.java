@@ -26,6 +26,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class GradleDocsHtmlAsciidoctorExtensionRegistry implements ExtensionRegistry {
 
     private static final String HEAD_HTML_PATH = "/head.html";
