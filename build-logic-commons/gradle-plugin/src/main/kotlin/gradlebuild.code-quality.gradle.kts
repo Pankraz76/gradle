@@ -58,9 +58,6 @@ dependencies {
             compatibilityRules.add(NullawayCompatibilityRule::class.java)
         }
     }
-    rules("gradlebuild:code-quality-rules") {
-        because("Provides rules defined in XML files")
-    }
     codenarc("gradlebuild:code-quality-rules") {
         because("Provides the IntegrationTestFixturesRule implementation")
     }
@@ -73,6 +70,9 @@ dependencies {
     }
     errorprone("com.google.errorprone:error_prone_core:2.42.0")
     errorprone("com.uber.nullaway:nullaway:0.12.10")
+    rules("gradlebuild:code-quality-rules") {
+        because("Provides rules defined in XML files")
+    }
 }
 
 project.plugins.withType<JavaBasePlugin> {
