@@ -49,12 +49,30 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
     nullawayEnabled.convention(false)
 }
 
+val groovyVersion: String? = GroovySystem.getVersion()
+val codenarcVersion = if (parse(groovyVersion).major >= 4) "3.6.0-groovy-4.0" else "3.6.0"
+
 dependencies {
     attributesSchema {
         attribute(NullawayAttributes.nullawayAttribute) {
             compatibilityRules.add(NullawayCompatibilityRule::class.java)
         }
     }
+    rules("gradlebuild:code-quality-rules") {
+        because("Provides rules defined in XML files")
+    }
+    codenarc("gradlebuild:code-quality-rules") {
+        because("Provides the IntegrationTestFixturesRule implementation")
+    }
+    codenarc("org.codenarc:CodeNarc:$codenarcVersion")
+    codenarc(embeddedKotlin("stdlib"))
+    components {
+        withModule<CodeNarcRule>("org.codenarc:CodeNarc") {
+            params(groovyVersion)
+        }
+    }
+    errorprone("com.google.errorprone:error_prone_core:2.42.0")
+    errorprone("com.uber.nullaway:nullaway:0.12.10")
 }
 
 project.plugins.withType<JavaBasePlugin> {
@@ -94,11 +112,6 @@ project.plugins.withType<JavaBasePlugin> {
             }
         }
     }
-}
-
-dependencies {
-    errorprone("com.google.errorprone:error_prone_core:2.42.0")
-    errorprone("com.uber.nullaway:nullaway:0.12.10")
 }
 
 tasks.withType<JavaCompile>().configureEach {
@@ -179,25 +192,6 @@ val rules by configurations.creating {
     isCanBeConsumed = false
     attributes {
         attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements.RESOURCES))
-    }
-}
-
-val groovyVersion: String? = GroovySystem.getVersion()
-val codenarcVersion = if (parse(groovyVersion).major >= 4) "3.6.0-groovy-4.0" else "3.6.0"
-
-dependencies {
-    rules("gradlebuild:code-quality-rules") {
-        because("Provides rules defined in XML files")
-    }
-    codenarc("gradlebuild:code-quality-rules") {
-        because("Provides the IntegrationTestFixturesRule implementation")
-    }
-    codenarc("org.codenarc:CodeNarc:$codenarcVersion")
-    codenarc(embeddedKotlin("stdlib"))
-    components {
-        withModule<CodeNarcRule>("org.codenarc:CodeNarc") {
-            params(groovyVersion)
-        }
     }
 }
 
