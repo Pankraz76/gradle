@@ -11,6 +11,7 @@ import net.ltgt.gradle.errorprone.CheckSeverity.OFF
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
 import org.gradle.util.internal.VersionNumber.parse
+import java.lang.System.getenv
 
 /*
  * Copyright 2022 the original author or authors.
@@ -108,6 +109,27 @@ tasks.withType<JavaCompile>().configureEach {
             "MissingSummary", // We have another mechanism to check Javadocs on public API
             "StringSplitter", // We are fine with using String.split() as is
         )
+        error(
+            "MissingOverride",
+            "SelfAssignment",
+            "StringCharset",
+            "StringJoin",
+            "UnnecessarilyFullyQualified",
+            "UnnecessaryLambda",
+        )
+        excludedPaths.set(".*/groovy-dsl-plugins/output/adapter-src/.*")
+        if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
+            errorproneArgs.addAll(
+                "-XepPatchLocation:IN_PLACE",
+                "-XepPatchChecks:" +
+                    "MissingOverride," +
+                    "SelfAssignment," +
+                    "StringCharset," +
+                    "StringJoin," +
+                    "UnnecessarilyFullyQualified," +
+                    "UnnecessaryLambda"
+            )
+        }
         nullaway {
             // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
             // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
