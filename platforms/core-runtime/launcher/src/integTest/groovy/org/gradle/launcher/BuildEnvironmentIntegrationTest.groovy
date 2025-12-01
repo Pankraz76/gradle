@@ -42,7 +42,7 @@ task check {
         assert Locale.getDefault().toString() == "${locale}"
     }
 }
-""", UTF_8)
+""", UTF_8).toString()
 
         expect:
         succeeds 'check'
@@ -65,7 +65,7 @@ task check {
         assert Locale.getDefault().toString() == "${nonDefaultLocale}"
     }
 }
-""", UTF_8)
+""", UTF_8).toString()
 
         expect:
         succeeds 'check'
@@ -84,7 +84,7 @@ task check {
         assert Locale.getDefault().toString() == "${nonDefaultLocale}"
     }
 }
-""", UTF_8)
+""", UTF_8).toString()
 
         expect:
         succeeds 'check'
@@ -104,7 +104,7 @@ task check {
         assert ${Charset.class.name}.defaultCharset().name() == "${nonDefaultEncoding}"
     }
 }
-""", UTF_8)
+""", UTF_8).toString()
 
         expect:
         succeeds 'check'
@@ -149,7 +149,7 @@ task check {
         assert ${Charset.class.name}.defaultCharset().name() == "${nonDefaultEncoding}"
     }
 }
-""", UTF_8)
+""", UTF_8).toString()
 
         expect:
         succeeds 'check'

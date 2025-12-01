@@ -19,6 +19,7 @@ package org.gradle.api
 import org.gradle.test.fixtures.file.DoesNotSupportNonAsciiPaths
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
+import sun.nio.cs.UTF_8
 
 @DoesNotSupportNonAsciiPaths(reason = "Uses non-Unicode default charset")
 class HttpScriptPluginInEncodingtegrationSpec extends AbstractHttpScriptPluginIntegrationSpec {
@@ -64,7 +65,7 @@ task check {
         assert '\u20AC'.charAt(0) == 0x20AC
     }
 }
-""", UTF_8)
+""", UTF_8.toString())
         assert scriptFile.getText("ISO-8859-15") != scriptFile.getText("UTF-8")
         server.expectGet('/script.gradle', scriptFile).contentType("text/plain")
 
