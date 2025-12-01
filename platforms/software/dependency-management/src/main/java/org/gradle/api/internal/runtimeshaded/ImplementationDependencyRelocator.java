@@ -41,7 +41,7 @@ class ImplementationDependencyRelocator extends Remapper {
         IoActions.withResource(ImplementationDependencyRelocator.class.getResourceAsStream(type.getIdentifier() + "-relocated.txt"), new ErroringAction<InputStream>() {
             @Override
             protected void doExecute(InputStream thing) throws Exception {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(thing, Charset.forName("UTF-8")));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(thing, Charset.forName(UTF_8)));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     line = line.trim();

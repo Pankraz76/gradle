@@ -58,7 +58,7 @@ public abstract class Jar extends Zip {
 
     public Jar() {
         getArchiveExtension().set(DEFAULT_EXTENSION);
-        setMetadataCharset("UTF-8");
+        setMetadataCharset(UTF_8);
 
         manifest = new DefaultManifest(getFileResolver());
         // Add these as separate specs, so they are not affected by the changes to the main spec

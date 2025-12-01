@@ -54,7 +54,7 @@ import java.util.stream.Stream;
 
 public final class IvyDescriptorFileGenerator {
 
-    private static final String IVY_FILE_ENCODING = "UTF-8";
+    private static final String IVY_FILE_ENCODING = UTF_8;
     private static final String IVY_DATE_PATTERN = "yyyyMMddHHmmss";
 
     private IvyDescriptorFileGenerator() {}

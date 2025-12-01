@@ -53,7 +53,7 @@ abstract class AbstractMavenPublisher implements MavenPublisher {
     private static final Logger LOGGER = LoggerFactory.getLogger(MavenPublisher.class);
 
     private final NetworkOperationBackOffAndRetry<ExternalResourceReadResult<Metadata>> metadataRetryCaller = new NetworkOperationBackOffAndRetry<>();
-    private static final String POM_FILE_ENCODING = "UTF-8";
+    private static final String POM_FILE_ENCODING = UTF_8;
     private static final String SNAPSHOT_VERSION = "SNAPSHOT";
     private static final Pattern VERSION_FILE_PATTERN = Pattern.compile("^(.*)-([0-9]{8}.[0-9]{6})-([0-9]+)$");
     private final Factory<File> temporaryDirFactory;

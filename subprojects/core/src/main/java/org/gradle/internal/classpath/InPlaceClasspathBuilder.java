@@ -71,7 +71,7 @@ public class InPlaceClasspathBuilder implements ClasspathBuilder {
             maybeAddParent(name);
             ZipArchiveEntry zipEntry = newZipEntryWithFixedTime(name);
             configureCompression(zipEntry, compressionMethod, content);
-            outputStream.setEncoding("UTF-8");
+            outputStream.setEncoding(UTF_8);
             outputStream.putArchiveEntry(zipEntry);
             outputStream.write(content);
             outputStream.closeArchiveEntry();

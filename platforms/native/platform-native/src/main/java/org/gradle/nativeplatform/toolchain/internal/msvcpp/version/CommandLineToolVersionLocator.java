@@ -86,7 +86,7 @@ public class CommandLineToolVersionLocator extends AbstractVisualStudioVersionLo
 
         int exitValue = result.getExitValue();
         if (exitValue == 0) {
-            return buffer.readAsString("UTF-8");
+            return buffer.readAsString(UTF_8);
         } else {
             LOGGER.debug("vswhere.exe returned a non-zero exit value ({}) - ignoring", result.getExitValue());
             return null;

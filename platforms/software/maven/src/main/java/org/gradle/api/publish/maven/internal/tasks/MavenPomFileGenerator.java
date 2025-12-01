@@ -70,7 +70,7 @@ import java.util.stream.Stream;
 
 public final class MavenPomFileGenerator {
 
-    private static final String POM_FILE_ENCODING = "UTF-8";
+    private static final String POM_FILE_ENCODING = UTF_8;
     private static final String POM_VERSION = "4.0.0";
 
     private MavenPomFileGenerator() {}

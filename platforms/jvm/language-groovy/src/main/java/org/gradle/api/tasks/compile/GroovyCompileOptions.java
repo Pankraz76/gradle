@@ -49,7 +49,7 @@ public abstract class GroovyCompileOptions implements Serializable {
 
     private boolean listFiles;
 
-    private String encoding = "UTF-8";
+    private String encoding = UTF_8;
 
     private boolean fork = true;
 

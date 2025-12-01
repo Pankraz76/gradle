@@ -63,7 +63,7 @@ public class PathAssembler {
     private String getHash(String string) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            byte[] bytes = string.getBytes("UTF-8");
+            byte[] bytes = string.getBytes(UTF_8);
             messageDigest.update(bytes);
             return new BigInteger(1, messageDigest.digest()).toString(36);
         } catch (Exception e) {
