@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 class ImplementationDependencyRelocator extends Remapper {
 
     private final Pattern classPattern = Pattern.compile("(\\[*)?L(.+)");
@@ -41,11 +43,11 @@ class ImplementationDependencyRelocator extends Remapper {
         IoActions.withResource(ImplementationDependencyRelocator.class.getResourceAsStream(type.getIdentifier() + "-relocated.txt"), new ErroringAction<InputStream>() {
             @Override
             protected void doExecute(InputStream thing) throws Exception {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(thing, Charset.forName(UTF_8)));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(thing, UTF_8));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     line = line.trim();
-                    if (line.length() > 0) {
+                    if (!line.isEmpty()) {
                         builder.addWord(line);
                     }
                 }
