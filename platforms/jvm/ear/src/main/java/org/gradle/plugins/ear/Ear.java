@@ -49,6 +49,7 @@ import java.io.OutputStreamWriter;
 import java.util.Locale;
 
 import static java.util.Collections.singleton;
+import static org.apache.commons.codec.CharEncoding.UTF_8;
 import static org.gradle.api.internal.lambdas.SerializableLambdas.action;
 import static org.gradle.api.internal.lambdas.SerializableLambdas.callable;
 import static org.gradle.plugins.ear.EarPlugin.DEFAULT_LIB_DIR_NAME;
