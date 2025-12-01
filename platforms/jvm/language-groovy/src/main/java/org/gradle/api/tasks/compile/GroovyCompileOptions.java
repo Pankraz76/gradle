@@ -37,6 +37,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.commons.codec.CharEncoding.UTF_8;
+
 /**
  * Compilation options to be passed to the Groovy compiler.
  */
