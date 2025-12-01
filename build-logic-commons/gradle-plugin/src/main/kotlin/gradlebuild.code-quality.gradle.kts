@@ -1,13 +1,16 @@
 import gradlebuild.nullaway.NullawayAttributes
+import gradlebuild.nullaway.NullawayAttributes.addToConfiguration
 import gradlebuild.nullaway.NullawayCompatibilityRule
 import gradlebuild.nullaway.NullawayState
+import gradlebuild.nullaway.NullawayState.DISABLED
+import gradlebuild.nullaway.NullawayState.ENABLED
 import gradlebuild.nullaway.NullawayStatusTask
 import groovy.lang.GroovySystem
 import net.ltgt.gradle.errorprone.CheckSeverity.ERROR
 import net.ltgt.gradle.errorprone.CheckSeverity.OFF
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
-import org.gradle.util.internal.VersionNumber
+import org.gradle.util.internal.VersionNumber.parse
 
 /*
  * Copyright 2022 the original author or authors.
@@ -41,13 +44,6 @@ open class ErrorProneSourceSetExtension(
     val enabled: Property<Boolean>
 )
 
-val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
-    "errorprone",
-    objects.property<Boolean>()
-).apply {
-    nullawayEnabled.convention(false)
-}
-
 dependencies {
     attributesSchema {
         attribute(NullawayAttributes.nullawayAttribute) {
@@ -56,11 +52,21 @@ dependencies {
     }
 }
 
+val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
+    "errorprone",
+    objects.property<Boolean>()
+).apply {
+    nullawayEnabled.convention(false)
+}
+
 project.plugins.withType<JavaBasePlugin> {
     project.extensions.getByName<SourceSetContainer>("sourceSets").configureEach {
-        val isMainSourceSet = (name == "main")
-
-        val extension = this.extensions.create<ErrorProneSourceSetExtension>(
+        val sourceSet = this
+        val isMainSourceSet = sourceSet.name == "main"
+        if (isMainSourceSet) {
+            configureMainSourceSet(sourceSet, errorproneExtension, errorproneExtension.nullawayEnabled.map { if (it) ENABLED else DISABLED })
+        }
+        val extension = sourceSet.extensions.create<ErrorProneSourceSetExtension>(
             "errorprone",
             project.objects.property<Boolean>()
         ).apply {
@@ -68,41 +74,10 @@ project.plugins.withType<JavaBasePlugin> {
             // joint-compilation doesn't work with the Error Prone annotation processor
             enabled.convention(isMainSourceSet)
         }
-
-        if (isMainSourceSet) {
-            val nullawayAttributeValue = errorproneExtension.nullawayEnabled.map { if (it) NullawayState.ENABLED else NullawayState.DISABLED }
-
-            // We don't care about nullaway in test fixtures or tests, they're written in Groovy anyway.
-            NullawayAttributes.addToConfiguration(configurations.named(compileClasspathConfigurationName), nullawayAttributeValue)
-
-            project.plugins.withType<JavaLibraryPlugin> {
-                // Kotlin-only projects do not hit this, so they don't have nullaway attributes on the outgoing variants.
-                // Java project can in turn depend on Kotlin projects even if they have nullaway enabled.
-                NullawayAttributes.addToConfiguration(configurations.named(apiElementsConfigurationName), nullawayAttributeValue)
-                NullawayAttributes.addToConfiguration(configurations.named(runtimeElementsConfigurationName), nullawayAttributeValue)
-
-                tasks.register<NullawayStatusTask>("nullawayStatus") {
-                    nullawayEnabled = errorproneExtension.nullawayEnabled
-                    nullawayAwareDeps = configurations.named(compileClasspathConfigurationName).map {
-                        it.incoming.artifacts
-                    }
-                }
-            }
-        }
-
-        @Suppress("UnstableApiUsage")
-        fun addErrorProneDependency(dep: String) {
-            project.dependencies.addProvider(
-                annotationProcessorConfigurationName,
-                extension.enabled.filter { it }.map { dep }
-            )
-        }
-
         // don't forget to update the version in distributions-dependencies/build.gradle.kts
-        addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0")
-        addErrorProneDependency("com.uber.nullaway:nullaway:0.12.10")
-
-        project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
+        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.google.errorprone:error_prone_core:2.42.0")
+        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.uber.nullaway:nullaway:0.12.10")
+        project.tasks.named<JavaCompile>(sourceSet.compileJavaTaskName) {
             options.errorprone {
                 isEnabled = extension.enabled
                 nullaway {
@@ -115,9 +90,9 @@ project.plugins.withType<JavaBasePlugin> {
 
 tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
-        disableWarningsInGeneratedCode = true
         allErrorsAsWarnings = true
-        disableAllWarnings = true // considering this spamming (like crazy), consider removal of this once to fix dedicated flaw. https://github.com/diffplug/spotless/pull/2766
+        disableAllWarnings = true // considering this immense spam burden, remove this once to fix dedicated flaw. https://github.com/diffplug/spotless/pull/2766
+        disableWarningsInGeneratedCode = true
         disable(
             // DISCUSS
             "EnumOrdinal", // This violation is ubiquitous, though most are benign.
@@ -165,9 +140,8 @@ val rules by configurations.creating {
     }
 }
 
-val groovyVersion = GroovySystem.getVersion()
-val isAtLeastGroovy4 = VersionNumber.parse(groovyVersion).major >= 4
-val codenarcVersion = if (isAtLeastGroovy4) "3.6.0-groovy-4.0" else "3.6.0"
+val groovyVersion: String? = GroovySystem.getVersion()
+val codenarcVersion = if (parse(groovyVersion).major >= 4) "3.6.0-groovy-4.0" else "3.6.0"
 
 dependencies {
     rules("gradlebuild:code-quality-rules") {
@@ -222,14 +196,11 @@ tasks.withType<CodeNarc>().configureEach {
 val SourceSet.allGroovy: SourceDirectorySet
     get() = the<GroovySourceDirectorySet>()
 
-abstract class CodeNarcRule @Inject constructor(
-    private val groovyVersion: String
-) : ComponentMetadataRule {
+abstract class CodeNarcRule @Inject constructor(private val groovyVersion: String) : ComponentMetadataRule {
     override fun execute(context: ComponentMetadataContext) {
         context.details.allVariants {
             withDependencies {
-                val isAtLeastGroovy4 = VersionNumber.parse(groovyVersion).major >= 4
-                val groovyGroup = if (isAtLeastGroovy4) "org.apache.groovy" else "org.codehaus.groovy"
+                val groovyGroup = if (parse(groovyVersion).major >= 4) "org.apache.groovy" else "org.codehaus.groovy"
                 removeAll { it.group == groovyGroup }
                 add("$groovyGroup:groovy") {
                     version { prefer(groovyVersion) }
@@ -242,4 +213,29 @@ abstract class CodeNarcRule @Inject constructor(
             }
         }
     }
+}
+
+private fun configureMainSourceSet(sourceSet: SourceSet, errorproneExtension: ErrorProneProjectExtension, nullawayAttributeValue: Provider<NullawayState>) {
+    // We don't care about nullaway in test fixtures or tests, they're written in Groovy anyway.
+    addToConfiguration(configurations.named(sourceSet.compileClasspathConfigurationName), nullawayAttributeValue)
+    project.plugins.withType<JavaLibraryPlugin> {
+        // Kotlin-only projects do not hit this, so they don't have nullaway attributes on the outgoing variants.
+        // Java project can in turn depend on Kotlin projects even if they have nullaway enabled.
+        addToConfiguration(configurations.named(sourceSet.apiElementsConfigurationName), nullawayAttributeValue)
+        addToConfiguration(configurations.named(sourceSet.runtimeElementsConfigurationName), nullawayAttributeValue)
+        tasks.register<NullawayStatusTask>("nullawayStatus") {
+            nullawayEnabled = errorproneExtension.nullawayEnabled
+            nullawayAwareDeps = configurations.named(sourceSet.compileClasspathConfigurationName).map {
+                it.incoming.artifacts
+            }
+        }
+    }
+}
+
+@Suppress("UnstableApiUsage")
+fun addErrorProneDependency(annotationProcessorConfigurationName: String, extension: ErrorProneSourceSetExtension, dep: String) {
+    project.dependencies.addProvider(
+        annotationProcessorConfigurationName,
+        extension.enabled.filter { it }.map { dep }
+    )
 }
