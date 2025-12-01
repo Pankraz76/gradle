@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 @CacheableTask
 public abstract class TomlFileGenerator extends DefaultTask {
     @Input
@@ -52,7 +54,7 @@ public abstract class TomlFileGenerator extends DefaultTask {
     }
 
     private void doGenerate(DefaultVersionCatalog model, File outputFile) throws FileNotFoundException, UnsupportedEncodingException {
-        try (PrintWriter writer = new PrintWriter(outputFile, UTF_8)) {
+        try (PrintWriter writer = new PrintWriter(outputFile, UTF_8.toString())) {
             TomlWriter ctx = new TomlWriter(writer);
             ctx.generate(model);
         }
