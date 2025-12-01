@@ -48,6 +48,8 @@ import java.util.Locale;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
+import static org.apache.commons.codec.CharEncoding.UTF_8;
+
 @NullMarked
 abstract class AbstractMavenPublisher implements MavenPublisher {
     private static final Logger LOGGER = LoggerFactory.getLogger(MavenPublisher.class);

@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.commons.codec.CharEncoding.UTF_8;
 
 @CacheableTask
 public abstract class TomlFileGenerator extends DefaultTask {
@@ -43,20 +43,18 @@ public abstract class TomlFileGenerator extends DefaultTask {
 
     @TaskAction
     void generateToml() throws IOException {
-        DefaultVersionCatalog model = getDependenciesModel().get();
         File outputFile = getOutputFile().getAsFile().get();
         File outputDir = outputFile.getParentFile();
         if (outputDir.exists() || outputFile.mkdirs()) {
-            doGenerate(model, outputFile);
+            doGenerate(getDependenciesModel().get(), outputFile);
         } else {
             throw new GradleException("Unable to generate TOML dependencies file into " + outputDir);
         }
     }
 
     private void doGenerate(DefaultVersionCatalog model, File outputFile) throws FileNotFoundException, UnsupportedEncodingException {
-        try (PrintWriter writer = new PrintWriter(outputFile, UTF_8.toString())) {
-            TomlWriter ctx = new TomlWriter(writer);
-            ctx.generate(model);
+        try (PrintWriter writer = new PrintWriter(outputFile, UTF_8)) {
+            new TomlWriter(writer).generate(model);
         }
     }
 
