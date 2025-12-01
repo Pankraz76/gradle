@@ -20,6 +20,8 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.security.MessageDigest;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class PathAssembler {
     public static final String GRADLE_USER_HOME_STRING = "GRADLE_USER_HOME";
     public static final String PROJECT_STRING = "PROJECT";

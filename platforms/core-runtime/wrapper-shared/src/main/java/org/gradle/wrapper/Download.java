@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class Download implements IDownload {
     public static final String UNKNOWN_VERSION = "0";
     public static final int DEFAULT_NETWORK_TIMEOUT_MILLISECONDS = 10 * 1000;
