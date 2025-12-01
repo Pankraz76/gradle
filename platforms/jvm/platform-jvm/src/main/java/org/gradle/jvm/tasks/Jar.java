@@ -43,6 +43,7 @@ import org.gradle.work.DisableCachingByDefault;
 
 import java.nio.charset.Charset;
 
+import static org.apache.commons.codec.CharEncoding.UTF_8;
 import static org.gradle.api.internal.lambdas.SerializableLambdas.action;
 
 /**

@@ -36,6 +36,8 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 @ServiceScope(Scope.BuildSession.class)
 public class CommandLineToolVersionLocator extends AbstractVisualStudioVersionLocator implements VisualStudioVersionLocator {
     private static final Logger LOGGER = Logging.getLogger(CommandLineToolVersionLocator.class);

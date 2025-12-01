@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 
+import static org.apache.commons.codec.CharEncoding.UTF_8;
 import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
 
 /**
