@@ -3,7 +3,8 @@ import gradlebuild.nullaway.NullawayCompatibilityRule
 import gradlebuild.nullaway.NullawayState
 import gradlebuild.nullaway.NullawayStatusTask
 import groovy.lang.GroovySystem
-import net.ltgt.gradle.errorprone.CheckSeverity
+import net.ltgt.gradle.errorprone.CheckSeverity.ERROR
+import net.ltgt.gradle.errorprone.CheckSeverity.OFF
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
 import org.gradle.util.internal.VersionNumber
@@ -33,7 +34,6 @@ plugins {
 }
 
 open class ErrorProneProjectExtension(
-    val disabledChecks: ListProperty<String>,
     val nullawayEnabled: Property<Boolean>
 )
 
@@ -43,33 +43,9 @@ open class ErrorProneSourceSetExtension(
 
 val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
     "errorprone",
-    objects.listProperty<String>(),
     objects.property<Boolean>()
 ).apply {
-    disabledChecks.addAll(
-        // DISCUSS
-        "EnumOrdinal", // This violation is ubiquitous, though most are benign.
-        "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals()
-        "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
-
-        // NEVER
-        "AssignmentExpression", // Not using it is more a matter of taste.
-        "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
-        "InjectOnConstructorOfAbstractClass", // We use abstract injection as a pattern
-        "InlineMeSuggester", // Only suppression seems to actually "fix" this, so make it global
-        "JavaUtilDate", // We are fine with using Date
-        "JavaxInjectOnAbstractMethod", // We use abstract injection as a pattern
-        "MissingSummary", // We have another mechanism to check Javadocs on public API
-        "StringSplitter", // We are fine with using String.split() as is
-    )
-
     nullawayEnabled.convention(false)
-}
-
-nullaway {
-    // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
-    // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
-    annotatedPackages.add("org.gradle")
 }
 
 dependencies {
@@ -129,14 +105,8 @@ project.plugins.withType<JavaBasePlugin> {
         project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
             options.errorprone {
                 isEnabled = extension.enabled
-                checks = errorproneExtension.disabledChecks.map {
-                    it.associateWith { CheckSeverity.OFF }
-                }
-
                 nullaway {
-                    checkContracts = true
-                    isJSpecifyMode = true
-                    severity = errorproneExtension.nullawayEnabled.map { if (it) CheckSeverity.ERROR else CheckSeverity.OFF }
+                    severity = errorproneExtension.nullawayEnabled.map { if (it) ERROR else OFF }
                 }
             }
         }
@@ -147,6 +117,30 @@ tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
         disableWarningsInGeneratedCode = true
         allErrorsAsWarnings = true
+        disableAllWarnings = true // considering this spamming (like crazy), consider removal of this once to fix dedicated flaw. https://github.com/diffplug/spotless/pull/2766
+        disable(
+            // DISCUSS
+            "EnumOrdinal", // This violation is ubiquitous, though most are benign.
+            "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals()
+            "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
+            // NEVER
+            "AssignmentExpression", // Not using it is more a matter of taste.
+            "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
+            "InjectOnConstructorOfAbstractClass", // We use abstract injection as a pattern
+            "InlineMeSuggester", // Only suppression seems to actually "fix" this, so make it global
+            "JavaUtilDate", // We are fine with using Date
+            "JavaxInjectOnAbstractMethod", // We use abstract injection as a pattern
+            "MissingSummary", // We have another mechanism to check Javadocs on public API
+            "StringSplitter", // We are fine with using String.split() as is
+        )
+        nullaway {
+            // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
+            // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
+            annotatedPackages.add("org.gradle")
+            checkContracts = true
+            isJSpecifyMode = true
+            severity = errorproneExtension.nullawayEnabled.map { if (it) ERROR else OFF }
+        }
     }
 }
 
