@@ -1,3 +1,4 @@
+import com.gradle.scan.agent.serialization.scan.serializer.kryo.it
 import gradlebuild.nullaway.NullawayAttributes
 import gradlebuild.nullaway.NullawayCompatibilityRule
 import gradlebuild.nullaway.NullawayState
@@ -35,6 +36,7 @@ plugins {
 }
 
 open class ErrorProneProjectExtension(
+    val unused: ListProperty<String>,
     val nullawayEnabled: Property<Boolean>
 )
 
@@ -44,6 +46,7 @@ open class ErrorProneSourceSetExtension(
 
 val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
     "errorprone",
+    objects.listProperty<String>(),
     objects.property<Boolean>()
 ).apply {
     nullawayEnabled.convention(false)
@@ -98,6 +101,7 @@ project.plugins.withType<JavaBasePlugin> {
                 }
             }
         }
+
         val extension = this.extensions.create<ErrorProneSourceSetExtension>(
             "errorprone",
             project.objects.property<Boolean>()
@@ -106,6 +110,19 @@ project.plugins.withType<JavaBasePlugin> {
             // joint-compilation doesn't work with the Error Prone annotation processor
             enabled.convention(isMainSourceSet)
         }
+
+        @Suppress("UnstableApiUsage")
+        fun addErrorProneDependency(dep: String) {
+            project.dependencies.addProvider(
+                annotationProcessorConfigurationName,
+                extension.enabled.filter { it }.map { dep }
+            )
+        }
+
+        // don't forget to update the version in distributions-dependencies/build.gradle.kts
+        addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0")
+        addErrorProneDependency("com.uber.nullaway:nullaway:0.12.10")
+
         project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
             options.errorprone {
                 isEnabled = extension.enabled
