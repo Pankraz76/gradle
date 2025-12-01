@@ -38,7 +38,7 @@ task check {
         assert '\u20AC'.charAt(0) == 0x20AC
     }
 }
-""", "UTF-8")
+""", UTF_8)
         assert file('build.gradle').getText("ISO-8859-15") != file('build.gradle').getText("UTF-8")
         expect:
         succeeds 'check'

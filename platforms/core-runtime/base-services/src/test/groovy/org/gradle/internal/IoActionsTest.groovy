@@ -32,7 +32,7 @@ class IoActionsTest extends Specification {
         def file = tmp.file("foo.txt")
 
         when:
-        createTextFileWriteAction(file, "UTF-8").execute(new Action<Writer>() {
+        createTextFileWriteAction(file, UTF_8).execute(new Action<Writer>() {
             void execute(Writer writer) {
                 writer.write("bar")
             }
@@ -49,7 +49,7 @@ class IoActionsTest extends Specification {
         def action = Mock(Action)
 
         when:
-        writeTextFile(file, "UTF-8", action)
+        writeTextFile(file, UTF_8, action)
 
         then:
         0 * action.execute(_)

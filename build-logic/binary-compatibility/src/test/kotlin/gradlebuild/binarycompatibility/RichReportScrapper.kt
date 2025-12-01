@@ -23,7 +23,7 @@ import java.io.File
 internal
 fun scrapeRichReport(richReportFile: File): RichReport =
 
-    Jsoup.parse(richReportFile, "UTF-8").run {
+    Jsoup.parse(richReportFile, UTF_8).run {
         RichReport(
             scrapeMessagesForSeverity("error"),
             scrapeMessagesForSeverity("warning"),

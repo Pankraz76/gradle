@@ -163,7 +163,7 @@ public class GcsClient {
     private static String cleanResourcePath(URI uri) {
         String path;
         try {
-            path = URLDecoder.decode(uri.getPath(), "UTF-8");
+            path = URLDecoder.decode(uri.getPath(), UTF_8);
         } catch (UnsupportedEncodingException e) {
             throw UncheckedException.throwAsUncheckedException(e); // fail fast, this should not happen
         }

@@ -64,7 +64,7 @@ task check {
         assert '\u20AC'.charAt(0) == 0x20AC
     }
 }
-""", "UTF-8")
+""", UTF_8)
         assert scriptFile.getText("ISO-8859-15") != scriptFile.getText("UTF-8")
         server.expectGet('/script.gradle', scriptFile).contentType("text/plain")
 

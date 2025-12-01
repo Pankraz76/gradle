@@ -211,7 +211,7 @@ public class XmlTransformer implements Transformer<String, String> {
 
         public void writeTo(OutputStream stream) {
             try(Writer writer = new BufferedWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8))) {
-                doWriteTo(writer, "UTF-8");
+                doWriteTo(writer, UTF_8);
                 writer.flush();
             } catch (IOException e) {
                 throw UncheckedException.throwAsUncheckedException(e);

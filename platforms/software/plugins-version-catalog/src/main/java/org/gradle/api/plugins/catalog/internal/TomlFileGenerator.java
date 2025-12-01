@@ -52,7 +52,7 @@ public abstract class TomlFileGenerator extends DefaultTask {
     }
 
     private void doGenerate(DefaultVersionCatalog model, File outputFile) throws FileNotFoundException, UnsupportedEncodingException {
-        try (PrintWriter writer = new PrintWriter(outputFile, "UTF-8")) {
+        try (PrintWriter writer = new PrintWriter(outputFile, UTF_8)) {
             TomlWriter ctx = new TomlWriter(writer);
             ctx.generate(model);
         }

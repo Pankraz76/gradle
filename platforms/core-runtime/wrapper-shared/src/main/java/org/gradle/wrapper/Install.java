@@ -134,7 +134,7 @@ public class Install {
 
             forceFetch(tmpZipFile, distributionUrl);
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(tmpZipFile), "UTF-8"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(tmpZipFile), UTF_8));
             try {
                 return reader.readLine();
             } finally {
@@ -276,7 +276,7 @@ public class Install {
             ProcessBuilder pb = new ProcessBuilder("chmod", "755", gradleCommand.getCanonicalPath());
             Process p = pb.start();
             if (p.waitFor() != 0) {
-                BufferedReader is = new BufferedReader(new InputStreamReader(p.getInputStream(), "UTF-8"));
+                BufferedReader is = new BufferedReader(new InputStreamReader(p.getInputStream(), UTF_8));
                 Formatter stdout = new Formatter();
                 String line;
                 while ((line = is.readLine()) != null) {

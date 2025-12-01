@@ -42,7 +42,7 @@ public class SimpleXmlWriter extends SimpleMarkupWriter {
      * @param output The output, should be unbuffered, as this class performs buffering
      */
     public SimpleXmlWriter(OutputStream output, String indent) throws IOException {
-        this(new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8)), indent, "UTF-8");
+        this(new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8)), indent, UTF_8);
     }
 
     /**

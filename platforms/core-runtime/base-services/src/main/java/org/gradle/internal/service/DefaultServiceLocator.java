@@ -158,7 +158,7 @@ public class DefaultServiceLocator implements ServiceLocator {
         }
         InputStream inputStream = urlConnection.getInputStream();
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8));
             List<String> implementationClassNames = new ArrayList<String>();
             String line;
             while ((line = reader.readLine()) != null) {
