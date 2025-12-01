@@ -10,7 +10,8 @@ project.apply plugin: 'org.openrewrite.rewrite'
 
 rewrite {
   activeRecipe('org.gradle.openrewrite.SanityCheck')
-  //exclusion('**.java')
+  exclusion('**.groovy')
+  exclusion('documentation/docs/src/snippets**')
   setExportDatatables(true)
   setFailOnDryRunResults(true)
 }

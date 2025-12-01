@@ -10,8 +10,8 @@ tags:
   - cleanup
 recipeList:
   - org.openrewrite.gradle.EnableGradleBuildCache
-  # - org.openrewrite.gradle.EnableGradleParallelExecution
-  # - org.openrewrite.gradle.GradleBestPractices
-  # - org.openrewrite.java.format.NormalizeLineBreaks
+  - org.openrewrite.gradle.EnableGradleParallelExecution
+  - org.openrewrite.gradle.GradleBestPractices
+  - org.openrewrite.java.format.NormalizeLineBreaks
   - org.openrewrite.java.format.RemoveTrailingWhitespace
 ---
