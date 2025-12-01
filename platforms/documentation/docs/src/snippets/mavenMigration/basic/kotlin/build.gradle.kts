@@ -1,3 +1,5 @@
+import sun.nio.cs.UTF_8
+
 plugins {
     `java-library`
     checkstyle
