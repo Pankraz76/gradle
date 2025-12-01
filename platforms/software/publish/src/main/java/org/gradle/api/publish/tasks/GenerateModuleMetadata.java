@@ -70,12 +70,14 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UncheckedIOException;
 import java.io.Writer;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.file.Files.newOutputStream;
 import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
 
 /**
@@ -199,7 +201,11 @@ public abstract class GenerateModuleMetadata extends DefaultTask {
     }
 
     private BufferedWriter bufferedWriterFor(File file) throws FileNotFoundException {
-        return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), UTF_8));
+        try {
+            return new BufferedWriter(new OutputStreamWriter(newOutputStream(file.toPath()), UTF_8));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private GradleModuleMetadataWriter moduleMetadataWriter() {

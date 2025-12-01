@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URI;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -40,6 +41,8 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import static java.lang.String.format;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.file.Files.newInputStream;
 import static java.util.Collections.emptyList;
 import static org.gradle.internal.file.PathTraversalChecker.safePathName;
 import static org.gradle.wrapper.Download.safeUri;
@@ -134,11 +137,8 @@ public class Install {
 
             forceFetch(tmpZipFile, distributionUrl);
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(tmpZipFile), UTF_8));
-            try {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(newInputStream(tmpZipFile.toPath()), UTF_8))) {
                 return reader.readLine();
-            } finally {
-                reader.close();
             }
         } catch (Exception e) {
             logger.log("Could not fetch hash for " + safeUri(distribution) + ".");
