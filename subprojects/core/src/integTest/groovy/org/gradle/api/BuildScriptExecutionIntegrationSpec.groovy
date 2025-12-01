@@ -20,6 +20,7 @@ import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.test.fixtures.file.DoesNotSupportNonAsciiPaths
 import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
+import sun.nio.cs.UTF_8
 
 @DoesNotSupportNonAsciiPaths(reason = "Using non-Unicode default character set encoding")
 class BuildScriptExecutionIntegrationSpec extends AbstractIntegrationSpec {
