@@ -74,9 +74,6 @@ project.plugins.withType<JavaBasePlugin> {
             // joint-compilation doesn't work with the Error Prone annotation processor
             enabled.convention(isMainSourceSet)
         }
-        // don't forget to update the version in distributions-dependencies/build.gradle.kts
-        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.google.errorprone:error_prone_core:2.42.0")
-        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.uber.nullaway:nullaway:0.12.10")
         project.tasks.named<JavaCompile>(sourceSet.compileJavaTaskName) {
             options.errorprone {
                 isEnabled = extension.enabled
@@ -85,6 +82,9 @@ project.plugins.withType<JavaBasePlugin> {
                 }
             }
         }
+        // don't forget to update the version in distributions-dependencies/build.gradle.kts
+        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.google.errorprone:error_prone_core:2.42.0")
+        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.uber.nullaway:nullaway:0.12.10")
     }
 }
 
