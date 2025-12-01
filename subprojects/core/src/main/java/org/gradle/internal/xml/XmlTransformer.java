@@ -56,6 +56,8 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class XmlTransformer implements Transformer<String, String> {
     private final List<Action<? super XmlProvider>> actions = new ArrayList<>();
     private final List<Action<? super XmlProvider>> finalizers = new ArrayList<>(2);
@@ -210,8 +212,8 @@ public class XmlTransformer implements Transformer<String, String> {
         }
 
         public void writeTo(OutputStream stream) {
-            try(Writer writer = new BufferedWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8))) {
-                doWriteTo(writer, UTF_8);
+            try(Writer writer = new BufferedWriter(new OutputStreamWriter(stream, UTF_8))) {
+                doWriteTo(writer, UTF_8.toString());
                 writer.flush();
             } catch (IOException e) {
                 throw UncheckedException.throwAsUncheckedException(e);
