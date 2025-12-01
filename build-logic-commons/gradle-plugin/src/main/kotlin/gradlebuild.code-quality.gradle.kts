@@ -1,7 +1,9 @@
-import com.gradle.scan.agent.serialization.scan.serializer.kryo.it
 import gradlebuild.nullaway.NullawayAttributes
+import gradlebuild.nullaway.NullawayAttributes.addToConfiguration
 import gradlebuild.nullaway.NullawayCompatibilityRule
 import gradlebuild.nullaway.NullawayState
+import gradlebuild.nullaway.NullawayState.DISABLED
+import gradlebuild.nullaway.NullawayState.ENABLED
 import gradlebuild.nullaway.NullawayStatusTask
 import groovy.lang.GroovySystem
 import net.ltgt.gradle.errorprone.CheckSeverity.ERROR
@@ -9,7 +11,6 @@ import net.ltgt.gradle.errorprone.CheckSeverity.OFF
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
 import org.gradle.util.internal.VersionNumber.parse
-import java.lang.System.getenv
 
 /*
  * Copyright 2022 the original author or authors.
@@ -36,7 +37,6 @@ plugins {
 }
 
 open class ErrorProneProjectExtension(
-    val unused: ListProperty<String>,
     val nullawayEnabled: Property<Boolean>
 )
 
@@ -44,65 +44,29 @@ open class ErrorProneSourceSetExtension(
     val enabled: Property<Boolean>
 )
 
-val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
-    "errorprone",
-    objects.listProperty<String>(),
-    objects.property<Boolean>()
-).apply {
-    nullawayEnabled.convention(false)
-}
-
-val groovyVersion: String? = GroovySystem.getVersion()
-val codenarcVersion = if (parse(groovyVersion).major >= 4) "3.6.0-groovy-4.0" else "3.6.0"
-
 dependencies {
     attributesSchema {
         attribute(NullawayAttributes.nullawayAttribute) {
             compatibilityRules.add(NullawayCompatibilityRule::class.java)
         }
     }
-    codenarc("gradlebuild:code-quality-rules") {
-        because("Provides the IntegrationTestFixturesRule implementation")
-    }
-    codenarc("org.codenarc:CodeNarc:$codenarcVersion")
-    codenarc(embeddedKotlin("stdlib"))
-    components {
-        withModule<CodeNarcRule>("org.codenarc:CodeNarc") {
-            params(groovyVersion)
-        }
-    }
-    errorprone("com.google.errorprone:error_prone_core:2.42.0")
-    errorprone("com.uber.nullaway:nullaway:0.12.10")
-    rules("gradlebuild:code-quality-rules") {
-        because("Provides rules defined in XML files")
-    }
+}
+
+val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
+    "errorprone",
+    objects.property<Boolean>()
+).apply {
+    nullawayEnabled.convention(false)
 }
 
 project.plugins.withType<JavaBasePlugin> {
     project.extensions.getByName<SourceSetContainer>("sourceSets").configureEach {
-        val isMainSourceSet = (name == "main")
+        val sourceSet = this
+        val isMainSourceSet = sourceSet.name == "main"
         if (isMainSourceSet) {
-            val nullawayAttributeValue = errorproneExtension.nullawayEnabled.map { if (it) NullawayState.ENABLED else NullawayState.DISABLED }
-
-            // We don't care about nullaway in test fixtures or tests, they're written in Groovy anyway.
-            NullawayAttributes.addToConfiguration(configurations.named(compileClasspathConfigurationName), nullawayAttributeValue)
-
-            project.plugins.withType<JavaLibraryPlugin> {
-                // Kotlin-only projects do not hit this, so they don't have nullaway attributes on the outgoing variants.
-                // Java project can in turn depend on Kotlin projects even if they have nullaway enabled.
-                NullawayAttributes.addToConfiguration(configurations.named(apiElementsConfigurationName), nullawayAttributeValue)
-                NullawayAttributes.addToConfiguration(configurations.named(runtimeElementsConfigurationName), nullawayAttributeValue)
-
-                tasks.register<NullawayStatusTask>("nullawayStatus") {
-                    nullawayEnabled = errorproneExtension.nullawayEnabled
-                    nullawayAwareDeps = configurations.named(compileClasspathConfigurationName).map {
-                        it.incoming.artifacts
-                    }
-                }
-            }
+            configureMainSourceSet(sourceSet, errorproneExtension, errorproneExtension.nullawayEnabled.map { if (it) ENABLED else DISABLED })
         }
-
-        val extension = this.extensions.create<ErrorProneSourceSetExtension>(
+        val extension = sourceSet.extensions.create<ErrorProneSourceSetExtension>(
             "errorprone",
             project.objects.property<Boolean>()
         ).apply {
@@ -110,32 +74,25 @@ project.plugins.withType<JavaBasePlugin> {
             // joint-compilation doesn't work with the Error Prone annotation processor
             enabled.convention(isMainSourceSet)
         }
-
-        @Suppress("UnstableApiUsage")
-        fun addErrorProneDependency(dep: String) {
-            project.dependencies.addProvider(
-                annotationProcessorConfigurationName,
-                extension.enabled.filter { it }.map { dep }
-            )
-        }
-
-        // don't forget to update the version in distributions-dependencies/build.gradle.kts
-        addErrorProneDependency("com.google.errorprone:error_prone_core:2.42.0")
-        addErrorProneDependency("com.uber.nullaway:nullaway:0.12.10")
-
-        project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
+        project.tasks.named<JavaCompile>(sourceSet.compileJavaTaskName) {
             options.errorprone {
                 isEnabled = extension.enabled
+                nullaway {
+                    severity = errorproneExtension.nullawayEnabled.map { if (it) ERROR else OFF }
+                }
             }
         }
+        // don't forget to update the version in distributions-dependencies/build.gradle.kts
+        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.google.errorprone:error_prone_core:2.42.0")
+        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.uber.nullaway:nullaway:0.12.10")
     }
 }
 
 tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
-        disableWarningsInGeneratedCode = true
         allErrorsAsWarnings = true
-        disableAllWarnings = true // considering this spamming (like crazy), consider removal once and fixing. https://github.com/diffplug/spotless/pull/2766
+        disableAllWarnings = true // considering this immense spam burden, remove this once to fix dedicated flaw. https://github.com/diffplug/spotless/pull/2766
+        disableWarningsInGeneratedCode = true
         disable(
             // DISCUSS
             "EnumOrdinal", // This violation is ubiquitous, though most are benign.
@@ -150,37 +107,7 @@ tasks.withType<JavaCompile>().configureEach {
             "JavaxInjectOnAbstractMethod", // We use abstract injection as a pattern
             "MissingSummary", // We have another mechanism to check Javadocs on public API
             "StringSplitter", // We are fine with using String.split() as is
-            // consider fix, or reasoning.
-//            "AnnotateFormatMethod", // We don`t want to use ErrorProne's annotations.
-//            "DoNotCallSuggester", // We don`t want to use ErrorProne's annotations.
-//            "FunctionalInterfaceMethodChanged",
-//            "ImmutableEnumChecker", // We don`t want to use ErrorProne's annotations.
-//            "InlineMeSuggester", // We don`t want to use ErrorProne's annotations.
-//            "JavaxInjectOnAbstractMethod",
-//            "OverridesJavaxInjectableMethod",
-//            "ReturnValueIgnored", // We don`t want to use ErrorProne's annotations.
         )
-        error(
-            "MissingOverride",
-            "SelfAssignment",
-            "StringCharset",
-            "StringJoin",
-            "UnnecessarilyFullyQualified",
-            "UnnecessaryLambda",
-        )
-        excludedPaths.set(".*/groovy-dsl-plugins/output/adapter-src/.*")
-        if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
-            errorproneArgs.addAll(
-                "-XepPatchLocation:IN_PLACE",
-                "-XepPatchChecks:" +
-                    "MissingOverride," +
-                    "SelfAssignment," +
-                    "StringCharset," +
-                    "StringJoin," +
-                    "UnnecessarilyFullyQualified," +
-                    "UnnecessaryLambda"
-            )
-        }
         nullaway {
             // NullAway can use NullMarked instead, but for the adoption process it is more effective to assume that all gradle code is already annotated.
             // This way we can catch discrepancies in modules easier. We should make all packages NullMarked eventually too, but this is a separate task.
@@ -207,8 +134,29 @@ tasks.check {
 
 val rules by configurations.creating {
     isCanBeConsumed = false
+
     attributes {
         attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements.RESOURCES))
+    }
+}
+
+val groovyVersion: String? = GroovySystem.getVersion()
+val codenarcVersion = if (parse(groovyVersion).major >= 4) "3.6.0-groovy-4.0" else "3.6.0"
+
+dependencies {
+    rules("gradlebuild:code-quality-rules") {
+        because("Provides rules defined in XML files")
+    }
+    codenarc("gradlebuild:code-quality-rules") {
+        because("Provides the IntegrationTestFixturesRule implementation")
+    }
+    codenarc("org.codenarc:CodeNarc:$codenarcVersion")
+    codenarc(embeddedKotlin("stdlib"))
+
+    components {
+        withModule<CodeNarcRule>("org.codenarc:CodeNarc") {
+            params(groovyVersion)
+        }
     }
 }
 
@@ -217,8 +165,9 @@ fun configFile(fileName: String) = resources.text.fromFile(rules.asFileTree.filt
 checkstyle {
     toolVersion = "10.25.0"
     config = configFile("checkstyle.xml")
+    val projectDirectory = layout.projectDirectory
     configDirectory = rules.elements.map {
-        layout.projectDirectory.dir(it.single().asFile.absolutePath).dir("checkstyle")
+        projectDirectory.dir(it.single().asFile.absolutePath).dir("checkstyle")
     }
 }
 
@@ -226,7 +175,7 @@ plugins.withType<GroovyBasePlugin> {
     the<SourceSetContainer>().all {
         tasks.register<Checkstyle>(getTaskName("checkstyle", "groovy")) {
             config = configFile("checkstyle-groovy.xml")
-            source(the<GroovySourceDirectorySet>())
+            source(allGroovy)
             classpath = compileClasspath
             reports.xml.outputLocation = checkstyle.reportsDir.resolve("${this@all.name}-groovy.xml")
         }
@@ -244,9 +193,10 @@ tasks.withType<CodeNarc>().configureEach {
     }
 }
 
-abstract class CodeNarcRule @Inject constructor(
-    private val groovyVersion: String
-) : ComponentMetadataRule {
+val SourceSet.allGroovy: SourceDirectorySet
+    get() = the<GroovySourceDirectorySet>()
+
+abstract class CodeNarcRule @Inject constructor(private val groovyVersion: String) : ComponentMetadataRule {
     override fun execute(context: ComponentMetadataContext) {
         context.details.allVariants {
             withDependencies {
@@ -263,4 +213,29 @@ abstract class CodeNarcRule @Inject constructor(
             }
         }
     }
+}
+
+private fun configureMainSourceSet(sourceSet: SourceSet, errorproneExtension: ErrorProneProjectExtension, nullawayAttributeValue: Provider<NullawayState>) {
+    // We don't care about nullaway in test fixtures or tests, they're written in Groovy anyway.
+    addToConfiguration(configurations.named(sourceSet.compileClasspathConfigurationName), nullawayAttributeValue)
+    project.plugins.withType<JavaLibraryPlugin> {
+        // Kotlin-only projects do not hit this, so they don't have nullaway attributes on the outgoing variants.
+        // Java project can in turn depend on Kotlin projects even if they have nullaway enabled.
+        addToConfiguration(configurations.named(sourceSet.apiElementsConfigurationName), nullawayAttributeValue)
+        addToConfiguration(configurations.named(sourceSet.runtimeElementsConfigurationName), nullawayAttributeValue)
+        tasks.register<NullawayStatusTask>("nullawayStatus") {
+            nullawayEnabled = errorproneExtension.nullawayEnabled
+            nullawayAwareDeps = configurations.named(sourceSet.compileClasspathConfigurationName).map {
+                it.incoming.artifacts
+            }
+        }
+    }
+}
+
+@Suppress("UnstableApiUsage")
+fun addErrorProneDependency(annotationProcessorConfigurationName: String, extension: ErrorProneSourceSetExtension, dep: String) {
+    project.dependencies.addProvider(
+        annotationProcessorConfigurationName,
+        extension.enabled.filter { it }.map { dep }
+    )
 }
