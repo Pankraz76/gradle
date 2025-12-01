@@ -104,7 +104,8 @@ dependencies {
 tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
         disableWarningsInGeneratedCode = true
-        disableAllWarnings = true
+        allErrorsAsWarnings = true
+        disableAllWarnings = true // considering this spamming (like crazy), consider removal once and fixing. https://github.com/diffplug/spotless/pull/2766
         disable(
             // DISCUSS
             "EnumOrdinal", // This violation is ubiquitous, though most are benign.
