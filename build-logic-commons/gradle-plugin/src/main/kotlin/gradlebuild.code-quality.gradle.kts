@@ -36,7 +36,7 @@ plugins {
 }
 
 open class ErrorProneProjectExtension(
-    //val unused: ListProperty<String>,
+    val unused: ListProperty<String>,
     val nullawayEnabled: Property<Boolean>
 )
 
@@ -46,7 +46,7 @@ open class ErrorProneSourceSetExtension(
 
 val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
     "errorprone",
-    //objects.listProperty<String>(),
+    objects.listProperty<String>(),
     objects.property<Boolean>()
 ).apply {
     nullawayEnabled.convention(false)
