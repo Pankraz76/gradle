@@ -5,7 +5,7 @@ import gradlebuild.nullaway.NullawayState
 import gradlebuild.nullaway.NullawayState.DISABLED
 import gradlebuild.nullaway.NullawayState.ENABLED
 import gradlebuild.nullaway.NullawayStatusTask
-import groovy.lang.GroovySystem.getVersion
+import groovy.lang.GroovySystem
 import net.ltgt.gradle.errorprone.CheckSeverity.ERROR
 import net.ltgt.gradle.errorprone.CheckSeverity.OFF
 import net.ltgt.gradle.errorprone.errorprone
@@ -72,9 +72,8 @@ project.plugins.withType<JavaBasePlugin> {
             "errorprone",
             project.objects.property<Boolean>()
         ).apply {
-            // Enable it only for the main source set by default, as incremental Groovy
-            // joint-compilation doesn't work with the Error Prone annotation processor
-            enabled.convention(isMainSourceSet)
+            // Enable it only for the main source set by default, as incremental Groovy.
+            enabled.convention(isMainSourceSet) // joint-compilation doesn't work with the Error Prone annotation processor
         }
         project.tasks.named<JavaCompile>(compileJavaTaskName) {
             options.errorprone {
@@ -137,7 +136,7 @@ val rules by configurations.creating {
     }
 }
 
-val codenarcVersion = if (parse(getVersion() as String?).major >= 4) "3.6.0-groovy-4.0" else "3.6.0"
+val codenarcVersion = if (parse(GroovySystem.getVersion()).major >= 4) "3.6.0-groovy-4.0" else "3.6.0"
 
 dependencies {
     rules("gradlebuild:code-quality-rules") {
@@ -151,7 +150,7 @@ dependencies {
 
     components {
         withModule<CodeNarcRule>("org.codenarc:CodeNarc") {
-            params(getVersion())
+            params(GroovySystem.getVersion())
         }
     }
 }
