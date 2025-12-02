@@ -1,3 +1,4 @@
+import com.gradle.scan.agent.serialization.scan.serializer.kryo.it
 import gradlebuild.nullaway.NullawayAttributes
 import gradlebuild.nullaway.NullawayAttributes.addToConfiguration
 import gradlebuild.nullaway.NullawayCompatibilityRule
@@ -62,12 +63,11 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
 
 project.plugins.withType<JavaBasePlugin> {
     project.extensions.getByName<SourceSetContainer>("sourceSets").configureEach {
-        val sourceSet = this
-        val isMainSourceSet = sourceSet.name == "main"
+        val isMainSourceSet = this.name == "main"
         if (isMainSourceSet) {
-            configureMainSourceSet(sourceSet, errorproneExtension, errorproneExtension.nullawayEnabled.map { if (it) ENABLED else DISABLED })
+            configureMainSourceSet(this, errorproneExtension, errorproneExtension.nullawayEnabled.map { if (it) ENABLED else DISABLED })
         }
-        val extension = sourceSet.extensions.create<ErrorProneSourceSetExtension>(
+        val extension = this.extensions.create<ErrorProneSourceSetExtension>(
             "errorprone",
             project.objects.property<Boolean>()
         ).apply {
@@ -75,7 +75,7 @@ project.plugins.withType<JavaBasePlugin> {
             // joint-compilation doesn't work with the Error Prone annotation processor
             enabled.convention(isMainSourceSet)
         }
-        project.tasks.named<JavaCompile>(sourceSet.compileJavaTaskName) {
+        project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
             options.errorprone {
                 isEnabled = extension.enabled
                 nullaway {
@@ -84,16 +84,16 @@ project.plugins.withType<JavaBasePlugin> {
             }
         }
         // don't forget to update the version in distributions-dependencies/build.gradle.kts
-        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.google.errorprone:error_prone_core:2.42.0")
-        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.uber.nullaway:nullaway:0.12.10")
-        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "tech.picnic.error-prone-support:error-prone-contrib:0.26.0")
+        addErrorProneDependency(this.annotationProcessorConfigurationName, extension, "com.google.errorprone:error_prone_core:2.42.0")
+        addErrorProneDependency(this.annotationProcessorConfigurationName, extension, "com.uber.nullaway:nullaway:0.12.10")
+        addErrorProneDependency(this.annotationProcessorConfigurationName, extension, "tech.picnic.error-prone-support:error-prone-contrib:0.26.0")
     }
 }
 
 tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
         allErrorsAsWarnings = true
-        disableAllWarnings = true // considering this immense spam burden, remove this once to fix dedicated flaw. https://github.com/diffplug/spotless/pull/2766
+        // disableAllWarnings = true // considering this immense spam burden, remove this once to fix dedicated flaw. https://github.com/diffplug/spotless/pull/2766
         disableWarningsInGeneratedCode = true
         disable("JavaxInjectOnAbstractMethod") // We use abstract injection as a pattern
         error(
