@@ -93,15 +93,15 @@ project.plugins.withType<JavaBasePlugin> {
 
 tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
-        allErrorsAsWarnings = true
+        // allErrorsAsWarnings = true
         // disableAllWarnings = true // considering this immense spam burden, remove this once to fix dedicated flaw. https://github.com/diffplug/spotless/pull/2766
         disableWarningsInGeneratedCode = true
-        disable("JavaxInjectOnAbstractMethod") // We use abstract injection as a pattern
+        disable("JavaxInjectOnAbstractMethod") // We use abstract injection as a pattern.
         error(
             // DISCUSS
             // "EnumOrdinal", // This violation is ubiquitous, though most are benign.
-            // "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals()
-            // "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
+            // "EqualsGetClass", // Let's agree if we want to adopt Error Prone's idea of valid equals().
+            // "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason.
             // "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
             "MissingOverride",
             "NonStaticImport",
