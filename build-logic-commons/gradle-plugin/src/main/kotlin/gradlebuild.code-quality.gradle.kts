@@ -1,4 +1,3 @@
-import com.gradle.scan.agent.serialization.scan.serializer.kryo.it
 import gradlebuild.nullaway.NullawayAttributes
 import gradlebuild.nullaway.NullawayAttributes.addToConfiguration
 import gradlebuild.nullaway.NullawayCompatibilityRule
