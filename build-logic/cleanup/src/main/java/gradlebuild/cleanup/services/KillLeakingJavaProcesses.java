@@ -17,6 +17,8 @@
 package gradlebuild.cleanup.services;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -128,7 +130,7 @@ public class KillLeakingJavaProcesses {
 
     private static void initExecutionMode(String[] args) {
         if (args.length != 1) {
-            throw new IllegalArgumentException("Requires 1 param: " + Stream.of(ExecutionMode.values()).map(ExecutionMode::toString).collect(Collectors.joining("/")));
+            throw new IllegalArgumentException("Requires 1 param: " + Stream.of(ExecutionMode.values()).map(ExecutionMode::toString).collect(joining("/")));
         }
         executionMode = ExecutionMode.valueOf(args[0]);
         if (executionMode == ExecutionMode.KILL_PROCESSES_STARTED_BY_GRADLE && !Boolean.parseBoolean(System.getenv("GRADLE_RUNNER_FINISHED"))) {
@@ -186,7 +188,7 @@ public class KillLeakingJavaProcesses {
     }
 
     private static List<String> ps() {
-        return run(determinePsCommand()).assertZeroExit().stdout.lines().collect(Collectors.toList());
+        return run(determinePsCommand()).assertZeroExit().stdout.lines().collect(toList());
     }
 
     private static String[] determinePsCommand() {
