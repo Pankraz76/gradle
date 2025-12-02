@@ -113,12 +113,8 @@ tasks.withType<JavaCompile>().configureEach {
             errorproneArgs.addAll(
                 "-XepPatchLocation:IN_PLACE",
                 "-XepPatchChecks:" +
-                    "MissingOverride," +
-                    "SelfAssignment," +
-                    "StringCharset," +
-                    "StringJoin," +
-                    "UnnecessarilyFullyQualified," +
-                    "UnnecessaryLambda"
+                    "NonStaticImport," +
+                    "StaticImport,"
             )
         }
         nullaway {
