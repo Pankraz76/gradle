@@ -104,6 +104,7 @@ tasks.withType<JavaCompile>().configureEach {
             // "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
             "MissingOverride",
             "NonStaticImport",
+            "StaticImport",
             "SelfAssignment",
             "StringCharset",
             "StringJoin",
@@ -114,7 +115,8 @@ tasks.withType<JavaCompile>().configureEach {
             errorproneArgs.addAll(
                 "-XepPatchLocation:IN_PLACE",
                 "-XepPatchChecks:" +
-                    "NonStaticImport,"
+                    "NonStaticImport," +
+                    "StaticImport,"
             )
         }
         nullaway {
