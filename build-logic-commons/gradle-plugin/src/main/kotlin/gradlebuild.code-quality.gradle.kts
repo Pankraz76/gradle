@@ -102,7 +102,6 @@ tasks.withType<JavaCompile>().configureEach {
             // "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
             // "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
             "MissingOverride",
-            "StaticImport",
             "NonStaticImport",
             "SelfAssignment",
             "StringCharset",
@@ -110,12 +109,11 @@ tasks.withType<JavaCompile>().configureEach {
             "UnnecessaryLambda",
         )
         excludedPaths.set(".*/groovy-dsl-plugins/output/adapter-src/.*")
-        if (!getenv().containsKey("CI") && getenv("IN_PLACEe").toBoolean()) {
+        if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
             errorproneArgs.addAll(
                 "-XepPatchLocation:IN_PLACE",
                 "-XepPatchChecks:" +
-                    "NonStaticImport," +
-                    "StaticImport,"
+                    "NonStaticImport,"
             )
         }
         nullaway {
