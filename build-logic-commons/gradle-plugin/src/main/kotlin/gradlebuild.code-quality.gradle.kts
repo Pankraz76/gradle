@@ -86,7 +86,7 @@ project.plugins.withType<JavaBasePlugin> {
         // don't forget to update the version in distributions-dependencies/build.gradle.kts
         addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.google.errorprone:error_prone_core:2.42.0")
         addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.uber.nullaway:nullaway:0.12.10")
-        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "tech.picnic.error-prone-support:error-prone-contrib:0.27.0")
+        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "tech.picnic.error-prone-support:error-prone-contrib:0.26.0")
     }
 }
 
