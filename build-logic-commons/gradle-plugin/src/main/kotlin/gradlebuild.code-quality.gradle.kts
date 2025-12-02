@@ -5,11 +5,13 @@ import gradlebuild.nullaway.NullawayState
 import gradlebuild.nullaway.NullawayState.DISABLED
 import gradlebuild.nullaway.NullawayState.ENABLED
 import gradlebuild.nullaway.NullawayStatusTask
-import groovy.lang.GroovySystem
+import groovy.lang.GroovySystem.getVersion
 import net.ltgt.gradle.errorprone.CheckSeverity.ERROR
 import net.ltgt.gradle.errorprone.CheckSeverity.OFF
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
+import org.gradle.api.attributes.LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE
+import org.gradle.api.attributes.LibraryElements.RESOURCES
 import org.gradle.util.internal.VersionNumber.parse
 import java.lang.System.getenv
 
@@ -131,12 +133,11 @@ val rules by configurations.creating {
     isCanBeConsumed = false
 
     attributes {
-        attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements.RESOURCES))
+        attribute(LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(RESOURCES))
     }
 }
 
-val groovyVersion: String? = GroovySystem.getVersion()
-val codenarcVersion = if (parse(groovyVersion).major >= 4) "3.6.0-groovy-4.0" else "3.6.0"
+val codenarcVersion = if (parse(getVersion() as String?).major >= 4) "3.6.0-groovy-4.0" else "3.6.0"
 
 dependencies {
     rules("gradlebuild:code-quality-rules") {
@@ -150,7 +151,7 @@ dependencies {
 
     components {
         withModule<CodeNarcRule>("org.codenarc:CodeNarc") {
-            params(groovyVersion)
+            params(getVersion())
         }
     }
 }
