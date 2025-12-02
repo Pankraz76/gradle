@@ -86,6 +86,7 @@ project.plugins.withType<JavaBasePlugin> {
         // don't forget to update the version in distributions-dependencies/build.gradle.kts
         addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.google.errorprone:error_prone_core:2.42.0")
         addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "com.uber.nullaway:nullaway:0.12.10")
+        addErrorProneDependency(sourceSet.annotationProcessorConfigurationName, extension, "tech.picnic.error-prone-support:error-prone-contrib:0.27.0")
     }
 }
 
@@ -102,6 +103,8 @@ tasks.withType<JavaCompile>().configureEach {
             // "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
             // "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
             "MissingOverride",
+            // "StaticImport",
+            // "NonStaticImport",
             "SelfAssignment",
             "StringCharset",
             "StringJoin",
