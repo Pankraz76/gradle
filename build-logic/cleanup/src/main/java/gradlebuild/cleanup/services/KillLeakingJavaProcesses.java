@@ -17,7 +17,8 @@
 package gradlebuild.cleanup.services;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.regex.Pattern.quote;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -87,8 +88,8 @@ public class KillLeakingJavaProcesses {
     }
 
     static String generateLeakingProcessKillPattern(String rootProjectDir) {
-        String kotlinCompilerDaemonPattern = "(?:" + quote("-Dkotlin.environment.keepalive") + ".+org\\.jetbrains\\.kotlin\\.daemon\\.KotlinCompileDaemon)";
-        String quotedRootProjectDir = quote(rootProjectDir);
+        String kotlinCompilerDaemonPattern = "(?:" + Pattern.quote("-Dkotlin.environment.keepalive") + ".+org\\.jetbrains\\.kotlin\\.daemon\\.KotlinCompileDaemon)";
+        String quotedRootProjectDir = Pattern.quote(rootProjectDir);
         String perfTestClasspathPattern = "(?:-cp.+\\\\build\\\\tmp\\\\performance-test-files.+?" + GRADLE_MAIN_CLASS_PATTERN_STR + ")";
         String buildDirClasspathPattern = "(?:-(classpath|cp) \"?" + quotedRootProjectDir + ".+?" + GRADLE_MAIN_CLASS_PATTERN_STR + ")";
         String playServerPattern = "(?:-classpath.+" + quotedRootProjectDir + ".+?" + PLAY_SERVER_PATTERN_STR + ")";
@@ -129,7 +130,7 @@ public class KillLeakingJavaProcesses {
 
     private static void initExecutionMode(String[] args) {
         if (args.length != 1) {
-            throw new IllegalArgumentException("Requires 1 param: " + Stream.of(ExecutionMode.values()).map(ExecutionMode::toString).collect(Collectors.joining("/")));
+            throw new IllegalArgumentException("Requires 1 param: " + Stream.of(ExecutionMode.values()).map(ExecutionMode::toString).collect(joining("/")));
         }
         executionMode = ExecutionMode.valueOf(args[0]);
         if (executionMode == ExecutionMode.KILL_PROCESSES_STARTED_BY_GRADLE && !Boolean.parseBoolean(System.getenv("GRADLE_RUNNER_FINISHED"))) {
@@ -187,7 +188,7 @@ public class KillLeakingJavaProcesses {
     }
 
     private static List<String> ps() {
-        return run(determinePsCommand()).assertZeroExit().stdout.lines().collect(Collectors.toList());
+        return run(determinePsCommand()).assertZeroExit().stdout.lines().collect(toList());
     }
 
     private static String[] determinePsCommand() {
