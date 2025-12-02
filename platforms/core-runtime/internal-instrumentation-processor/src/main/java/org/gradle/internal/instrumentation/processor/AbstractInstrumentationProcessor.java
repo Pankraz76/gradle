@@ -16,6 +16,43 @@
 
 package org.gradle.internal.instrumentation.processor;
 
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.getExecutableElementsFromElements;
+
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Messager;
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementScanner8;
+import javax.lang.model.util.Elements;
+import javax.tools.Diagnostic;
 import org.gradle.internal.Cast;
 import org.gradle.internal.instrumentation.api.annotations.VisitForInstrumentation;
 import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
@@ -33,38 +70,6 @@ import org.gradle.internal.instrumentation.processor.modelreader.impl.Annotation
 import org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils;
 import org.jspecify.annotations.NonNull;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Messager;
-import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.SourceVersion;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.PackageElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.ElementScanner8;
-import javax.lang.model.util.Elements;
-import javax.tools.Diagnostic;
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.getExecutableElementsFromElements;
-
 public abstract class AbstractInstrumentationProcessor extends AbstractProcessor {
 
     public static final String PROJECT_NAME_OPTIONS = "org.gradle.annotation.processing.instrumented.project";
@@ -78,7 +83,7 @@ public abstract class AbstractInstrumentationProcessor extends AbstractProcessor
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        return getSupportedAnnotations().stream().map(Class::getName).collect(Collectors.toSet());
+        return getSupportedAnnotations().stream().map(Class::getName).collect(toSet());
     }
 
     @Override
@@ -89,7 +94,7 @@ public abstract class AbstractInstrumentationProcessor extends AbstractProcessor
     private Set<Class<? extends Annotation>> getSupportedAnnotations() {
         return getExtensionsByType(ClassLevelAnnotationsContributor.class).stream()
             .flatMap(it -> it.contributeClassLevelAnnotationTypes().stream())
-            .collect(Collectors.toSet());
+            .collect(toSet());
     }
 
     @Override
@@ -98,7 +103,7 @@ public abstract class AbstractInstrumentationProcessor extends AbstractProcessor
         // See issue: https://github.com/gradle/gradle/issues/29926
         Stream<? extends Element> annotatedTypes = getAnnotatedElementsSkippingPackageRoots(roundEnv, getSupportedAnnotations())
             .flatMap(element -> findActualTypesToVisit(element).stream())
-            .sorted(Comparator.comparing(TypeUtils::elementQualifiedName));
+            .sorted(comparing(TypeUtils::elementQualifiedName));
         collectAndProcessRequests(annotatedTypes);
         return false;
     }
@@ -106,7 +111,7 @@ public abstract class AbstractInstrumentationProcessor extends AbstractProcessor
     private Set<Element> findActualTypesToVisit(Element typeElement) {
         Optional<? extends AnnotationMirror> annotationMirror = AnnotationUtils.findAnnotationMirror(typeElement, VisitForInstrumentation.class);
         if (!annotationMirror.isPresent()) {
-            return Collections.singleton(typeElement);
+            return singleton(typeElement);
         }
 
         @SuppressWarnings("unchecked")
@@ -115,11 +120,11 @@ public abstract class AbstractInstrumentationProcessor extends AbstractProcessor
             .getValue();
         return values.stream()
             .map(v -> processingEnv.getTypeUtils().asElement((TypeMirror) v.getValue()))
-            .collect(Collectors.toSet());
+            .collect(toSet());
     }
 
     private <T extends InstrumentationProcessorExtension> Collection<T> getExtensionsByType(Class<T> type) {
-        return Cast.uncheckedCast(getExtensions().stream().filter(type::isInstance).collect(Collectors.toList()));
+        return Cast.uncheckedCast(getExtensions().stream().filter(type::isInstance).collect(toList()));
     }
 
     private void collectAndProcessRequests(Stream<? extends Element> annotatedElements) {
@@ -160,9 +165,9 @@ public abstract class AbstractInstrumentationProcessor extends AbstractProcessor
 
     @NonNull
     private List<CallInterceptionRequest> postProcessRequests(List<CallInterceptionRequestReader.Result.Success> successResults) {
-        List<CallInterceptionRequest> requests = successResults.stream().map(CallInterceptionRequestReader.Result.Success::getRequest).collect(Collectors.toList());
+        List<CallInterceptionRequest> requests = successResults.stream().map(CallInterceptionRequestReader.Result.Success::getRequest).collect(toList());
         for (RequestPostProcessorExtension postProcessor : getExtensionsByType(RequestPostProcessorExtension.class)) {
-            requests = requests.stream().flatMap(request -> postProcessor.postProcessRequest(request).stream()).collect(Collectors.toList());
+            requests = requests.stream().flatMap(request -> postProcessor.postProcessRequest(request).stream()).collect(toList());
         }
         return requests;
     }
@@ -171,9 +176,9 @@ public abstract class AbstractInstrumentationProcessor extends AbstractProcessor
         InstrumentationCodeGeneratorHost generatorHost = new InstrumentationCodeGeneratorHost(processingEnv.getFiler(),
             processingEnv.getMessager(),
             new CompositeInstrumentationCodeGenerator(
-                getExtensionsByType(CodeGeneratorContributor.class).stream().map(CodeGeneratorContributor::contributeCodeGenerator).collect(Collectors.toList())
+                getExtensionsByType(CodeGeneratorContributor.class).stream().map(CodeGeneratorContributor::contributeCodeGenerator).collect(toList())
             ),
-            getExtensionsByType(ResourceGeneratorContributor.class).stream().map(ResourceGeneratorContributor::contributeResourceGenerator).collect(Collectors.toList())
+            getExtensionsByType(ResourceGeneratorContributor.class).stream().map(ResourceGeneratorContributor::contributeResourceGenerator).collect(toList())
         );
 
         generatorHost.generateCodeForRequestedInterceptors(requests);
@@ -193,9 +198,9 @@ public abstract class AbstractInstrumentationProcessor extends AbstractProcessor
         Set<TypeElement> annotationsAsElements = annotations.stream()
             .filter(annotation -> annotation.getCanonicalName() != null)
             .map(annotation -> processingEnv.getElementUtils().getTypeElement(annotation.getCanonicalName()))
-            .collect(Collectors.toCollection(() -> new LinkedHashSet<>(annotations.size())));
+            .collect(toCollection(() -> new LinkedHashSet<>(annotations.size())));
 
-        Set<Element> result = Collections.emptySet();
+        Set<Element> result = emptySet();
         AnnotationScanner scanner = new AnnotationScanner(processingEnv.getElementUtils());
         for (Element element : roundEnvironment.getRootElements()) {
             if (!(element instanceof PackageElement)) {
@@ -210,7 +215,7 @@ public abstract class AbstractInstrumentationProcessor extends AbstractProcessor
         private final Elements elements;
 
         private AnnotationScanner(Elements elements) {
-            super(Collections.emptySet());
+            super(emptySet());
             this.elements = elements;
         }
 

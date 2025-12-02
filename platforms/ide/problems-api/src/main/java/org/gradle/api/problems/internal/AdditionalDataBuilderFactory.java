@@ -16,16 +16,17 @@
 
 package org.gradle.api.problems.internal;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import java.util.HashMap;
+import java.util.Map;
 import org.gradle.api.problems.AdditionalData;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @ServiceScope(Scope.Build.class)
 public final class AdditionalDataBuilderFactory {
@@ -91,7 +92,7 @@ public final class AdditionalDataBuilderFactory {
 
     @SuppressWarnings("unchecked")
     private <S extends AdditionalData, U extends AdditionalDataSpec> AdditionalDataBuilder<S> builderFor(Class<? extends U> specType, @Nullable S instance, String illegalArgumentMessage) {
-        Preconditions.checkNotNull(specType);
+        checkNotNull(specType);
         DataTypeAndProvider dataTypeAndProvider = additionalDataProviders.get(specType);
         if (dataTypeAndProvider != null) {
             return (AdditionalDataBuilder<S>) dataTypeAndProvider.builderProvider.apply(instance);

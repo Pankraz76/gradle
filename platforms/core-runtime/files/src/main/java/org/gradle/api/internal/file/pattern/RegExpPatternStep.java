@@ -15,6 +15,8 @@
  */
 package org.gradle.api.internal.file.pattern;
 
+import static java.util.regex.Pattern.CASE_INSENSITIVE;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,7 +26,7 @@ public class RegExpPatternStep implements PatternStep {
     private final Pattern pattern;
 
     public RegExpPatternStep(String pattern, boolean caseSensitive) {
-        this.pattern = Pattern.compile(getRegExPattern(pattern), caseSensitive?0:Pattern.CASE_INSENSITIVE);
+        this.pattern = Pattern.compile(getRegExPattern(pattern), caseSensitive?0:CASE_INSENSITIVE);
     }
 
     @Override

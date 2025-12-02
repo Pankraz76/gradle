@@ -16,11 +16,7 @@
 
 package org.gradle.internal.groovyloader;
 
-import org.gradle.api.GradleException;
-import org.gradle.internal.Cast;
-import org.jspecify.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.util.Objects.requireNonNull;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -28,6 +24,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Objects;
+import org.gradle.api.GradleException;
+import org.gradle.internal.Cast;
+import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClassInfoCleaningGroovySystemLoader implements GroovySystemLoader {
 
@@ -122,7 +123,7 @@ public class ClassInfoCleaningGroovySystemLoader implements GroovySystemLoader {
         if (classRefField != null) {
             return Cast.<WeakReference<Class<?>>>uncheckedNonnullCast(classRefField.get(classInfo)).get();
         } else {
-            return (Class<?>) Objects.requireNonNull(clazzField).get(classInfo);
+            return (Class<?>) requireNonNull(clazzField).get(classInfo);
         }
     }
 

@@ -16,35 +16,10 @@
 
 package org.gradle.internal.instrumentation.extensions.property;
 
-import com.squareup.javapoet.AnnotationSpec;
-import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
-import com.squareup.javapoet.TypeName;
-import com.squareup.javapoet.TypeSpec;
-import com.squareup.javapoet.TypeVariableName;
-import org.gradle.internal.instrumentation.extensions.property.PropertyUpgradeAnnotatedMethodReader.DeprecationSpec;
-import org.gradle.internal.instrumentation.extensions.property.PropertyUpgradeRequestExtra.BridgedMethodInfo;
-import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
-import org.gradle.internal.instrumentation.model.CallableInfo;
-import org.gradle.internal.instrumentation.model.CallableReturnTypeInfo;
-import org.gradle.internal.instrumentation.model.ImplementationInfo;
-import org.gradle.internal.instrumentation.processor.codegen.GradleLazyType;
-import org.gradle.internal.instrumentation.processor.codegen.GradleReferencedType;
-import org.gradle.internal.instrumentation.processor.codegen.HasFailures;
-import org.gradle.internal.instrumentation.processor.codegen.RequestGroupingInstrumentationClassSourceGenerator;
-import org.gradle.internal.instrumentation.processor.codegen.TypeUtils;
-
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.type.TypeVariable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 import static org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation.RemovedIn.GRADLE9;
 import static org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation.RemovedIn.UNSPECIFIED;
 import static org.gradle.internal.instrumentation.extensions.property.PropertyUpgradeRequestExtra.BridgedMethodInfo.BridgeType.INSTANCE_METHOD_BRIDGE;
@@ -57,6 +32,34 @@ import static org.gradle.internal.instrumentation.processor.codegen.GradleRefere
 import static org.gradle.internal.instrumentation.processor.codegen.GradleReferencedType.MAP_PROPERTY_MAP_VIEW;
 import static org.gradle.internal.instrumentation.processor.codegen.GradleReferencedType.SET_PROPERTY_SET_VIEW;
 import static org.gradle.internal.instrumentation.processor.codegen.TypeUtils.typeName;
+
+import com.squareup.javapoet.AnnotationSpec;
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.TypeVariableName;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.type.TypeVariable;
+import org.gradle.internal.instrumentation.extensions.property.PropertyUpgradeAnnotatedMethodReader.DeprecationSpec;
+import org.gradle.internal.instrumentation.extensions.property.PropertyUpgradeRequestExtra.BridgedMethodInfo;
+import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
+import org.gradle.internal.instrumentation.model.CallableInfo;
+import org.gradle.internal.instrumentation.model.CallableReturnTypeInfo;
+import org.gradle.internal.instrumentation.model.ImplementationInfo;
+import org.gradle.internal.instrumentation.processor.codegen.GradleLazyType;
+import org.gradle.internal.instrumentation.processor.codegen.GradleReferencedType;
+import org.gradle.internal.instrumentation.processor.codegen.HasFailures;
+import org.gradle.internal.instrumentation.processor.codegen.RequestGroupingInstrumentationClassSourceGenerator;
+import org.gradle.internal.instrumentation.processor.codegen.TypeUtils;
 
 public class PropertyUpgradeClassSourceGenerator extends RequestGroupingInstrumentationClassSourceGenerator {
 
@@ -79,7 +82,7 @@ public class PropertyUpgradeClassSourceGenerator extends RequestGroupingInstrume
 
         List<MethodSpec> methods = requestsClassGroup.stream()
             .map(request -> mapToMethodSpec(request, onProcessedRequest, onFailure))
-            .collect(Collectors.toList());
+            .collect(toList());
 
         return builder -> builder
             .addAnnotation(GENERATED_ANNOTATION.asClassName())
@@ -104,7 +107,7 @@ public class PropertyUpgradeClassSourceGenerator extends RequestGroupingInstrume
             } else {
                 List<ParameterSpec> parameters = callable.getParameters().stream()
                     .map(parameter -> ParameterSpec.builder(typeName(parameter.getParameterType()), parameter.getName()).build())
-                    .collect(Collectors.toList());
+                    .collect(toList());
                 spec = MethodSpec.methodBuilder(implementation.getName())
                     .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                     .addParameter(typeName(callable.getOwner().getType()), SELF_PARAMETER_NAME)
@@ -128,16 +131,16 @@ public class PropertyUpgradeClassSourceGenerator extends RequestGroupingInstrume
         ExecutableElement bridgedMethod = bridgedMethodInfo.getBridgedMethod();
         List<TypeVariableName> typeVariables = bridgedMethod.getTypeParameters().stream()
             .map(element -> TypeVariableName.get((TypeVariable) element.asType()))
-            .collect(Collectors.toList());
+            .collect(toList());
         List<ParameterSpec> parameters = bridgedMethod.getParameters().stream()
             .map(ParameterSpec::get)
-            .collect(Collectors.toList());
+            .collect(toList());
         List<TypeName> exceptions = bridgedMethod.getThrownTypes().stream()
             .map(TypeName::get)
-            .collect(Collectors.toList());
+            .collect(toList());
         String passedParameters = parameters.stream()
             .map(parameterSpec -> parameterSpec.name)
-            .collect(Collectors.joining(", "));
+            .collect(joining(", "));
 
         CodeBlock.Builder bodyBuilder = CodeBlock.builder();
         if (implementationExtra.getDeprecationSpec().isEnabled()) {
@@ -145,14 +148,14 @@ public class PropertyUpgradeClassSourceGenerator extends RequestGroupingInstrume
         }
 
         CodeBlock bridgeCall;
-        List<AnnotationSpec> annotationSpecs = Collections.emptyList();
+        List<AnnotationSpec> annotationSpecs = emptyList();
         if (bridgedMethodInfo.getBridgeType() == INSTANCE_METHOD_BRIDGE) {
             TypeName type = TypeName.get(bridgedMethod.getEnclosingElement().asType());
             if (type instanceof ParameterizedTypeName) {
                 // To simplify code generation we remove type parameters from the instance type, e.g.:
                 // if we have AbstractExecTask<T>, method parameter has type `AbstractExecTask` without generics
                 type = ((ParameterizedTypeName) type).rawType;
-                annotationSpecs = Collections.singletonList(SUPPRESS_UNCHECKED_AND_RAWTYPES);
+                annotationSpecs = singletonList(SUPPRESS_UNCHECKED_AND_RAWTYPES);
             }
             parameters.add(0, ParameterSpec.builder(type, SELF_PARAMETER_NAME).build());
             bridgeCall = TypeName.get(bridgedMethod.getReturnType()).equals(TypeName.VOID)
@@ -183,13 +186,13 @@ public class PropertyUpgradeClassSourceGenerator extends RequestGroupingInstrume
             case LIST_PROPERTY:
             case SET_PROPERTY:
             case MAP_PROPERTY:
-                return Collections.singletonList(SUPPRESS_UNCHECKED_AND_RAWTYPES);
+                return singletonList(SUPPRESS_UNCHECKED_AND_RAWTYPES);
             case PROVIDER:
                 return implementationExtra.getReturnType() instanceof ParameterizedTypeName
-                    ? Collections.singletonList(SUPPRESS_UNCHECKED_AND_RAWTYPES)
-                    : Collections.emptyList();
+                    ? singletonList(SUPPRESS_UNCHECKED_AND_RAWTYPES)
+                    : emptyList();
             default:
-                return Collections.emptyList();
+                return emptyList();
         }
     }
 

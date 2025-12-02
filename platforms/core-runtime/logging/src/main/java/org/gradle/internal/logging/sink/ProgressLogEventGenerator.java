@@ -16,6 +16,13 @@
 
 package org.gradle.internal.logging.sink;
 
+import static java.util.Collections.singletonList;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import org.gradle.api.logging.LogLevel;
 import org.gradle.internal.SystemProperties;
 import org.gradle.internal.logging.events.OutputEvent;
@@ -27,13 +34,6 @@ import org.gradle.internal.logging.events.RenderableOutputEvent;
 import org.gradle.internal.logging.events.StyledTextOutputEvent;
 import org.gradle.internal.operations.OperationIdentifier;
 import org.gradle.util.internal.GUtil;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import static org.gradle.internal.logging.text.StyledTextOutput.Style;
 
 /**
  * An {@code org.gradle.logging.internal.OutputEventListener} implementation which generates output events to log the
@@ -112,7 +112,7 @@ public class ProgressLogEventGenerator implements OutputEventListener {
         }
 
         private StyledTextOutputEvent plainTextEvent(long timestamp, String text) {
-            return new StyledTextOutputEvent(timestamp, category, LogLevel.LIFECYCLE, buildOperationIdentifier, Collections.singletonList(new StyledTextOutputEvent.Span(text)));
+            return new StyledTextOutputEvent(timestamp, category, LogLevel.LIFECYCLE, buildOperationIdentifier, singletonList(new StyledTextOutputEvent.Span(text)));
         }
 
         private StyledTextOutputEvent styledTextEvent(long timestamp, StyledTextOutputEvent.Span... spans) {

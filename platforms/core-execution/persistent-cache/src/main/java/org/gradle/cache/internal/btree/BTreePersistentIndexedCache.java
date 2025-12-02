@@ -15,15 +15,9 @@
  */
 package org.gradle.cache.internal.btree;
 
-import com.google.common.collect.ImmutableSet;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.io.StreamByteBuffer;
-import org.gradle.internal.serialize.Serializer;
-import org.gradle.internal.serialize.kryo.KryoBackedDecoder;
-import org.gradle.internal.serialize.kryo.KryoBackedEncoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.util.Collections.binarySearch;
 
+import com.google.common.collect.ImmutableSet;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -33,6 +27,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.io.StreamByteBuffer;
+import org.gradle.internal.serialize.Serializer;
+import org.gradle.internal.serialize.kryo.KryoBackedDecoder;
+import org.gradle.internal.serialize.kryo.KryoBackedEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // todo - stream serialised value to file
 // todo - handle hash collisions (properly, this time)
@@ -405,7 +406,7 @@ public class BTreePersistentIndexedCache<K, V> {
         }
 
         public void put(long hashCode, BlockPointer pos) throws Exception {
-            int index = Collections.binarySearch(entries, new IndexEntry(hashCode));
+            int index = binarySearch(entries, new IndexEntry(hashCode));
             IndexEntry entry;
             if (index >= 0) {
                 entry = entries.get(index);
@@ -475,7 +476,7 @@ public class BTreePersistentIndexedCache<K, V> {
         }
 
         private Lookup find(long hashCode) throws Exception {
-            int index = Collections.binarySearch(entries, new IndexEntry(hashCode));
+            int index = binarySearch(entries, new IndexEntry(hashCode));
             if (index >= 0) {
                 return new Lookup(this, entries.get(index));
             }

@@ -15,7 +15,8 @@
  */
 package org.gradle.internal;
 
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.singleton;
+import static java.util.Collections.unmodifiableSet;
 
 import java.io.File;
 import java.util.Collections;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.jspecify.annotations.Nullable;
 
 
 /**
@@ -61,10 +63,10 @@ public class SystemProperties {
         standardProperties.add("user.name");
         standardProperties.add("user.home");
         standardProperties.add("user.dir");
-        STANDARD_PROPERTIES = Collections.unmodifiableSet(standardProperties);
+        STANDARD_PROPERTIES = unmodifiableSet(standardProperties);
     }
 
-    private static final Set<String> IMPORTANT_NON_STANDARD_PROPERTIES = Collections.singleton("java.runtime.version");
+    private static final Set<String> IMPORTANT_NON_STANDARD_PROPERTIES = singleton("java.runtime.version");
 
     private static final SystemProperties INSTANCE = new SystemProperties();
 

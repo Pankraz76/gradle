@@ -15,14 +15,9 @@
  */
 package org.gradle.api.internal.classpath;
 
-import com.google.common.collect.ImmutableList;
-import org.gradle.api.specs.Spec;
-import org.gradle.internal.classpath.ClassPath;
-import org.gradle.internal.classpath.DefaultClassPath;
-import org.gradle.internal.installation.GradleInstallation;
-import org.gradle.util.internal.GUtil;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptySet;
 
+import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +36,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import org.gradle.api.specs.Spec;
+import org.gradle.internal.classpath.ClassPath;
+import org.gradle.internal.classpath.DefaultClassPath;
+import org.gradle.internal.installation.GradleInstallation;
+import org.gradle.util.internal.GUtil;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Determines the classpath for a module by looking for a '${module}-classpath.properties' resource with 'name' set to the name of the module.
@@ -107,7 +108,7 @@ public class DefaultModuleRegistry implements ModuleRegistry, GlobalCacheRootsPr
             }
             throw new UnknownModuleException(String.format("Cannot locate JAR for module '%s' in distribution directory '%s'.", name, gradleInstallation.getGradleHome()));
         }
-        return new DefaultModule(name, Collections.singleton(externalJar), Collections.emptySet());
+        return new DefaultModule(name, Collections.singleton(externalJar), emptySet());
     }
 
     @Override

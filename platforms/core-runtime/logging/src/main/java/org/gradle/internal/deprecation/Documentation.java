@@ -16,14 +16,15 @@
 
 package org.gradle.internal.deprecation;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import javax.annotation.CheckReturnValue;
 import org.gradle.api.internal.DocumentationRegistry;
 import org.gradle.api.problems.DocLink;
 import org.gradle.api.problems.internal.InternalDocLink;
 import org.jspecify.annotations.Nullable;
-
-import javax.annotation.CheckReturnValue;
 
 public abstract class Documentation implements InternalDocLink {
     public static final String RECOMMENDATION = "For more %s, please refer to %s in the Gradle documentation.";
@@ -105,7 +106,7 @@ public abstract class Documentation implements InternalDocLink {
         private final String topic;
 
         private UserGuide(String id, @Nullable String section) {
-            this.page = Preconditions.checkNotNull(id);
+            this.page = checkNotNull(id);
             this.section = section;
             this.topic = null;
         }
@@ -161,8 +162,8 @@ public abstract class Documentation implements InternalDocLink {
         private final String property;
 
         public DslReference(Class<?> targetClass, String property) {
-            this.targetClass = Preconditions.checkNotNull(targetClass);
-            this.property = Preconditions.checkNotNull(property);
+            this.targetClass = checkNotNull(targetClass);
+            this.property = checkNotNull(property);
         }
 
         @Override

@@ -16,12 +16,7 @@
 
 package org.gradle.internal.classpath;
 
-import org.gradle.api.specs.Spec;
-import org.gradle.internal.Cast;
-import org.gradle.internal.UncheckedException;
-import org.gradle.util.internal.CollectionUtils;
-import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptySet;
 
 import java.io.File;
 import java.io.Serializable;
@@ -37,6 +32,12 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.gradle.api.specs.Spec;
+import org.gradle.internal.Cast;
+import org.gradle.internal.UncheckedException;
+import org.gradle.util.internal.CollectionUtils;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An immutable classpath.
@@ -221,7 +222,7 @@ public class DefaultClassPath implements ClassPath, Serializable {
     }
 
     public static final class ImmutableUniqueList<T> extends AbstractList<T> implements Serializable {
-        private static final ImmutableUniqueList<Object> EMPTY = new ImmutableUniqueList<Object>(Collections.emptySet());
+        private static final ImmutableUniqueList<Object> EMPTY = new ImmutableUniqueList<Object>(emptySet());
 
         public static <T> ImmutableUniqueList<T> of(Collection<T> collection) {
             if (collection.isEmpty()) {

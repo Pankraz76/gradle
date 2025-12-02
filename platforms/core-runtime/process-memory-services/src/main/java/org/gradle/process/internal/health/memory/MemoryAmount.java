@@ -16,11 +16,12 @@
 
 package org.gradle.process.internal.health.memory;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import org.jspecify.annotations.Nullable;
-
 import java.util.Locale;
+import org.jspecify.annotations.Nullable;
 
 public class MemoryAmount {
     private static final long KILO_FACTOR = 1024;
@@ -97,7 +98,7 @@ public class MemoryAmount {
     private final String notation;
 
     private MemoryAmount(long bytes, String notation) {
-        Preconditions.checkArgument(bytes > 0, "bytes must be positive");
+        checkArgument(bytes > 0, "bytes must be positive");
         this.bytes = bytes;
         this.notation = notation;
     }

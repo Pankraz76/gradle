@@ -16,13 +16,14 @@
 
 package org.gradle.internal.problems.failure;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
-import org.gradle.api.problems.internal.InternalProblem;
-import org.gradle.internal.exceptions.CompilationFailedIndicator;
-
 import java.util.Collections;
 import java.util.List;
+import org.gradle.api.problems.internal.InternalProblem;
+import org.gradle.internal.exceptions.CompilationFailedIndicator;
 
 class DefaultFailure implements Failure {
 
@@ -118,7 +119,7 @@ class DefaultFailure implements Failure {
             frameRelevance,
             suppressed,
             causes,
-            Collections.emptyList()
+            emptyList()
         );
     }
 

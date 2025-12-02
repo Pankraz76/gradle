@@ -16,7 +16,16 @@
 
 package org.gradle.internal.problems.failure;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.newSetFromMap;
+
 import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 import org.gradle.api.GradleException;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.problems.internal.InternalProblem;
@@ -24,13 +33,6 @@ import org.gradle.api.problems.internal.ProblemLocator;
 import org.gradle.internal.exceptions.MultiCauseException;
 import org.gradle.util.internal.CollectionUtils;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Function;
 
 public class DefaultFailureFactory implements FailureFactory {
 
@@ -75,7 +77,7 @@ public class DefaultFailureFactory implements FailureFactory {
         private Job(StackTraceClassifier stackTraceClassifier, ProblemLocator problemLocator, @Nullable Set<Throwable> parentSeen) {
             this.stackTraceClassifier = stackTraceClassifier;
             this.problemLocator = problemLocator;
-            this.seen = Collections.newSetFromMap(new IdentityHashMap<Throwable, Boolean>());
+            this.seen = newSetFromMap(new IdentityHashMap<Throwable, Boolean>());
             if (parentSeen != null) {
                 this.seen.addAll(parentSeen);
             }
@@ -145,7 +147,7 @@ public class DefaultFailureFactory implements FailureFactory {
         private List<Failure> convertSuppressed(SuppressedAndCauses suppressedAndCauses) {
             Throwable[] suppressed = suppressedAndCauses.suppressed;
             if (suppressed == null) {
-                return Collections.emptyList();
+                return emptyList();
             }
 
             return CollectionUtils.collect(
@@ -158,7 +160,7 @@ public class DefaultFailureFactory implements FailureFactory {
         private List<Failure> convertCauses(SuppressedAndCauses suppressedAndCauses) {
             List<Throwable> causes = suppressedAndCauses.causes;
             if (causes.isEmpty()) {
-                return Collections.emptyList();
+                return emptyList();
             }
             return CollectionUtils.collect(
                 causes,

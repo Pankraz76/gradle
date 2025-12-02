@@ -16,6 +16,12 @@
 
 package org.gradle.internal.logging.sink;
 
+import static java.util.Collections.newSetFromMap;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import org.gradle.internal.logging.events.OutputEvent;
 import org.gradle.internal.logging.events.OutputEventListener;
 import org.gradle.internal.logging.events.ProgressCompleteEvent;
@@ -26,11 +32,6 @@ import org.gradle.internal.operations.BuildOperationCategory;
 import org.gradle.internal.operations.OperationIdentifier;
 import org.gradle.util.internal.GUtil;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * Transforms the stream of output events to discard progress operations that are not interesting to the logging subsystem. This reduces the amount of work that downstream consumers have to do to process the stream. For example, these discarded events don't need to be written to the daemon client.
  */
@@ -38,7 +39,7 @@ public class OutputEventTransformer implements OutputEventListener {
     // A map from progress operation id seen in event -> progress operation id that should be forwarded
     private final Map<OperationIdentifier, OperationIdentifier> effectiveProgressOperation = new ConcurrentHashMap<OperationIdentifier, OperationIdentifier>();
     // A set of progress operations that have been forwarded
-    private final Set<OperationIdentifier> forwarded = Collections.newSetFromMap(new ConcurrentHashMap<OperationIdentifier, Boolean>());
+    private final Set<OperationIdentifier> forwarded = newSetFromMap(new ConcurrentHashMap<OperationIdentifier, Boolean>());
 
     private final OutputEventListener listener;
     private final Object lock;

@@ -15,10 +15,10 @@
  */
 package org.gradle.docs.asciidoctor;
 
-import org.asciidoctor.ast.Document;
-import org.asciidoctor.extension.IncludeProcessor;
-import org.asciidoctor.extension.PreprocessorReader;
-import org.jspecify.annotations.Nullable;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.file.Files.readAllBytes;
+import static java.util.Collections.unmodifiableMap;
+import static java.util.stream.Collectors.joining;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,9 +34,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.nio.file.Files.readAllBytes;
+import org.asciidoctor.ast.Document;
+import org.asciidoctor.extension.IncludeProcessor;
+import org.asciidoctor.extension.PreprocessorReader;
+import org.jspecify.annotations.Nullable;
 
 public class SampleIncludeProcessor extends IncludeProcessor {
 
@@ -57,7 +58,7 @@ public class SampleIncludeProcessor extends IncludeProcessor {
         map.put("py", "python");
         map.put("sh", "bash");
         map.put("rb", "ruby");
-        return Collections.unmodifiableMap(map);
+        return unmodifiableMap(map);
     }
 
     @Override
@@ -144,7 +145,7 @@ public class SampleIncludeProcessor extends IncludeProcessor {
             // filter out lines matching the tagging regex
             String sampleWithoutTags = Pattern.compile("\\R").splitAsStream(source)
                 .filter(line -> !sampleTagRegex.matcher(line).matches())
-                .collect(Collectors.joining("\n"));
+                .collect(joining("\n"));
             result.append(sampleWithoutTags);
         } else {
             String activeTag = null;

@@ -16,16 +16,17 @@
 
 package org.gradle.internal.event;
 
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.dispatch.Dispatch;
-import org.gradle.internal.dispatch.MethodInvocation;
-import org.gradle.internal.operations.BuildOperationInvocationException;
+import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.dispatch.Dispatch;
+import org.gradle.internal.dispatch.MethodInvocation;
+import org.gradle.internal.operations.BuildOperationInvocationException;
 
 public abstract class AbstractBroadcastDispatch<T> implements Dispatch<MethodInvocation> {
     protected final Class<T> type;
@@ -43,13 +44,13 @@ public abstract class AbstractBroadcastDispatch<T> implements Dispatch<MethodInv
         try {
             handler.dispatch(invocation);
         } catch (UncheckedException e) {
-            throw new ListenerNotificationException(invocation, getErrorMessage(), Collections.singletonList(e.getCause()));
+            throw new ListenerNotificationException(invocation, getErrorMessage(), singletonList(e.getCause()));
         } catch (BuildOperationInvocationException e) {
-            throw new ListenerNotificationException(invocation, getErrorMessage(), Collections.singletonList(e.getCause()));
+            throw new ListenerNotificationException(invocation, getErrorMessage(), singletonList(e.getCause()));
         } catch (RuntimeException t) {
             throw t;
         } catch (Throwable t) {
-            throw new ListenerNotificationException(invocation, getErrorMessage(), Collections.singletonList(t));
+            throw new ListenerNotificationException(invocation, getErrorMessage(), singletonList(t));
         }
     }
 

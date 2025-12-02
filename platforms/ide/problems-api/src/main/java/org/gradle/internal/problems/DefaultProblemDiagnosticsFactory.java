@@ -16,9 +16,15 @@
 
 package org.gradle.internal.problems;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import javax.inject.Inject;
 import org.gradle.internal.buildtree.BuildModelParameters;
 import org.gradle.internal.code.UserCodeApplicationContext;
 import org.gradle.internal.code.UserCodeSource;
@@ -30,11 +36,6 @@ import org.gradle.problems.buildtree.ProblemDiagnosticsFactory;
 import org.gradle.problems.buildtree.ProblemStream;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class DefaultProblemDiagnosticsFactory implements ProblemDiagnosticsFactory {
 
@@ -114,7 +115,7 @@ public class DefaultProblemDiagnosticsFactory implements ProblemDiagnosticsFacto
             return NoOpProblemDiagnosticsFactory.EMPTY_DIAGNOSTICS;
         }
 
-        List<StackTraceElement> stackTrace = Collections.emptyList();
+        List<StackTraceElement> stackTrace = emptyList();
         Failure stackTracingFailure = null;
         Location location = null;
         if (throwable != null) {

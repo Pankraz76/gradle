@@ -16,19 +16,20 @@
 
 package org.gradle.process.internal.health.memory;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
-import org.gradle.internal.concurrent.ExecutorFactory;
-import org.gradle.internal.concurrent.Stoppable;
-import org.gradle.internal.concurrent.ManagedScheduledExecutor;
-import org.gradle.internal.event.ListenerManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import org.gradle.internal.concurrent.ExecutorFactory;
+import org.gradle.internal.concurrent.ManagedScheduledExecutor;
+import org.gradle.internal.concurrent.Stoppable;
+import org.gradle.internal.event.ListenerManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultMemoryManager implements MemoryManager, Stoppable {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMemoryManager.class);
@@ -56,8 +57,8 @@ public class DefaultMemoryManager implements MemoryManager, Stoppable {
 
     @VisibleForTesting
     DefaultMemoryManager(OsMemoryInfo osMemoryInfo, JvmMemoryInfo jvmMemoryInfo, ListenerManager listenerManager, ExecutorFactory executorFactory, double minFreeMemoryPercentage, boolean autoFree) {
-        Preconditions.checkArgument(minFreeMemoryPercentage >= 0, "Free memory percentage must be >= 0");
-        Preconditions.checkArgument(minFreeMemoryPercentage <= 1, "Free memory percentage must be <= 1");
+        checkArgument(minFreeMemoryPercentage >= 0, "Free memory percentage must be >= 0");
+        checkArgument(minFreeMemoryPercentage <= 1, "Free memory percentage must be <= 1");
         this.minFreeMemoryPercentage = minFreeMemoryPercentage;
         this.osMemoryInfo = osMemoryInfo;
         this.jvmMemoryInfo = jvmMemoryInfo;

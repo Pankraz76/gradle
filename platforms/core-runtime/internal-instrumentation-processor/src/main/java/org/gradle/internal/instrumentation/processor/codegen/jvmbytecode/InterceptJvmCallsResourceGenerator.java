@@ -16,11 +16,9 @@
 
 package org.gradle.internal.instrumentation.processor.codegen.jvmbytecode;
 
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.instrumentation.api.jvmbytecode.JvmBytecodeCallInterceptor;
-import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
-import org.gradle.internal.instrumentation.model.RequestExtra;
-import org.gradle.internal.instrumentation.processor.codegen.InstrumentationResourceGenerator;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,6 +27,11 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.stream.Collectors;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.instrumentation.api.jvmbytecode.JvmBytecodeCallInterceptor;
+import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
+import org.gradle.internal.instrumentation.model.RequestExtra;
+import org.gradle.internal.instrumentation.processor.codegen.InstrumentationResourceGenerator;
 
 /**
  * Generates META-INF/services resource with all factory classes for generated JvmBytecodeCallInterceptors so we can load them at runtime
@@ -38,7 +41,7 @@ public class InterceptJvmCallsResourceGenerator implements InstrumentationResour
     public Collection<CallInterceptionRequest> filterRequestsForResource(Collection<CallInterceptionRequest> interceptionRequests) {
         return interceptionRequests.stream()
             .filter(request -> request.getRequestExtras().getByType(RequestExtra.InterceptJvmCalls.class).isPresent())
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     @Override
@@ -62,8 +65,8 @@ public class InterceptJvmCallsResourceGenerator implements InstrumentationResour
                     .map(extra -> extra.get().getImplementationClassName() + "$Factory")
                     .distinct()
                     .sorted()
-                    .collect(Collectors.joining("\n"));
-                try (Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {
+                    .collect(joining("\n"));
+                try (Writer writer = new OutputStreamWriter(outputStream, UTF_8)) {
                     writer.write(types);
                 } catch (IOException e) {
                     throw UncheckedException.throwAsUncheckedException(e);

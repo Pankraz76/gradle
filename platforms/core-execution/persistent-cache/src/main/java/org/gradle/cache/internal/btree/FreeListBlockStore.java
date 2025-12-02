@@ -15,6 +15,8 @@
  */
 package org.gradle.cache.internal.btree;
 
+import static java.util.Collections.binarySearch;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.util.ArrayList;
@@ -158,7 +160,7 @@ public class FreeListBlockStore implements BlockStore {
             }
 
             FreeListEntry entry = new FreeListEntry(pos, size);
-            int index = Collections.binarySearch(entries, entry);
+            int index = binarySearch(entries, entry);
             if (index < 0) {
                 index = -index - 1;
             }
@@ -206,7 +208,7 @@ public class FreeListBlockStore implements BlockStore {
                 return;
             }
 
-            int index = Collections.binarySearch(entries, new FreeListEntry(null, requiredSize));
+            int index = binarySearch(entries, new FreeListEntry(null, requiredSize));
             if (index < 0) {
                 index = -index - 1;
             }

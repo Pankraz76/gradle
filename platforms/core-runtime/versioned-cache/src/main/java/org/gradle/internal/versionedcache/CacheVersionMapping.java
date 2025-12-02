@@ -16,21 +16,22 @@
 
 package org.gradle.internal.versionedcache;
 
-import com.google.common.base.Preconditions;
-import org.gradle.cache.internal.CacheVersion;
-import org.gradle.util.GradleVersion;
+import static com.google.common.base.Preconditions.checkArgument;
 
+import com.google.common.base.Preconditions;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Optional;
 import java.util.TreeMap;
+import org.gradle.cache.internal.CacheVersion;
+import org.gradle.util.GradleVersion;
 
 public class CacheVersionMapping {
 
     private final NavigableMap<GradleVersion, CacheVersion> versions;
 
     private CacheVersionMapping(NavigableMap<GradleVersion, CacheVersion> versions) {
-        Preconditions.checkArgument(!versions.isEmpty(), "versions must not be empty");
+        checkArgument(!versions.isEmpty(), "versions must not be empty");
         this.versions = new TreeMap<>(versions);
     }
 
@@ -70,12 +71,12 @@ public class CacheVersionMapping {
         public Builder changedTo(int cacheVersion, String minGradleVersion) {
             GradleVersion parsedGradleVersion = GradleVersion.version(minGradleVersion);
             if (!versions.isEmpty()) {
-                Preconditions.checkArgument(parsedGradleVersion.compareTo(versions.lastKey()) > 0,
+                checkArgument(parsedGradleVersion.compareTo(versions.lastKey()) > 0,
                     "Gradle version (%s) must be greater than all previous versions: %s", parsedGradleVersion.getVersion(), versions.keySet());
                 GradleVersion currentBaseVersion = GradleVersion.current().getBaseVersion();
-                Preconditions.checkArgument(parsedGradleVersion.getBaseVersion().compareTo(currentBaseVersion) <= 0,
+                checkArgument(parsedGradleVersion.getBaseVersion().compareTo(currentBaseVersion) <= 0,
                     "Base version of Gradle version (%s) must not be greater than base version of current Gradle version: %s", parsedGradleVersion.getVersion(), currentBaseVersion);
-                Preconditions.checkArgument(cacheVersion > versions.get(versions.lastKey()),
+                checkArgument(cacheVersion > versions.get(versions.lastKey()),
                     "cache version (%s) must be greater than all previous versions: %s", cacheVersion, versions.values());
             }
             versions.put(parsedGradleVersion, cacheVersion);
@@ -88,7 +89,7 @@ public class CacheVersionMapping {
          */
         public Builder changedToWithConflict(int cacheVersion, String minGradleVersion) {
             GradleVersion parsedGradleVersion = GradleVersion.version(minGradleVersion);
-            Preconditions.checkArgument(cacheVersion == 100 && minGradleVersion.equals("8.0-milestone-5"));
+            checkArgument(cacheVersion == 100 && minGradleVersion.equals("8.0-milestone-5"));
             versions.put(parsedGradleVersion, cacheVersion);
             return this;
         }

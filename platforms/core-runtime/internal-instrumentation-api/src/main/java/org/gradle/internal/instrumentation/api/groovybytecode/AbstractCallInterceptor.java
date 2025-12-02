@@ -16,10 +16,7 @@
 
 package org.gradle.internal.instrumentation.api.groovybytecode;
 
-import org.codehaus.groovy.vmplugin.v8.IndyInterface;
-import org.gradle.api.GradleException;
-import org.gradle.util.internal.CollectionUtils;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.unmodifiableSet;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -27,6 +24,10 @@ import java.lang.invoke.MethodType;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import org.codehaus.groovy.vmplugin.v8.IndyInterface;
+import org.gradle.api.GradleException;
+import org.gradle.util.internal.CollectionUtils;
+import org.jspecify.annotations.Nullable;
 
 public abstract class AbstractCallInterceptor implements CallInterceptor {
     private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
@@ -44,7 +45,7 @@ public abstract class AbstractCallInterceptor implements CallInterceptor {
     private final Set<InterceptScope> interceptScopes;
 
     protected AbstractCallInterceptor(InterceptScope... interceptScopes) {
-        this.interceptScopes = Collections.unmodifiableSet(CollectionUtils.addAll(new LinkedHashSet<>(), interceptScopes));
+        this.interceptScopes = unmodifiableSet(CollectionUtils.addAll(new LinkedHashSet<>(), interceptScopes));
     }
 
     @Override

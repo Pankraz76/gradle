@@ -16,9 +16,9 @@
 package org.gradle.api.internal.tasks.testing.filter;
 
 
-import org.apache.commons.lang3.StringUtils;
-import org.gradle.util.internal.TextUtil;
-import org.jspecify.annotations.NullMarked;
+import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.splitPreserveAllTokens;
+import static org.apache.commons.lang3.StringUtils.substringAfterLast;
 
 import java.nio.file.Path;
 import java.util.Collection;
@@ -28,9 +28,9 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
-
-import static org.apache.commons.lang3.StringUtils.splitPreserveAllTokens;
-import static org.apache.commons.lang3.StringUtils.substringAfterLast;
+import org.apache.commons.lang3.StringUtils;
+import org.gradle.util.internal.TextUtil;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * This class has two public APIs:
@@ -76,7 +76,7 @@ public class TestSelectionMatcher {
         return includedTests.stream()
             .filter(patternFilter)
             .map(patternCreator)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private static boolean isClassBasedPattern(String pattern) {

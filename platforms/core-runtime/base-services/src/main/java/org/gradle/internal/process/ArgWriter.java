@@ -16,6 +16,8 @@
 
 package org.gradle.internal.process;
 
+import static java.util.Collections.singletonList;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -100,7 +102,7 @@ public class ArgWriter implements ArgCollector {
         } catch (IOException e) {
             throw new UncheckedIOException(String.format("Could not write options file '%s'.", argsFile.getAbsolutePath()), e);
         }
-        return Collections.singletonList("@" + argsFile.getAbsolutePath());
+        return singletonList("@" + argsFile.getAbsolutePath());
     }
 
     /**

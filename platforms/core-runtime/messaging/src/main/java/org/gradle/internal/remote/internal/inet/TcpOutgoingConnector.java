@@ -16,13 +16,7 @@
 
 package org.gradle.internal.remote.internal.inet;
 
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.remote.Address;
-import org.gradle.internal.remote.internal.ConnectCompletion;
-import org.gradle.internal.remote.internal.ConnectException;
-import org.gradle.internal.remote.internal.OutgoingConnector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -35,9 +29,16 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.remote.Address;
+import org.gradle.internal.remote.internal.ConnectCompletion;
+import org.gradle.internal.remote.internal.ConnectException;
+import org.gradle.internal.remote.internal.OutgoingConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TcpOutgoingConnector implements OutgoingConnector {
-    static final byte[] CONNECTION_PREAMBLE = "Gradle Magic".getBytes(StandardCharsets.UTF_8);
+    static final byte[] CONNECTION_PREAMBLE = "Gradle Magic".getBytes(UTF_8);
     private static final Logger LOGGER = LoggerFactory.getLogger(TcpOutgoingConnector.class);
     private static final int CONNECT_TIMEOUT = 10000;
 

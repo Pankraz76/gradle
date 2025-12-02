@@ -15,19 +15,8 @@
  */
 package org.gradle.security.internal;
 
-import org.bouncycastle.openpgp.PGPObjectFactory;
-import org.bouncycastle.openpgp.PGPPublicKey;
-import org.bouncycastle.openpgp.PGPPublicKeyRing;
-import org.bouncycastle.openpgp.PGPUtil;
-import org.bouncycastle.openpgp.operator.KeyFingerPrintCalculator;
-import org.bouncycastle.openpgp.operator.bc.BcKeyFingerprintCalculator;
-import org.gradle.api.logging.Logger;
-import org.gradle.api.logging.Logging;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.time.ExponentialBackoff;
-import org.gradle.internal.resource.ExternalResourceName;
-import org.gradle.internal.resource.ExternalResourceReadResult;
-import org.gradle.internal.resource.ExternalResourceRepository;
+import static java.util.Collections.shuffle;
+import static org.gradle.security.internal.SecuritySupport.toLongIdHexString;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,8 +30,19 @@ import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-
-import static org.gradle.security.internal.SecuritySupport.toLongIdHexString;
+import org.bouncycastle.openpgp.PGPObjectFactory;
+import org.bouncycastle.openpgp.PGPPublicKey;
+import org.bouncycastle.openpgp.PGPPublicKeyRing;
+import org.bouncycastle.openpgp.PGPUtil;
+import org.bouncycastle.openpgp.operator.KeyFingerPrintCalculator;
+import org.bouncycastle.openpgp.operator.bc.BcKeyFingerprintCalculator;
+import org.gradle.api.logging.Logger;
+import org.gradle.api.logging.Logging;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.resource.ExternalResourceName;
+import org.gradle.internal.resource.ExternalResourceReadResult;
+import org.gradle.internal.resource.ExternalResourceRepository;
+import org.gradle.internal.time.ExponentialBackoff;
 
 public class PublicKeyDownloadService implements PublicKeyService {
     private final static Logger LOGGER = Logging.getLogger(PublicKeyDownloadService.class);
@@ -58,14 +58,14 @@ public class PublicKeyDownloadService implements PublicKeyService {
     @Override
     public void findByLongId(long keyId, PublicKeyResultBuilder builder) {
         List<URI> servers = new ArrayList<>(keyServers);
-        Collections.shuffle(servers);
+        shuffle(servers);
         tryDownloadKeyFromServer(toLongIdHexString(keyId), servers, builder, keyring -> findMatchingKey(keyId, keyring, builder));
     }
 
     @Override
     public void findByFingerprint(byte[] fingerprint, PublicKeyResultBuilder builder) {
         List<URI> servers = new ArrayList<>(keyServers);
-        Collections.shuffle(servers);
+        shuffle(servers);
         tryDownloadKeyFromServer(Fingerprint.wrap(fingerprint).toString(), servers, builder, keyring -> findMatchingKey(fingerprint, keyring, builder));
     }
 

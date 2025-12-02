@@ -16,8 +16,9 @@
 
 package org.gradle.internal.snapshot;
 
-import com.google.common.collect.ImmutableList;
+import static java.util.Comparator.comparing;
 
+import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -34,7 +35,7 @@ public class ChildMapFactory {
 
     public static <T> ChildMap<T> childMap(CaseSensitivity caseSensitivity, Collection<ChildMap.Entry<T>> entries) {
         List<ChildMap.Entry<T>> sortedEntries = new ArrayList<>(entries);
-        sortedEntries.sort(Comparator.comparing(ChildMap.Entry::getPath, PathUtil.getPathComparator(caseSensitivity)));
+        sortedEntries.sort(comparing(ChildMap.Entry::getPath, PathUtil.getPathComparator(caseSensitivity)));
         return childMapFromSorted(sortedEntries);
     }
 

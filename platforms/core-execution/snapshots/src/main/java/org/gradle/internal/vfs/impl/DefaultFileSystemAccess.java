@@ -16,10 +16,24 @@
 
 package org.gradle.internal.vfs.impl;
 
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
+import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
+import static java.util.function.Function.identity;
+import static org.gradle.internal.snapshot.impl.FileSystemSnapshotFilter.filterSnapshot;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Interner;
 import com.google.common.util.concurrent.Striped;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.locks.Lock;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import org.gradle.internal.file.FileMetadata;
 import org.gradle.internal.file.FileMetadataAccessor;
 import org.gradle.internal.file.FileType;
@@ -37,19 +51,6 @@ import org.gradle.internal.vfs.FileSystemAccess;
 import org.gradle.internal.vfs.VirtualFileSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.locks.Lock;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
-import static org.gradle.internal.snapshot.impl.FileSystemSnapshotFilter.filterSnapshot;
 
 public class DefaultFileSystemAccess implements FileSystemAccess, FileSystemDefaultExcludesListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultFileSystemAccess.class);
@@ -162,9 +163,9 @@ public class DefaultFileSystemAccess implements FileSystemAccess, FileSystemDefa
     private Optional<FileSystemLocationSnapshot> snapshot(String location, SnapshottingFilter filter) {
         ImmutableMap<String, FileSystemLocationSnapshot> alreadyStoredSnapshots = virtualFileSystem
             .findRootSnapshotsUnder(location)
-            .collect(ImmutableMap.toImmutableMap(
+            .collect(toImmutableMap(
                 FileSystemLocationSnapshot::getAbsolutePath,
-                Function.identity()
+                identity()
             ));
         FileSystemLocationSnapshot unfilteredSnapshot = alreadyStoredSnapshots.get(location);
         if (unfilteredSnapshot != null) {

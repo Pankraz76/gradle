@@ -15,20 +15,20 @@
  */
 package org.gradle.internal.classloader;
 
+import static java.lang.ClassLoader.getSystemClassLoader;
+import static java.util.Collections.singletonList;
+import static org.gradle.internal.classloader.ClasspathUtil.getClasspathForClass;
+import static org.gradle.internal.classloader.ClasspathUtil.getClasspathForResource;
+
+import java.io.File;
+import java.util.Collections;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.SAXParserFactory;
 import org.gradle.internal.classpath.ClassPath;
 import org.gradle.internal.service.CachingServiceLocator;
 import org.gradle.internal.service.DefaultServiceLocator;
 import org.gradle.internal.service.ServiceLocator;
-
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.SAXParserFactory;
-import java.io.File;
-import java.util.Collections;
-
-import static java.lang.ClassLoader.getSystemClassLoader;
-import static org.gradle.internal.classloader.ClasspathUtil.getClasspathForClass;
-import static org.gradle.internal.classloader.ClasspathUtil.getClasspathForResource;
 
 public class DefaultClassLoaderFactory implements ClassLoaderFactory {
     // This uses the system classloader and will not release any loaded classes for the life of the daemon process.
@@ -66,7 +66,7 @@ public class DefaultClassLoaderFactory implements ClassLoaderFactory {
 
     private ClassPath addToClassPath(ClassPath classPath, File file) {
         if (file != null) {
-            return classPath.plus(Collections.singletonList(file));
+            return classPath.plus(singletonList(file));
         }
         return classPath;
     }

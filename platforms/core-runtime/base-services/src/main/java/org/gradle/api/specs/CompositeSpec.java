@@ -15,8 +15,9 @@
  */
 package org.gradle.api.specs;
 
-import com.google.common.collect.Iterators;
+import static java.util.Collections.unmodifiableList;
 
+import com.google.common.collect.Iterators;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -75,7 +76,7 @@ public abstract class CompositeSpec<T> implements Spec<T> {
     }
 
     public List<Spec<? super T>> getSpecs() {
-        return Collections.unmodifiableList(Arrays.asList(specs));
+        return unmodifiableList(Arrays.asList(specs));
     }
 
     public boolean isEmpty() {

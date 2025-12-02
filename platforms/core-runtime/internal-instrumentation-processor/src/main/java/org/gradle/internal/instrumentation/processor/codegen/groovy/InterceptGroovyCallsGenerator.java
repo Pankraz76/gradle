@@ -16,6 +16,17 @@
 
 package org.gradle.internal.instrumentation.processor.codegen.groovy;
 
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static org.gradle.internal.instrumentation.model.CallableKindInfo.GROOVY_PROPERTY_GETTER;
+import static org.gradle.internal.instrumentation.model.CallableKindInfo.GROOVY_PROPERTY_SETTER;
+import static org.gradle.internal.instrumentation.processor.codegen.CodeGenUtils.SUPPRESS_UNCHECKED_AND_RAWTYPES;
+import static org.gradle.internal.instrumentation.processor.codegen.GradleReferencedType.GENERATED_ANNOTATION;
+import static org.gradle.internal.instrumentation.processor.codegen.JavadocUtils.callableKindForJavadoc;
+import static org.gradle.internal.instrumentation.processor.codegen.JavadocUtils.interceptedCallableLink;
+import static org.gradle.internal.instrumentation.processor.codegen.JavadocUtils.interceptorImplementationLink;
+
 import com.squareup.javapoet.ArrayTypeName;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
@@ -24,6 +35,14 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.WildcardTypeName;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import javax.lang.model.element.Modifier;
 import org.gradle.internal.instrumentation.api.groovybytecode.AbstractCallInterceptor;
 import org.gradle.internal.instrumentation.api.groovybytecode.FilterableCallInterceptor;
 import org.gradle.internal.instrumentation.api.groovybytecode.InterceptScope;
@@ -44,23 +63,6 @@ import org.gradle.internal.instrumentation.processor.codegen.groovy.CallIntercep
 import org.gradle.internal.instrumentation.processor.codegen.groovy.CallInterceptorSpecs.CallInterceptorSpec.NamedCallableInterceptorSpec;
 import org.gradle.internal.instrumentation.util.NameUtil;
 import org.objectweb.asm.Type;
-
-import javax.lang.model.element.Modifier;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.instrumentation.model.CallableKindInfo.GROOVY_PROPERTY_GETTER;
-import static org.gradle.internal.instrumentation.model.CallableKindInfo.GROOVY_PROPERTY_SETTER;
-import static org.gradle.internal.instrumentation.processor.codegen.CodeGenUtils.SUPPRESS_UNCHECKED_AND_RAWTYPES;
-import static org.gradle.internal.instrumentation.processor.codegen.GradleReferencedType.GENERATED_ANNOTATION;
-import static org.gradle.internal.instrumentation.processor.codegen.JavadocUtils.callableKindForJavadoc;
-import static org.gradle.internal.instrumentation.processor.codegen.JavadocUtils.interceptedCallableLink;
-import static org.gradle.internal.instrumentation.processor.codegen.JavadocUtils.interceptorImplementationLink;
 
 public class InterceptGroovyCallsGenerator extends RequestGroupingInstrumentationClassSourceGenerator {
     @Override
@@ -93,12 +95,12 @@ public class InterceptGroovyCallsGenerator extends RequestGroupingInstrumentatio
         callInterceptorSpecs.getNamedRequests().stream()
             .peek(spec -> validateRequests(spec.getRequests(), onFailure))
             .map(InterceptGroovyCallsGenerator::generateNamedCallableInterceptorClass)
-            .collect(Collectors.toCollection(() -> result));
+            .collect(toCollection(() -> result));
 
         callInterceptorSpecs.getConstructorRequests().stream()
             .peek(spec -> validateRequests(spec.getRequests(), onFailure))
             .map(InterceptGroovyCallsGenerator::generateConstructorInterceptorClass)
-            .collect(Collectors.toCollection(() -> result));
+            .collect(toCollection(() -> result));
 
         return result;
     }
@@ -191,7 +193,7 @@ public class InterceptGroovyCallsGenerator extends RequestGroupingInstrumentatio
         result.add(CodeBlock.of("Intercepts the following declarations:<ul>"));
         requests.stream().map(request ->
             CodeBlock.of("<li> $L $L\n     with $L", callableKindForJavadoc(request), interceptedCallableLink(request), interceptorImplementationLink(request))
-        ).collect(Collectors.toCollection(() -> result));
+        ).collect(toCollection(() -> result));
         result.add(CodeBlock.of("</ul>"));
         return result.stream().collect(CodeBlock.joining("\n\n"));
     }
@@ -216,7 +218,7 @@ public class InterceptGroovyCallsGenerator extends RequestGroupingInstrumentatio
             scopeExpressions.add(CodeBlock.of("$1T.methodsNamed($2S)", INTERCEPTED_SCOPE_CLASS, setterName));
         });
 
-        List<CallableKindInfo> callableKinds = requests.stream().map(it -> it.getInterceptedCallable().getKind()).distinct().collect(Collectors.toList());
+        List<CallableKindInfo> callableKinds = requests.stream().map(it -> it.getInterceptedCallable().getKind()).distinct().collect(toList());
         if (callableKinds.contains(CallableKindInfo.STATIC_METHOD) || callableKinds.contains(CallableKindInfo.INSTANCE_METHOD)) {
             scopeExpressions.add(CodeBlock.of("$T.methodsNamed($S)", INTERCEPTED_SCOPE_CLASS, name));
         }
@@ -245,7 +247,7 @@ public class InterceptGroovyCallsGenerator extends RequestGroupingInstrumentatio
         LinkedHashMap<Type, Type> propertyTypeByReceiverType = requests.stream()
             .filter(request -> request.getInterceptedCallable().getKind() == GROOVY_PROPERTY_GETTER || request.getInterceptedCallable().getKind() == CallableKindInfo.GROOVY_PROPERTY_SETTER)
             .collect(
-                Collectors.toMap(
+                toMap(
                     InterceptGroovyCallsGenerator::propertyReceiverType,
                     InterceptGroovyCallsGenerator::propertyValueType,
                     (a, b) -> {

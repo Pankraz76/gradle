@@ -16,12 +16,13 @@
 
 package org.gradle.internal;
 
-import org.jspecify.annotations.Nullable;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An invocation to be executed at most once, but one that can be deferred.
@@ -63,7 +64,7 @@ public interface Deferrable<T> {
 
             private U applyAndRequireNonNull(T value, Function<? super T, U> mapper) {
                 U result = mapper.apply(value);
-                return Objects.requireNonNull(result, "Mapping a Deferrable to null is not allowed");
+                return requireNonNull(result, "Mapping a Deferrable to null is not allowed");
             }
         };
     }
