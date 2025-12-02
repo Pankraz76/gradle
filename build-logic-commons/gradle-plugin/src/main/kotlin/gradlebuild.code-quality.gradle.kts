@@ -63,11 +63,11 @@ val errorproneExtension = project.extensions.create<ErrorProneProjectExtension>(
 
 project.plugins.withType<JavaBasePlugin> {
     project.extensions.getByName<SourceSetContainer>("sourceSets").configureEach {
-        val isMainSourceSet = this.name == "main"
+        val isMainSourceSet = name == "main"
         if (isMainSourceSet) {
             configureMainSourceSet(this, errorproneExtension, errorproneExtension.nullawayEnabled.map { if (it) ENABLED else DISABLED })
         }
-        val extension = this.extensions.create<ErrorProneSourceSetExtension>(
+        val extension = extensions.create<ErrorProneSourceSetExtension>(
             "errorprone",
             project.objects.property<Boolean>()
         ).apply {
@@ -75,7 +75,7 @@ project.plugins.withType<JavaBasePlugin> {
             // joint-compilation doesn't work with the Error Prone annotation processor
             enabled.convention(isMainSourceSet)
         }
-        project.tasks.named<JavaCompile>(this.compileJavaTaskName) {
+        project.tasks.named<JavaCompile>(compileJavaTaskName) {
             options.errorprone {
                 isEnabled = extension.enabled
                 nullaway {
@@ -84,9 +84,9 @@ project.plugins.withType<JavaBasePlugin> {
             }
         }
         // don't forget to update the version in distributions-dependencies/build.gradle.kts
-        addErrorProneDependency(this.annotationProcessorConfigurationName, extension, "com.google.errorprone:error_prone_core:2.42.0")
-        addErrorProneDependency(this.annotationProcessorConfigurationName, extension, "com.uber.nullaway:nullaway:0.12.10")
-        addErrorProneDependency(this.annotationProcessorConfigurationName, extension, "tech.picnic.error-prone-support:error-prone-contrib:0.26.0")
+        addErrorProneDependency(annotationProcessorConfigurationName, extension, "com.google.errorprone:error_prone_core:2.42.0")
+        addErrorProneDependency(annotationProcessorConfigurationName, extension, "com.uber.nullaway:nullaway:0.12.10")
+        addErrorProneDependency(annotationProcessorConfigurationName, extension, "tech.picnic.error-prone-support:error-prone-contrib:0.26.0")
     }
 }
 
