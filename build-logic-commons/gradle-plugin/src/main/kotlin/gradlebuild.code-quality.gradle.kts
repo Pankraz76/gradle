@@ -111,7 +111,7 @@ tasks.withType<JavaCompile>().configureEach {
             "UnnecessaryLambda",
         )
         excludedPaths.set(".*/groovy-dsl-plugins/output/adapter-src/.*")
-        if (!getenv().containsKey("CI") && getenv("IN_PLACE").toBoolean()) {
+        if (!getenv().containsKey("CI") && getenv("IN_PLACEe").toBoolean()) {
             errorproneArgs.addAll(
                 "-XepPatchLocation:IN_PLACE",
                 "-XepPatchChecks:" +
