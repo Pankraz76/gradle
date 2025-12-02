@@ -72,8 +72,8 @@ project.plugins.withType<JavaBasePlugin> {
             "errorprone",
             project.objects.property<Boolean>()
         ).apply {
-            // Enable it only for the main source set by default, as incremental Groovy.
-            enabled.convention(isMainSourceSet) // joint-compilation doesn't work with the Error Prone annotation processor
+            // Enable it only for the main source set by default, as incremental Groovy, joint-compilation doesn't work with the Error Prone annotation processor.
+            enabled.convention(isMainSourceSet)
         }
         project.tasks.named<JavaCompile>(compileJavaTaskName) {
             options.errorprone {
