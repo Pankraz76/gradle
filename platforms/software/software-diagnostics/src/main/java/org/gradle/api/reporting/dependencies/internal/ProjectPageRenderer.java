@@ -26,8 +26,6 @@ import org.gradle.util.GradleVersion;
 import java.io.Writer;
 import java.util.Date;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 /**
  * Renders a project-specific page for the HTML dependency report.
  */
@@ -57,10 +55,10 @@ public class ProjectPageRenderer extends ReportRenderer<ProjectNameAndPath, Html
                     meta().httpEquiv("x-ua-compatible").content("IE=edge");
                     link().rel("stylesheet").type("text/css").href(baseCssLink).end();
                     link().rel("stylesheet").type("text/css").href(cssLink).end();
-                    script().src(jqueryLink).charset(UTF_8.toString()).end();
-                    script().src(jtreeLink).charset(UTF_8.toString()).end();
-                    script().src(namingScheme.transform(project)).charset(UTF_8.toString()).end();
-                    script().src(scriptLink).charset(UTF_8.toString()).end();
+                    script().src(jqueryLink).charset("utf-8").end();
+                    script().src(jtreeLink).charset("utf-8").end();
+                    script().src(namingScheme.transform(project)).charset("utf-8").end();
+                    script().src(scriptLink).charset("utf-8").end();
                     title().text("Dependency reports").end();
                 end();
                 body();

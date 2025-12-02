@@ -20,7 +20,6 @@ import org.gradle.integtests.fixtures.ToBeFixedForConfigurationCache
 import org.gradle.internal.deprecation.Documentation
 import org.gradle.util.internal.GUtil
 import spock.lang.Issue
-import sun.nio.cs.UTF_8
 
 import static org.junit.Assert.fail
 
@@ -207,7 +206,7 @@ class HttpScriptPluginIntegrationSpec extends AbstractHttpScriptPluginIntegratio
         given:
         def scriptName = "script-offline.gradle"
         def scriptFile = file("script.gradle")
-        scriptFile.setText("""println 'loaded external script'""", UTF_8.toString())
+        scriptFile.setText("""println 'loaded external script'""", "UTF-8")
         server.expectGet('/' + scriptName, scriptFile)
 
         and:
@@ -245,7 +244,7 @@ class HttpScriptPluginIntegrationSpec extends AbstractHttpScriptPluginIntegratio
     def "can recover from failure to download cached #source resource by running with --offline"() {
         given:
         def scriptFile = file("script.gradle")
-        scriptFile.setText("""println 'loaded external script'""", UTF_8.toString())
+        scriptFile.setText("""println 'loaded external script'""", "UTF-8")
         server.expectGet('/' + scriptName, scriptFile)
 
         and:
@@ -291,7 +290,7 @@ class HttpScriptPluginIntegrationSpec extends AbstractHttpScriptPluginIntegratio
         given:
         def scriptName = "script-once.gradle"
         def scriptFile = file("script.gradle")
-        scriptFile.setText("""println 'loaded external script'""", UTF_8.toString())
+        scriptFile.setText("""println 'loaded external script'""", "UTF-8")
 
         and:
         settingsFile << """
@@ -326,7 +325,7 @@ class HttpScriptPluginIntegrationSpec extends AbstractHttpScriptPluginIntegratio
         given:
         def scriptName = "script-cached.gradle"
         def scriptFile = file("script.gradle")
-        scriptFile.setText("""println 'loaded external script 1'""", UTF_8.toString())
+        scriptFile.setText("""println 'loaded external script 1'""", "UTF-8")
         scriptFile.makeOlder()
 
         and:
@@ -340,7 +339,7 @@ class HttpScriptPluginIntegrationSpec extends AbstractHttpScriptPluginIntegratio
         output.contains('loaded external script 1')
 
         when:
-        scriptFile.setText("""println 'loaded external script 2'""", UTF_8.toString())
+        scriptFile.setText("""println 'loaded external script 2'""", "UTF-8")
         server.expectHead('/' + scriptName, scriptFile)
         server.expectGet('/' + scriptName, scriptFile)
 

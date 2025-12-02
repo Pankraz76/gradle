@@ -15,13 +15,12 @@
  */
 package org.gradle.internal.typeconversion;
 
-import static java.util.Collections.emptyList;
+import org.gradle.util.internal.GUtil;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Formatter;
-import org.gradle.util.internal.GUtil;
-import org.jspecify.annotations.Nullable;
 
 public class UnsupportedNotationException extends TypeConversionException {
     private final Object notation;
@@ -30,7 +29,7 @@ public class UnsupportedNotationException extends TypeConversionException {
     public UnsupportedNotationException(Object notation) {
         super("Could not convert " + notation);
         this.notation = notation;
-        this.candidates = emptyList();
+        this.candidates = Collections.emptyList();
     }
 
     public UnsupportedNotationException(Object notation, String failure, @Nullable String resolution, Collection<String> candidateTypes) {

@@ -45,7 +45,7 @@ public class IntersectionPatternSet extends PatternSet {
         return PatternSetAntBuilderDelegate.and(node, new Action<Object>() {
             @Override
             public void execute(Object andNode) {
-                IntersectionPatternSet.super.addToAntBuilder(andNode, null);
+                org.gradle.api.tasks.util.internal.IntersectionPatternSet.super.addToAntBuilder(andNode, null);
                 other.addToAntBuilder(andNode, null);
             }
         });
@@ -68,7 +68,7 @@ public class IntersectionPatternSet extends PatternSet {
             return false;
         }
 
-        IntersectionPatternSet that = (IntersectionPatternSet) o;
+        org.gradle.api.tasks.util.internal.IntersectionPatternSet that = (org.gradle.api.tasks.util.internal.IntersectionPatternSet) o;
 
         return other != null ? other.equals(that.other) : that.other == null;
     }

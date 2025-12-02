@@ -16,13 +16,6 @@
 
 package org.gradle.internal.watch.registry.impl;
 
-import static java.util.stream.Collectors.toList;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.concurrent.BlockingQueue;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import net.rubygrapefruit.platform.NativeIntegrationUnavailableException;
 import org.gradle.fileevents.FileWatchEvent;
 import org.gradle.fileevents.internal.LinuxFileEventFunctions;
@@ -31,6 +24,12 @@ import org.gradle.internal.file.FileType;
 import org.gradle.internal.snapshot.SnapshotHierarchy;
 import org.gradle.internal.watch.registry.FileWatcherProbeRegistry;
 import org.gradle.internal.watch.registry.FileWatcherUpdater;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.concurrent.BlockingQueue;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class LinuxFileWatcherRegistryFactory extends AbstractFileWatcherRegistryFactory<LinuxFileEventFunctions, LinuxFileWatcher> {
 
@@ -73,7 +72,7 @@ public class LinuxFileWatcherRegistryFactory extends AbstractFileWatcherRegistry
                             throw new IllegalArgumentException("Unexpected file type:" + snapshot.getType());
                     }
                 })
-                .collect(toList());
+                .collect(Collectors.toList());
             return watcher.stopWatchingMovedPaths(directoriesToCheck);
         }
     }

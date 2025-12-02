@@ -17,7 +17,5 @@
 /**
  * A package that contains utils for transforms for build logic classpath.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.internal.initialization.transform.utils;
-
-import org.jspecify.annotations.NullMarked;

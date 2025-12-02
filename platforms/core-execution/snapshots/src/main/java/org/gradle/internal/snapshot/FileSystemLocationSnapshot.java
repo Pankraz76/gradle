@@ -16,13 +16,12 @@
 
 package org.gradle.internal.snapshot;
 
-import static java.util.Comparator.comparing;
-
 import com.google.common.collect.Interner;
-import java.util.Comparator;
-import java.util.Optional;
 import org.gradle.internal.file.FileMetadata;
 import org.gradle.internal.hash.HashCode;
+
+import java.util.Comparator;
+import java.util.Optional;
 
 /**
  * A snapshot of a single location on the file system.
@@ -39,7 +38,7 @@ public interface FileSystemLocationSnapshot extends FileSystemSnapshot, FileSyst
      *
      * The comparison is stable with respect to case sensitivity, so the order of the children is stable across operating systems.
      */
-    Comparator<FileSystemLocationSnapshot> BY_NAME = comparing(FileSystemLocationSnapshot::getName, PathUtil::compareFileNames);
+    Comparator<FileSystemLocationSnapshot> BY_NAME = Comparator.comparing(FileSystemLocationSnapshot::getName, PathUtil::compareFileNames);
 
     /**
      * The file name.

@@ -22,7 +22,7 @@ import org.gradle.api.component.ConfigurationVariantDetails;
 import org.gradle.api.provider.Property;
 
 /**
- * Internal counterpart to {@link ConfigurationVariantDetails}.
+ * Internal counterpart to {@link org.gradle.api.component.ConfigurationVariantDetails}.
  */
 public interface ConfigurationVariantDetailsInternal extends ConfigurationVariantDetails {
 

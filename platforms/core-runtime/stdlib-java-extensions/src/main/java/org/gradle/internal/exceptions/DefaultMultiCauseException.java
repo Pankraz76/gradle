@@ -21,7 +21,6 @@ import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -71,7 +70,7 @@ public class DefaultMultiCauseException extends GradleException implements Multi
         hideCause = threadLocal();
     }
 
-    private void writeObject(ObjectOutputStream out) throws IOException {
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         // Ensure fields are initialized before serialization
         String ignored = getMessage();
         out.defaultWriteObject();

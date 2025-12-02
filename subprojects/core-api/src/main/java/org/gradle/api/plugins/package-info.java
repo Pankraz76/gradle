@@ -17,7 +17,5 @@
 /**
  * The standard {@link org.gradle.api.Plugin} implementations.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.plugins;
-
-import org.jspecify.annotations.NullMarked;

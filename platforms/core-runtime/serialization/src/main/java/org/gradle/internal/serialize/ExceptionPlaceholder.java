@@ -16,8 +16,13 @@
 
 package org.gradle.internal.serialize;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
+import org.gradle.api.JavaVersion;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.exceptions.Contextual;
+import org.gradle.internal.exceptions.DefaultMultiCauseException;
+import org.gradle.internal.io.StreamByteBuffer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -31,13 +36,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
-import org.gradle.api.JavaVersion;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.exceptions.Contextual;
-import org.gradle.internal.exceptions.DefaultMultiCauseException;
-import org.gradle.internal.io.StreamByteBuffer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 class ExceptionPlaceholder implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -65,7 +63,7 @@ class ExceptionPlaceholder implements Serializable {
         } catch (Throwable ignored) {
 // TODO:ADAM - switch the logging back on. Need to make sending messages from daemon to client async wrt log event generation
 //                LOGGER.debug("Ignoring failure to extract throwable stack trace.", ignored);
-            stackTrace = emptyList();
+            stackTrace = Collections.emptyList();
         }
 
         try {
@@ -88,8 +86,8 @@ class ExceptionPlaceholder implements Serializable {
         final List<? extends Throwable> suppressed;
         if (hasCycle) {
             // Ignore causes and suppressed in case of cycle
-            causes = emptyList();
-            suppressed = emptyList();
+            causes = Collections.emptyList();
+            suppressed = Collections.emptyList();
         } else {
             causes = ExceptionSerializationUtil.extractCauses(throwable);
             suppressed = extractSuppressed(throwable);
@@ -154,16 +152,16 @@ class ExceptionPlaceholder implements Serializable {
         if (isJava7()) {
             return Arrays.asList(throwable.getSuppressed());
         }
-        return emptyList();
+        return Collections.emptyList();
     }
 
     @SuppressWarnings("MixedMutabilityReturnType")
     // TODO Use only immutable collections
     private static List<ExceptionPlaceholder> convertToExceptionPlaceholderList(List<? extends Throwable> throwables, Function<OutputStream, ExceptionReplacingObjectOutputStream> objectOutputStreamCreator, Set<Throwable> dejaVu) {
         if (throwables.isEmpty()) {
-            return emptyList();
+            return Collections.emptyList();
         } else if (throwables.size() == 1) {
-            return singletonList(new ExceptionPlaceholder(throwables.get(0), objectOutputStreamCreator, dejaVu));
+            return Collections.singletonList(new ExceptionPlaceholder(throwables.get(0), objectOutputStreamCreator, dejaVu));
         } else {
             List<ExceptionPlaceholder> placeholders = new ArrayList<ExceptionPlaceholder>(throwables.size());
             for (Throwable cause : throwables) {
@@ -265,9 +263,9 @@ class ExceptionPlaceholder implements Serializable {
     // TODO Use only immutable collections
     private static List<Throwable> recreateExceptions(List<ExceptionPlaceholder> exceptions, Function<String, Class<?>> classNameTransformer, Function<InputStream, ExceptionReplacingObjectInputStream> objectInputStreamCreator) throws IOException {
         if (exceptions.isEmpty()) {
-            return emptyList();
+            return Collections.emptyList();
         } else if (exceptions.size() == 1) {
-            return singletonList(exceptions.get(0).read(classNameTransformer, objectInputStreamCreator));
+            return Collections.singletonList(exceptions.get(0).read(classNameTransformer, objectInputStreamCreator));
         }
         List<Throwable> result = new ArrayList<Throwable>();
         for (ExceptionPlaceholder placeholder : exceptions) {

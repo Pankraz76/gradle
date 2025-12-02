@@ -16,19 +16,7 @@
 
 package org.gradle.security.internal;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
-
 import com.google.common.collect.ImmutableList;
-import java.lang.reflect.Constructor;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import org.bouncycastle.bcpg.PublicKeyPacket;
 import org.bouncycastle.bcpg.TrustPacket;
 import org.bouncycastle.bcpg.UserIDPacket;
@@ -36,6 +24,14 @@ import org.bouncycastle.openpgp.PGPPublicKey;
 import org.bouncycastle.openpgp.PGPPublicKeyRing;
 import org.bouncycastle.openpgp.PGPSignature;
 import org.bouncycastle.openpgp.operator.KeyFingerPrintCalculator;
+
+import java.lang.reflect.Constructor;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * A utility class to strip unnecessary information from a keyring
@@ -58,7 +54,7 @@ public class KeyringStripper {
         List<PGPPublicKey> strippedKeys = StreamSupport
             .stream(keyring.spliterator(), false)
             .map(key -> stripKey(key, fingerprintCalculator))
-            .collect(toList());
+            .collect(Collectors.toList());
 
         return new PGPPublicKeyRing(strippedKeys);
     }
@@ -71,25 +67,25 @@ public class KeyringStripper {
                 Optional<String> id = PGPUtils.getUserIDs(key)
                     .stream()
                     .filter(KeyringStripper::looksLikeEmail)
-                    .min(comparing(String::length));
+                    .min(Comparator.comparing(String::length));
 
                 List<UserIDPacket> ids;
                 List<List<PGPSignature>> idSignatures;
                 if (id.isPresent()) {
-                    ids = singletonList(new UserIDPacket(id.get()));
-                    idSignatures = singletonList(emptyList());
+                    ids = Collections.singletonList(new UserIDPacket(id.get()));
+                    idSignatures = Collections.singletonList(Collections.emptyList());
                 } else {
-                    ids = emptyList();
-                    idSignatures = emptyList();
+                    ids = Collections.emptyList();
+                    idSignatures = Collections.emptyList();
                 }
 
                 // unfortunately, the PGPPublicKey constructor is package private, so we need to use reflection
                 stripped = KEY_CONSTRUCTOR.newInstance(
                     key.getPublicKeyPacket(),
                     null,
-                    emptyList(),
+                    Collections.emptyList(),
                     ids,
-                    singletonList(null),
+                    Collections.singletonList(null),
                     idSignatures,
                     fingerprintCalculator
                 );

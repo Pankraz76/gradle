@@ -17,7 +17,6 @@ package org.gradle.buildinit.plugins.internal
 
 import org.gradle.api.internal.DocumentationRegistry
 import org.gradle.test.fixtures.file.TestFile
-import sun.nio.cs.UTF_8
 
 import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitDsl.KOTLIN
 
@@ -453,7 +452,7 @@ other = extendsFrom(things.nested["element2"].outputDir)
             .propertyAssignment(null, "cathedral", 42)
             .methodInvocation(null, "cathedral")
             .taskPropertyAssignment("Disable tests", "test", "Test", "enabled", false)
-            .taskPropertyAssignment("Encoding", "Test", "encoding", UTF_8)
+            .taskPropertyAssignment("Encoding", "Test", "encoding", "UTF-8")
 
         when:
         builder.create(target).generate()

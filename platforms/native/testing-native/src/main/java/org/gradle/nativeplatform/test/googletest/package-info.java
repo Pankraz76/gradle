@@ -17,7 +17,5 @@
 /**
  * API classes for Google Test integration.
  */
-@Incubating
+@org.gradle.api.Incubating
 package org.gradle.nativeplatform.test.googletest;
-
-import org.gradle.api.Incubating;

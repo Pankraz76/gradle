@@ -24,10 +24,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Declares the tasks to build a custom {@link BinarySpec} binary.
+ * Declares the tasks to build a custom {@link org.gradle.platform.base.BinarySpec} binary.
  *
  * The following example demonstrates how to register multiple tasks for custom binary using a plugin with a
- * {@link BinaryTasks} annotation.
+ * {@link org.gradle.platform.base.BinaryTasks} annotation.
  *
  * <pre class='autoTested'>
  * {@literal @}Managed interface SampleComponent extends ComponentSpec {}

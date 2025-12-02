@@ -87,7 +87,7 @@ public interface Dependencies {
      * @param projectPath an absolute or relative path (from the current project) to a project
      * @return a {@link ProjectDependency} for the given path
      *
-     * @see Project#project(String)
+     * @see org.gradle.api.Project#project(String)
      */
     @Restricted
     default ProjectDependency project(String projectPath) {

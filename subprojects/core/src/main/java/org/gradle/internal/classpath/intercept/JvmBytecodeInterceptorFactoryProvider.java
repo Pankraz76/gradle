@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 
 /**
  * Provides a set of implementation classes for call interception in JVM bytecode, specified by the full class name as in {@link Class#getName()}.
- * The referenced classes should implement {@link JvmBytecodeCallInterceptor}.
+ * The referenced classes should implement {@link org.gradle.internal.instrumentation.api.jvmbytecode.JvmBytecodeCallInterceptor}.
  */
 @NullMarked
 public interface JvmBytecodeInterceptorFactoryProvider {

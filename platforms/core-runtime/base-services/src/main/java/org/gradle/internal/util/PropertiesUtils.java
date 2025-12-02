@@ -16,10 +16,13 @@
 
 package org.gradle.internal.util;
 
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.gradle.internal.IoActions;
+import org.gradle.internal.SystemProperties;
+import org.jspecify.annotations.Nullable;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,15 +34,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.gradle.internal.IoActions;
-import org.gradle.internal.SystemProperties;
-import org.jspecify.annotations.Nullable;
 
 public class PropertiesUtils {
 
     /**
-     * Writes {@link Properties} in a way that the results can be expected to be reproducible.
+     * Writes {@link java.util.Properties} in a way that the results can be expected to be reproducible.
      *
      * Uses defaults for the arguments of {@link PropertiesUtils#store(Properties, File, String, Charset, String)}:
      * <ul>
@@ -53,7 +52,7 @@ public class PropertiesUtils {
     }
 
     /**
-     * Writes {@link Properties} in a way that the results can be expected to be reproducible.
+     * Writes {@link java.util.Properties} in a way that the results can be expected to be reproducible.
      *
      * Uses defaults for the arguments of {@link PropertiesUtils#store(Properties, File, String, Charset, String)}:
      * <ul>
@@ -63,11 +62,11 @@ public class PropertiesUtils {
      * </ul>
      */
     public static void store(Properties properties, File propertyFile, @Nullable String comment) throws IOException {
-        store(properties, propertyFile, comment, ISO_8859_1, "\n");
+        store(properties, propertyFile, comment, StandardCharsets.ISO_8859_1, "\n");
     }
 
     /**
-     * Writes {@link Properties} in a way that the results can be expected to be reproducible.
+     * Writes {@link java.util.Properties} in a way that the results can be expected to be reproducible.
      *
      * See {@link #store(Properties, OutputStream, String, Charset, String)} for more details.
      */
@@ -81,24 +80,24 @@ public class PropertiesUtils {
     }
 
     /**
-     * Writes {@link Properties} in a way that the results can be expected to be reproducible.
+     * Writes {@link java.util.Properties} in a way that the results can be expected to be reproducible.
      *
-     * <p>There are a number of differences compared to {@link Properties#store(java.io.Writer, String)}:</p>
+     * <p>There are a number of differences compared to {@link java.util.Properties#store(java.io.Writer, String)}:</p>
      * <ul>
      *     <li>no timestamp comment is generated at the beginning of the file</li>
      *     <li>the lines in the resulting files are separated by a pre-set separator instead of the system default line separator</li>
      *     <li>the properties are sorted alphabetically</li>
      * </ul>
      *
-     * <p>Like with {@link Properties#store(OutputStream, String)}, Unicode characters are
+     * <p>Like with {@link java.util.Properties#store(java.io.OutputStream, String)}, Unicode characters are
      * escaped when using the default Latin-1 (ISO-8559-1) encoding.</p>
      */
     public static void store(Properties properties, OutputStream outputStream, @Nullable String comment, Charset charset, String lineSeparator) throws IOException {
         String rawContents;
-        if (charset.equals(ISO_8859_1)) {
+        if (charset.equals(StandardCharsets.ISO_8859_1)) {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             properties.store(out, comment);
-            rawContents = new String(out.toByteArray(), ISO_8859_1);
+            rawContents = new String(out.toByteArray(), StandardCharsets.ISO_8859_1);
         } else {
             StringWriter out = new StringWriter();
             properties.store(out, comment);

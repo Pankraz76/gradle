@@ -23,10 +23,10 @@ public interface FileMetadataAccessor {
      * Gets the file metadata of a {@link File}.
      * <p>
      * If the type of the file cannot be determined, or is
-     * neither {@link FileType#RegularFile}
-     * nor {@link FileType#Directory},
+     * neither {@link org.gradle.internal.file.FileType#RegularFile}
+     * nor {@link org.gradle.internal.file.FileType#Directory},
      * then the file type of the file metadata is of type
-     * {@link FileType#Missing}.
+     * {@link org.gradle.internal.file.FileType#Missing}.
      * <p>
      * Such cases include:
      * <ul>

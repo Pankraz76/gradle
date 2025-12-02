@@ -107,7 +107,6 @@ tasks.withType<JavaCompile>().configureEach {
             "SelfAssignment",
             "StringCharset",
             "StringJoin",
-            "UnnecessarilyFullyQualified",
             "UnnecessaryLambda",
         )
         excludedPaths.set(".*/groovy-dsl-plugins/output/adapter-src/.*")

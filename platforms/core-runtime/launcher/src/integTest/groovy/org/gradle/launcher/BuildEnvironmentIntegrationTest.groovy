@@ -23,7 +23,6 @@ import org.gradle.test.precondition.Requires
 import org.gradle.test.preconditions.IntegTestPreconditions
 import spock.lang.Issue
 import spock.lang.Unroll
-import sun.nio.cs.UTF_8
 
 import java.nio.charset.Charset
 
@@ -43,7 +42,7 @@ task check {
         assert Locale.getDefault().toString() == "${locale}"
     }
 }
-""", UTF_8.toString())
+""", "UTF-8")
 
         expect:
         succeeds 'check'
@@ -66,7 +65,7 @@ task check {
         assert Locale.getDefault().toString() == "${nonDefaultLocale}"
     }
 }
-""", UTF_8.toString())
+""", "UTF-8")
 
         expect:
         succeeds 'check'
@@ -85,7 +84,7 @@ task check {
         assert Locale.getDefault().toString() == "${nonDefaultLocale}"
     }
 }
-""", UTF_8.toString())
+""", "UTF-8")
 
         expect:
         succeeds 'check'
@@ -105,7 +104,7 @@ task check {
         assert ${Charset.class.name}.defaultCharset().name() == "${nonDefaultEncoding}"
     }
 }
-""", UTF_8.toString())
+""", "UTF-8")
 
         expect:
         succeeds 'check'
@@ -150,7 +149,7 @@ task check {
         assert ${Charset.class.name}.defaultCharset().name() == "${nonDefaultEncoding}"
     }
 }
-""", UTF_8.toString())
+""", "UTF-8")
 
         expect:
         succeeds 'check'

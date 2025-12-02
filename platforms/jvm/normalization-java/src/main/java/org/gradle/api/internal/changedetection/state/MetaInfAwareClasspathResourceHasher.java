@@ -16,10 +16,14 @@
 
 package org.gradle.api.internal.changedetection.state;
 
-import static java.lang.String.join;
-import static java.util.Map.Entry.comparingByKey;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
+import org.gradle.internal.fingerprint.hashing.RegularFileSnapshotContext;
+import org.gradle.internal.fingerprint.hashing.ResourceHasher;
+import org.gradle.internal.fingerprint.hashing.ZipEntryContext;
+import org.gradle.internal.hash.HashCode;
+import org.gradle.internal.hash.Hasher;
+import org.gradle.internal.hash.Hashing;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,14 +37,8 @@ import java.util.TreeSet;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.stream.Collectors;
-import org.gradle.internal.fingerprint.hashing.RegularFileSnapshotContext;
-import org.gradle.internal.fingerprint.hashing.ResourceHasher;
-import org.gradle.internal.fingerprint.hashing.ZipEntryContext;
-import org.gradle.internal.hash.HashCode;
-import org.gradle.internal.hash.Hasher;
-import org.gradle.internal.hash.Hashing;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static java.lang.String.join;
 
 public class MetaInfAwareClasspathResourceHasher extends FallbackHandlingResourceHasher {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetaInfAwareClasspathResourceHasher.class);
@@ -116,7 +114,7 @@ public class MetaInfAwareClasspathResourceHasher extends FallbackHandlingResourc
         Map<String, String> entries = attributes
             .entrySet()
             .stream()
-            .collect(toMap(
+            .collect(Collectors.toMap(
                 entry -> entry.getKey().toString().toLowerCase(Locale.ROOT),
                 entry -> (String) entry.getValue()
             ));
@@ -124,8 +122,8 @@ public class MetaInfAwareClasspathResourceHasher extends FallbackHandlingResourc
             entrySet()
             .stream()
             .filter(entry -> !attributeResourceFilter.shouldBeIgnored(entry.getKey()))
-            .sorted(comparingByKey())
-            .collect(toList());
+            .sorted(Map.Entry.comparingByKey())
+            .collect(Collectors.toList());
 
         // Short-circuiting when there's no matching entries allows empty manifest sections to be ignored
         // that allows an manifest without those sections to hash identically to the one with effectively empty sections

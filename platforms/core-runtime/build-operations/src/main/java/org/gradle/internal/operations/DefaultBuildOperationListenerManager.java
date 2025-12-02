@@ -16,9 +16,8 @@
 
 package org.gradle.internal.operations;
 
-import static com.google.common.collect.ImmutableList.toImmutableList;
-
 import com.google.common.collect.ImmutableList;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -76,7 +75,7 @@ public class DefaultBuildOperationListenerManager implements BuildOperationListe
         listeners.updateAndGet(current ->
             current.stream()
                 .filter(l -> !l.delegate.equals(listener))
-                .collect(toImmutableList()));
+                .collect(ImmutableList.toImmutableList()));
     }
 
     @Override

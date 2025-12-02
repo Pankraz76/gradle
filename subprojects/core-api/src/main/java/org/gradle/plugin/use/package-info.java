@@ -17,7 +17,5 @@
 /**
  * Classes for managing plugin resolution and use.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.plugin.use;
-
-import org.jspecify.annotations.NullMarked;

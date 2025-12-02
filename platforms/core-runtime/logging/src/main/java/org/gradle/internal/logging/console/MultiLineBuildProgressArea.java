@@ -16,8 +16,6 @@
 
 package org.gradle.internal.logging.console;
 
-import static java.util.Collections.unmodifiableList;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +46,7 @@ public class MultiLineBuildProgressArea implements BuildProgressArea {
 
     @Override
     public List<StyledLabel> getBuildProgressLabels() {
-        return unmodifiableList(buildProgressLabels);
+        return Collections.unmodifiableList(buildProgressLabels);
     }
 
     @Override

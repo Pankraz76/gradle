@@ -18,13 +18,11 @@ package org.gradle.api;
 
 import groovy.lang.Closure;
 import groovy.lang.MissingPropertyException;
-import org.gradle.api.internal.AbstractTask;
 import org.gradle.api.internal.TaskInputsInternal;
 import org.gradle.api.internal.TaskOutputsInternal;
 import org.gradle.api.internal.tasks.TaskDependencyInternal;
 import org.gradle.api.internal.tasks.TaskStateInternal;
 import org.gradle.api.logging.Logger;
-import org.gradle.api.logging.LoggingManager;
 import org.gradle.api.plugins.ExtensionContainer;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
@@ -48,7 +46,7 @@ import java.util.Set;
 @NoConventionMapping
 @SuppressWarnings("deprecation")
 @DisableCachingByDefault(because = "Gradle would require more information to cache this task")
-public abstract class DefaultTask extends AbstractTask implements Task {
+public abstract class DefaultTask extends org.gradle.api.internal.AbstractTask implements Task {
     // NOTE: These methods are duplicated here because Eclipse treats methods implemented in the deprecated
     // AbstractTask as also deprecated in DefaultTask.
 
@@ -295,7 +293,7 @@ public abstract class DefaultTask extends AbstractTask implements Task {
     }
 
     @Override
-    public LoggingManager getLogging() {
+    public org.gradle.api.logging.LoggingManager getLogging() {
         return super.getLogging();
     }
 

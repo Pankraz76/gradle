@@ -16,12 +16,11 @@
 
 package org.gradle.internal.versionedcache;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.google.common.base.Preconditions;
-import java.io.File;
 import org.gradle.util.GradleVersion;
 import org.jspecify.annotations.NonNull;
+
+import java.io.File;
 
 public class VersionSpecificCacheDirectory implements Comparable<VersionSpecificCacheDirectory> {
 
@@ -29,8 +28,8 @@ public class VersionSpecificCacheDirectory implements Comparable<VersionSpecific
     private final GradleVersion version;
 
     public VersionSpecificCacheDirectory(File dir, GradleVersion version) {
-        this.dir = checkNotNull(dir, "dir must not be null");
-        this.version = checkNotNull(version, "version must not be null");
+        this.dir = Preconditions.checkNotNull(dir, "dir must not be null");
+        this.version = Preconditions.checkNotNull(version, "version must not be null");
     }
 
     public File getDir() {

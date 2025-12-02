@@ -17,7 +17,5 @@
 /**
  * Classes that allow C++ tool chains to be configured.
  */
-@Incubating
+@org.gradle.api.Incubating
 package org.gradle.nativeplatform.toolchain;
-
-import org.gradle.api.Incubating;

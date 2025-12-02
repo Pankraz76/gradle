@@ -17,7 +17,5 @@
 /**
  * Renderers responsible for generating Artifact Transform reports from gathered models.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.tasks.diagnostics.internal.artifact.transforms.renderer;
-
-import org.jspecify.annotations.NullMarked;

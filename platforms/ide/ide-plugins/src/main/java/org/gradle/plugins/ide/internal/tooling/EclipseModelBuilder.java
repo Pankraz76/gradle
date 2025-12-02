@@ -45,7 +45,6 @@ import org.gradle.plugins.ide.eclipse.model.Container;
 import org.gradle.plugins.ide.eclipse.model.EclipseClasspath;
 import org.gradle.plugins.ide.eclipse.model.EclipseJdt;
 import org.gradle.plugins.ide.eclipse.model.EclipseModel;
-import org.gradle.plugins.ide.eclipse.model.EclipseProject;
 import org.gradle.plugins.ide.eclipse.model.Library;
 import org.gradle.plugins.ide.eclipse.model.Link;
 import org.gradle.plugins.ide.eclipse.model.Output;
@@ -195,7 +194,7 @@ public class EclipseModelBuilder implements ParameterizedToolingModelBuilder<Ecl
         }
 
         EclipseModel eclipseModel = projectState.getMutableModel().getExtensions().getByType(EclipseModel.class);
-        EclipseProject internalProject = eclipseModel.getProject();
+        org.gradle.plugins.ide.eclipse.model.EclipseProject internalProject = eclipseModel.getProject();
 
         String name = internalProject.getName();
         String path = projectState.getIdentity().getProjectPath().asString();

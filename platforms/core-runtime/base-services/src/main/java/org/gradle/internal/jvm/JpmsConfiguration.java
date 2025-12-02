@@ -16,10 +16,6 @@
 
 package org.gradle.internal.jvm;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static java.util.Collections.unmodifiableList;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -65,7 +61,7 @@ public class JpmsConfiguration {
     private static final List<String> GRADLE_DAEMON_JPMS_ARGS_24;
 
     static {
-        GROOVY_JPMS_ARGS_9 = unmodifiableList(Arrays.asList(
+        GROOVY_JPMS_ARGS_9 = Collections.unmodifiableList(Arrays.asList(
             "--add-opens=java.base/java.lang=ALL-UNNAMED",
             "--add-opens=java.base/java.lang.invoke=ALL-UNNAMED",
             "--add-opens=java.base/java.util=ALL-UNNAMED",
@@ -74,7 +70,7 @@ public class JpmsConfiguration {
             "--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED" // Required by JdkTools and JdkJavaCompiler
         ));
 
-        GRADLE_SHARED_JPMS_ARGS_24 = singletonList(
+        GRADLE_SHARED_JPMS_ARGS_24 = Collections.singletonList(
             "--enable-native-access=ALL-UNNAMED" // required by NativeServices to access native libraries
         );
 
@@ -82,7 +78,7 @@ public class JpmsConfiguration {
 
         List<String> gradleDaemonJvmArgs = new ArrayList<String>(GROOVY_JPMS_ARGS_9);
 
-        List<String> configurationCacheJpmsArgs = unmodifiableList(Arrays.asList(
+        List<String> configurationCacheJpmsArgs = Collections.unmodifiableList(Arrays.asList(
             "--add-opens=java.base/java.util=ALL-UNNAMED", // for overriding environment variables
             "--add-opens=java.prefs/java.util.prefs=ALL-UNNAMED", // required by JavaObjectSerializationCodec.kt
             "--add-opens=java.base/java.nio.charset=ALL-UNNAMED", // required by BeanSchemaKt
@@ -94,16 +90,16 @@ public class JpmsConfiguration {
         ));
         gradleDaemonJvmArgs.addAll(configurationCacheJpmsArgs);
 
-        GRADLE_DAEMON_JPMS_ARGS_9 = unmodifiableList(gradleDaemonJvmArgs);
+        GRADLE_DAEMON_JPMS_ARGS_9 = Collections.unmodifiableList(gradleDaemonJvmArgs);
 
         List<String> gradleDaemonJvmArgs24 = new ArrayList<String>(GRADLE_DAEMON_JPMS_ARGS_9);
         gradleDaemonJvmArgs24.addAll(GRADLE_SHARED_JPMS_ARGS_24);
-        GRADLE_DAEMON_JPMS_ARGS_24 = unmodifiableList(gradleDaemonJvmArgs24);
+        GRADLE_DAEMON_JPMS_ARGS_24 = Collections.unmodifiableList(gradleDaemonJvmArgs24);
     }
 
     public static List<String> forGroovyProcesses(int majorVersion) {
         if (majorVersion < 9) {
-            return emptyList();
+            return Collections.emptyList();
         }
         return GROOVY_JPMS_ARGS_9;
     }
@@ -117,7 +113,7 @@ public class JpmsConfiguration {
      */
     public static List<String> forWorkerProcesses(int majorVersion, boolean usingNativeServices) {
         if (majorVersion < 24 || !usingNativeServices) {
-            return emptyList();
+            return Collections.emptyList();
         }
         return GRADLE_WORKER_JPMS_ARGS_24;
     }
@@ -131,7 +127,7 @@ public class JpmsConfiguration {
      */
     public static List<String> forDaemonProcesses(int majorVersion, boolean usingNativeServices) {
         if (majorVersion < 9) {
-            return emptyList();
+            return Collections.emptyList();
         }
         if (majorVersion < 24 || !usingNativeServices) {
             return GRADLE_DAEMON_JPMS_ARGS_9;

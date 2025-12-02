@@ -16,7 +16,6 @@
 
 package org.gradle.util.internal;
 
-import kotlin.jvm.functions.Function0;
 import org.gradle.api.internal.provider.ProviderResolutionStrategy;
 import org.gradle.api.provider.Provider;
 import org.gradle.internal.Factory;
@@ -90,11 +89,11 @@ public class DeferredUtil {
     }
 
     private static boolean isKotlinFunction0Deferrable(@Nullable Object value) {
-        return value instanceof Function0;
+        return value instanceof kotlin.jvm.functions.Function0;
     }
 
     @Nullable
     private static Object unpackKotlinFunction0(Object value) {
-        return ((Function0) value).invoke();
+        return ((kotlin.jvm.functions.Function0) value).invoke();
     }
 }

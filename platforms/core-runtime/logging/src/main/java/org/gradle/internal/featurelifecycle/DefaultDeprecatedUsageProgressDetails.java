@@ -16,18 +16,17 @@
 
 package org.gradle.internal.featurelifecycle;
 
-import static java.util.Collections.singletonMap;
-
 import com.google.common.annotations.VisibleForTesting;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import org.gradle.api.problems.DocLink;
 import org.gradle.internal.SystemProperties;
 import org.gradle.internal.deprecation.DeprecatedFeatureUsage;
 import org.gradle.internal.operations.trace.CustomOperationTraceSerialization;
 import org.gradle.problems.ProblemDiagnostics;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DefaultDeprecatedUsageProgressDetails implements DeprecatedUsageProgressDetails, CustomOperationTraceSerialization {
 
@@ -92,6 +91,6 @@ public class DefaultDeprecatedUsageProgressDetails implements DeprecatedUsagePro
         }
         deprecation.put("stackTrace", sb.toString());
         // the properties are wrapped to an enclosing map to improve the readability of the trace files
-        return singletonMap("deprecation", deprecation);
+        return Collections.singletonMap("deprecation", deprecation);
     }
 }

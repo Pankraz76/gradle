@@ -16,24 +16,23 @@
 
 package org.gradle.cache.internal;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterators;
+import org.jspecify.annotations.NonNull;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
-import org.jspecify.annotations.NonNull;
 
 public class SingleDepthFilesFinder implements FilesFinder {
     private final int depth;
 
     public SingleDepthFilesFinder(int depth) {
-        checkArgument(depth > 0, "depth must be > 0: %s", depth);
+        Preconditions.checkArgument(depth > 0, "depth must be > 0: %s", depth);
         this.depth = depth;
     }
 

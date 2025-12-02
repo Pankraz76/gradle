@@ -16,7 +16,6 @@
 
 package org.gradle.api.internal.project;
 
-import groovy.lang.Script;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.ProjectEvaluationListener;
@@ -154,7 +153,7 @@ public interface ProjectInternal extends Project, ProjectIdentifier, HasScriptSe
 
     ClassLoaderScope getBaseClassLoaderScope();
 
-    void setScript(Script script);
+    void setScript(groovy.lang.Script script);
 
     void addDeferredConfiguration(Runnable configuration);
 

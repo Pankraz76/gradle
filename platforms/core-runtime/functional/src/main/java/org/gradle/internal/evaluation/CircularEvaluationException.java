@@ -16,12 +16,11 @@
 
 package org.gradle.internal.evaluation;
 
-import static java.util.stream.Collectors.joining;
-
 import com.google.common.collect.ImmutableList;
+import org.gradle.api.GradleException;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import org.gradle.api.GradleException;
 
 /**
  * An exception caused by the circular evaluation.
@@ -53,7 +52,7 @@ public class CircularEvaluationException extends GradleException {
         try (EvaluationScopeContext ignored = EvaluationContext.current().nested()) {
             return evaluationCycle.stream()
                 .map(CircularEvaluationException::safeToString)
-                .collect(joining("\n -> "));
+                .collect(Collectors.joining("\n -> "));
         }
     }
 

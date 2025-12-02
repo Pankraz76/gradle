@@ -16,19 +16,8 @@
 
 package org.gradle.internal.work;
 
-import static java.util.Collections.singletonList;
-import static org.gradle.internal.resources.DefaultResourceLockCoordinationService.lock;
-import static org.gradle.internal.resources.DefaultResourceLockCoordinationService.tryLock;
-import static org.gradle.internal.resources.DefaultResourceLockCoordinationService.unlock;
-
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import org.gradle.api.specs.Spec;
 import org.gradle.internal.Factories;
 import org.gradle.internal.Factory;
@@ -46,6 +35,17 @@ import org.gradle.util.Path;
 import org.gradle.util.internal.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static org.gradle.internal.resources.DefaultResourceLockCoordinationService.lock;
+import static org.gradle.internal.resources.DefaultResourceLockCoordinationService.tryLock;
+import static org.gradle.internal.resources.DefaultResourceLockCoordinationService.unlock;
 
 public class DefaultWorkerLeaseService implements WorkerLeaseService, ProjectParallelExecutionController, Stoppable {
 
@@ -124,7 +124,7 @@ public class DefaultWorkerLeaseService implements WorkerLeaseService, ProjectPar
             // Already a worker
             return action.create();
         }
-        return withLocks(singletonList(newWorkerLease()), action);
+        return withLocks(Collections.singletonList(newWorkerLease()), action);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class DefaultWorkerLeaseService implements WorkerLeaseService, ProjectPar
         if (!locks.isEmpty()) {
             action.run();
         } else {
-            withLocks(singletonList(workerLeaseLockRegistry.newUnmanagedLease()), action);
+            withLocks(Collections.singletonList(workerLeaseLockRegistry.newUnmanagedLease()), action);
         }
     }
 
@@ -328,7 +328,7 @@ public class DefaultWorkerLeaseService implements WorkerLeaseService, ProjectPar
 
     @Override
     public void withoutLock(ResourceLock lock, Runnable runnable) {
-        withoutLocks(singletonList(lock), runnable);
+        withoutLocks(Collections.singletonList(lock), runnable);
     }
 
     @Override
@@ -362,7 +362,7 @@ public class DefaultWorkerLeaseService implements WorkerLeaseService, ProjectPar
         }
 
         return withoutLocks(currentLocks, () ->
-            withLocksAcquired(singletonList(newLock), factory)
+            withLocksAcquired(Collections.singletonList(newLock), factory)
         );
     }
 

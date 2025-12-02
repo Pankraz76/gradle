@@ -16,9 +16,9 @@
 
 package org.gradle.internal.serialize;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static java.util.Collections.unmodifiableSet;
+import org.gradle.internal.Cast;
+import org.gradle.internal.exceptions.DefaultMultiCauseException;
+import org.gradle.internal.exceptions.MultiCauseException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -29,16 +29,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.gradle.internal.Cast;
-import org.gradle.internal.exceptions.DefaultMultiCauseException;
-import org.gradle.internal.exceptions.MultiCauseException;
 
 /**
  * Static util class containing helper methods for exception serialization.
  */
 public final class ExceptionSerializationUtil {
     // It would be nice to use Guava's immutable collections here, if we could get them on the proper classpath
-    public static final Set<String> CANDIDATE_GET_CAUSES = unmodifiableSet(new HashSet<>(Arrays.asList("getCauses", "getFailures")));
+    public static final Set<String> CANDIDATE_GET_CAUSES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("getCauses", "getFailures")));
 
     private ExceptionSerializationUtil() {
         // Can't instantiate static util class
@@ -60,7 +57,7 @@ public final class ExceptionSerializationUtil {
                 //                LOGGER.debug("Ignoring failure to extract throwable cause.", ignored);
                 causeTmp = null;
             }
-            return causeTmp == null ? emptyList() : singletonList(causeTmp);
+            return causeTmp == null ? Collections.emptyList() : Collections.singletonList(causeTmp);
         }
     }
 

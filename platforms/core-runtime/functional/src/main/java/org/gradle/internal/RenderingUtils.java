@@ -15,13 +15,11 @@
  */
 package org.gradle.internal;
 
-import static java.lang.String.join;
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toList;
-
 import java.util.Collection;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+
+import static java.lang.String.join;
 
 public abstract class RenderingUtils {
     public static String quotedOxfordListOf(Collection<String> values, String conjunction) {
@@ -37,7 +35,7 @@ public abstract class RenderingUtils {
     }
 
     public static Collector<? super String, ?, String> oxfordJoin(String conjunction) {
-        return collectingAndThen(toList(), stringList -> {
+        return Collectors.collectingAndThen(Collectors.toList(), stringList -> {
             switch (stringList.size()) {
                 case 0:
                     return "";

@@ -33,8 +33,6 @@ import java.io.File;
 import java.io.Writer;
 import java.util.Set;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 /**
  * Class responsible for the generation of an HTML dependency report.
  * <p>
@@ -59,7 +57,9 @@ public class HtmlDependencyReporter extends ReportRenderer<ProjectsWithConfigura
     @Override
     public void render(final ProjectsWithConfigurations<ProjectNameAndPath, ConfigurationDetails> projectsWithConfigurations, File outputDirectory) {
         this.outputDirectory = outputDirectory;
-        new HtmlReportRenderer().render(projectsWithConfigurations.getProjects(), new ReportRenderer<Set<ProjectNameAndPath>, HtmlReportBuilder>() {
+
+        HtmlReportRenderer renderer = new HtmlReportRenderer();
+        renderer.render(projectsWithConfigurations.getProjects(), new ReportRenderer<Set<ProjectNameAndPath>, HtmlReportBuilder>() {
             @Override
             public void render(Set<ProjectNameAndPath> model, HtmlReportBuilder builder) {
                 Transformer<String, ProjectNameAndPath> htmlPageScheme = projectNamingScheme("html");
@@ -67,8 +67,10 @@ public class HtmlDependencyReporter extends ReportRenderer<ProjectsWithConfigura
                 ProjectPageRenderer projectPageRenderer = new ProjectPageRenderer(jsScheme);
                 builder.renderRawHtmlPage("index.html", model, new ProjectsPageRenderer(htmlPageScheme));
                 for (ProjectNameAndPath project : model) {
-                    generateJsFile(project, projectsWithConfigurations.getConfigurationsFor(project), jsScheme.transform(project));
-                    builder.renderRawHtmlPage(htmlPageScheme.transform(project), project, projectPageRenderer);
+                    String jsFileName = jsScheme.transform(project);
+                    generateJsFile(project, projectsWithConfigurations.getConfigurationsFor(project), jsFileName);
+                    String htmlFileName = htmlPageScheme.transform(project);
+                    builder.renderRawHtmlPage(htmlFileName, project, projectPageRenderer);
                 }
 
             }
@@ -77,10 +79,12 @@ public class HtmlDependencyReporter extends ReportRenderer<ProjectsWithConfigura
     }
 
     private void generateJsFile(ProjectNameAndPath project, Iterable<ConfigurationDetails> configurations, String fileName) {
-        IoActions.writeTextFile(new File(outputDirectory, fileName), UTF_8, new ErroringAction<Writer>() {
+        String prefix = "var projectDependencyReport = ";
+        File file = new File(outputDirectory, fileName);
+        IoActions.writeTextFile(file, "utf-8", new ErroringAction<Writer>() {
             @Override
             protected void doExecute(Writer writer) throws Exception {
-                writer.write("var projectDependencyReport = ");
+                writer.write(prefix);
                 renderer.render(project, configurations, writer);
                 writer.write(";");
             }

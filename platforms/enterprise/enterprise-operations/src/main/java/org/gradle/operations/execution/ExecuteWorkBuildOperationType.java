@@ -120,7 +120,7 @@ public final class ExecuteWorkBuildOperationType implements BuildOperationType<E
          * The categorisation of why the work was not cacheable.
          * Null if the work was cacheable.
          * Not null if {@link #getCachingDisabledReasonMessage()}l is not null.
-         * Values are expected to correlate to {@link CachingDisabledReasonCategory}.
+         * Values are expected to correlate to {@link org.gradle.operations.execution.CachingDisabledReasonCategory}.
          */
         @Nullable
         String getCachingDisabledReasonCategory();

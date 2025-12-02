@@ -17,7 +17,5 @@
 /**
  * Classes for declaring and using Ivy modules.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.artifacts.ivy;
-
-import org.jspecify.annotations.NullMarked;

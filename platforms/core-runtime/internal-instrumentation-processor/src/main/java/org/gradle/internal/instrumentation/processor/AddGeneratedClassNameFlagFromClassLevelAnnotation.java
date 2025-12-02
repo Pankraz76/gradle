@@ -16,24 +16,23 @@
 
 package org.gradle.internal.instrumentation.processor;
 
-import static java.util.Collections.singletonList;
-
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.Predicate;
-import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.util.Elements;
 import org.gradle.internal.instrumentation.api.types.BytecodeInterceptorType;
 import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
 import org.gradle.internal.instrumentation.model.RequestExtra;
 import org.gradle.internal.instrumentation.model.RequestExtra.OriginatingElement;
 import org.gradle.internal.instrumentation.processor.extensibility.RequestPostProcessorExtension;
 import org.gradle.internal.instrumentation.processor.modelreader.impl.AnnotationUtils;
+
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.util.Elements;
+import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
 public class AddGeneratedClassNameFlagFromClassLevelAnnotation implements RequestPostProcessorExtension {
 
@@ -61,12 +60,12 @@ public class AddGeneratedClassNameFlagFromClassLevelAnnotation implements Reques
             .map(OriginatingElement::getElement);
 
         if (!maybeOriginatingElement.isPresent()) {
-            return singletonList(originalRequest);
+            return Collections.singletonList(originalRequest);
         }
 
         boolean shouldPostProcess = shouldAddExtraToRequestPredicate.test(originalRequest);
         if (!shouldPostProcess) {
-            return singletonList(originalRequest);
+            return Collections.singletonList(originalRequest);
         }
 
         Element enclosingElement = maybeOriginatingElement.get().getEnclosingElement();
@@ -78,7 +77,7 @@ public class AddGeneratedClassNameFlagFromClassLevelAnnotation implements Reques
             originalRequest.getRequestExtras().add(produceFlagForGeneratedClassName.apply((String) generatedClassName.getValue(), BytecodeInterceptorType.valueOf(interceptionType.getValue().toString())));
         });
 
-        return singletonList(originalRequest);
+        return Collections.singletonList(originalRequest);
     }
 
     public static Predicate<CallInterceptionRequest> ifHasAnnotation(Class<? extends Annotation> annotationType) {

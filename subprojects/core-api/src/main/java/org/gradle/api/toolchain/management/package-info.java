@@ -18,7 +18,5 @@
  * APIs to influence how toolchains are resolved.
  * @since 7.6
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.toolchain.management;
-
-import org.jspecify.annotations.NullMarked;

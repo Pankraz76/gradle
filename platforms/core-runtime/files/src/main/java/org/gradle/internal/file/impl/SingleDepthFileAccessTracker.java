@@ -16,13 +16,12 @@
 
 package org.gradle.internal.file.impl;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import com.google.common.base.Preconditions;
-import java.io.File;
-import java.nio.file.Path;
 import org.gradle.internal.file.FileAccessTimeJournal;
 import org.gradle.internal.file.FileAccessTracker;
+
+import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Tracks access to files and directories at the supplied depth within the supplied base
@@ -38,7 +37,7 @@ public class SingleDepthFileAccessTracker implements FileAccessTracker {
 
     public SingleDepthFileAccessTracker(FileAccessTimeJournal journal, File baseDir, int depth) {
         this.journal = journal;
-        checkArgument(depth > 0, "depth must be > 0: %s", depth);
+        Preconditions.checkArgument(depth > 0, "depth must be > 0: %s", depth);
         this.baseDir = baseDir.toPath().toAbsolutePath();
         this.startNameIndex = this.baseDir.getNameCount();
         this.endNameIndex = startNameIndex + depth;

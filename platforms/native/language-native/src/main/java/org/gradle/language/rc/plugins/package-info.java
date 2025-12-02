@@ -17,7 +17,5 @@
 /**
  * Plugins for building from Windows Resource scripts.
  */
-@Incubating
+@org.gradle.api.Incubating
 package org.gradle.language.rc.plugins;
-
-import org.gradle.api.Incubating;

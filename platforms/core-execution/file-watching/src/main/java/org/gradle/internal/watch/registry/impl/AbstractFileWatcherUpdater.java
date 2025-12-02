@@ -16,15 +16,8 @@
 
 package org.gradle.internal.watch.registry.impl;
 
-import static com.google.common.collect.ImmutableSet.toImmutableSet;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Stream;
-import javax.annotation.CheckReturnValue;
 import org.gradle.internal.Combiners;
 import org.gradle.internal.file.FileHierarchySet;
 import org.gradle.internal.file.FileMetadata;
@@ -36,6 +29,12 @@ import org.gradle.internal.watch.registry.FileWatcherUpdater;
 import org.gradle.internal.watch.registry.WatchMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.CheckReturnValue;
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Stream;
 
 public abstract class AbstractFileWatcherUpdater implements FileWatcherUpdater {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractFileWatcherUpdater.class);
@@ -146,7 +145,7 @@ public abstract class AbstractFileWatcherUpdater implements FileWatcherUpdater {
         ImmutableSet<File> oldProbedHierarchies = probedHierarchies;
         probedHierarchies = watchableHierarchies.stream()
             .filter(watchedFiles::contains)
-            .collect(toImmutableSet());
+            .collect(ImmutableSet.toImmutableSet());
         if (oldProbedHierarchies.equals(probedHierarchies)) {
             return;
         }

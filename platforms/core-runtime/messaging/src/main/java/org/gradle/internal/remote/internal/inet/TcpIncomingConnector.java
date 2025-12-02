@@ -16,8 +16,18 @@
 
 package org.gradle.internal.remote.internal.inet;
 
-import static java.util.Collections.singletonList;
-import static org.gradle.internal.remote.internal.inet.TcpOutgoingConnector.CONNECTION_PREAMBLE;
+import org.gradle.api.Action;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.concurrent.CompositeStoppable;
+import org.gradle.internal.concurrent.ExecutorFactory;
+import org.gradle.internal.concurrent.ManagedExecutor;
+import org.gradle.internal.id.IdGenerator;
+import org.gradle.internal.remote.Address;
+import org.gradle.internal.remote.ConnectionAcceptor;
+import org.gradle.internal.remote.internal.ConnectCompletion;
+import org.gradle.internal.remote.internal.IncomingConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -31,18 +41,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import org.gradle.api.Action;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.concurrent.CompositeStoppable;
-import org.gradle.internal.concurrent.ExecutorFactory;
-import org.gradle.internal.concurrent.ManagedExecutor;
-import org.gradle.internal.id.IdGenerator;
-import org.gradle.internal.remote.Address;
-import org.gradle.internal.remote.ConnectionAcceptor;
-import org.gradle.internal.remote.internal.ConnectCompletion;
-import org.gradle.internal.remote.internal.IncomingConnector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static org.gradle.internal.remote.internal.inet.TcpOutgoingConnector.CONNECTION_PREAMBLE;
 
 public class TcpIncomingConnector implements IncomingConnector {
     private static final Logger LOGGER = LoggerFactory.getLogger(TcpIncomingConnector.class);
@@ -71,7 +71,7 @@ public class TcpIncomingConnector implements IncomingConnector {
         }
 
         UUID id = idGenerator.generateId();
-        List<InetAddress> addresses = singletonList(addressFactory.getLocalBindingAddress());
+        List<InetAddress> addresses = Collections.singletonList(addressFactory.getLocalBindingAddress());
         final Address address = new MultiChoiceAddress(id, localPort, addresses);
         LOGGER.debug("Listening on {}.", address);
 

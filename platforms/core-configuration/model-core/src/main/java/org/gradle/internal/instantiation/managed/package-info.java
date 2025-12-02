@@ -17,7 +17,5 @@
 /**
  * Controls which objects may be injected into managed types
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.internal.instantiation.managed;
-
-import org.jspecify.annotations.NullMarked;

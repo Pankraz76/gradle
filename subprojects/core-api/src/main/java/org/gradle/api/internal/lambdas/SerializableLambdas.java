@@ -85,7 +85,7 @@ public class SerializableLambdas {
     }
 
     /**
-     * A {@link Serializable} version of {@link Transformer}.
+     * A {@link Serializable} version of {@link org.gradle.api.Transformer}.
      */
     public interface SerializableTransformer<OUT, IN> extends Transformer<OUT, IN>, Serializable {
     }

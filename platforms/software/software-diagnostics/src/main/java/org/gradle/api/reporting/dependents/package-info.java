@@ -17,7 +17,5 @@
 /**
  * Types representing dependent components and rendered for them.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.reporting.dependents;
-
-import org.jspecify.annotations.NullMarked;

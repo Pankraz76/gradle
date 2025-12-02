@@ -406,7 +406,7 @@ public class NativeServices implements ServiceRegistrationProvider {
     protected ProcessEnvironment createProcessEnvironment(OperatingSystem operatingSystem) {
         if (useNativeIntegrations) {
             try {
-                Process process = nativeIntegration.get(Process.class);
+                net.rubygrapefruit.platform.Process process = nativeIntegration.get(Process.class);
                 return new NativePlatformBackedProcessEnvironment(process);
             } catch (NativeIntegrationUnavailableException ex) {
                 LOGGER.debug("Native-platform process integration is not available. Continuing with fallback.");

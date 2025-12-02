@@ -15,7 +15,6 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.ivyresolve.verification.report;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.bouncycastle.openpgp.PGPPublicKey;
 import org.gradle.api.internal.DocumentationRegistry;
 import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.verification.RepositoryAwareVerificationFailure;
@@ -385,7 +384,7 @@ class HtmlDependencyVerificationReportRenderer implements DependencyVerification
                     sb.append("(not found)");
                 }
                 @SuppressWarnings("deprecation")
-                String keyDetails = StringEscapeUtils.escapeHtml4(sb.toString());
+                String keyDetails = org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(sb.toString());
                 String keyInfo = "<b>" + keyId + " " + keyDetails + "</b>";
                 switch (error.getKind()) {
                     case PASSED_NOT_TRUSTED:

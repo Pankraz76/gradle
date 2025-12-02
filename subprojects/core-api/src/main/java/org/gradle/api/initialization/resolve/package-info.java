@@ -17,7 +17,5 @@
 /**
  * Classes for managing cross-project dependency resolution.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.initialization.resolve;
-
-import org.jspecify.annotations.NullMarked;

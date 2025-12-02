@@ -17,7 +17,5 @@
 /**
  * Task classes for visual studio.
  */
-@Incubating
+@org.gradle.api.Incubating
 package org.gradle.ide.visualstudio.tasks;
-
-import org.gradle.api.Incubating;

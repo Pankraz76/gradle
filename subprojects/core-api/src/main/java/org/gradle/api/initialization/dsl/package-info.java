@@ -17,7 +17,5 @@
 /**
  * Classes used in the initialization DSL.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.initialization.dsl;
-
-import org.jspecify.annotations.NullMarked;

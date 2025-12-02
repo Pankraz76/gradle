@@ -19,8 +19,6 @@ package org.gradle.api.plugins.internal;
 import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.reporting.components.ComponentReport;
-import org.gradle.api.reporting.dependents.DependentComponentsReport;
 import org.gradle.api.tasks.diagnostics.internal.DiagnosticsTaskNames;
 import org.jspecify.annotations.NullMarked;
 
@@ -34,13 +32,13 @@ abstract public class ComponentReportingTasksPlugin implements Plugin<Project> {
     @Override
     @SuppressWarnings("deprecation")
     public void apply(Project project) {
-        project.getTasks().register(DiagnosticsTaskNames.COMPONENTS_TASK, ComponentReport.class, new ComponentReportAction(project.toString()));
-        project.getTasks().register(DiagnosticsTaskNames.DEPENDENT_COMPONENTS_TASK, DependentComponentsReport.class, new DependentComponentsReportAction(project.toString()));
+        project.getTasks().register(DiagnosticsTaskNames.COMPONENTS_TASK, org.gradle.api.reporting.components.ComponentReport.class, new ComponentReportAction(project.toString()));
+        project.getTasks().register(DiagnosticsTaskNames.DEPENDENT_COMPONENTS_TASK, org.gradle.api.reporting.dependents.DependentComponentsReport.class, new DependentComponentsReportAction(project.toString()));
     }
 
     @SuppressWarnings("deprecation")
     @NullMarked
-    private static class ComponentReportAction implements Action<ComponentReport> {
+    private static class ComponentReportAction implements Action<org.gradle.api.reporting.components.ComponentReport> {
         private final String projectName;
 
         public ComponentReportAction(String projectName) {
@@ -48,7 +46,7 @@ abstract public class ComponentReportingTasksPlugin implements Plugin<Project> {
         }
 
         @Override
-        public void execute(ComponentReport task) {
+        public void execute(org.gradle.api.reporting.components.ComponentReport task) {
             task.setDescription("Displays the components produced by " + projectName + ". [deprecated]");
             task.setImpliesSubProjects(true);
         }
@@ -56,7 +54,7 @@ abstract public class ComponentReportingTasksPlugin implements Plugin<Project> {
 
     @SuppressWarnings("deprecation")
     @NullMarked
-    private static class DependentComponentsReportAction implements Action<DependentComponentsReport> {
+    private static class DependentComponentsReportAction implements Action<org.gradle.api.reporting.dependents.DependentComponentsReport> {
         private final String projectName;
 
         public DependentComponentsReportAction(String projectName) {
@@ -64,7 +62,7 @@ abstract public class ComponentReportingTasksPlugin implements Plugin<Project> {
         }
 
         @Override
-        public void execute(DependentComponentsReport task) {
+        public void execute(org.gradle.api.reporting.dependents.DependentComponentsReport task) {
             task.setDescription("Displays the dependent components of components in " + projectName + ". [deprecated]");
             task.setImpliesSubProjects(true);
         }

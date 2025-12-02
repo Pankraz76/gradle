@@ -18,13 +18,12 @@ package gradlebuild.binarycompatibility
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.File
-import kotlin.text.Charsets.UTF_8
 
 
 internal
 fun scrapeRichReport(richReportFile: File): RichReport =
 
-    Jsoup.parse(richReportFile, UTF_8.toString()).run {
+    Jsoup.parse(richReportFile, "UTF-8").run {
         RichReport(
             scrapeMessagesForSeverity("error"),
             scrapeMessagesForSeverity("warning"),

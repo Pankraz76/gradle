@@ -16,18 +16,17 @@
 
 package org.gradle.internal.instrumentation.processor.codegen;
 
-import static java.util.Collections.unmodifiableMap;
-
 import com.squareup.javapoet.ArrayTypeName;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
+import org.gradle.internal.instrumentation.util.NameUtil;
+import org.objectweb.asm.Type;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import org.gradle.internal.instrumentation.util.NameUtil;
-import org.objectweb.asm.Type;
 
 public class TypeUtils {
 
@@ -42,7 +41,7 @@ public class TypeUtils {
         map.put(Type.DOUBLE_TYPE, "0.0");
         map.put(Type.CHAR_TYPE, "'\\u0000'");
         map.put(Type.BOOLEAN_TYPE, "false");
-        PRIMITIVE_TYPES_DEFAULT_VALUES_AS_STRING = unmodifiableMap(map);
+        PRIMITIVE_TYPES_DEFAULT_VALUES_AS_STRING = Collections.unmodifiableMap(map);
     }
 
     public static String getDefaultValue(Type type) {

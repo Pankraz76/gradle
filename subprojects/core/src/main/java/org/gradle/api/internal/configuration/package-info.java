@@ -17,7 +17,5 @@
 /**
  * Classes for monitoring build configuration.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.internal.configuration;
-
-import org.jspecify.annotations.NullMarked;

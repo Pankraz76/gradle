@@ -16,8 +16,6 @@
 
 package org.gradle.internal;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
@@ -83,13 +81,13 @@ public class ExtendedOptional<T> {
     }
 
     public Optional<T> or(Supplier<? extends Optional<? extends T>> supplier) {
-        requireNonNull(supplier);
+        Objects.requireNonNull(supplier);
         if (isPresent()) {
             return delegate;
         } else {
             @SuppressWarnings("unchecked")
             Optional<T> r = (Optional<T>) supplier.get();
-            return requireNonNull(r);
+            return Objects.requireNonNull(r);
         }
     }
 

@@ -16,10 +16,9 @@
 
 package org.gradle.api.internal.tasks.testing;
 
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
-@NullMarked
+@org.jspecify.annotations.NullMarked
 public class AssumptionFailureDetails extends DefaultTestFailureDetails {
     public AssumptionFailureDetails(@Nullable String message, String className, String stacktrace) {
         super(message, className, stacktrace);

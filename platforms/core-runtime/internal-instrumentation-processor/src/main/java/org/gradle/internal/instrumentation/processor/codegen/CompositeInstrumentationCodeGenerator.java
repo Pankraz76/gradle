@@ -16,19 +16,17 @@
 
 package org.gradle.internal.instrumentation.processor.codegen;
 
-import static java.util.stream.Collectors.toCollection;
-import static java.util.stream.Collectors.toList;
-
 import com.squareup.javapoet.TypeSpec;
+import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
+import org.gradle.internal.instrumentation.processor.codegen.InstrumentationCodeGenerator.GenerationResult.CanGenerateClasses;
+import org.gradle.internal.instrumentation.processor.codegen.InstrumentationCodeGenerator.GenerationResult.CodeFailures;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
-import org.gradle.internal.instrumentation.processor.codegen.InstrumentationCodeGenerator.GenerationResult.CanGenerateClasses;
-import org.gradle.internal.instrumentation.processor.codegen.InstrumentationCodeGenerator.GenerationResult.CodeFailures;
 
 public class CompositeInstrumentationCodeGenerator implements InstrumentationCodeGenerator {
 
@@ -40,14 +38,14 @@ public class CompositeInstrumentationCodeGenerator implements InstrumentationCod
 
     @Override
     public GenerationResult generateCodeForRequestedInterceptors(Collection<CallInterceptionRequest> interceptionRequests) {
-        List<GenerationResult> results = generators.stream().map(generators -> generators.generateCodeForRequestedInterceptors(interceptionRequests)).collect(toList());
+        List<GenerationResult> results = generators.stream().map(generators -> generators.generateCodeForRequestedInterceptors(interceptionRequests)).collect(Collectors.toList());
 
-        List<HasFailures> failures = results.stream().filter(it -> it instanceof HasFailures).map(it -> (HasFailures) it).collect(toList());
+        List<HasFailures> failures = results.stream().filter(it -> it instanceof HasFailures).map(it -> (HasFailures) it).collect(Collectors.toList());
         if (!failures.isEmpty()) {
-            return new CodeFailures(failures.stream().flatMap(it -> it.getFailureDetails().stream()).collect(toList()));
+            return new CodeFailures(failures.stream().flatMap(it -> it.getFailureDetails().stream()).collect(Collectors.toList()));
         }
 
-        List<CanGenerateClasses> generatingResults = results.stream().map(it -> (CanGenerateClasses) it).collect(toList());
+        List<CanGenerateClasses> generatingResults = results.stream().map(it -> (CanGenerateClasses) it).collect(Collectors.toList());
         Map<String, CanGenerateClasses> generatorByClassName = new LinkedHashMap<>();
         generatingResults.forEach(result -> result.getClassNames().forEach(className -> {
             if (generatorByClassName.put(className, result) != null) {
@@ -58,7 +56,7 @@ public class CompositeInstrumentationCodeGenerator implements InstrumentationCod
         return new CanGenerateClasses() {
             @Override
             public Collection<String> getClassNames() {
-                return generatingResults.stream().flatMap(it -> it.getClassNames().stream()).collect(toCollection(LinkedHashSet::new));
+                return generatingResults.stream().flatMap(it -> it.getClassNames().stream()).collect(Collectors.toCollection(LinkedHashSet::new));
             }
 
             @Override
@@ -68,7 +66,7 @@ public class CompositeInstrumentationCodeGenerator implements InstrumentationCod
 
             @Override
             public List<CallInterceptionRequest> getCoveredRequests() {
-                return generatingResults.stream().flatMap(it -> it.getCoveredRequests().stream()).distinct().collect(toList());
+                return generatingResults.stream().flatMap(it -> it.getCoveredRequests().stream()).distinct().collect(Collectors.toList());
             }
         };
     }

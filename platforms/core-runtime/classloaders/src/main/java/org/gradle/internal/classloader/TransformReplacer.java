@@ -16,7 +16,12 @@
 
 package org.gradle.internal.classloader;
 
-import static java.util.Objects.requireNonNull;
+import org.apache.commons.io.IOUtils;
+import org.gradle.api.GradleException;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.classpath.TransformedClassPath;
+import org.gradle.internal.io.StreamByteBuffer;
+import org.jspecify.annotations.Nullable;
 
 import java.io.Closeable;
 import java.io.File;
@@ -32,12 +37,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import org.apache.commons.io.IOUtils;
-import org.gradle.api.GradleException;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.classpath.TransformedClassPath;
-import org.gradle.internal.io.StreamByteBuffer;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A helper class that can remap classes loaded from the original JARs of the TransformedClassPath to the classes from the corresponding transformed JARs.
@@ -104,7 +103,7 @@ public class TransformReplacer implements Closeable {
         if (transformedPath == null) {
             return SKIP_INSTRUMENTATION;
         } else if (transformedPath.isFile()) {
-            return new JarLoader(requireNonNull(originalPath, "Must not be null because transformed path isn't"), transformedPath);
+            return new JarLoader(Objects.requireNonNull(originalPath, "Must not be null because transformed path isn't"), transformedPath);
         } else if (transformedPath.isDirectory()) {
             return new DirectoryLoader(transformedPath);
         }

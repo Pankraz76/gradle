@@ -26,8 +26,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 public class GradleDocsHtmlAsciidoctorExtensionRegistry implements ExtensionRegistry {
 
     private static final String HEAD_HTML_PATH = "/head.html";
@@ -68,7 +66,7 @@ public class GradleDocsHtmlAsciidoctorExtensionRegistry implements ExtensionRegi
                 System.out.println("Docs Asciidoctor Extension did not find a resource for " + resourcePath);
                 return "";
             }
-            return IOUtils.toString(in, UTF_8);
+            return IOUtils.toString(in, "UTF-8");
         } catch (IOException e) {
             throw new RuntimeException("Could not read HTML file at " + resourcePath);
         }

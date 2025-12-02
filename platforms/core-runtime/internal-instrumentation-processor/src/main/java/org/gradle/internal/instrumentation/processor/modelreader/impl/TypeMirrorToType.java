@@ -16,11 +16,8 @@
 
 package org.gradle.internal.instrumentation.processor.modelreader.impl;
 
-import static java.util.Collections.reverse;
+import org.objectweb.asm.Type;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.type.ArrayType;
@@ -37,7 +34,9 @@ import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.UnionType;
 import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.AbstractTypeVisitor8;
-import org.objectweb.asm.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class TypeMirrorToType extends AbstractTypeVisitor8<Type, Void> {
 
@@ -94,7 +93,7 @@ public class TypeMirrorToType extends AbstractTypeVisitor8<Type, Void> {
             typeNesting.add(current);
             current = current.getEnclosingElement();
         }
-        reverse(typeNesting);
+        Collections.reverse(typeNesting);
 
         // TODO: replace with javax.lang.model.util.Elements.getBinaryName, which is a more universal way but requires refactoring and passing the utility around
         StringBuilder typeName = new StringBuilder("L");

@@ -40,8 +40,6 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import static java.lang.String.format;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.nio.file.Files.newInputStream;
 import static java.util.Collections.emptyList;
 import static org.gradle.internal.file.PathTraversalChecker.safePathName;
 import static org.gradle.wrapper.Download.safeUri;
@@ -136,8 +134,11 @@ public class Install {
 
             forceFetch(tmpZipFile, distributionUrl);
 
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(newInputStream(tmpZipFile.toPath()), UTF_8))) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(tmpZipFile), "UTF-8"));
+            try {
                 return reader.readLine();
+            } finally {
+                reader.close();
             }
         } catch (Exception e) {
             logger.log("Could not fetch hash for " + safeUri(distribution) + ".");
@@ -275,7 +276,7 @@ public class Install {
             ProcessBuilder pb = new ProcessBuilder("chmod", "755", gradleCommand.getCanonicalPath());
             Process p = pb.start();
             if (p.waitFor() != 0) {
-                BufferedReader is = new BufferedReader(new InputStreamReader(p.getInputStream(), UTF_8));
+                BufferedReader is = new BufferedReader(new InputStreamReader(p.getInputStream(), "UTF-8"));
                 Formatter stdout = new Formatter();
                 String line;
                 while ((line = is.readLine()) != null) {

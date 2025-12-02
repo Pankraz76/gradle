@@ -16,33 +16,6 @@
 
 package org.gradle.internal.instrumentation.processor.modelreader.impl;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
-import static org.gradle.internal.instrumentation.processor.modelreader.impl.AnnotationUtils.findAnnotationMirror;
-import static org.gradle.internal.instrumentation.processor.modelreader.impl.AnnotationUtils.findAnnotationValue;
-import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.extractMethodDescriptor;
-import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.extractReturnType;
-import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.extractType;
-
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
 import org.gradle.internal.Cast;
 import org.gradle.internal.instrumentation.api.annotations.CallableDefinition;
 import org.gradle.internal.instrumentation.api.annotations.CallableKind;
@@ -65,6 +38,32 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.objectweb.asm.Type;
 
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.gradle.internal.instrumentation.processor.modelreader.impl.AnnotationUtils.findAnnotationMirror;
+import static org.gradle.internal.instrumentation.processor.modelreader.impl.AnnotationUtils.findAnnotationValue;
+import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.extractMethodDescriptor;
+import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.extractReturnType;
+import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.extractType;
+
 public class AnnotationCallInterceptionRequestReaderImpl implements AnnotatedMethodReaderExtension {
 
     @Override
@@ -80,7 +79,7 @@ public class AnnotationCallInterceptionRequestReaderImpl implements AnnotatedMet
         try {
             CallableInfo callableInfo = extractCallableInfo(input);
             ImplementationInfoImpl implementationInfo = extractImplementationInfo(input);
-            List<RequestExtra> requestExtras = singletonList(new OriginatingElement(input));
+            List<RequestExtra> requestExtras = Collections.singletonList(new OriginatingElement(input));
             return singletonList(new Result.Success(new CallInterceptionRequestImpl(callableInfo, implementationInfo, requestExtras)));
         } catch (Failure e) {
             return singletonList(new Result.InvalidRequest(e.reason));
@@ -150,12 +149,12 @@ public class AnnotationCallInterceptionRequestReaderImpl implements AnnotatedMet
         List<Annotation> kindAnnotations = Stream.of(CALLABLE_KIND_ANNOTATION_CLASSES)
             .map(methodElement::getAnnotation)
             .filter(Objects::nonNull)
-            .collect(toList());
+            .collect(Collectors.toList());
 
         if (kindAnnotations.size() > 1) {
             throw new Failure("More than one callable kind annotations present: " + kindAnnotations);
         } else if (kindAnnotations.size() == 0) {
-            throw new Failure("No callable kind annotation specified, expected one of " + Arrays.stream(CALLABLE_KIND_ANNOTATION_CLASSES).map(Class::getSimpleName).collect(joining(", ")));
+            throw new Failure("No callable kind annotation specified, expected one of " + Arrays.stream(CALLABLE_KIND_ANNOTATION_CLASSES).map(Class::getSimpleName).collect(Collectors.joining(", ")));
         } else {
             return CallableKindInfo.fromAnnotation(kindAnnotations.get(0));
         }
@@ -194,7 +193,7 @@ public class AnnotationCallInterceptionRequestReaderImpl implements AnnotatedMet
         List<Annotation> kindAnnotations = Stream.of(PARAMETER_KIND_ANNOTATION_CLASSES)
             .map(parameterElement::getAnnotation)
             .filter(Objects::nonNull)
-            .collect(toList());
+            .collect(Collectors.toList());
 
         if (kindAnnotations.size() > 1) {
             throw new Failure("More than one parameter kind annotations present: " + kindAnnotations);
@@ -213,7 +212,7 @@ public class AnnotationCallInterceptionRequestReaderImpl implements AnnotatedMet
         Optional<? extends AnnotationMirror> maybeStaticMethod = findAnnotationMirror(executableElement, CallableKind.StaticMethod.class);
         List<VariableElement> receivers = executableElement.getParameters().stream()
             .filter(it -> it.getAnnotation(ParameterKind.Receiver.class) != null)
-            .collect(toList());
+            .collect(Collectors.toList());
 
         if (maybeStaticMethod.isPresent()) {
             if (receivers.size() > 0) {

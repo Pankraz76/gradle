@@ -16,19 +16,19 @@
 
 package org.gradle.internal.instrumentation.processor.codegen;
 
-import static java.util.stream.Collectors.toList;
-import static org.gradle.internal.instrumentation.processor.codegen.TypeUtils.typeName;
-
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
 import org.gradle.internal.instrumentation.model.CallableInfo;
 import org.gradle.internal.instrumentation.model.CallableKindInfo;
 import org.gradle.internal.instrumentation.model.ParameterInfo;
 import org.gradle.internal.instrumentation.model.ParameterKindInfo;
 import org.gradle.internal.instrumentation.util.NameUtil;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.gradle.internal.instrumentation.processor.codegen.TypeUtils.typeName;
 
 public class JavadocUtils {
 
@@ -48,7 +48,7 @@ public class JavadocUtils {
         ClassName className = ClassName.bestGuess(interceptedCallable.getOwner().getType().getClassName());
         String callableNameForDocComment = interceptedCallable.getKind() == CallableKindInfo.AFTER_CONSTRUCTOR ? className.simpleName() : interceptedCallable.getCallableName();
         List<ParameterInfo> params = request.getInterceptedCallable().getParameters();
-        List<ParameterInfo> methodParameters = params.stream().filter(parameter -> parameter.getKind().isSourceParameter()).collect(toList());
+        List<ParameterInfo> methodParameters = params.stream().filter(parameter -> parameter.getKind().isSourceParameter()).collect(Collectors.toList());
         result.add("{@link $L#$L", className, callableNameForDocComment);
         if (interceptedCallable.getKind() != CallableKindInfo.GROOVY_PROPERTY_GETTER && interceptedCallable.getKind() != CallableKindInfo.GROOVY_PROPERTY_SETTER) {
             result.add("(");

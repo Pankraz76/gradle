@@ -16,13 +16,7 @@
 
 package org.gradle.groovy.scripts.internal;
 
-import static java.util.Collections.singleton;
-
 import com.google.common.base.Predicate;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
 import org.codehaus.groovy.ast.ClassHelper;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.GroovyCodeVisitor;
@@ -45,6 +39,11 @@ import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.control.SourceUnit;
 import org.gradle.internal.Pair;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Self contained utility functions for dealing with AST.
@@ -256,7 +255,7 @@ public abstract class AstUtils {
         if (statement instanceof BlockStatement) {
             return ((BlockStatement) statement).getStatements();
         } else {
-            return singleton(statement);
+            return Collections.singleton(statement);
         }
     }
 

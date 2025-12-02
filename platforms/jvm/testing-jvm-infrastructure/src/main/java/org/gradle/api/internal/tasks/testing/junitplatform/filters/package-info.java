@@ -18,7 +18,5 @@
  * Package containing JUnit Platform {@link org.junit.platform.launcher.PostDiscoveryFilter PostDiscoveryFilter}s
  * used by Gradle to filter tests.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.internal.tasks.testing.junitplatform.filters;
-
-import org.jspecify.annotations.NullMarked;

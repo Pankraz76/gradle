@@ -16,64 +16,12 @@
 
 package org.gradle.internal.instrumentation.extensions.property;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
-import static java.util.Collections.singletonList;
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
-import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
-import static org.gradle.internal.instrumentation.api.declarations.InterceptorDeclaration.GROOVY_INTERCEPTORS_GENERATED_CLASS_NAME_FOR_PROPERTY_UPGRADES;
-import static org.gradle.internal.instrumentation.api.declarations.InterceptorDeclaration.GROOVY_INTERCEPTORS_GENERATED_CLASS_NAME_FOR_PROPERTY_UPGRADES_REPORT;
-import static org.gradle.internal.instrumentation.api.declarations.InterceptorDeclaration.JVM_BYTECODE_GENERATED_CLASS_NAME_FOR_PROPERTY_UPGRADES;
-import static org.gradle.internal.instrumentation.api.declarations.InterceptorDeclaration.JVM_BYTECODE_GENERATED_CLASS_NAME_FOR_PROPERTY_UPGRADES_REPORT;
-import static org.gradle.internal.instrumentation.api.types.BytecodeInterceptorType.BYTECODE_UPGRADE;
-import static org.gradle.internal.instrumentation.api.types.BytecodeInterceptorType.BYTECODE_UPGRADE_REPORT;
-import static org.gradle.internal.instrumentation.model.CallableKindInfo.GROOVY_PROPERTY_GETTER;
-import static org.gradle.internal.instrumentation.model.CallableKindInfo.GROOVY_PROPERTY_SETTER;
-import static org.gradle.internal.instrumentation.model.CallableKindInfo.INSTANCE_METHOD;
-import static org.gradle.internal.instrumentation.model.ParameterKindInfo.METHOD_PARAMETER;
-import static org.gradle.internal.instrumentation.model.ParameterKindInfo.RECEIVER;
-import static org.gradle.internal.instrumentation.processor.AbstractInstrumentationProcessor.PROJECT_NAME_OPTIONS;
-import static org.gradle.internal.instrumentation.processor.codegen.GradleLazyType.FILE_COLLECTION;
-import static org.gradle.internal.instrumentation.processor.codegen.GradleReferencedType.isAssignableToFileSystemLocation;
-import static org.gradle.internal.instrumentation.processor.modelreader.impl.AnnotationUtils.isAnnotationOfType;
-import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.extractMethodDescriptor;
-import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.extractType;
-import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.getTypeParameterOrThrow;
-
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.PackageElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
 import org.gradle.internal.instrumentation.api.annotations.BytecodeUpgrade;
 import org.gradle.internal.instrumentation.api.annotations.ReplacedDeprecation.RemovedIn;
 import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty;
@@ -104,6 +52,53 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.objectweb.asm.Type;
 
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.PackageElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.gradle.internal.instrumentation.api.annotations.ReplacedAccessor.AccessorType;
+import static org.gradle.internal.instrumentation.api.declarations.InterceptorDeclaration.GROOVY_INTERCEPTORS_GENERATED_CLASS_NAME_FOR_PROPERTY_UPGRADES;
+import static org.gradle.internal.instrumentation.api.declarations.InterceptorDeclaration.GROOVY_INTERCEPTORS_GENERATED_CLASS_NAME_FOR_PROPERTY_UPGRADES_REPORT;
+import static org.gradle.internal.instrumentation.api.declarations.InterceptorDeclaration.JVM_BYTECODE_GENERATED_CLASS_NAME_FOR_PROPERTY_UPGRADES;
+import static org.gradle.internal.instrumentation.api.declarations.InterceptorDeclaration.JVM_BYTECODE_GENERATED_CLASS_NAME_FOR_PROPERTY_UPGRADES_REPORT;
+import static org.gradle.internal.instrumentation.api.types.BytecodeInterceptorType.BYTECODE_UPGRADE;
+import static org.gradle.internal.instrumentation.api.types.BytecodeInterceptorType.BYTECODE_UPGRADE_REPORT;
+import static org.gradle.internal.instrumentation.model.CallableKindInfo.GROOVY_PROPERTY_GETTER;
+import static org.gradle.internal.instrumentation.model.CallableKindInfo.GROOVY_PROPERTY_SETTER;
+import static org.gradle.internal.instrumentation.model.CallableKindInfo.INSTANCE_METHOD;
+import static org.gradle.internal.instrumentation.model.ParameterKindInfo.METHOD_PARAMETER;
+import static org.gradle.internal.instrumentation.model.ParameterKindInfo.RECEIVER;
+import static org.gradle.internal.instrumentation.processor.AbstractInstrumentationProcessor.PROJECT_NAME_OPTIONS;
+import static org.gradle.internal.instrumentation.processor.codegen.GradleLazyType.FILE_COLLECTION;
+import static org.gradle.internal.instrumentation.processor.codegen.GradleReferencedType.isAssignableToFileSystemLocation;
+import static org.gradle.internal.instrumentation.processor.modelreader.impl.AnnotationUtils.isAnnotationOfType;
+import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.extractMethodDescriptor;
+import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.extractType;
+import static org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils.getTypeParameterOrThrow;
+
 public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodReaderExtension {
 
     private static final TypeName DEFAULT_TYPE = ClassName.get(DefaultValue.class);
@@ -127,7 +122,7 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
         }
         return Stream.of(projectName.split("-"))
             .map(s -> s.substring(0, 1).toUpperCase(Locale.ROOT) + s.substring(1))
-            .collect(joining());
+            .collect(Collectors.joining());
     }
 
     @SuppressWarnings("DuplicatedCode")
@@ -163,15 +158,15 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
             annotation = AnnotationUtils.findAnnotationMirror(method, ToBeReplacedByLazyProperty.class);
         }
         if (!annotation.isPresent()) {
-            return emptySet();
+            return Collections.emptySet();
         }
 
         AnnotationMirror annotationMirror = annotation.get();
         if (projectName == null) {
             // We validate project name here because we want to fail only if there is an @ReplacesEagerProperty annotation used in the project
-            return singletonList(new InvalidRequest("Project name is not specified or is empty. Use -A" + PROJECT_NAME_OPTIONS + "=<projectName> compiler option to set the project name."));
+            return Collections.singletonList(new InvalidRequest("Project name is not specified or is empty. Use -A" + PROJECT_NAME_OPTIONS + "=<projectName> compiler option to set the project name."));
         } else if (isAnnotationOfType(annotationMirror, ReplacesEagerProperty.class) && (!method.getParameters().isEmpty() || !method.getSimpleName().toString().startsWith("get"))) {
-            return singletonList(new InvalidRequest(String.format("Method '%s.%s' annotated with @ReplacesEagerProperty should be a simple getter: name should start with 'get' and method should not have any parameters.", method.getEnclosingElement(), method)));
+            return Collections.singletonList(new InvalidRequest(String.format("Method '%s.%s' annotated with @ReplacesEagerProperty should be a simple getter: name should start with 'get' and method should not have any parameters.", method.getEnclosingElement(), method)));
         }
 
         try {
@@ -190,9 +185,9 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
 
             return requests.stream()
                 .map(Success::new)
-                .collect(toList());
+                .collect(Collectors.toList());
         } catch (IllegalArgumentException failure) {
-            return singletonList(new InvalidRequest(failure.getMessage()));
+            return Collections.singletonList(new InvalidRequest(failure.getMessage()));
         }
     }
 
@@ -281,12 +276,12 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
             BinaryCompatibility parentBinaryCompatibility = readBinaryCompatibility(annotationMirror);
             return replacedAccessors.stream()
                 .map(annotation -> getAccessorSpec(method, annotation, parentDeprecationSpec, parentBinaryCompatibility))
-                .collect(toList());
+                .collect(Collectors.toList());
         }
 
         // Provider has only a getter, no setter
         if (GradleLazyType.PROVIDER.isEqualToRawTypeOf(TypeName.get(method.getReturnType()))) {
-            return singletonList(getAccessorSpec(method, AccessorType.GETTER, annotationMirror));
+            return Collections.singletonList(getAccessorSpec(method, AccessorType.GETTER, annotationMirror));
         }
         return Arrays.asList(
             getAccessorSpec(method, AccessorType.GETTER, annotationMirror),
@@ -299,7 +294,7 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
             .map(v -> (boolean) v.getValue())
             .orElseThrow(() -> new AnnotationReadFailure(String.format("Missing 'unreported' attribute in @%s", ToBeReplacedByLazyProperty.class.getSimpleName())));
         if (skipForReport) {
-            return emptyList();
+            return Collections.emptyList();
         }
 
         String propertyName = getPropertyName(annotatedMethod);
@@ -310,7 +305,7 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
         if (isSetterMethodName(annotatedMethod.getSimpleName().toString()) || !propertySettersVisited.add(propertyName)) {
             // If setter is annotated we should not visit other setters
             // also some booleans have two getters, is and get getter, so lets visit setters only once.
-            setters = emptyList();
+            setters = Collections.emptyList();
         } else {
             setters = context.computeIfAbsent(settersKey, key -> getAllSetters(annotatedMethod.getEnclosingElement())).get(propertyName);
         }
@@ -325,7 +320,7 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
                 deprecationSpec,
                 BinaryCompatibility.ACCESSORS_KEPT,
                 BYTECODE_UPGRADE_REPORT))
-            .collect(toList());
+            .collect(Collectors.toList());
     }
 
     private static Multimap<String, ExecutableElement> getAllSetters(Element element) {
@@ -333,7 +328,7 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
             .filter(method -> isSetterMethodName(method.getSimpleName().toString()) && method.getParameters().size() == 1)
             .collect(Multimaps.toMultimap(
                 PropertyUpgradeAnnotatedMethodReader::getPropertyName,
-                identity(),
+                Function.identity(),
                 ArrayListMultimap::create
             ));
     }
@@ -358,7 +353,7 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
                 TypeUtils.extractType(parameter.asType()),
                 METHOD_PARAMETER
             ))
-            .collect(toList());
+            .collect(Collectors.toList());
 
         AccessorType accessorType = parameters.isEmpty() ? AccessorType.GETTER : AccessorType.SETTER;
         BridgedMethodInfo bridgedMethodInfo = new BridgedMethodInfo(method, bridgeType);
@@ -379,12 +374,12 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
     private List<AccessorSpec> readAccessorSpecsFromAdapter(Element adapter, Element upgradedElement, AnnotationMirror annotationMirror) {
         List<ExecutableElement> bridgedMethods = TypeUtils.getExecutableElementsFromElements(Stream.of(adapter)).stream()
             .filter(method -> method.getAnnotation(BytecodeUpgrade.class) != null)
-            .collect(toList());
+            .collect(Collectors.toList());
         validateBridgedMethods(adapter, upgradedElement, bridgedMethods);
 
         return bridgedMethods.stream()
             .map(method -> adapterBridgedMethodToAccessorSpec(method, annotationMirror))
-            .collect(toList());
+            .collect(Collectors.toList());
     }
 
     private static void validateBridgedMethods(Element adapter, Element upgradedElement, List<ExecutableElement> methods) {
@@ -520,7 +515,7 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
                 returnType = originalType;
                 break;
             case SETTER:
-                parameters = singletonList(new ParameterInfoImpl("arg0", TypeUtils.extractRawType(originalType), METHOD_PARAMETER));
+                parameters = Collections.singletonList(new ParameterInfoImpl("arg0", TypeUtils.extractRawType(originalType), METHOD_PARAMETER));
                 boolean isFluentSetter = AnnotationUtils.findAnnotationValueWithDefaults(elements, annotation, "fluentSetter")
                     .map(v -> (Boolean) v.getValue())
                     .orElseThrow(() -> new AnnotationReadFailure("Missing 'fluentSetter' attribute"));
@@ -612,8 +607,8 @@ public class PropertyUpgradeAnnotatedMethodReader implements AnnotatedMethodRead
         String callableName = accessor.methodName;
         Type returnType = TypeUtils.extractRawType(accessor.returnType);
         return new CallInterceptionRequestImpl(
-            extractCallableInfo(INSTANCE_METHOD, method, returnType, callableName, emptyList()),
-            extractImplementationInfo(accessor, method, returnType, accessor.methodName, "get", emptyList()),
+            extractCallableInfo(INSTANCE_METHOD, method, returnType, callableName, Collections.emptyList()),
+            extractImplementationInfo(accessor, method, returnType, accessor.methodName, "get", Collections.emptyList()),
             extras
         );
     }

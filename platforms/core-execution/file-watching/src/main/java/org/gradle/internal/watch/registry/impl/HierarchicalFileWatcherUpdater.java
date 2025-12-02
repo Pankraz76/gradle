@@ -16,13 +16,8 @@
 
 package org.gradle.internal.watch.registry.impl;
 
-import static com.google.common.collect.ImmutableList.toImmutableList;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
 import org.gradle.fileevents.FileWatcher;
 import org.gradle.internal.file.FileHierarchySet;
 import org.gradle.internal.snapshot.FileSystemLocationSnapshot;
@@ -31,6 +26,10 @@ import org.gradle.internal.watch.registry.FileWatcherProbeRegistry;
 import org.gradle.internal.watch.registry.FileWatcherUpdater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Updater for hierarchical file watchers.
@@ -107,7 +106,7 @@ public class HierarchicalFileWatcherUpdater extends AbstractFileWatcherUpdater {
 
         List<File> hierarchiesToStopWatching = oldWatchedHierarchies.stream()
             .filter(oldWatchedHierarchy -> !watchedHierarchies.contains(oldWatchedHierarchy))
-            .collect(toImmutableList());
+            .collect(ImmutableList.toImmutableList());
         if (!hierarchiesToStopWatching.isEmpty()) {
             if (!fileWatcher.stopWatching(hierarchiesToStopWatching)) {
                 LOGGER.debug("Couldn't stop watching directories: {}", hierarchiesToStopWatching);
@@ -116,7 +115,7 @@ public class HierarchicalFileWatcherUpdater extends AbstractFileWatcherUpdater {
 
         List<File> hierarchiesToStartWatching = watchedHierarchies.stream()
             .filter(newWatchedHierarchy -> !oldWatchedHierarchies.contains(newWatchedHierarchy))
-            .collect(toImmutableList());
+            .collect(ImmutableList.toImmutableList());
         if (!hierarchiesToStartWatching.isEmpty()) {
             hierarchiesToStartWatching.forEach(locationToWatchValidator::validateLocationToWatch);
             fileWatcher.startWatching(hierarchiesToStartWatching);

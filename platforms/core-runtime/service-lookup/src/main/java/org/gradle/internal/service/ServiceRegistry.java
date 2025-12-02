@@ -15,14 +15,13 @@
  */
 package org.gradle.internal.service;
 
-import static java.util.Collections.emptyList;
+import org.gradle.internal.scan.UsedByScanPlugin;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
-import org.gradle.internal.scan.UsedByScanPlugin;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A read-only registry of services. May or may not be immutable.
@@ -78,7 +77,7 @@ public interface ServiceRegistry extends ServiceLookup {
 
         @Override
         public <T> List<T> getAll(Class<T> serviceType) throws ServiceLookupException {
-            return emptyList();
+            return Collections.emptyList();
         }
 
         @Override

@@ -36,9 +36,9 @@ import java.lang.annotation.Target;
  *
  * <p>This annotation can be used with the following annotations:</p>
  *
- * <ul><li>{@link InputFiles}</li>
+ * <ul><li>{@link org.gradle.api.tasks.InputFiles}</li>
  *
- * <li>{@link InputDirectory}</li> </ul>
+ * <li>{@link org.gradle.api.tasks.InputDirectory}</li> </ul>
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

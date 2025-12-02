@@ -15,11 +15,10 @@
  */
 package org.gradle.util.internal;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static org.gradle.internal.Cast.cast;
-import static org.gradle.internal.Cast.castNullable;
-import static org.gradle.internal.Cast.uncheckedNonnullCast;
+import org.gradle.api.specs.Spec;
+import org.gradle.internal.Factory;
+import org.gradle.internal.Pair;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.AbstractList;
@@ -40,10 +39,10 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.Function;
-import org.gradle.api.specs.Spec;
-import org.gradle.internal.Factory;
-import org.gradle.internal.Pair;
-import org.jspecify.annotations.Nullable;
+
+import static org.gradle.internal.Cast.cast;
+import static org.gradle.internal.Cast.castNullable;
+import static org.gradle.internal.Cast.uncheckedNonnullCast;
 
 @SuppressWarnings("join_with_collect")
 public abstract class CollectionUtils {
@@ -224,14 +223,14 @@ public abstract class CollectionUtils {
     @SuppressWarnings("MixedMutabilityReturnType")
     public static <T> List<T> flattenCollections(Class<T> type, Object... things) {
         if (things == null) {
-            return singletonList(null);
+            return Collections.singletonList(null);
         } else if (things.length == 0) {
-            return emptyList();
+            return Collections.emptyList();
         } else if (things.length == 1) {
             Object thing = things[0];
 
             if (thing == null) {
-                return singletonList(null);
+                return Collections.singletonList(null);
             }
 
             // Casts to Class below are to workaround Eclipse compiler bug
@@ -255,7 +254,7 @@ public abstract class CollectionUtils {
                 return list;
             }
 
-            return singletonList(cast(type, thing));
+            return Collections.singletonList(cast(type, thing));
         } else {
             List<T> list = new ArrayList<T>();
             for (Object thing : things) {
@@ -464,7 +463,7 @@ public abstract class CollectionUtils {
      * The result of diffing two sets.
      *
      * @param <T> The type of element the sets contain
-     * @see CollectionUtils#diffSetsBy(Set, Set, Function)
+     * @see CollectionUtils#diffSetsBy(java.util.Set, java.util.Set, Function)
      */
     public static class SetDiff<T> {
         public Set<T> leftOnly = new HashSet<T>();

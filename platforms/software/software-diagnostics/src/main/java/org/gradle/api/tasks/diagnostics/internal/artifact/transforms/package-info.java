@@ -17,7 +17,5 @@
 /**
  * Internal classes used by tasks which report information about Artifact Transforms.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.tasks.diagnostics.internal.artifact.transforms;
-
-import org.jspecify.annotations.NullMarked;

@@ -15,13 +15,11 @@
  */
 package org.gradle.internal.id;
 
-import static java.util.UUID.randomUUID;
-
 import java.util.UUID;
 
 public class UUIDGenerator implements IdGenerator<UUID> {
     @Override
     public UUID generateId() {
-        return randomUUID();
+        return UUID.randomUUID();
     }
 }

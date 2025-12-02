@@ -16,7 +16,13 @@
 
 package org.gradle.internal.vfs.impl;
 
-import static java.util.Collections.singletonList;
+import org.gradle.internal.snapshot.FileSystemLocationSnapshot;
+import org.gradle.internal.snapshot.MetadataSnapshot;
+import org.gradle.internal.snapshot.SnapshotHierarchy;
+import org.gradle.internal.snapshot.VfsRelativePath;
+import org.gradle.internal.vfs.VirtualFileSystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -25,13 +31,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
-import org.gradle.internal.snapshot.FileSystemLocationSnapshot;
-import org.gradle.internal.snapshot.MetadataSnapshot;
-import org.gradle.internal.snapshot.SnapshotHierarchy;
-import org.gradle.internal.snapshot.VfsRelativePath;
-import org.gradle.internal.vfs.VirtualFileSystem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class AbstractVirtualFileSystem implements VirtualFileSystem {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractVirtualFileSystem.class);
@@ -136,7 +135,7 @@ public abstract class AbstractVirtualFileSystem implements VirtualFileSystem {
     @Override
     public void invalidateAll() {
         LOGGER.debug("Invalidating the whole VFS");
-        invalidate(singletonList(VfsRelativePath.ROOT));
+        invalidate(Collections.singletonList(VfsRelativePath.ROOT));
     }
 
     /**

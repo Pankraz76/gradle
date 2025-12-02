@@ -17,7 +17,5 @@
 /**
  * The documentation generation {@link org.gradle.api.Task} implementations.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.tasks.javadoc;
-
-import org.jspecify.annotations.NullMarked;

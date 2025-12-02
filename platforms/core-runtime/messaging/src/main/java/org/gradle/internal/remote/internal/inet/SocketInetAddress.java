@@ -15,14 +15,13 @@
  */
 package org.gradle.internal.remote.internal.inet;
 
-import static java.util.Collections.singletonList;
+import org.gradle.internal.serialize.Decoder;
+import org.gradle.internal.serialize.Encoder;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Collections;
 import java.util.List;
-import org.gradle.internal.serialize.Decoder;
-import org.gradle.internal.serialize.Encoder;
 
 public class SocketInetAddress implements InetEndpoint {
     public static final org.gradle.internal.serialize.Serializer<SocketInetAddress> SERIALIZER = new Serializer();
@@ -64,7 +63,7 @@ public class SocketInetAddress implements InetEndpoint {
 
     @Override
     public List<InetAddress> getCandidates() {
-        return singletonList(address);
+        return Collections.singletonList(address);
     }
 
     public InetAddress getAddress() {

@@ -17,7 +17,5 @@
 /**
  * Maven buildinit classes used in the worker action.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.unexported.buildinit.plugins.internal.maven;
-
-import org.jspecify.annotations.NullMarked;

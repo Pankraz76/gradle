@@ -17,7 +17,5 @@
 /**
  * Classes for declaring and using artifacts and artifact dependencies.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.artifacts;
-
-import org.jspecify.annotations.NullMarked;

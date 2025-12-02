@@ -17,7 +17,5 @@
 /**
  * API classes for implementing incremental tasks.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.tasks.incremental;
-
-import org.jspecify.annotations.NullMarked;

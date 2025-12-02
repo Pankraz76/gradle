@@ -16,16 +16,15 @@
 
 package org.gradle.docs.asciidoctor;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.regex.Pattern.DOTALL;
+import org.apache.commons.io.IOUtils;
+
+import org.asciidoctor.ast.Document;
+import org.asciidoctor.extension.Postprocessor;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.io.IOUtils;
-import org.asciidoctor.ast.Document;
-import org.asciidoctor.extension.Postprocessor;
+import java.util.regex.Matcher;
 
 /**
  * This processor adds the ability to copy code blocks to the clipboard
@@ -41,7 +40,7 @@ public class ClipboardPostprocessor extends Postprocessor {
             return output;
         }
 
-        Pattern codeBlockPattern = Pattern.compile("</code>", DOTALL);
+        Pattern codeBlockPattern = Pattern.compile("</code>", Pattern.DOTALL);
         Matcher matcher = codeBlockPattern.matcher(output);
         if (!matcher.find()) {
             return output; // No <code> block found
@@ -57,7 +56,7 @@ public class ClipboardPostprocessor extends Postprocessor {
 
     private static String readResource(String resourcePath) {
         try (InputStream inputStream = ClipboardPostprocessor.class.getResourceAsStream(resourcePath)) {
-            return IOUtils.toString(inputStream, UTF_8);
+            return IOUtils.toString(inputStream, StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new IllegalStateException("Unable to read source resource for Clipboard: " + e.getMessage());
         }

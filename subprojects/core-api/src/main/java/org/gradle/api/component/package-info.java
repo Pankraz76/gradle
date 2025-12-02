@@ -19,7 +19,5 @@
  *
  * @since 1.4
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.component;
-
-import org.jspecify.annotations.NullMarked;

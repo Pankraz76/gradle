@@ -16,22 +16,9 @@
 
 package org.gradle.api.internal.changedetection.state;
 
-import static java.util.Map.Entry.comparingByKey;
-import static java.util.stream.Collectors.toList;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import org.gradle.api.internal.file.pattern.PathMatcher;
 import org.gradle.api.internal.file.pattern.PatternMatcherFactory;
 import org.gradle.internal.fingerprint.hashing.RegularFileSnapshotContext;
@@ -43,6 +30,17 @@ import org.gradle.internal.hash.Hashing;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class PropertiesFileAwareClasspathResourceHasher extends FallbackHandlingResourceHasher {
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesFileAwareClasspathResourceHasher.class);
@@ -115,7 +113,7 @@ public class PropertiesFileAwareClasspathResourceHasher extends FallbackHandling
         List<ResourceEntryFilter> matchingFilters = propertiesFileFilters.entrySet().stream()
             .filter(entry -> entry.getKey().matches(relativePathSegments.get(), 0))
             .map(Map.Entry::getValue)
-            .collect(toList());
+            .collect(Collectors.toList());
 
         if (matchingFilters.size() == 0) {
             return null;
@@ -136,7 +134,7 @@ public class PropertiesFileAwareClasspathResourceHasher extends FallbackHandling
             .stream()
             .filter(entry ->
                 !propertyResourceFilter.shouldBeIgnored(entry.getKey()))
-            .sorted(comparingByKey())
+            .sorted(Map.Entry.comparingByKey())
             .forEach(entry -> {
                 hasher.putString(entry.getKey());
                 hasher.putString(entry.getValue());

@@ -16,9 +16,9 @@
 
 package org.gradle.internal.configuration.inputs;
 
-import static java.util.Objects.requireNonNull;
-
 import com.google.common.primitives.Primitives;
+import org.jspecify.annotations.Nullable;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -35,7 +35,6 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A wrapper for {@link Properties} that notifies a listener about accesses.
@@ -505,7 +504,7 @@ public class AccessTrackingProperties extends Properties {
     private Object getAndReportAccess(@Nullable Object key) {
         Object value = delegate.get(key);
         // delegate.get(null) actually throws NPE.
-        reportAccess(requireNonNull(key), value);
+        reportAccess(Objects.requireNonNull(key), value);
         return value;
     }
 
@@ -569,7 +568,7 @@ public class AccessTrackingProperties extends Properties {
 
             @Override
             public void onRemove(@Nullable Object object) {
-                reportRemoval(requireNonNull(object));
+                reportRemoval(Objects.requireNonNull(object));
             }
 
             @Override

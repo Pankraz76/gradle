@@ -15,8 +15,6 @@
  */
 package org.gradle.internal.installation;
 
-import static java.util.Collections.unmodifiableList;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
@@ -38,7 +36,7 @@ public class GradleInstallation {
 
     public GradleInstallation(File dir) {
         this.dir = dir;
-        this.libDirs = unmodifiableList(findLibDirs(dir));
+        this.libDirs = Collections.unmodifiableList(findLibDirs(dir));
     }
 
     public File getGradleHome() {

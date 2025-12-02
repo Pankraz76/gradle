@@ -17,8 +17,8 @@
 package org.gradle.problems.internal.rendering;
 
 
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.groupingBy;
+import org.gradle.api.problems.ProblemId;
+import org.gradle.api.problems.internal.InternalProblem;
 
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -27,8 +27,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.gradle.api.problems.ProblemId;
-import org.gradle.api.problems.internal.InternalProblem;
 
 /**
  * Renders one or more problems to a writer.
@@ -121,7 +119,7 @@ public abstract class ProblemWriter {
 
         @Override
         public void write(InternalProblem problem, Writer writer) {
-            write(singletonList(problem), writer);
+            write(Collections.singletonList(problem), writer);
         }
 
         @Override
@@ -132,7 +130,7 @@ public abstract class ProblemWriter {
         private void write(Collection<InternalProblem> problems, PrintWriter output) {
             // Group problems by problem id
             // When generic rendering is addressed, maybe we also group by the whole problem group hierarchy
-            Map<ProblemId, List<InternalProblem>> problemIdListMap = problems.stream().collect(groupingBy(internalProblem -> internalProblem.getDefinition().getId()));
+            Map<ProblemId, List<InternalProblem>> problemIdListMap = problems.stream().collect(Collectors.groupingBy(internalProblem -> internalProblem.getDefinition().getId()));
             String separator = "";
             for (Map.Entry<ProblemId, List<InternalProblem>> problemIdListEntry : problemIdListMap.entrySet()) {
                 renderProblemsById(output, problemIdListEntry.getKey(), problemIdListEntry.getValue(), separator);

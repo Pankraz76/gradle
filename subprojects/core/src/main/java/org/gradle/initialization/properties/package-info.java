@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.initialization.properties;
 
-import org.jspecify.annotations.NullMarked;

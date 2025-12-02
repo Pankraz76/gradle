@@ -17,7 +17,5 @@
 /**
  * A package that contains registration logic for build script classpath instrumentation.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.internal.initialization.transform.registration;
-
-import org.jspecify.annotations.NullMarked;

@@ -18,7 +18,5 @@
  *
  * @since 2.4
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.credentials;
-
-import org.jspecify.annotations.NullMarked;

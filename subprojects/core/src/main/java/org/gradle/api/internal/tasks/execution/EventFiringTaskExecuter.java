@@ -16,7 +16,6 @@
 
 package org.gradle.api.internal.tasks.execution;
 
-import org.gradle.api.execution.TaskExecutionListener;
 import org.gradle.api.internal.TaskInternal;
 import org.gradle.api.internal.tasks.TaskExecuter;
 import org.gradle.api.internal.tasks.TaskExecuterResult;
@@ -37,11 +36,11 @@ import org.gradle.internal.operations.CallableBuildOperation;
 public class EventFiringTaskExecuter implements TaskExecuter {
 
     private final BuildOperationRunner buildOperationRunner;
-    private final TaskExecutionListener taskExecutionListener;
+    private final org.gradle.api.execution.TaskExecutionListener taskExecutionListener;
     private final TaskListenerInternal taskListener;
     private final TaskExecuter delegate;
 
-    public EventFiringTaskExecuter(BuildOperationRunner buildOperationRunner, TaskExecutionListener taskExecutionListener, TaskListenerInternal taskListener, TaskExecuter delegate) {
+    public EventFiringTaskExecuter(BuildOperationRunner buildOperationRunner, org.gradle.api.execution.TaskExecutionListener taskExecutionListener, TaskListenerInternal taskListener, TaskExecuter delegate) {
         this.buildOperationRunner = buildOperationRunner;
         this.taskExecutionListener = taskExecutionListener;
         this.taskListener = taskListener;

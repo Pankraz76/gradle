@@ -36,8 +36,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 @NullMarked
 public class InPlaceClasspathBuilder implements ClasspathBuilder {
     private static final int BUFFER_SIZE = 8192;
@@ -73,7 +71,7 @@ public class InPlaceClasspathBuilder implements ClasspathBuilder {
             maybeAddParent(name);
             ZipArchiveEntry zipEntry = newZipEntryWithFixedTime(name);
             configureCompression(zipEntry, compressionMethod, content);
-            outputStream.setEncoding(UTF_8.toString());
+            outputStream.setEncoding("UTF-8");
             outputStream.putArchiveEntry(zipEntry);
             outputStream.write(content);
             outputStream.closeArchiveEntry();

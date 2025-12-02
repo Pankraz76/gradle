@@ -16,8 +16,6 @@
 
 package org.gradle.api.problems.internal;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -26,7 +24,7 @@ public class DefaultDocLink implements InternalDocLink {
     private final String url;
 
     public DefaultDocLink(String url) {
-        this.url = checkNotNull(url);
+        this.url = Preconditions.checkNotNull(url);
     }
 
     @Override

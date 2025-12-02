@@ -15,16 +15,7 @@
  */
 package org.gradle.internal.nativeintegration.filesystem.services;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.UUID.randomUUID;
-
 import com.google.common.io.Files;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
-import java.util.UUID;
-import javax.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.gradle.api.internal.file.temp.TemporaryFileProvider;
 import org.gradle.internal.SystemProperties;
@@ -38,6 +29,13 @@ import org.gradle.internal.nativeintegration.filesystem.FileSystem;
 import org.gradle.internal.nativeintegration.filesystem.Symlink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.UUID;
 
 class GenericFileSystem implements FileSystem {
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericFileSystem.class);
@@ -137,12 +135,12 @@ class GenericFileSystem implements FileSystem {
     }
 
     private String generateUniqueContent() {
-        return randomUUID().toString();
+        return UUID.randomUUID().toString();
     }
 
     private File createFile(String content) throws IOException {
         File file = temporaryFileProvider.createTemporaryFile("gradle_fs_probing", null);
-        Files.asCharSink(file, UTF_8).write(content);
+        Files.asCharSink(file, StandardCharsets.UTF_8).write(content);
         return file;
     }
 
@@ -160,7 +158,7 @@ class GenericFileSystem implements FileSystem {
     }
 
     private boolean hasContent(File file, String content) throws IOException {
-        return file.exists() && Files.asCharSource(file, UTF_8).readFirstLine().equals(content);
+        return file.exists() && Files.asCharSource(file, StandardCharsets.UTF_8).readFirstLine().equals(content);
     }
 
     private void checkJavaIoTmpDirExists() throws IOException {

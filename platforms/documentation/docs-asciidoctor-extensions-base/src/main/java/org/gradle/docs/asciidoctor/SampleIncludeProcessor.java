@@ -15,15 +15,14 @@
  */
 package org.gradle.docs.asciidoctor;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.nio.file.Files.readAllBytes;
-import static java.util.Collections.unmodifiableMap;
-import static java.util.stream.Collectors.joining;
+import org.asciidoctor.ast.Document;
+import org.asciidoctor.extension.IncludeProcessor;
+import org.asciidoctor.extension.PreprocessorReader;
+import org.jspecify.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,10 +33,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import org.asciidoctor.ast.Document;
-import org.asciidoctor.extension.IncludeProcessor;
-import org.asciidoctor.extension.PreprocessorReader;
-import org.jspecify.annotations.Nullable;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.file.Files.readAllBytes;
 
 public class SampleIncludeProcessor extends IncludeProcessor {
 
@@ -58,7 +56,7 @@ public class SampleIncludeProcessor extends IncludeProcessor {
         map.put("py", "python");
         map.put("sh", "bash");
         map.put("rb", "ruby");
-        return unmodifiableMap(map);
+        return Collections.unmodifiableMap(map);
     }
 
     @Override
@@ -109,7 +107,7 @@ public class SampleIncludeProcessor extends IncludeProcessor {
 
     private static String getContent(String filePath) {
         try {
-            return Files.readString(Paths.get(filePath));
+            return new String(readAllBytes(Paths.get(filePath)), UTF_8);
         } catch (IOException e) {
             throw new IllegalStateException("Unable to read source file " + Paths.get(filePath).toAbsolutePath().toFile().getAbsolutePath());
         }
@@ -145,7 +143,7 @@ public class SampleIncludeProcessor extends IncludeProcessor {
             // filter out lines matching the tagging regex
             String sampleWithoutTags = Pattern.compile("\\R").splitAsStream(source)
                 .filter(line -> !sampleTagRegex.matcher(line).matches())
-                .collect(joining("\n"));
+                .collect(Collectors.joining("\n"));
             result.append(sampleWithoutTags);
         } else {
             String activeTag = null;

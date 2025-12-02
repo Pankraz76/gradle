@@ -36,7 +36,6 @@ import sbt.internal.inc.LoggedReporter;
 import sbt.internal.inc.PlainVirtualFileConverter;
 import sbt.internal.inc.ScalaInstance;
 import scala.Option;
-import xsbti.CompileFailed;
 import xsbti.T2;
 import xsbti.VirtualFile;
 import xsbti.compile.AnalysisContents;
@@ -161,7 +160,7 @@ public class ZincScalaCompiler implements Compiler<ScalaJavaJointCompileSpec> {
                 AnalysisContents contentNext = AnalysisContents.create(compile.analysis(), compile.setup());
                 analysisStore.get().set(contentNext);
             }
-        } catch (CompileFailed e) {
+        } catch (xsbti.CompileFailed e) {
             throw new CompilationFailedException(e);
         }
         LOGGER.info("Completed Scala compilation: {}", timer.getElapsed());

@@ -30,7 +30,7 @@ import java.util.List;
  * <p>Provider compatibility: This method is implemented by all provider versions from 6.1.</p>
  *
  * @since 6.1
- * @see ConnectionVersion4
+ * @see org.gradle.tooling.internal.protocol.ConnectionVersion4
  */
 public interface InternalInvalidatableVirtualFileSystemConnection extends InternalProtocolInterface {
 

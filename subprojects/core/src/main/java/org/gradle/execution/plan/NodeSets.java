@@ -26,7 +26,6 @@ import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import static org.gradle.internal.Cast.uncheckedCast;
@@ -118,7 +117,7 @@ public final class NodeSets {
                         throw new ConcurrentModificationException();
                     }
                     if (index >= size) {
-                        throw new NoSuchElementException();
+                        throw new java.util.NoSuchElementException();
                     }
                     lastReturned = index;
                     return uncheckedCast(array[index++]);

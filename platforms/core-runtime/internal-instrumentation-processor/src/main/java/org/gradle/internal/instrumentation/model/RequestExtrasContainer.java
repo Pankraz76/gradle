@@ -16,19 +16,18 @@
 
 package org.gradle.internal.instrumentation.model;
 
-import static java.util.Collections.unmodifiableList;
+import org.gradle.internal.Cast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.gradle.internal.Cast;
 
 public class RequestExtrasContainer {
     private final List<RequestExtra> extras = new ArrayList<>();
 
     public List<RequestExtra> getAll() {
-        return unmodifiableList(extras);
+        return Collections.unmodifiableList(extras);
     }
 
     public <T> Optional<T> getByType(Class<T> type) {

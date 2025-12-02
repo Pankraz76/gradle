@@ -15,13 +15,12 @@
  */
 package org.gradle.internal.scripts;
 
-import static java.util.Collections.unmodifiableList;
+import org.gradle.scripts.ScriptingLanguage;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.gradle.scripts.ScriptingLanguage;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Registry of scripting languages.
@@ -29,7 +28,7 @@ import org.jspecify.annotations.Nullable;
 public final class ScriptingLanguages {
 
     private static final List<ScriptingLanguage> ALL =
-        unmodifiableList(
+        Collections.unmodifiableList(
             Arrays.asList(
                 scriptingLanguage(".gradle", null),
                 scriptingLanguage(".gradle.kts", "org.gradle.kotlin.dsl.provider.KotlinScriptPluginFactory"),

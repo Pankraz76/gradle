@@ -16,16 +16,15 @@
 
 package org.gradle.internal.configuration.inputs;
 
-import static java.util.Objects.requireNonNull;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ForwardingMap;
+import org.jspecify.annotations.Nullable;
+
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiConsumer;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A wrapper for the {@link System#getenv()} result that notifies a listener about accesses.
@@ -136,7 +135,7 @@ public class AccessTrackingEnvMap extends ForwardingMap<String, String> implemen
         return new AccessTrackingSet.Listener() {
             @Override
             public void onAccess(@Nullable Object o) {
-                getAndReport(requireNonNull(o));
+                getAndReport(Objects.requireNonNull(o));
             }
 
             @Override

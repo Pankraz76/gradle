@@ -19,7 +19,7 @@ package org.gradle.platform.base;
 import org.gradle.api.Incubating;
 
 /**
- * A specification of a {@link Application}.
+ * A specification of a {@link org.gradle.platform.base.Application}.
  */
 @Incubating
 public interface ApplicationSpec extends GeneralComponentSpec {

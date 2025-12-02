@@ -16,7 +16,7 @@
 
 package org.gradle.internal;
 
-import static java.util.Objects.requireNonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -24,7 +24,6 @@ import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import org.jspecify.annotations.Nullable;
 
 /**
  * An object to represent the result of an operation that can potentially fail.
@@ -220,7 +219,7 @@ public abstract class Try<T extends @Nullable Object> {
         private final Throwable failure;
 
         public Failure(Throwable failure) {
-            this.failure = requireNonNull(failure, "null failure is not allowed");
+            this.failure = Objects.requireNonNull(failure, "null failure is not allowed");
         }
 
         @Override

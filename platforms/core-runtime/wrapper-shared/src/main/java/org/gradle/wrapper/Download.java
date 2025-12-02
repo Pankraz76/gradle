@@ -35,8 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 public class Download implements IDownload {
     public static final String UNKNOWN_VERSION = "0";
     public static final int DEFAULT_NETWORK_TIMEOUT_MILLISECONDS = 10 * 1000;
@@ -129,7 +127,7 @@ public class Download implements IDownload {
             conn.setRequestProperty("User-Agent", userAgentValue);
             conn.setConnectTimeout(networkTimeout);
             conn.setReadTimeout(networkTimeout);
-
+            
             // Check HTTP response code before downloading
             if (conn instanceof HttpURLConnection) {
                 HttpURLConnection httpConn = (HttpURLConnection) conn;
@@ -138,7 +136,7 @@ public class Download implements IDownload {
                     throw new IOException("Server returned HTTP response code: " + responseCode + " for URL: " + safeUrl);
                 }
             }
-
+            
             in = conn.getInputStream();
             byte[] buffer = new byte[BUFFER_SIZE];
             int numRead;
@@ -216,11 +214,11 @@ public class Download implements IDownload {
             Method getEncoderMethod = loader.loadClass("java.util.Base64").getMethod("getEncoder");
             Method encodeMethod = loader.loadClass("java.util.Base64$Encoder").getMethod("encodeToString", byte[].class);
             Object encoder = getEncoderMethod.invoke(null);
-            return (String) encodeMethod.invoke(encoder, new Object[]{userInfo.getBytes(UTF_8)});
+            return (String) encodeMethod.invoke(encoder, new Object[]{userInfo.getBytes("UTF-8")});
         } catch (Exception java7OrEarlier) {
             try {
                 Method encodeMethod = loader.loadClass("javax.xml.bind.DatatypeConverter").getMethod("printBase64Binary", byte[].class);
-                return (String) encodeMethod.invoke(null, new Object[]{userInfo.getBytes(UTF_8)});
+                return (String) encodeMethod.invoke(null, new Object[]{userInfo.getBytes("UTF-8")});
             } catch (Exception java5OrEarlier) {
                 throw new RuntimeException("Downloading Gradle distributions with HTTP Basic Authentication is not supported on your JVM.", java5OrEarlier);
             }

@@ -17,7 +17,5 @@
 /**
  * Classes that provide meta-data about software components.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.artifacts.component;
-
-import org.jspecify.annotations.NullMarked;

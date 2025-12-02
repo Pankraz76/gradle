@@ -16,16 +16,14 @@
 
 package org.gradle.internal.serialization;
 
-import static java.util.Objects.requireNonNull;
-
-import java.io.Serializable;
-import java.util.Objects;
-import java.util.concurrent.Callable;
 import org.gradle.internal.Try;
 import org.gradle.internal.evaluation.EvaluationContext;
 import org.gradle.internal.evaluation.EvaluationOwner;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Objects;
+import java.util.concurrent.Callable;
 
 /**
  * Represents a computation that must execute only once and
@@ -51,7 +49,7 @@ public abstract class Cached<T> {
 
     public abstract T get();
 
-    private static class Deferred<T> extends Cached<T> implements Serializable, EvaluationOwner {
+    private static class Deferred<T> extends Cached<T> implements java.io.Serializable, EvaluationOwner {
 
         // TODO(https://github.com/gradle/gradle/issues/31239) fields are volatile as a workaround for call sites still unwisely using Cached from multiple threads.
         private volatile @Nullable Callable<T> computation;
@@ -70,7 +68,7 @@ public abstract class Cached<T> {
             Callable<T> toCompute = computation;
             if (result == null) {
                 // copy reference into the call stack to avoid exacerbating https://github.com/gradle/gradle/issues/31239
-                result = tryComputation(requireNonNull(toCompute));
+                result = tryComputation(Objects.requireNonNull(toCompute));
                 computation = null;
             }
             return result;

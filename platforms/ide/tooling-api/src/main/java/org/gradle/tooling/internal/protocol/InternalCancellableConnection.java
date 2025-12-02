@@ -29,7 +29,7 @@ import org.gradle.tooling.internal.protocol.exceptions.InternalUnsupportedBuildA
  *
  * @since 2.1-rc-1
  * @see InternalParameterAcceptingConnection
- * @see ConnectionVersion4
+ * @see org.gradle.tooling.internal.protocol.ConnectionVersion4
  */
 public interface InternalCancellableConnection extends InternalProtocolInterface {
     /**

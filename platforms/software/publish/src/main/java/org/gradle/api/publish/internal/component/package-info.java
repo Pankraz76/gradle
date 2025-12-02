@@ -14,7 +14,5 @@
  * limitations under the License.
  */
 
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.api.publish.internal.component;
-
-import org.jspecify.annotations.NullMarked;

@@ -17,7 +17,5 @@
 /**
  * Defines tools and configuration options that can build things that run on the JVM.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.jvm.toolchain;
-
-import org.jspecify.annotations.NullMarked;

@@ -16,12 +16,11 @@
 
 package org.gradle.internal.resource.connector;
 
-import static java.util.Collections.emptyList;
+import org.gradle.authentication.Authentication;
+import org.gradle.internal.verifier.HttpRedirectVerifier;
 
 import java.util.Collection;
 import java.util.Collections;
-import org.gradle.authentication.Authentication;
-import org.gradle.internal.verifier.HttpRedirectVerifier;
 
 public interface ResourceConnectorSpecification {
     default <T> T getCredentials(Class<T> type) {
@@ -29,7 +28,7 @@ public interface ResourceConnectorSpecification {
     }
 
     default Collection<Authentication> getAuthentications() {
-        return emptyList();
+        return Collections.emptyList();
     }
 
     default HttpRedirectVerifier getRedirectVerifier() {

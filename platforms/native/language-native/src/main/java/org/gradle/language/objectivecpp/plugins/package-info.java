@@ -17,7 +17,5 @@
 /**
  * Plugins for building from Objective-C++ language sources.
  */
-@Incubating
+@org.gradle.api.Incubating
 package org.gradle.language.objectivecpp.plugins;
-
-import org.gradle.api.Incubating;

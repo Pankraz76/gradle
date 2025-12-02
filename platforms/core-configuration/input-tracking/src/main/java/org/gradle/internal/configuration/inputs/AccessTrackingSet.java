@@ -16,11 +16,11 @@
 
 package org.gradle.internal.configuration.inputs;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.function.Function.identity;
-
 import com.google.common.collect.ForwardingSet;
 import com.google.common.collect.Iterators;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 
 /**
  * The special-cased implementation of {@link Set} that tracks all accesses to its elements.
@@ -54,7 +52,7 @@ class AccessTrackingSet<E> extends ForwardingSet<E> implements Serializable {
     private final Function<E, E> factory;
 
     public AccessTrackingSet(Set<? extends E> delegate, Listener listener) {
-        this(delegate, listener, identity());
+        this(delegate, listener, Function.identity());
     }
 
     public AccessTrackingSet(Set<? extends E> delegate, Listener listener, Function<E, E> factory) {
@@ -189,7 +187,7 @@ class AccessTrackingSet<E> extends ForwardingSet<E> implements Serializable {
         }
 
         private Object readResolve() {
-            return new LinkedHashSet<>(requireNonNull(delegate));
+            return new LinkedHashSet<>(Objects.requireNonNull(delegate));
         }
     }
 }

@@ -16,15 +16,14 @@
 
 package org.gradle.tooling.internal.provider.serialization;
 
-import static java.util.UUID.randomUUID;
-
 import com.google.common.collect.ImmutableSet;
+import org.gradle.internal.classloader.ClassLoaderSpec;
+import org.gradle.internal.classloader.ClassLoaderUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import org.gradle.internal.classloader.ClassLoaderSpec;
-import org.gradle.internal.classloader.ClassLoaderUtils;
 
 /**
  * A {@link PayloadClassLoaderRegistry} that maps classes loaded by several well known ClassLoaders: the JVM platform, Gradle core and Gradle plugins.
@@ -35,7 +34,7 @@ public class WellKnownClassLoaderRegistry implements PayloadClassLoaderRegistry 
     private static final Set<ClassLoader> PLATFORM_CLASS_LOADERS;
     private static final ClassLoader PLATFORM_CLASS_LOADER = ClassLoaderUtils.getPlatformClassLoader();
     private static final short PLATFORM_CLASS_LOADER_ID = -1;
-    private static final ClassLoaderDetails PLATFORM_CLASS_LOADER_DETAILS = new ClassLoaderDetails(randomUUID(), new KnownClassLoaderSpec(PLATFORM_CLASS_LOADER_ID));
+    private static final ClassLoaderDetails PLATFORM_CLASS_LOADER_DETAILS = new ClassLoaderDetails(UUID.randomUUID(), new KnownClassLoaderSpec(PLATFORM_CLASS_LOADER_ID));
     private final PayloadClassLoaderRegistry delegate;
 
     static {

@@ -17,7 +17,5 @@
 /**
  * Contains classes that are used to instrument and upgrade build script classpath elements.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.internal.classpath.transforms;
-
-import org.jspecify.annotations.NullMarked;

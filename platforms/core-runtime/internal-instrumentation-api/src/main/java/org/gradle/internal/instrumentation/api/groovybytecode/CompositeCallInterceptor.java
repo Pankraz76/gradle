@@ -16,12 +16,11 @@
 
 package org.gradle.internal.instrumentation.api.groovybytecode;
 
-import static java.util.Collections.unmodifiableSet;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import org.jspecify.annotations.Nullable;
 
 public class CompositeCallInterceptor extends AbstractCallInterceptor implements SignatureAwareCallInterceptor, PropertyAwareCallInterceptor {
 
@@ -67,7 +66,7 @@ public class CompositeCallInterceptor extends AbstractCallInterceptor implements
         Set<InterceptScope> union = new LinkedHashSet<>();
         union.addAll(first.getInterceptScopes());
         union.addAll(second.getInterceptScopes());
-        return unmodifiableSet(union);
+        return Collections.unmodifiableSet(union);
     }
 
     @Nullable

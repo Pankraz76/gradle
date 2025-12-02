@@ -16,13 +16,12 @@
 
 package org.gradle.api.internal.tasks.testing;
 
-import static java.util.Collections.emptyList;
-
-import java.util.Collections;
-import java.util.List;
 import org.gradle.api.GradleException;
 import org.gradle.internal.exceptions.ResolutionProvider;
 import org.jspecify.annotations.NullMarked;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Thrown when some internal exception occurs executing a test suite.
@@ -38,7 +37,7 @@ public class TestSuiteExecutionException extends GradleException implements Reso
         if (getCause() instanceof ResolutionProvider) {
             return ((ResolutionProvider) getCause()).getResolutions();
         } else {
-            return emptyList();
+            return Collections.emptyList();
         }
     }
 }

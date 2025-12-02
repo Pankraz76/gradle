@@ -26,7 +26,7 @@ import org.gradle.internal.reflect.Instantiator;
 import javax.inject.Inject;
 
 /**
- * Default implementation for {@link DistributionContainer}
+ * Default implementation for {@link org.gradle.api.distribution.DistributionContainer}
  */
 public class DefaultDistributionContainer extends AbstractNamedDomainObjectContainer<Distribution> implements DistributionContainer {
     private final ObjectFactory objectFactory;

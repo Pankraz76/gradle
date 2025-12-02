@@ -17,7 +17,5 @@
 /**
  * Internal classes for generating identifiers.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.internal.id;
-
-import org.jspecify.annotations.NullMarked;

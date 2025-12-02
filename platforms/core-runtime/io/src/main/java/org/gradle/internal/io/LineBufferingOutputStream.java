@@ -15,8 +15,6 @@
  */
 package org.gradle.internal.io;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -47,7 +45,7 @@ public class LineBufferingOutputStream extends OutputStream {
         buffer = new StreamByteBuffer(bufferLength);
         this.lineMaxLength = lineMaxLength;
         output = buffer.getOutputStream();
-        byte[] lineSeparatorBytes = lineSeparator.getBytes(UTF_8);
+        byte[] lineSeparatorBytes = lineSeparator.getBytes(StandardCharsets.UTF_8);
         lastLineSeparatorByte = lineSeparatorBytes[lineSeparatorBytes.length - 1];
     }
 
@@ -69,7 +67,7 @@ public class LineBufferingOutputStream extends OutputStream {
      * The 24 high-order bits of <code>b</code> are ignored.
      *
      * @param b the <code>byte</code> to write
-     * @throws IOException if an I/O error occurs. In particular, an <code>IOException</code> may be thrown if
+     * @throws java.io.IOException if an I/O error occurs. In particular, an <code>IOException</code> may be thrown if
      * the output stream has been closed.
      */
     @Override

@@ -17,7 +17,5 @@
 /**
  * A package containing instrumentation generated classes. Classes are generated via annotation processor.
  */
-@NullMarked
+@org.jspecify.annotations.NullMarked
 package org.gradle.internal.classpath.generated;
-
-import org.jspecify.annotations.NullMarked;

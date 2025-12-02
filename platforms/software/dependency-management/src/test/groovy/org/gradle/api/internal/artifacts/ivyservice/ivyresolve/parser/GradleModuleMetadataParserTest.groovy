@@ -35,7 +35,6 @@ import org.gradle.util.AttributeTestUtil
 import org.gradle.util.TestUtil
 import org.junit.Rule
 import spock.lang.Specification
-import sun.nio.cs.UTF_8
 
 import java.util.stream.Collectors
 
@@ -1011,7 +1010,7 @@ class GradleModuleMetadataParserTest extends Specification {
         _ * resource.withContent(_) >> { ExternalResource.ContentAction action -> return action.execute(new ByteArrayInputStream(content.getBytes("utf-8"))) }
         _ * resource.getFile() >> {
             def file = temporaryFolder.createFile("module${UUID.randomUUID().toString()}.module")
-            file.write(content, UTF_8.toString())
+            file.write(content, "UTF-8")
             file
         }
         resource

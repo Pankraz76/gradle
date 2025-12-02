@@ -22,11 +22,11 @@ import static org.junit.Assert.assertTrue;
 
 public class OrSpecTest extends AbstractCompositeSpecTest {
 
-    public CompositeSpec createCompositeSpec(Spec... specs) {
+    public org.gradle.api.specs.CompositeSpec createCompositeSpec(Spec... specs) {
         return new OrSpec(specs);
     }
 
-    public CompositeSpec<Object> createOtherCompositeSpec(Spec<Object>... specs) {
+    public org.gradle.api.specs.CompositeSpec<Object> createOtherCompositeSpec(Spec<Object>... specs) {
         return new AndSpec<Object>(specs);
     }
 

@@ -16,18 +16,16 @@
 
 package org.gradle.internal.logging.console;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-
-import java.util.Collections;
-import java.util.List;
 import org.gradle.api.Action;
 import org.gradle.internal.logging.events.StyledTextOutputEvent;
 
+import java.util.Collections;
+import java.util.List;
+
 public class DefaultRedrawableLabel implements RedrawableLabel {
     private final Cursor writePos;  // Relative coordinate system
-    private List<StyledTextOutputEvent.Span> spans = emptyList();
-    private List<StyledTextOutputEvent.Span> writtenSpans = emptyList();
+    private List<StyledTextOutputEvent.Span> spans = Collections.emptyList();
+    private List<StyledTextOutputEvent.Span> writtenSpans = Collections.emptyList();
     private int absolutePositionRow;  // Absolute coordinate system
     private int previousWriteRow = absolutePositionRow;
     private boolean isVisible = true;
@@ -39,12 +37,12 @@ public class DefaultRedrawableLabel implements RedrawableLabel {
 
     @Override
     public void setText(String text) {
-        this.spans = singletonList(new StyledTextOutputEvent.Span(text));
+        this.spans = Collections.singletonList(new StyledTextOutputEvent.Span(text));
     }
 
     @Override
     public void setText(StyledTextOutputEvent.Span span) {
-        this.spans = singletonList(span);
+        this.spans = Collections.singletonList(span);
     }
 
     @Override
@@ -80,7 +78,7 @@ public class DefaultRedrawableLabel implements RedrawableLabel {
             writePos.col = 0;
             ansi.cursorAt(writePos).eraseAll();
 
-            writtenSpans = emptyList();
+            writtenSpans = Collections.emptyList();
         }
 
         if (isVisible) {
