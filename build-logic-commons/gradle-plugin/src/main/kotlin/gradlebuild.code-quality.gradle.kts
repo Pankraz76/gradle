@@ -103,8 +103,8 @@ tasks.withType<JavaCompile>().configureEach {
             // "JdkObsolete", // Most of the checks are good, but we do not want to replace all LinkedLists without a good reason
             // "EffectivelyPrivate", // It is still useful to distinguish between public interface and implementation details of inner classes even though it isn't enforced.
             "MissingOverride",
-            "StaticImport",
-            "NonStaticImport",
+            // "StaticImport",
+            // "NonStaticImport",
             "SelfAssignment",
             "StringCharset",
             "StringJoin",
