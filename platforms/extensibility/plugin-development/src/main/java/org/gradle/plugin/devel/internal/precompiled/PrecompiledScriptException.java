@@ -16,18 +16,19 @@
 
 package org.gradle.plugin.devel.internal.precompiled;
 
-import org.gradle.api.GradleException;
-import org.gradle.internal.exceptions.ResolutionProvider;
+import static java.util.Collections.singletonList;
 
 import java.util.Collections;
 import java.util.List;
+import org.gradle.api.GradleException;
+import org.gradle.internal.exceptions.ResolutionProvider;
 
 public class PrecompiledScriptException extends GradleException implements ResolutionProvider {
     private final List<String> resolutions;
 
     public PrecompiledScriptException(String message, String resolution) {
         super(message);
-        this.resolutions = Collections.singletonList(resolution);
+        this.resolutions = singletonList(resolution);
     }
 
     @Override

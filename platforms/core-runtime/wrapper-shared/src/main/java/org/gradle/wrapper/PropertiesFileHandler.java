@@ -15,7 +15,10 @@
  */
 package org.gradle.wrapper;
 
-import org.gradle.util.internal.ArgumentsSplitter;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.unmodifiableMap;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import org.gradle.util.internal.ArgumentsSplitter;
 
 public class PropertiesFileHandler {
     private static final String SYSTEM_PROP_PREFIX = "systemProp.";
@@ -35,7 +39,7 @@ public class PropertiesFileHandler {
 
     public static Map<String, String> getSystemProperties(File propertiesFile) {
         if (!propertiesFile.isFile()) {
-            return Collections.emptyMap();
+            return emptyMap();
         }
         Properties properties = loadProperties(propertiesFile);
         Map<String, String> systemProperties = new HashMap<String, String>();
@@ -47,12 +51,12 @@ public class PropertiesFileHandler {
                 }
             }
         }
-        return Collections.unmodifiableMap(systemProperties);
+        return unmodifiableMap(systemProperties);
     }
 
     public static List<String> getJvmArgs(File propertiesFile) {
         if (!propertiesFile.isFile()) {
-            return Collections.emptyList();
+            return emptyList();
         }
         Properties properties = loadProperties(propertiesFile);
         List<String> jvmArgs = new ArrayList<String>();
@@ -66,7 +70,7 @@ public class PropertiesFileHandler {
                 jvmArgs.add("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005");
             }
         }
-        return Collections.unmodifiableList(jvmArgs);
+        return unmodifiableList(jvmArgs);
     }
 
     private static Properties loadProperties(File propertiesFile) {

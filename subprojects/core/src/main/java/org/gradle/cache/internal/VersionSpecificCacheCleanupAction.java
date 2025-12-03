@@ -16,10 +16,17 @@
 
 package org.gradle.cache.internal;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.SortedSetMultimap;
 import com.google.common.collect.TreeMultimap;
+import java.io.File;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.SortedSet;
+import java.util.function.Supplier;
 import org.gradle.api.internal.changedetection.state.CrossBuildFileHashCache;
 import org.gradle.api.specs.Spec;
 import org.gradle.cache.CleanupFrequency;
@@ -36,12 +43,6 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.time.Instant;
-import java.util.SortedSet;
-import java.util.function.Supplier;
 
 public class VersionSpecificCacheCleanupAction implements MonitoredCleanupAction {
     private final static String FILE_HASHES_CACHE_KEY =  CrossBuildFileHashCache.Kind.FILE_HASHES.getCacheId();
@@ -61,7 +62,7 @@ public class VersionSpecificCacheCleanupAction implements MonitoredCleanupAction
 
     public VersionSpecificCacheCleanupAction(File cacheBaseDir, Supplier<Long> releaseTimestampSupplier, Supplier<Long> snapshotTimestampSupplier, Deleter deleter, CleanupFrequency cleanupFrequency) {
         this.deleter = deleter;
-        Preconditions.checkArgument(releaseTimestampSupplier.get() <= snapshotTimestampSupplier.get(),
+        checkArgument(releaseTimestampSupplier.get() <= snapshotTimestampSupplier.get(),
             "release timestamp (%s) must supply a timestamp older than or equal to snapshot timestamp (%s)", releaseTimestampSupplier.get(), snapshotTimestampSupplier.get());
         this.versionSpecificCacheDirectoryScanner = new VersionSpecificCacheDirectoryScanner(cacheBaseDir);
         this.releaseTimestampSupplier = releaseTimestampSupplier;

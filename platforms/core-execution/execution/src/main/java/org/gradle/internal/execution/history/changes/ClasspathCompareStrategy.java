@@ -16,13 +16,14 @@
 
 package org.gradle.internal.execution.history.changes;
 
-import org.gradle.internal.fingerprint.FileCollectionFingerprint;
-import org.gradle.internal.fingerprint.FileSystemLocationFingerprint;
-import org.jspecify.annotations.Nullable;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+import org.gradle.internal.fingerprint.FileCollectionFingerprint;
+import org.gradle.internal.fingerprint.FileSystemLocationFingerprint;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Compares two {@link FileCollectionFingerprint}s representing classpaths.
@@ -133,22 +134,22 @@ public class ClasspathCompareStrategy extends AbstractFingerprintCompareStrategy
         }
 
         void added() {
-            Objects.requireNonNull(current);
+            requireNonNull(current);
             DefaultFileChange added = DefaultFileChange.added(current.getKey(), propertyTitle, current.getValue().getType(), current.getValue().getNormalizedPath());
             changeConsumer.visitChange(added);
             current = nextEntry(currentEntries);
         }
 
         void removed() {
-            Objects.requireNonNull(previous);
+            requireNonNull(previous);
             DefaultFileChange removed = DefaultFileChange.removed(previous.getKey(), propertyTitle, previous.getValue().getType(), previous.getValue().getNormalizedPath());
             changeConsumer.visitChange(removed);
             previous = nextEntry(previousEntries);
         }
 
         void modified() {
-            Objects.requireNonNull(current);
-            Objects.requireNonNull(previous);
+            requireNonNull(current);
+            requireNonNull(previous);
             DefaultFileChange modified = DefaultFileChange.modified(current.getKey(), propertyTitle, previous.getValue().getType(), current.getValue().getType(), current.getValue().getNormalizedPath());
             changeConsumer.visitChange(modified);
             previous = nextEntry(previousEntries);

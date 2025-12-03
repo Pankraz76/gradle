@@ -16,7 +16,11 @@
 
 package org.gradle.internal.resolve.result;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableSet;
+import java.util.Collection;
+import java.util.Collections;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.internal.component.model.ComponentGraphResolveState;
@@ -24,9 +28,6 @@ import org.gradle.internal.component.model.ComponentGraphSpecificResolveState;
 import org.gradle.internal.resolve.ModuleVersionResolveException;
 import org.gradle.internal.resolve.RejectedVersion;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.Collections;
 
 public class DefaultBuildableComponentIdResolveResult extends DefaultResourceAwareResolveResult implements BuildableComponentIdResolveResult {
     private ModuleVersionResolveException failure;
@@ -148,7 +149,7 @@ public class DefaultBuildableComponentIdResolveResult extends DefaultResourceAwa
 
     private static <T> Collection<T> safeBuild(ImmutableSet.Builder<T> builder) {
         if (builder == null) {
-            return Collections.emptyList();
+            return emptyList();
         }
         return builder.build();
     }

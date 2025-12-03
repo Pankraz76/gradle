@@ -16,6 +16,10 @@
 
 package org.gradle.tooling.internal.consumer;
 
+import static java.util.Collections.emptyList;
+
+import java.util.Collections;
+import java.util.List;
 import org.gradle.internal.event.ListenerNotificationException;
 import org.gradle.tooling.BuildCancelledException;
 import org.gradle.tooling.BuildException;
@@ -31,9 +35,6 @@ import org.gradle.tooling.internal.protocol.InternalBuildCancelledException;
 import org.gradle.tooling.internal.protocol.exceptions.InternalUnsupportedBuildArgumentException;
 import org.gradle.tooling.internal.protocol.test.InternalTestExecutionException;
 
-import java.util.Collections;
-import java.util.List;
-
 public class ConnectionExceptionTransformer {
     private final ConnectionFailureMessageProvider messageProvider;
     private final Supplier<List<Failure>> failures;
@@ -42,7 +43,7 @@ public class ConnectionExceptionTransformer {
         this(messageProvider, new Supplier<List<Failure>>() {
             @Override
             public List<Failure> get() {
-                return Collections.emptyList();
+                return emptyList();
             }
         });
     }

@@ -16,6 +16,18 @@
 
 package org.gradle.launcher.cli.converter;
 
+import static java.util.Collections.unmodifiableMap;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import org.gradle.api.Project;
 import org.gradle.initialization.BuildLayoutParametersBuildOptions;
 import org.gradle.initialization.ParallelismBuildOptions;
@@ -33,17 +45,6 @@ import org.gradle.launcher.configuration.InitialProperties;
 import org.gradle.launcher.daemon.configuration.DaemonBuildOptions;
 import org.gradle.launcher.daemon.toolchain.ToolchainBuildOptions;
 import org.gradle.util.internal.CollectionUtils;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 public class LayoutToPropertiesConverter {
 
@@ -152,12 +153,12 @@ public class LayoutToPropertiesConverter {
 
         @Override
         public Map<String, String> getProperties() {
-            return Collections.unmodifiableMap(properties);
+            return unmodifiableMap(properties);
         }
 
         @Override
         public Map<String, String> getDaemonJvmProperties() {
-            return Collections.unmodifiableMap(daemonJvmProperties);
+            return unmodifiableMap(daemonJvmProperties);
         }
 
         @Override

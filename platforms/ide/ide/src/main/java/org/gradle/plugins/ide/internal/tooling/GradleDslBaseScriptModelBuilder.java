@@ -16,6 +16,14 @@
 
 package org.gradle.plugins.ide.internal.tooling;
 
+import static java.util.Collections.singleton;
+
+import java.io.File;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
 import org.gradle.api.internal.GradleApiImplicitImportsProvider;
 import org.gradle.api.internal.GradleInternal;
 import org.gradle.api.internal.classpath.GradleApiClasspathProvider;
@@ -27,13 +35,6 @@ import org.gradle.tooling.model.dsl.GroovyDslBaseScriptModel;
 import org.gradle.tooling.model.dsl.KotlinDslBaseScriptModel;
 import org.gradle.tooling.provider.model.internal.BuildScopeModelBuilder;
 import org.jspecify.annotations.NullMarked;
-
-import java.io.File;
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
 
 @NullMarked
 public class GradleDslBaseScriptModelBuilder implements BuildScopeModelBuilder {
@@ -74,7 +75,7 @@ public class GradleDslBaseScriptModelBuilder implements BuildScopeModelBuilder {
             .flatMap(it -> it.getClasspath().getAsFiles().stream())
             .filter(GradleDslBaseScriptModelBuilder::isNeededOnScriptTemplateClassPath)
             .sorted()
-            .reduce(ClassPath.EMPTY, (classPath, file) -> classPath.plus(Collections.singleton(file)), ClassPath::plus);
+            .reduce(ClassPath.EMPTY, (classPath, file) -> classPath.plus(singleton(file)), ClassPath::plus);
     }
 
     private static boolean isNeededOnScriptTemplateClassPath(File file) {

@@ -15,6 +15,9 @@
  */
 package org.gradle.api.internal.artifacts.dependencies;
 
+import static java.util.Collections.emptyList;
+
+import java.util.Collections;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.DependencyConstraint;
 import org.gradle.api.artifacts.ModuleIdentifier;
@@ -25,8 +28,6 @@ import org.gradle.api.artifacts.VersionConstraint;
 import org.gradle.api.attributes.AttributeContainer;
 import org.gradle.api.internal.artifacts.DefaultModuleIdentifier;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
 
 /**
  * A limited use, project dependency constraint mostly aimed at publishing
@@ -80,7 +81,7 @@ public class DefaultProjectDependencyConstraint extends AbstractDependencyConstr
                 "",
                 projectDependency.getVersion(),
                 "",
-                Collections.emptyList(),
+                emptyList(),
                 ""
         );
     }

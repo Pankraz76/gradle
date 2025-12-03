@@ -15,6 +15,15 @@
  */
 package org.gradle.api.internal.artifacts.query;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier;
@@ -59,14 +68,6 @@ import org.gradle.internal.resolve.result.DefaultBuildableArtifactSetResolveResu
 import org.gradle.internal.resolve.result.DefaultBuildableComponentResolveResult;
 import org.gradle.util.internal.CollectionUtils;
 import org.jspecify.annotations.NonNull;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class DefaultArtifactResolutionQuery implements ArtifactResolutionQuery {
     private final ResolutionStrategyFactory resolutionStrategyFactory;
@@ -144,7 +145,7 @@ public class DefaultArtifactResolutionQuery implements ArtifactResolutionQuery {
                 }
                 return true;
             })
-            .collect(Collectors.toList());
+            .collect(toList());
 
         // We use a resolution strategy here in order to use the same defaults for dependency verification,
         // caching, etc. that a normal dependency resolution would use.

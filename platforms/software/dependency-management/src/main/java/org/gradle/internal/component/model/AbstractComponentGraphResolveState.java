@@ -16,6 +16,11 @@
 
 package org.gradle.internal.component.model;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.artifacts.result.ResolvedVariantResult;
 import org.gradle.api.internal.artifacts.result.DefaultResolvedVariantResult;
@@ -25,10 +30,6 @@ import org.gradle.internal.Describables;
 import org.gradle.internal.component.external.model.DefaultImmutableCapability;
 import org.gradle.internal.component.external.model.ImmutableCapabilities;
 import org.jspecify.annotations.Nullable;
-
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 public abstract class AbstractComponentGraphResolveState<T extends ComponentGraphResolveMetadata> implements ComponentGraphResolveState, ComponentArtifactResolveState {
     private final long instanceId;
@@ -94,7 +95,7 @@ public abstract class AbstractComponentGraphResolveState<T extends ComponentGrap
                 capabilitiesFor(artifactSet.getCapabilities()),
                 null
             ))
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private ImmutableCapabilities capabilitiesFor(ImmutableCapabilities capabilities) {

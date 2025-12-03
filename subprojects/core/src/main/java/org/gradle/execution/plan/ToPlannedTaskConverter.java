@@ -16,16 +16,18 @@
 
 package org.gradle.execution.plan;
 
-import org.gradle.initialization.DefaultPlannedTask;
-import org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.TaskIdentity;
-import org.gradle.internal.taskgraph.NodeIdentity;
-import org.jspecify.annotations.NullMarked;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.gradle.initialization.DefaultPlannedTask;
+import org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.TaskIdentity;
+import org.gradle.internal.taskgraph.NodeIdentity;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * A {@link ToPlannedTaskConverter} for {@link TaskNode}s.
@@ -124,14 +126,14 @@ public class ToPlannedTaskConverter implements ToPlannedNodeConverter {
 
     private List<TaskIdentity> getTaskIdentities(Collection<Node> nodes) {
         if (nodes.isEmpty()) {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         return nodes.stream()
             .filter(TaskNode.class::isInstance)
             .map(TaskNode.class::cast)
             .map(this::getNodeIdentity)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     @Override

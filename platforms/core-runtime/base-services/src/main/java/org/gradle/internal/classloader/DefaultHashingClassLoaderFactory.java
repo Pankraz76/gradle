@@ -15,20 +15,21 @@
  */
 package org.gradle.internal.classloader;
 
-import org.gradle.internal.classpath.ClassPath;
-import org.gradle.internal.hash.HashCode;
-import org.gradle.internal.hash.Hasher;
-import org.gradle.internal.hash.Hashing;
+import static java.util.Collections.synchronizedMap;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
+import org.gradle.internal.classpath.ClassPath;
+import org.gradle.internal.hash.HashCode;
+import org.gradle.internal.hash.Hasher;
+import org.gradle.internal.hash.Hashing;
 
 public class DefaultHashingClassLoaderFactory extends DefaultClassLoaderFactory implements HashingClassLoaderFactory {
     private final ClasspathHasher classpathHasher;
-    private final Map<ClassLoader, HashCode> hashCodes = Collections.synchronizedMap(new WeakHashMap<ClassLoader, HashCode>());
+    private final Map<ClassLoader, HashCode> hashCodes = synchronizedMap(new WeakHashMap<ClassLoader, HashCode>());
 
     public DefaultHashingClassLoaderFactory(ClasspathHasher classpathHasher) {
         this.classpathHasher = classpathHasher;

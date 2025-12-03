@@ -16,20 +16,11 @@
 
 package org.gradle.api.internal.tasks.compile.incremental.recomp;
 
+import static java.util.Collections.emptySet;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import org.gradle.api.file.FileTree;
-import org.gradle.api.file.FileType;
-import org.gradle.api.internal.file.FileOperations;
-import org.gradle.api.internal.tasks.compile.JavaCompileSpec;
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource;
-import org.gradle.api.internal.tasks.compile.incremental.transaction.CompileTransaction;
-import org.gradle.api.tasks.util.PatternSet;
-import org.gradle.internal.file.Deleter;
-import org.gradle.work.FileChange;
-
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
@@ -40,6 +31,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import org.gradle.api.file.FileTree;
+import org.gradle.api.file.FileType;
+import org.gradle.api.internal.file.FileOperations;
+import org.gradle.api.internal.tasks.compile.JavaCompileSpec;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource;
+import org.gradle.api.internal.tasks.compile.incremental.transaction.CompileTransaction;
+import org.gradle.api.tasks.util.PatternSet;
+import org.gradle.internal.file.Deleter;
+import org.gradle.work.FileChange;
 
 abstract class AbstractRecompilationSpecProvider implements RecompilationSpecProvider {
 
@@ -149,7 +150,7 @@ abstract class AbstractRecompilationSpecProvider implements RecompilationSpecPro
             // Since these independent classes didn't actually change, they will be just recreated without any change, so we don't need to collect all transitive dependencies.
             // But we have to collect annotation processor dependencies, so these classes are correctly deleted, since annotation processor is able to output classes from these independent classes.
             classesToCompile = independentClasses.isEmpty()
-                ? Collections.emptySet()
+                ? emptySet()
                 : sourceFileChangeProcessor.processAnnotationDependenciesOfIndependentClasses(independentClasses, spec);
         }
     }
@@ -181,7 +182,7 @@ abstract class AbstractRecompilationSpecProvider implements RecompilationSpecPro
         Set<String> classNames = sourceFileClassNameConverter.getClassNames(sourcePath);
         if (classNames.size() <= 1) {
             // If source has just 1 class, it doesn't have any independent class
-            return Collections.emptySet();
+            return emptySet();
         }
         Set<String> newClasses = new LinkedHashSet<>();
         for (String className : classNames) {
@@ -220,7 +221,7 @@ abstract class AbstractRecompilationSpecProvider implements RecompilationSpecPro
     public CompileTransaction initCompilationSpecAndTransaction(JavaCompileSpec spec, RecompilationSpec recompilationSpec) {
         if (!recompilationSpec.isBuildNeeded()) {
             spec.setSourceFiles(ImmutableSet.of());
-            spec.setClassesToProcess(Collections.emptySet());
+            spec.setClassesToProcess(emptySet());
             return new CompileTransaction(spec, fileOperations.patternSet(), ImmutableMap.of(), fileOperations, deleter);
         }
 

@@ -16,6 +16,10 @@
 
 package org.gradle.language.java.internal;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
+import java.util.Collections;
 import org.gradle.api.internal.component.ArtifactType;
 import org.gradle.api.internal.component.ComponentTypeRegistry;
 import org.gradle.api.internal.tasks.compile.processing.AnnotationProcessorDetector;
@@ -32,10 +36,6 @@ import org.gradle.jvm.JvmLibrary;
 import org.gradle.language.java.artifact.JavadocArtifact;
 import org.gradle.tooling.events.OperationType;
 import org.slf4j.LoggerFactory;
-
-import java.util.Collections;
-
-import static java.util.Collections.emptyList;
 
 public class JavaLanguageServices extends AbstractGradleModuleServices {
     @Override
@@ -62,7 +62,7 @@ public class JavaLanguageServices extends AbstractGradleModuleServices {
         @Provides
         OperationResultPostProcessorFactory createJavaSubscribableBuildActionRunnerRegistration() {
             return (clientSubscriptions, consumer) -> clientSubscriptions.isRequested(OperationType.TASK)
-                ? Collections.singletonList(new JavaCompileTaskSuccessResultPostProcessor())
+                ? singletonList(new JavaCompileTaskSuccessResultPostProcessor())
                 : emptyList();
         }
     }

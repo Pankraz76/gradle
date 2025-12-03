@@ -15,18 +15,19 @@
  */
 package org.gradle.api.tasks.compile;
 
-import org.apache.commons.lang3.StringUtils;
-import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.Internal;
-import org.gradle.api.tasks.Optional;
-import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
-import org.jspecify.annotations.Nullable;
+import static java.util.stream.Collectors.toList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.Internal;
+import org.gradle.api.tasks.Optional;
+import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Fork options for compilation. Only take effect if {@code fork}
@@ -98,6 +99,6 @@ public class BaseForkOptions implements Serializable {
         this.jvmArgs = jvmArgs == null ? null : jvmArgs.stream()
             .filter(Objects::nonNull)
             .filter(string -> !StringUtils.isBlank(string))
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 }

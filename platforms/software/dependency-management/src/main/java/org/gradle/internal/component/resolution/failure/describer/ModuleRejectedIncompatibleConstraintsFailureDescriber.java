@@ -16,19 +16,22 @@
 
 package org.gradle.internal.component.resolution.failure.describer;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import org.gradle.api.artifacts.result.ComponentSelectionCause;
-import org.gradle.internal.component.resolution.failure.SelectionReasonAssessor.AssessedSelection.AssessedSelectionReason;
-import org.gradle.internal.component.resolution.failure.exception.ConflictingConstraintsException;
-import org.gradle.internal.component.resolution.failure.type.ModuleRejectedFailure;
-import org.gradle.util.internal.VersionNumber;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.gradle.api.artifacts.result.ComponentSelectionCause;
+import org.gradle.internal.component.resolution.failure.SelectionReasonAssessor.AssessedSelection.AssessedSelectionReason;
+import org.gradle.internal.component.resolution.failure.exception.ConflictingConstraintsException;
+import org.gradle.internal.component.resolution.failure.type.ModuleRejectedFailure;
+import org.gradle.util.internal.VersionNumber;
 
 /**
  * A {@link ResolutionFailureDescriber} that describes a {@link ModuleRejectedFailure} where
@@ -47,7 +50,7 @@ public abstract class ModuleRejectedIncompatibleConstraintsFailureDescriber exte
         List<AssessedSelectionReason> versionsByReason = findConflictingConstraints(failure);
         int uniqueVersions = versionsByReason.stream()
             .map(AssessedSelectionReason::getRequiredVersion)
-            .collect(Collectors.toSet())
+            .collect(toSet())
             .size();
         return uniqueVersions > 1;
     }
@@ -55,10 +58,10 @@ public abstract class ModuleRejectedIncompatibleConstraintsFailureDescriber exte
     private List<AssessedSelectionReason> findConflictingConstraints(ModuleRejectedFailure failure) {
         Map<String, List<AssessedSelectionReason>> versionsByReasons = failure.getAssessedSelection().getReasons().stream()
             .filter(reason -> reason.getCause() == ComponentSelectionCause.CONSTRAINT)
-            .collect(Collectors.groupingBy(AssessedSelectionReason::getRequiredVersion));
+            .collect(groupingBy(AssessedSelectionReason::getRequiredVersion));
         return versionsByReasons.values().stream()
             .flatMap(Collection::stream)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     @Override
@@ -83,7 +86,7 @@ public abstract class ModuleRejectedIncompatibleConstraintsFailureDescriber exte
 
         StringBuilder sb = new StringBuilder("Component is the target of multiple version constraints with conflicting requirements:\n");
         conflictingVersionsWithExplanations.keySet().stream().sorted().forEach(version -> {
-            List<String> explanations = conflictingVersionsWithExplanations.get(version).stream().sorted().collect(Collectors.toList());
+            List<String> explanations = conflictingVersionsWithExplanations.get(version).stream().sorted().collect(toList());
             sb.append(explanations.get(0));
             int numOtherPaths = explanations.size() -1;
             if (numOtherPaths > 0) {

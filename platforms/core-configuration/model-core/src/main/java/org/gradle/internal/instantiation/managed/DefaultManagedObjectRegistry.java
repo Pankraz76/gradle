@@ -16,8 +16,8 @@
 
 package org.gradle.internal.instantiation.managed;
 
-import org.gradle.internal.UncheckedException;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 
 import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandle;
@@ -32,6 +32,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.gradle.internal.UncheckedException;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Default implementation of {@link ManagedObjectRegistry}.
@@ -66,7 +68,7 @@ public class DefaultManagedObjectRegistry implements ManagedObjectRegistry {
 
     @Override
     public List<Class<? extends Annotation>> getAnnotations() {
-        return Collections.singletonList(ManagedObjectProvider.class);
+        return singletonList(ManagedObjectProvider.class);
     }
 
     @Nullable
@@ -170,7 +172,7 @@ public class DefaultManagedObjectRegistry implements ManagedObjectRegistry {
             List<String> sortedMethods = Stream.of(existing, handle)
                 .map(MethodHandle::toString)
                 .sorted()
-                .collect(Collectors.toList());
+                .collect(toList());
 
             throw new IllegalArgumentException("Method " + sortedMethods.get(0) + " for type " + publicType + "conflicts with existing factory method " + sortedMethods.get(1) + ".");
         }

@@ -16,17 +16,12 @@
 
 package org.gradle.api.internal.collections;
 
+import static java.util.Collections.EMPTY_SET;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import org.gradle.api.Action;
-import org.gradle.api.internal.DefaultMutationGuard;
-import org.gradle.api.internal.MutationGuard;
-import org.gradle.api.internal.provider.ChangingValue;
-import org.gradle.api.internal.provider.CollectionProviderInternal;
-import org.gradle.api.internal.provider.Collectors;
-import org.gradle.api.internal.provider.ProviderInternal;
-import org.gradle.internal.Cast;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,13 +31,21 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import org.gradle.api.Action;
+import org.gradle.api.internal.DefaultMutationGuard;
+import org.gradle.api.internal.MutationGuard;
+import org.gradle.api.internal.provider.ChangingValue;
+import org.gradle.api.internal.provider.CollectionProviderInternal;
+import org.gradle.api.internal.provider.Collectors;
+import org.gradle.api.internal.provider.ProviderInternal;
+import org.gradle.internal.Cast;
 
 public class SortedSetElementSource<T> implements ElementSource<T> {
     private final TreeSet<T> values;
     // Note the juggling of pending is a memory optimization to save retained LinkedHashSets
     // Each DomainObjectSet has a pending set and a Configuration has several DomainObjectSets
     // And a Project has many Configurations.
-    private Set<Collectors.TypedCollector<T>> pending = Collections.emptySet();
+    private Set<Collectors.TypedCollector<T>> pending = emptySet();
     private Action<T> addRealizedAction;
     private EventSubscriptionVerifier<T> subscriptionVerifier = type -> false;
     private final MutationGuard lazyGuard = new DefaultMutationGuard();
@@ -111,7 +114,7 @@ public class SortedSetElementSource<T> implements ElementSource<T> {
 
     @Override
     public void clear() {
-        pending = Collections.emptySet();
+        pending = emptySet();
         values.clear();
     }
 
@@ -170,7 +173,7 @@ public class SortedSetElementSource<T> implements ElementSource<T> {
         // TODO: We likely want to also immediately realize ChangingValue providers in the
         //  onValueChange callback above.
         if (subscriptionVerifier.isSubscribed(provider.getType())) {
-            realize(Collections.singleton(collector));
+            realize(singleton(collector));
 
             // Ugly backwards-compatibility hack. Previous implementations would notify listeners without
             // actually telling the ElementSource that the element was realized.
@@ -182,7 +185,7 @@ public class SortedSetElementSource<T> implements ElementSource<T> {
     }
 
     private void ensurePendingIsMutable() {
-        if (pending == Collections.EMPTY_SET) {
+        if (pending == EMPTY_SET) {
             pending = new LinkedHashSet<>();
         }
     }
@@ -225,7 +228,7 @@ public class SortedSetElementSource<T> implements ElementSource<T> {
         // TODO: We likely want to also immediately realize ChangingValue providers in the
         //  onValueChange callback above.
         if (subscriptionVerifier.isSubscribed(provider.getElementType())) {
-            realize(Collections.singleton(collector));
+            realize(singleton(collector));
 
             // Ugly backwards-compatibility hack. Previous implementations would notify listeners without
             // actually telling the ElementSource that the element was realized.

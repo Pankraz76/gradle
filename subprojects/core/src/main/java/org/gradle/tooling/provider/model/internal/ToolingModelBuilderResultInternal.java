@@ -16,12 +16,13 @@
 
 package org.gradle.tooling.provider.model.internal;
 
-import org.gradle.internal.problems.failure.Failure;
-import org.gradle.tooling.provider.model.ToolingModelBuilder;
-import org.jspecify.annotations.NullMarked;
+import static java.util.Collections.emptyList;
 
 import java.util.Collections;
 import java.util.List;
+import org.gradle.internal.problems.failure.Failure;
+import org.gradle.tooling.provider.model.ToolingModelBuilder;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Internal type for a model builder result that contains additional data beyond the model itself if needed.
@@ -49,7 +50,7 @@ public class ToolingModelBuilderResultInternal {
     }
 
     public static ToolingModelBuilderResultInternal of(Object model) {
-        return new ToolingModelBuilderResultInternal(model, Collections.emptyList());
+        return new ToolingModelBuilderResultInternal(model, emptyList());
     }
 
     public static ToolingModelBuilderResultInternal of(Object model, List<Failure> failures) {

@@ -16,6 +16,12 @@
 
 package org.gradle.execution.plan;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.TaskInternal;
@@ -28,10 +34,6 @@ import org.gradle.internal.lazy.Lazy;
 import org.gradle.internal.resources.ResourceLock;
 import org.gradle.util.Path;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 public abstract class TaskInAnotherBuild extends TaskNode implements SelfExecutingNode {
     public static TaskInAnotherBuild of(
@@ -121,7 +123,7 @@ public abstract class TaskInAnotherBuild extends TaskNode implements SelfExecuti
 
     @Override
     public Set<Node> getLifecycleSuccessors() {
-        return Collections.emptySet();
+        return emptySet();
     }
 
     @Override
@@ -153,7 +155,7 @@ public abstract class TaskInAnotherBuild extends TaskNode implements SelfExecuti
     @Override
     public List<ResourceLock> getResourcesToLock() {
         // Ignore, as the node in the other build's execution graph will take care of this
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override

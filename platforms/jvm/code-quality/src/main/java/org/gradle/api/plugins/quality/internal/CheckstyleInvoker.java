@@ -16,11 +16,27 @@
 
 package org.gradle.api.plugins.quality.internal;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.ImmutableMap;
 import groovy.namespace.QName;
 import groovy.util.Node;
 import groovy.util.NodeList;
 import groovy.xml.XmlParser;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.io.IOUtils;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
@@ -41,18 +57,6 @@ import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 class CheckstyleInvoker implements Action<AntBuilderDelegate> {
 
@@ -253,7 +257,7 @@ class CheckstyleInvoker implements Action<AntBuilderDelegate> {
 
     private static String readText(InputStream stream) {
         try {
-            return IOUtils.toString(stream, StandardCharsets.UTF_8);
+            return IOUtils.toString(stream, UTF_8);
         } catch (IOException e) {
             throw UncheckedException.throwAsUncheckedException(e);
         }
@@ -264,10 +268,10 @@ class CheckstyleInvoker implements Action<AntBuilderDelegate> {
         List<Node> errorNodes = reportXml.getAt(QName.valueOf("file")).getAt("error");
         return errorNodes.stream()
             .map(node -> (String) node.attribute("severity"))
-            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+            .collect(groupingBy(identity(), counting()))
             .entrySet().stream()
             .map(entry -> entry.getKey() + ":" + entry.getValue())
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private static boolean violationsExist(@Nullable Node reportXml) {

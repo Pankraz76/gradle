@@ -16,6 +16,13 @@
 
 package org.gradle.internal.operations;
 
+import static java.util.stream.Collectors.joining;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
 import org.gradle.internal.SystemProperties;
@@ -25,12 +32,6 @@ import org.gradle.internal.concurrent.Stoppable;
 import org.gradle.internal.exceptions.DefaultMultiCauseException;
 import org.gradle.internal.work.WorkerLimits;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class DefaultBuildOperationExecutor implements BuildOperationExecutor, Stoppable {
     private static final String LINE_SEPARATOR = SystemProperties.getInstance().getLineSeparator();
@@ -127,7 +128,7 @@ public class DefaultBuildOperationExecutor implements BuildOperationExecutor, St
     private static String formatMultipleFailureMessage(List<GradleException> failures) {
         return failures.stream()
             .map(Throwable::getMessage)
-            .collect(Collectors.joining(LINE_SEPARATOR + "AND" + LINE_SEPARATOR));
+            .collect(joining(LINE_SEPARATOR + "AND" + LINE_SEPARATOR));
     }
 
     @Override

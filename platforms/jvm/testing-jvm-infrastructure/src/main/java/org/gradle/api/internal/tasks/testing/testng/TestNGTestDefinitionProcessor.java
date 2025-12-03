@@ -16,6 +16,12 @@
 
 package org.gradle.api.internal.tasks.testing.testng;
 
+import static java.util.Objects.requireNonNull;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import org.gradle.api.GradleException;
 import org.gradle.api.internal.tasks.testing.ClassTestDefinition;
 import org.gradle.api.internal.tasks.testing.RequiresTestFrameworkTestDefinitionProcessor;
@@ -26,11 +32,6 @@ import org.gradle.internal.id.IdGenerator;
 import org.gradle.internal.time.Clock;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @NullMarked
 public class TestNGTestDefinitionProcessor implements RequiresTestFrameworkTestDefinitionProcessor<ClassTestDefinition> {
@@ -87,7 +88,7 @@ public class TestNGTestDefinitionProcessor implements RequiresTestFrameworkTestD
         if (startedProcessing) {
             // TODO - do this inside some 'testng' suite, so that failures and logging are attached to 'testng' rather than some 'test worker'
             try {
-                testClasses.add(Objects.requireNonNull(applicationClassLoader).loadClass(testDefinition.getTestClassName()));
+                testClasses.add(requireNonNull(applicationClassLoader).loadClass(testDefinition.getTestClassName()));
             } catch (Throwable e) {
                 throw new GradleException(String.format("Could not load %s.", testDefinition.getDisplayName()), e);
             }

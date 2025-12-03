@@ -16,18 +16,19 @@
 
 package org.gradle.testkit.runner.internal;
 
-import com.google.common.io.ByteSource;
-import org.gradle.testkit.runner.BuildResult;
-import org.gradle.testkit.runner.BuildTask;
-import org.gradle.testkit.runner.TaskOutcome;
-import org.gradle.util.internal.CollectionUtils;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.unmodifiableList;
 
+import com.google.common.io.ByteSource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.testkit.runner.BuildResult;
+import org.gradle.testkit.runner.BuildTask;
+import org.gradle.testkit.runner.TaskOutcome;
+import org.gradle.util.internal.CollectionUtils;
+import org.jspecify.annotations.Nullable;
 
 public class DefaultBuildResult implements BuildResult {
 
@@ -64,17 +65,17 @@ public class DefaultBuildResult implements BuildResult {
 
     @Override
     public List<BuildTask> getTasks() {
-        return Collections.unmodifiableList(tasks);
+        return unmodifiableList(tasks);
     }
 
     @Override
     public List<BuildTask> tasks(final TaskOutcome outcome) {
-        return Collections.unmodifiableList(CollectionUtils.filter(tasks, element -> element.getOutcome() == outcome));
+        return unmodifiableList(CollectionUtils.filter(tasks, element -> element.getOutcome() == outcome));
     }
 
     @Override
     public List<String> taskPaths(TaskOutcome outcome) {
-        return Collections.unmodifiableList(CollectionUtils.collect(tasks(outcome), BuildTask::getPath));
+        return unmodifiableList(CollectionUtils.collect(tasks(outcome), BuildTask::getPath));
     }
 
     @Nullable

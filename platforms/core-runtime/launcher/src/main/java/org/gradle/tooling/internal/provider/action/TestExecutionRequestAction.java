@@ -16,9 +16,21 @@
 
 package org.gradle.tooling.internal.provider.action;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.internal.StartParameterInternal;
 import org.gradle.internal.DefaultTaskExecutionRequest;
 import org.gradle.internal.RunDefaultTasksExecutionRequest;
@@ -31,13 +43,6 @@ import org.gradle.tooling.internal.protocol.test.InternalTaskSpec;
 import org.gradle.tooling.internal.provider.test.ProviderInternalJvmTestRequest;
 import org.gradle.tooling.internal.provider.test.ProviderInternalTestExecutionRequest;
 import org.gradle.util.internal.CollectionUtils;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class TestExecutionRequestAction extends SubscribableBuildAction {
     private final StartParameterInternal startParameter;
@@ -73,7 +78,7 @@ public class TestExecutionRequestAction extends SubscribableBuildAction {
     // TestExecutionRequestAction
     public static TestExecutionRequestAction create(BuildEventSubscriptions clientSubscriptions, StartParameterInternal startParameter, ProviderInternalTestExecutionRequest testExecutionRequest) {
         ImmutableSet<String> classNames = ImmutableSet.copyOf(testExecutionRequest.getTestClassNames());
-        List<InternalTaskSpec> taskSpecs = testExecutionRequest.getTaskSpecs(Collections.emptyList());
+        List<InternalTaskSpec> taskSpecs = testExecutionRequest.getTaskSpecs(emptyList());
         boolean runDefaultTasks = testExecutionRequest.isRunDefaultTasks(false);
 
         return new TestExecutionRequestAction(
@@ -89,23 +94,23 @@ public class TestExecutionRequestAction extends SubscribableBuildAction {
     }
 
     private static StartParameterInternal configureStartParameter(StartParameterInternal startParameter, List<InternalTaskSpec> taskSpecs, boolean runDefaultTasks) {
-        Preconditions.checkArgument(
+        checkArgument(
             startParameter.getTaskNames().isEmpty(),
             "Cannot pass task requests with start parameter here, got %s",
             startParameter.getTaskNames());
         if (!taskSpecs.isEmpty()) {
-            List<String> taskPaths = taskSpecs.stream().map(InternalTaskSpec::getTaskPath).collect(Collectors.toList());
+            List<String> taskPaths = taskSpecs.stream().map(InternalTaskSpec::getTaskPath).collect(toList());
 
-            Preconditions.checkArgument(
+            checkArgument(
                 !runDefaultTasks,
                 "Cannot run default tasks when task specs %s are provided",
                 taskPaths);
 
-            startParameter.setTaskRequests(Collections.singletonList(new DefaultTaskExecutionRequest(taskPaths)));
+            startParameter.setTaskRequests(singletonList(new DefaultTaskExecutionRequest(taskPaths)));
         } else if (runDefaultTasks) {
-            startParameter.setTaskRequests(Collections.singletonList(new RunDefaultTasksExecutionRequest()));
+            startParameter.setTaskRequests(singletonList(new RunDefaultTasksExecutionRequest()));
         } else {
-            startParameter.setTaskRequests(Collections.emptyList());
+            startParameter.setTaskRequests(emptyList());
         }
 
         return startParameter;
@@ -121,10 +126,10 @@ public class TestExecutionRequestAction extends SubscribableBuildAction {
     }
 
     private static Map<String, List<InternalJvmTestRequest>> getTaskAndTests(ProviderInternalTestExecutionRequest testExecutionRequest) {
-        Map<String, List<InternalJvmTestRequest>> taskAndTests = testExecutionRequest.getTaskAndTests(Collections.emptyMap());
+        Map<String, List<InternalJvmTestRequest>> taskAndTests = testExecutionRequest.getTaskAndTests(emptyMap());
         ImmutableMap.Builder<String, List<InternalJvmTestRequest>> builder = ImmutableMap.builder();
         for (Map.Entry<String, List<InternalJvmTestRequest>> entry : taskAndTests.entrySet()) {
-            builder.put(entry.getKey(), toProviderInternalJvmTestRequest(entry.getValue(), Collections.emptyList()));
+            builder.put(entry.getKey(), toProviderInternalJvmTestRequest(entry.getValue(), emptyList()));
         }
         return builder.build();
     }

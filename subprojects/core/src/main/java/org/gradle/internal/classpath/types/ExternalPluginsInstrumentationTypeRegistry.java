@@ -16,8 +16,10 @@
 
 package org.gradle.internal.classpath.types;
 
-import com.google.common.collect.ImmutableMap;
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toSet;
 
+import com.google.common.collect.ImmutableMap;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.HashSet;
@@ -46,7 +48,7 @@ public class ExternalPluginsInstrumentationTypeRegistry implements Instrumentati
 
     @Override
     public Set<String> getSuperTypes(String type) {
-        Set<String> superTypes = Collections.emptySet();
+        Set<String> superTypes = emptySet();
         if (type.startsWith(GRADLE_CORE_PACKAGE_PREFIX)) {
             superTypes = gradleCoreInstrumentationTypeRegistry.getSuperTypes(type);
         }
@@ -82,7 +84,7 @@ public class ExternalPluginsInstrumentationTypeRegistry implements Instrumentati
         // we would need to be more precise and actually check if types are instrumented.
         return superTypes.stream()
             .filter(superType -> superType.startsWith(GRADLE_CORE_PACKAGE_PREFIX))
-            .collect(Collectors.toSet());
+            .collect(toSet());
     }
 
     private Set<String> computeSuperTypesWithRecursiveCaching(String type, Set<String> visited) {
@@ -110,7 +112,7 @@ public class ExternalPluginsInstrumentationTypeRegistry implements Instrumentati
     }
 
     private Set<String> getDirectSuperTypes(String type) {
-        Set<String> superTypes = directSuperTypes.getOrDefault(type, Collections.emptySet());
+        Set<String> superTypes = directSuperTypes.getOrDefault(type, emptySet());
         if (!superTypes.isEmpty() || !type.startsWith(GRADLE_CORE_PACKAGE_PREFIX)) {
             return superTypes;
         }

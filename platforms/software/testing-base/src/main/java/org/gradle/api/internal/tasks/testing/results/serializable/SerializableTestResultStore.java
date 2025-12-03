@@ -16,9 +16,27 @@
 
 package org.gradle.api.internal.tasks.testing.results.serializable;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.base.Throwables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
+import java.io.Closeable;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import org.gradle.api.internal.tasks.testing.TestCompleteEvent;
 import org.gradle.api.internal.tasks.testing.TestDescriptorInternal;
 import org.gradle.api.internal.tasks.testing.TestMetadataEvent;
@@ -35,21 +53,6 @@ import org.gradle.internal.serialize.Serializer;
 import org.gradle.internal.serialize.kryo.KryoBackedDecoder;
 import org.gradle.internal.serialize.kryo.KryoBackedEncoder;
 import org.jspecify.annotations.Nullable;
-
-import java.io.Closeable;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * An object that can store test results and their outputs.
@@ -114,9 +117,9 @@ public final class SerializableTestResultStore {
             this.serializedResultsFile = serializedResultsFile;
             this.diskSkipLevels = diskSkipLevels;
             // Use constants to avoid allocating empty collections if flattening is not enabled
-            flatteningIds = isDiskSkipEnabled() ? new HashSet<>() : Collections.emptySet();
-            extraFlattenedDescriptors = isDiskSkipEnabled() ? new ArrayList<>() : Collections.emptyList();
-            extraFlattenedResults = isDiskSkipEnabled() ? new ArrayList<>() : Collections.emptyList();
+            flatteningIds = isDiskSkipEnabled() ? new HashSet<>() : emptySet();
+            extraFlattenedDescriptors = isDiskSkipEnabled() ? new ArrayList<>() : emptyList();
+            extraFlattenedResults = isDiskSkipEnabled() ? new ArrayList<>() : emptyList();
             Files.createDirectories(serializedResultsFile.getParent());
             temporaryResultsFile = Files.createTempFile(serializedResultsFile.getParent(), "in-progress-results-generic", ".bin");
             resultsEncoder = new KryoBackedEncoder(Files.newOutputStream(temporaryResultsFile));
@@ -262,7 +265,7 @@ public final class SerializableTestResultStore {
             }
             List<String> convertedCauses = ExceptionSerializationUtil.extractCauses(failure.getRawFailure()).stream()
                 .map(Throwables::getStackTraceAsString)
-                .collect(Collectors.toList());
+                .collect(toList());
 
             return new SerializableFailure(
                 message,

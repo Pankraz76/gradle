@@ -15,7 +15,15 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.conflicts;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
 import com.google.common.collect.ImmutableList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.Describable;
 import org.gradle.api.InvalidUserCodeException;
 import org.gradle.api.artifacts.CapabilityResolutionDetails;
@@ -34,12 +42,6 @@ import org.gradle.internal.component.external.model.DefaultImmutableCapability;
 import org.gradle.internal.typeconversion.NotationParser;
 import org.gradle.util.internal.VersionNumber;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Responsible for resolving capability conflicts.
@@ -120,7 +122,7 @@ public class CapabilityConflictResolver {
             for (Candidate candidate : candidates) {
                 Set<NodeState> conflictedNodes = candidates.stream().map(c -> c.node)
                     .filter(node -> node != candidate.node)
-                    .collect(Collectors.toSet());
+                    .collect(toSet());
 
                 ComponentState component = candidate.node.getComponent();
                 component.rejectForCapabilityConflict(candidate.capability, conflictedNodes);
@@ -316,7 +318,7 @@ public class CapabilityConflictResolver {
                 }
             }
 
-            List<String> formattedCandidates = candidates.stream().map(c -> c.node.getDisplayName()).sorted().collect(Collectors.toList());
+            List<String> formattedCandidates = candidates.stream().map(c -> c.node.getDisplayName()).sorted().collect(toList());
             throw new InvalidUserCodeException(selectedComponentId + " is not a valid candidate for conflict resolution on capability '" + group + ":" + name + "': candidates are " + formattedCandidates);
         }
 

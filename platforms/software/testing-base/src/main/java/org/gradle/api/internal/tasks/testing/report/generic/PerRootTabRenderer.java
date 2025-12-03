@@ -16,24 +16,16 @@
 
 package org.gradle.api.internal.tasks.testing.report.generic;
 
+import static java.time.ZoneOffset.UTC;
+import static java.util.Comparator.comparing;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+import static org.gradle.reporting.HtmlWriterTools.addClipboardCopyButton;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.net.MediaType;
-import org.apache.commons.lang3.stream.Streams;
-import org.gradle.api.internal.tasks.testing.DefaultTestFileAttachmentDataEvent;
-import org.gradle.api.internal.tasks.testing.DefaultTestKeyValueDataEvent;
-import org.gradle.api.internal.tasks.testing.results.serializable.SerializableFailure;
-import org.gradle.api.internal.tasks.testing.results.serializable.SerializableTestResult;
-import org.gradle.api.internal.tasks.testing.results.serializable.TestOutputReader;
-import org.gradle.api.tasks.testing.TestOutputEvent;
-import org.gradle.api.tasks.testing.TestResult;
-import org.gradle.internal.Pair;
-import org.gradle.internal.html.SimpleHtmlWriter;
-import org.gradle.internal.time.TimeFormatting;
-import org.gradle.reporting.ReportRenderer;
-import org.gradle.reporting.TabsRenderer;
-import org.jspecify.annotations.Nullable;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -50,8 +42,20 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static org.gradle.reporting.HtmlWriterTools.addClipboardCopyButton;
+import org.apache.commons.lang3.stream.Streams;
+import org.gradle.api.internal.tasks.testing.DefaultTestFileAttachmentDataEvent;
+import org.gradle.api.internal.tasks.testing.DefaultTestKeyValueDataEvent;
+import org.gradle.api.internal.tasks.testing.results.serializable.SerializableFailure;
+import org.gradle.api.internal.tasks.testing.results.serializable.SerializableTestResult;
+import org.gradle.api.internal.tasks.testing.results.serializable.TestOutputReader;
+import org.gradle.api.tasks.testing.TestOutputEvent;
+import org.gradle.api.tasks.testing.TestResult;
+import org.gradle.internal.Pair;
+import org.gradle.internal.html.SimpleHtmlWriter;
+import org.gradle.internal.time.TimeFormatting;
+import org.gradle.reporting.ReportRenderer;
+import org.gradle.reporting.TabsRenderer;
+import org.jspecify.annotations.Nullable;
 
 public abstract class PerRootTabRenderer extends ReportRenderer<TestTreeModel, SimpleHtmlWriter> {
     private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS z").withZone(ZoneId.systemDefault());
@@ -84,7 +88,7 @@ public abstract class PerRootTabRenderer extends ReportRenderer<TestTreeModel, S
     protected abstract void render(PerRootInfo info, SimpleHtmlWriter htmlWriter) throws IOException;
 
     private static String formatLogTime(Instant logTime) {
-        return FORMATTER.format(logTime.atOffset(ZoneOffset.UTC));
+        return FORMATTER.format(logTime.atOffset(UTC));
     }
 
     public static final class ForSummary extends PerRootTabRenderer {
@@ -110,7 +114,7 @@ public abstract class PerRootTabRenderer extends ReportRenderer<TestTreeModel, S
             ReportRenderer<TestTreeModel, SimpleHtmlWriter> renderer;
             if (childTableRenderers.size() == 1) {
                 // No need to render tabs if there is only one tab
-                renderer = Objects.requireNonNull(childTableRenderers.get(0).right);
+                renderer = requireNonNull(childTableRenderers.get(0).right);
             } else {
                 TabsRenderer<TestTreeModel> tabsRenderer = new TabsRenderer<>();
                 childTableRenderers.forEach(p -> tabsRenderer.add(p.left, p.right));
@@ -126,7 +130,7 @@ public abstract class PerRootTabRenderer extends ReportRenderer<TestTreeModel, S
                     t.getPerRootInfo().get(rootIndex).stream()
                         .map(p -> new ChildEntry(t, p))
                 )
-                .collect(Collectors.toList());
+                .collect(toList());
             ImmutableList.Builder<Pair<String, ChildTableRenderer>> childTableRenderers = ImmutableList.builder();
             addResultTabIfNeeded("Failed", TestResult.ResultType.FAILURE, children, childTableRenderers);
             addResultTabIfNeeded("Skipped", TestResult.ResultType.SKIPPED, children, childTableRenderers);
@@ -146,7 +150,7 @@ public abstract class PerRootTabRenderer extends ReportRenderer<TestTreeModel, S
                         it -> it.getResultType() == resultType
                     )
                 )
-                .collect(Collectors.toList());
+                .collect(toList());
             if (!matchedChildren.isEmpty()) {
                 childListRenderers.add(Pair.of(name, new ChildTableRenderer(matchedChildren)));
             }
@@ -216,7 +220,7 @@ public abstract class PerRootTabRenderer extends ReportRenderer<TestTreeModel, S
         private static String getFormattedDuration(PerRootInfo info) {
             return info.getResults().stream()
                 .map(r -> TimeFormatting.formatDurationVeryTerse(r.getDuration()))
-                .collect(Collectors.joining(" / "));
+                .collect(joining(" / "));
         }
 
         private void renderLeafDetails(PerRootInfo info, SimpleHtmlWriter htmlWriter) throws IOException {
@@ -282,7 +286,7 @@ public abstract class PerRootTabRenderer extends ReportRenderer<TestTreeModel, S
         }
 
         private static final class ChildTableRenderer extends ReportRenderer<TestTreeModel, SimpleHtmlWriter> {
-            private static final Comparator<ChildEntry> CHILD_PATH_COMPARATOR = Comparator.comparing(e -> e.model.getPath());
+            private static final Comparator<ChildEntry> CHILD_PATH_COMPARATOR = comparing(e -> e.model.getPath());
 
             private final List<ChildEntry> children;
 

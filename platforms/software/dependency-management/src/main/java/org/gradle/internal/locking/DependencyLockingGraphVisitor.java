@@ -16,8 +16,16 @@
 
 package org.gradle.internal.locking;
 
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
+
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.artifacts.UnresolvedDependency;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
@@ -32,12 +40,6 @@ import org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.RootGrap
 import org.gradle.api.internal.artifacts.repositories.resolver.MavenUniqueSnapshotComponentIdentifier;
 import org.gradle.internal.DisplayName;
 import org.gradle.internal.component.model.ComponentGraphResolveMetadata;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 public class DependencyLockingGraphVisitor implements DependencyGraphVisitor {
 
@@ -72,7 +74,7 @@ public class DependencyLockingGraphVisitor implements DependencyGraphVisitor {
             extraModules = new HashSet<>();
             forcedModules = new HashMap<>();
         } else {
-            modulesToBeLocked = Collections.emptyMap();
+            modulesToBeLocked = emptyMap();
             allResolvedModules = new HashSet<>();
         }
     }
@@ -125,7 +127,7 @@ public class DependencyLockingGraphVisitor implements DependencyGraphVisitor {
 
     public void writeLocks() {
         if (!lockOutOfDate) {
-            Set<ModuleComponentIdentifier> changingModules = this.changingResolvedModules == null ? Collections.emptySet() : this.changingResolvedModules;
+            Set<ModuleComponentIdentifier> changingModules = this.changingResolvedModules == null ? emptySet() : this.changingResolvedModules;
             dependencyLockingProvider.persistResolvedDependencies(lockId, lockOwner, allResolvedModules, changingModules);
         }
     }
@@ -143,7 +145,7 @@ public class DependencyLockingGraphVisitor implements DependencyGraphVisitor {
                 return createLockingFailures(modulesToBeLocked, extraModules, forcedModules);
             }
         }
-        return Collections.emptySet();
+        return emptySet();
     }
 
     private static Set<UnresolvedDependency> createLockingFailures(Map<ModuleIdentifier, ModuleComponentIdentifier> modulesToBeLocked, Set<ModuleComponentIdentifier> extraModules, Map<ModuleComponentIdentifier, String> forcedModules) {

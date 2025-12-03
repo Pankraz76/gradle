@@ -16,6 +16,12 @@
 
 package org.gradle.internal.component.local.model;
 
+import static java.util.Collections.emptyList;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.internal.artifacts.DefaultRootComponentIdentifier;
@@ -32,11 +38,6 @@ import org.gradle.internal.model.CalculatedValueContainerFactory;
 import org.gradle.internal.model.ModelContainer;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
 
 @ServiceScope(Scope.BuildTree.class)
 public class LocalComponentGraphResolveStateFactory {
@@ -125,7 +126,7 @@ public class LocalComponentGraphResolveStateFactory {
             attributesSchema
         );
 
-        LocalVariantGraphResolveStateFactory configurationFactory = new RealizedListVariantFactory(Collections.emptyList());
+        LocalVariantGraphResolveStateFactory configurationFactory = new RealizedListVariantFactory(emptyList());
         return createLocalComponentState(true, instanceId, metadata, configurationFactory);
     }
 

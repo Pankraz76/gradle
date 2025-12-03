@@ -15,18 +15,13 @@
  */
 package org.gradle.api.internal.tasks.testing.report.generic;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
-import org.gradle.api.internal.tasks.testing.results.serializable.OutputRanges;
-import org.gradle.api.internal.tasks.testing.results.serializable.SerializableTestResult;
-import org.gradle.api.internal.tasks.testing.results.serializable.SerializableTestResultStore;
-import org.gradle.api.tasks.testing.TestResult;
-import org.gradle.util.Path;
-import org.jspecify.annotations.Nullable;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -38,6 +33,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
+import org.gradle.api.internal.tasks.testing.results.serializable.OutputRanges;
+import org.gradle.api.internal.tasks.testing.results.serializable.SerializableTestResult;
+import org.gradle.api.internal.tasks.testing.results.serializable.SerializableTestResultStore;
+import org.gradle.api.tasks.testing.TestResult;
+import org.gradle.util.Path;
+import org.jspecify.annotations.Nullable;
 
 /**
  * The model for the test report. Each root is merged into a single tree, but each result is preserved under its root's name, so no merging takes place aside from by name.
@@ -312,7 +313,7 @@ public class TestTreeModel {
             .findFirst()
             .orElse(null);
         if (perRootInfoWithChildren == null) {
-            return Collections.emptyList();
+            return emptyList();
         }
         // Take a unique ordered set of the child names, to only return one result per unique child name.
         // Consumers of this should iterate over the getPerRootInfo() to get all results for a given child name.

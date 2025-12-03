@@ -16,11 +16,17 @@
 
 package org.gradle.api.internal.plugins;
 
+import static java.util.Comparator.comparing;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.util.concurrent.UncheckedExecutionException;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import org.gradle.api.internal.initialization.ClassLoaderScope;
 import org.gradle.api.plugins.InvalidPluginException;
 import org.gradle.internal.Cast;
@@ -29,11 +35,6 @@ import org.gradle.plugin.use.PluginId;
 import org.gradle.util.internal.GUtil;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 public class DefaultPluginRegistry implements PluginRegistry {
     private final PluginRegistry parent;
@@ -123,7 +124,7 @@ public class DefaultPluginRegistry implements PluginRegistry {
             // and the number of plugins is low in any case
             Map<PluginIdLookupCacheKey, Optional<PluginImplementation<?>>> idToPlugin = idMappings.asMap();
             PluginImplementation<?> lookup = impl.get();
-            ImmutableSortedSet.Builder<PluginId> builder = ImmutableSortedSet.orderedBy(Comparator.comparing(PluginId::getId));
+            ImmutableSortedSet.Builder<PluginId> builder = ImmutableSortedSet.orderedBy(comparing(PluginId::getId));
             for (Map.Entry<PluginIdLookupCacheKey, Optional<PluginImplementation<?>>> entry : idToPlugin.entrySet()) {
                 Optional<PluginImplementation<?>> value = entry.getValue();
                 if (value.isPresent()) {

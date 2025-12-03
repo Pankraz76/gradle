@@ -15,16 +15,15 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.ivyresolve.verification.writer;
 
+import static java.util.Collections.emptyList;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import org.gradle.api.artifacts.ModuleIdentifier;
-import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
-import org.gradle.api.internal.artifacts.verification.verifier.DependencyVerifierBuilder;
-import org.gradle.internal.component.external.model.ModuleComponentArtifactIdentifier;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,6 +32,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.gradle.api.artifacts.ModuleIdentifier;
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
+import org.gradle.api.internal.artifacts.verification.verifier.DependencyVerifierBuilder;
+import org.gradle.internal.component.external.model.ModuleComponentArtifactIdentifier;
 
 /**
  * This class is responsible for "normalizing" trusted PGP keys.
@@ -66,28 +69,28 @@ class PgpKeyGrouper {
                     .filter(entry -> verificationsBuilder.getTrustedKeys().stream()
                         .filter(trustedKey -> trustedKey.getKeyId().equals(e.getKey()))
                         .noneMatch(entry::checkAndMarkSatisfiedBy))
-                    .collect(Collectors.toList());
+                    .collect(toList());
                 if (pgpKeys.size() > 1) {
                     // if there's only one entry, we won't "normalize" into globally trusted keys
                     List<ModuleComponentIdentifier> moduleComponentIds = pgpKeys.stream()
                         .map(PgpEntry::getId)
                         .map(ModuleComponentArtifactIdentifier::getComponentIdentifier)
                         .distinct()
-                        .collect(Collectors.toList());
+                        .collect(toList());
                     if (moduleComponentIds.size() == 1) {
                         groupByModuleComponentId(e, moduleComponentIds);
                     } else {
                         List<ModuleIdentifier> moduleIds = moduleComponentIds.stream()
                             .map(ModuleComponentIdentifier::getModuleIdentifier)
                             .distinct()
-                            .collect(Collectors.toList());
+                            .collect(toList());
                         if (moduleIds.size() == 1) {
                             groupByModuleId(e, moduleIds);
                         } else {
                             List<String> groups = moduleIds.stream()
                                 .map(ModuleIdentifier::getGroup)
                                 .distinct()
-                                .collect(Collectors.toList());
+                                .collect(toList());
                             if (groups.size() == 1) {
                                 groupByGroupOnly(e, groups);
                             } else {
@@ -105,7 +108,7 @@ class PgpKeyGrouper {
         List<PgpEntry> remainingUntouched = e.getValue()
             .stream()
             .filter(p -> p.doesNotDeclareKeyGlobally(keyId))
-            .collect(Collectors.toList());
+            .collect(toList());
         for (String group : groups) {
             long count = remainingUntouched.stream().filter(p -> p.getGroup().equals(group)).count();
             if (count>1) {
@@ -153,12 +156,12 @@ class PgpKeyGrouper {
     static List<List<String>> tryComputeCommonPrefixes(List<String> groups) {
         List<List<String>> splitGroups = groups.stream()
             .map(GROUP_SPLITTER::splitToList)
-            .sorted(Comparator.comparing(List::size))
-            .collect(Collectors.toList());
+            .sorted(comparing(List::size))
+            .collect(toList());
         List<String> shortest = splitGroups.get(0);
         if (shortest.size() < 2) {
             // we need at least a prefix of 2 elements, like "com.mycompany", to perform grouping
-            return Collections.emptyList();
+            return emptyList();
         }
         List<List<String>> commonPrefixes = new ArrayList<>();
         List<List<String>> remainder = Lists.newArrayList(splitGroups);
@@ -192,7 +195,7 @@ class PgpKeyGrouper {
     }
 
     private static List<List<String>> samePrefix(int prefixLen, List<String> prefix, List<List<String>> candidates) {
-        return candidates.stream().filter(groups -> groups.subList(0, prefixLen).equals(prefix)).collect(Collectors.toList());
+        return candidates.stream().filter(groups -> groups.subList(0, prefixLen).equals(prefix)).collect(toList());
     }
 
     private void markKeyDeclaredGlobally(Map.Entry<String, Collection<PgpEntry>> e) {

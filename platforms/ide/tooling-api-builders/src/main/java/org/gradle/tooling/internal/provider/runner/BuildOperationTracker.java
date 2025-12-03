@@ -16,12 +16,13 @@
 
 package org.gradle.tooling.internal.provider.runner;
 
-import org.gradle.internal.operations.BuildOperationDescriptor;
-import org.gradle.internal.operations.OperationFinishEvent;
-import org.gradle.internal.operations.OperationStartEvent;
+import static java.util.Collections.emptyList;
 
 import java.util.Collections;
 import java.util.List;
+import org.gradle.internal.operations.BuildOperationDescriptor;
+import org.gradle.internal.operations.OperationFinishEvent;
+import org.gradle.internal.operations.OperationStartEvent;
 
 /**
  * Tracks some state for build operations of a given type.
@@ -32,7 +33,7 @@ public interface BuildOperationTracker {
      * build operation execution. If this tracker is not required, the trackers can be ignored.
      */
     default List<? extends BuildOperationTracker> getTrackers() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     void started(BuildOperationDescriptor buildOperation, OperationStartEvent startEvent);

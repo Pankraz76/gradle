@@ -15,29 +15,8 @@
  */
 package org.gradle.api.internal.artifacts.verification.serializer;
 
-import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
-import org.gradle.api.internal.artifacts.verification.model.ArtifactVerificationMetadata;
-import org.gradle.api.internal.artifacts.verification.model.Checksum;
-import org.gradle.api.internal.artifacts.verification.model.ComponentVerificationMetadata;
-import org.gradle.api.internal.artifacts.verification.model.IgnoredKey;
-import org.gradle.api.internal.artifacts.verification.verifier.DependencyVerificationConfiguration;
-import org.gradle.api.internal.artifacts.verification.verifier.DependencyVerifier;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.xml.SimpleMarkupWriter;
-import org.gradle.internal.xml.SimpleXmlWriter;
-import org.jspecify.annotations.Nullable;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URI;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
-
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 import static org.gradle.api.internal.artifacts.verification.serializer.DependencyVerificationXmlTags.ALSO_TRUST;
 import static org.gradle.api.internal.artifacts.verification.serializer.DependencyVerificationXmlTags.ARTIFACT;
 import static org.gradle.api.internal.artifacts.verification.serializer.DependencyVerificationXmlTags.COMPONENT;
@@ -68,6 +47,28 @@ import static org.gradle.api.internal.artifacts.verification.serializer.Dependen
 import static org.gradle.api.internal.artifacts.verification.serializer.DependencyVerificationXmlTags.VERIFY_METADATA;
 import static org.gradle.api.internal.artifacts.verification.serializer.DependencyVerificationXmlTags.VERIFY_SIGNATURES;
 import static org.gradle.api.internal.artifacts.verification.serializer.DependencyVerificationXmlTags.VERSION;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URI;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
+import org.gradle.api.internal.artifacts.verification.model.ArtifactVerificationMetadata;
+import org.gradle.api.internal.artifacts.verification.model.Checksum;
+import org.gradle.api.internal.artifacts.verification.model.ComponentVerificationMetadata;
+import org.gradle.api.internal.artifacts.verification.model.IgnoredKey;
+import org.gradle.api.internal.artifacts.verification.verifier.DependencyVerificationConfiguration;
+import org.gradle.api.internal.artifacts.verification.verifier.DependencyVerifier;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.xml.SimpleMarkupWriter;
+import org.gradle.internal.xml.SimpleXmlWriter;
+import org.jspecify.annotations.Nullable;
 
 public class DependencyVerificationsXmlWriter {
     private static final String SPACES = "   ";
@@ -134,7 +135,7 @@ public class DependencyVerificationsXmlWriter {
         writer.startElement(TRUSTED_KEYS);
         Map<String, List<DependencyVerificationConfiguration.TrustedKey>> groupedByKeyId = keys
             .stream()
-            .collect(Collectors.groupingBy(DependencyVerificationConfiguration.TrustedKey::getKeyId, TreeMap::new, Collectors.toList()));
+            .collect(groupingBy(DependencyVerificationConfiguration.TrustedKey::getKeyId, TreeMap::new, toList()));
         for (Map.Entry<String, List<DependencyVerificationConfiguration.TrustedKey>> e : groupedByKeyId.entrySet()) {
             String key = e.getKey();
             List<DependencyVerificationConfiguration.TrustedKey> trustedKeys = e.getValue();

@@ -16,6 +16,13 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.gradle.api.Transformer;
@@ -23,12 +30,6 @@ import org.gradle.internal.UncheckedException;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.CPCHCompileSpec;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.CppPCHCompileSpec;
 import org.gradle.util.internal.CollectionUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PCHUtils {
     public static File generatePCHObjectDirectory(File tempDir, File prefixHeaderFile, File preCompiledHeaderObjectFile) {
@@ -70,7 +71,7 @@ public class PCHUtils {
         File headerFileCopy = new File(generatedSourceDir, sourceFile.getName());
         try {
             FileUtils.copyFile(sourceFile, headerFileCopy);
-            FileUtils.writeStringToFile(generatedSource, "#include \"".concat(headerFileCopy.getName()).concat("\""), StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(generatedSource, "#include \"".concat(headerFileCopy.getName()).concat("\""), UTF_8);
             return generatedSource;
         } catch (IOException e) {
             throw UncheckedException.throwAsUncheckedException(e);

@@ -16,7 +16,13 @@
 
 package org.gradle.api.internal.artifacts;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static java.util.Collections.singleton;
+
 import com.google.common.collect.ImmutableList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.internal.DocumentationRegistry;
 import org.gradle.api.internal.DomainObjectContext;
 import org.gradle.api.internal.artifacts.ivyservice.TypedResolveException;
@@ -26,10 +32,6 @@ import org.gradle.internal.resolve.ModuleVersionNotFoundException;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Adds additional context to exceptions thrown during resolution.
@@ -58,7 +60,7 @@ public class ResolveExceptionMapper {
         if (failures.size() > 1) {
             return new TypedResolveException(type, displayName, failures.stream().map(failure ->
                 mapRepositoryOverrideFailure(displayName, failure)
-            ).collect(ImmutableList.toImmutableList()));
+            ).collect(toImmutableList()));
         }
 
         Throwable failure = failures.iterator().next();
@@ -78,7 +80,7 @@ public class ResolveExceptionMapper {
 
         List<Throwable> mappedCauses = resolveException.getCauses().stream()
             .map(cause -> mapRepositoryOverrideFailure(contextDisplayName, cause))
-            .collect(ImmutableList.toImmutableList());
+            .collect(toImmutableList());
 
         // Keep the original exception if no changes were made to
         // the causes to avoid losing the original stack trace
@@ -105,7 +107,7 @@ public class ResolveExceptionMapper {
         return new TypedResolveException(
             "dependencies",
             contextDisplayName,
-            Collections.singleton(failure),
+            singleton(failure),
             resolutions
         );
     }

@@ -16,9 +16,7 @@
 
 package org.gradle.internal.instrumentation.reporting.listener;
 
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.instrumentation.api.types.BytecodeInterceptorType;
-import org.jspecify.annotations.Nullable;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +24,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.instrumentation.api.types.BytecodeInterceptorType;
+import org.jspecify.annotations.Nullable;
 
 class FileOutputMethodInterceptionListener implements MethodInterceptionListener, AutoCloseable {
 
@@ -36,7 +37,7 @@ class FileOutputMethodInterceptionListener implements MethodInterceptionListener
     public FileOutputMethodInterceptionListener(@Nullable File source, File output) {
         this.source = source;
         try {
-            this.writer = new OutputStreamWriter(Files.newOutputStream(output.toPath()), StandardCharsets.UTF_8);
+            this.writer = new OutputStreamWriter(Files.newOutputStream(output.toPath()), UTF_8);
         } catch (IOException e) {
             throw UncheckedException.throwAsUncheckedException(e);
         }

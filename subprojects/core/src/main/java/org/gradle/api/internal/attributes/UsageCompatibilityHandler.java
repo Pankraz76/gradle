@@ -16,6 +16,9 @@
 
 package org.gradle.api.internal.attributes;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Objects;
 import org.gradle.api.attributes.Attribute;
 import org.gradle.api.attributes.LibraryElements;
 import org.gradle.api.attributes.Usage;
@@ -24,8 +27,6 @@ import org.gradle.internal.isolation.Isolatable;
 import org.gradle.internal.isolation.IsolatableFactory;
 import org.gradle.internal.snapshot.impl.CoercingStringValueSnapshot;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Objects;
 
 /**
  * Converts legacy {@link Usage} values to their modern equivalents.
@@ -56,7 +57,7 @@ public class UsageCompatibilityHandler {
             ImmutableAttributes usageNode = factory.concat(node, typedAttribute, coercingStringValueSnapshot);
             return factory.concat(usageNode, Attribute.of(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE.getName(), String.class), new CoercingStringValueSnapshot(libraryElements, instantiator));
         } else {
-            String val = Objects.requireNonNull(value.isolate()).toString();
+            String val = requireNonNull(value.isolate()).toString();
             String replacementUsage = getReplacementUsage(val);
             String libraryElements = getLibraryElements(val);
             if (replacementUsage == null || libraryElements == null) {

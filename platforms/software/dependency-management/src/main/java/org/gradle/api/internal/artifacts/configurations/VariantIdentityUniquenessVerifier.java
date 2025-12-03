@@ -16,8 +16,14 @@
 
 package org.gradle.api.internal.artifacts.configurations;
 
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.gradle.api.GradleException;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.Dependency;
@@ -28,11 +34,6 @@ import org.gradle.internal.component.external.model.ImmutableCapabilities;
 import org.gradle.internal.component.external.model.ProjectDerivedCapability;
 import org.gradle.internal.deprecation.DocumentedFailure;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Static utility to verify a set of variants each have a unique identity in terms of attributes and capabilities.
@@ -85,7 +86,7 @@ public class VariantIdentityUniquenessVerifier {
             List<ConfigurationInternal> collisions =
                 byIdentity.get(VariantIdentity.from(configuration)).stream()
                     .filter(it -> !it.getName().equals(configuration.getName()))
-                    .collect(Collectors.toList());
+                    .collect(toList());
 
             if (collisions.isEmpty()) {
                 return null;
@@ -106,7 +107,7 @@ public class VariantIdentityUniquenessVerifier {
                     List<ConfigurationInternal> filtered =
                         byIdentity.get(identity).stream()
                             .filter(it -> !it.getName().equals(configuration.getName()))
-                            .collect(Collectors.toList());
+                            .collect(toList());
 
                     throw  buildFailure(configuration, true, filtered);
                 }

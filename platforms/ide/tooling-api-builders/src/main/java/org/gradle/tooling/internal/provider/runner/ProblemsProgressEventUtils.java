@@ -16,7 +16,16 @@
 
 package org.gradle.tooling.internal.provider.runner;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static java.util.Collections.emptyMap;
+import static java.util.stream.Collectors.toMap;
+
 import com.google.common.collect.ImmutableMap;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
 import org.gradle.api.problems.DocLink;
 import org.gradle.api.problems.FileLocation;
 import org.gradle.api.problems.LineInFileLocation;
@@ -70,15 +79,6 @@ import org.gradle.tooling.internal.protocol.problem.InternalSeverity;
 import org.gradle.tooling.internal.protocol.problem.InternalSolution;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Supplier;
-
-import static com.google.common.collect.ImmutableList.toImmutableList;
-import static java.util.stream.Collectors.toMap;
 
 @NullMarked
 public class ProblemsProgressEventUtils {
@@ -241,7 +241,7 @@ public class ProblemsProgressEventUtils {
             TypedAdditionalData typedData = (TypedAdditionalData) additionalData;
             return new DefaultInternalPayloadSerializedAdditionalData(typedData.getBytesForIsolatedObject(), typedData.getSerializedType());
         } else {
-            return new DefaultInternalAdditionalData(Collections.emptyMap());
+            return new DefaultInternalAdditionalData(emptyMap());
         }
     }
 

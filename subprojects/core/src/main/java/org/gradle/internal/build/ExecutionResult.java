@@ -16,17 +16,18 @@
 
 package org.gradle.internal.build;
 
-import com.google.common.collect.ImmutableList;
-import org.gradle.execution.MultipleBuildFailures;
-import org.gradle.internal.Cast;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptyList;
 
+import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import org.gradle.execution.MultipleBuildFailures;
+import org.gradle.internal.Cast;
+import org.jspecify.annotations.Nullable;
 
 public abstract class ExecutionResult<T> {
     private static final Success<Void> SUCCESS = new Success<Void>() {
@@ -143,7 +144,7 @@ public abstract class ExecutionResult<T> {
     private static abstract class Success<T> extends ExecutionResult<T> {
         @Override
         public List<Throwable> getFailures() {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         @Override

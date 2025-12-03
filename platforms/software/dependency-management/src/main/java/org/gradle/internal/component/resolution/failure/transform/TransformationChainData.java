@@ -16,12 +16,13 @@
 
 package org.gradle.internal.component.resolution.failure.transform;
 
+import static java.util.stream.Collectors.joining;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import org.gradle.api.internal.attributes.ImmutableAttributes;
-
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.gradle.api.internal.attributes.ImmutableAttributes;
 
 /**
  * Represents a variant which is produced as the result of applying an artifact transform chain
@@ -52,7 +53,7 @@ public final class TransformationChainData {
     public String summarizeTransformations() {
         return steps.stream()
             .map(t -> "'" + t.getTransformName() + "'")
-            .collect(Collectors.joining(" -> "));
+            .collect(joining(" -> "));
     }
 
     public ImmutableList<TransformData> getSteps() {

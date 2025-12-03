@@ -16,9 +16,13 @@
 
 package org.gradle.internal.component.local.model;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.artifacts.capability.CapabilitySelector;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.artifacts.component.LibraryBinaryIdentifier;
@@ -27,9 +31,6 @@ import org.gradle.api.capabilities.Capability;
 import org.gradle.api.internal.artifacts.component.ComponentSelectorInternal;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
 
 public class DefaultLibraryComponentSelector implements LibraryComponentSelector, ComponentSelectorInternal {
 
@@ -98,7 +99,7 @@ public class DefaultLibraryComponentSelector implements LibraryComponentSelector
 
     @Override
     public List<Capability> getRequestedCapabilities() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override

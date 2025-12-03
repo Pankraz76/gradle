@@ -16,6 +16,17 @@
 
 package org.gradle.internal.resource.local;
 
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.joining;
+import static org.gradle.internal.FileUtils.hasExtension;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.gradle.api.Action;
 import org.gradle.api.file.EmptyFileVisitor;
@@ -28,16 +39,6 @@ import org.gradle.internal.hash.ChecksumService;
 import org.gradle.util.internal.GFileUtils;
 import org.gradle.util.internal.RelativePathUtil;
 import org.jspecify.annotations.NullMarked;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.FileUtils.hasExtension;
 
 /**
  * File store that accepts the target path as the key for the entry.
@@ -83,7 +84,7 @@ public class DefaultPathKeyFileStore implements PathKeyFileStore {
             // We need to ignore empty Strings as this is what "new File(parent, path)" was doing for "path" empty.
             composedPath = Arrays.stream(path)
                 .filter(((Predicate<String>) String::isEmpty).negate())
-                .collect(Collectors.joining(File.separator));
+                .collect(joining(File.separator));
         }
         return new File(baseDir, PathTraversalChecker.safePathName(trimLeadingSlash(composedPath)));
     }
@@ -165,7 +166,7 @@ public class DefaultPathKeyFileStore implements PathKeyFileStore {
     @Override
     public Set<? extends LocallyAvailableResource> search(String pattern) {
         if (!getBaseDir().exists()) {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         final Set<LocallyAvailableResource> entries = new HashSet<LocallyAvailableResource>();

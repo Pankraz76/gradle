@@ -16,6 +16,9 @@
 
 package org.gradle.model.internal.inspect;
 
+import static com.google.common.base.Predicates.notNull;
+import static java.util.Collections.emptySet;
+
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
 import com.google.common.cache.CacheBuilder;
@@ -25,13 +28,6 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
-import org.gradle.internal.Cast;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.service.scopes.Scope;
-import org.gradle.internal.service.scopes.ServiceScope;
-import org.gradle.model.RuleSource;
-
-import javax.annotation.concurrent.ThreadSafe;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -39,6 +35,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
+import javax.annotation.concurrent.ThreadSafe;
+import org.gradle.internal.Cast;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.service.scopes.Scope;
+import org.gradle.internal.service.scopes.ServiceScope;
+import org.gradle.model.RuleSource;
 
 @ThreadSafe
 @ServiceScope(Scope.Global.class)
@@ -64,7 +66,7 @@ public class ModelRuleSourceDetector {
                     Class<?>[] declaredClasses = container.getDeclaredClasses();
 
                     if (declaredClasses.length == 0) {
-                        return Collections.emptySet();
+                        return emptySet();
                     } else {
                         Class<?>[] sortedDeclaredClasses = new Class<?>[declaredClasses.length];
                         System.arraycopy(declaredClasses, 0, sortedDeclaredClasses, 0, declaredClasses.length);
@@ -93,7 +95,7 @@ public class ModelRuleSourceDetector {
                             return input.get();
                         }
                     })
-                    .filter(Predicates.notNull());
+                    .filter(notNull());
         } catch (ExecutionException e) {
             throw UncheckedException.throwAsUncheckedException(e);
         }

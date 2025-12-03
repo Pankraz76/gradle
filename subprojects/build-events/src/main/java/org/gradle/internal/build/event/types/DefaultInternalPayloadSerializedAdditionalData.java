@@ -16,11 +16,12 @@
 
 package org.gradle.internal.build.event.types;
 
-import org.gradle.tooling.internal.protocol.problem.InternalPayloadSerializedAdditionalData;
-import org.jspecify.annotations.NullMarked;
+import static java.util.Collections.emptyMap;
 
 import java.io.Serializable;
 import java.util.Collections;
+import org.gradle.tooling.internal.protocol.problem.InternalPayloadSerializedAdditionalData;
+import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class DefaultInternalPayloadSerializedAdditionalData extends DefaultInternalAdditionalData implements Serializable, InternalPayloadSerializedAdditionalData {
@@ -28,7 +29,7 @@ public class DefaultInternalPayloadSerializedAdditionalData extends DefaultInter
     private final Object payload;
 
     public DefaultInternalPayloadSerializedAdditionalData(byte[] isolatable, Object payload) {
-        super(Collections.emptyMap());
+        super(emptyMap());
         this.isolatable = isolatable;
         this.payload = payload;
     }

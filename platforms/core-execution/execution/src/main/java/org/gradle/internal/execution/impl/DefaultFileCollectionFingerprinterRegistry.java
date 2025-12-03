@@ -16,16 +16,17 @@
 
 package org.gradle.internal.execution.impl;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import org.gradle.internal.execution.FileCollectionFingerprinter;
-import org.gradle.internal.execution.FileCollectionFingerprinterRegistry;
-import org.gradle.internal.execution.FileNormalizationSpec;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import org.gradle.internal.execution.FileCollectionFingerprinter;
+import org.gradle.internal.execution.FileCollectionFingerprinterRegistry;
+import org.gradle.internal.execution.FileNormalizationSpec;
 
 public class DefaultFileCollectionFingerprinterRegistry implements FileCollectionFingerprinterRegistry {
     private final Map<FileNormalizationSpec, FileCollectionFingerprinter> fingerprinters;
@@ -35,7 +36,7 @@ public class DefaultFileCollectionFingerprinterRegistry implements FileCollectio
     }
 
     private static List<Map.Entry<FileNormalizationSpec, FileCollectionFingerprinter>> entriesFrom(Collection<FingerprinterRegistration> registrations) {
-        return registrations.stream().map(registration -> Maps.immutableEntry(registration.getSpec(), registration.getFingerprinter())).collect(ImmutableList.toImmutableList());
+        return registrations.stream().map(registration -> Maps.immutableEntry(registration.getSpec(), registration.getFingerprinter())).collect(toImmutableList());
     }
 
     @Override

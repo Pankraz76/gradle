@@ -16,20 +16,21 @@
 
 package org.gradle.buildinit.plugins.internal;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import com.google.common.io.FileWriteMode;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import groovy.text.SimpleTemplateEngine;
 import groovy.text.Template;
 import groovy.util.CharsetToolkit;
-import org.gradle.api.GradleException;
-import org.gradle.util.internal.GFileUtils;
-
 import java.io.File;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import org.gradle.api.GradleException;
+import org.gradle.util.internal.GFileUtils;
 
 public class SimpleTemplateOperation implements TemplateOperation {
     private final URL templateURL;
@@ -57,7 +58,7 @@ public class SimpleTemplateOperation implements TemplateOperation {
             SimpleTemplateEngine templateEngine = new SimpleTemplateEngine();
             String templateText = Resources.asCharSource(templateURL, CharsetToolkit.getDefaultSystemCharset()).read();
             Template template = templateEngine.createTemplate(templateText);
-            try (Writer writer = Files.asCharSink(target, StandardCharsets.UTF_8, FileWriteMode.APPEND).openStream()) {
+            try (Writer writer = Files.asCharSink(target, UTF_8, FileWriteMode.APPEND).openStream()) {
                 template.make(bindings).writeTo(writer);
             }
         } catch (Exception ex) {

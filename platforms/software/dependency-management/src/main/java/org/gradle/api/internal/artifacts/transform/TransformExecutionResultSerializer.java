@@ -16,7 +16,8 @@
 
 package org.gradle.api.internal.artifacts.transform;
 
-import org.gradle.internal.UncheckedException;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.gradle.internal.UncheckedException.unchecked;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,8 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.gradle.internal.UncheckedException.unchecked;
+import org.gradle.internal.UncheckedException;
 
 public class TransformExecutionResultSerializer {
     private static final String INPUT_FILE_PATH_PREFIX = "i/";
@@ -58,7 +58,7 @@ public class TransformExecutionResultSerializer {
         Path transformerResultsPath = resultsFile.toPath();
         try {
             TransformExecutionResult.Builder builder = TransformExecutionResult.builder();
-            List<String> paths = Files.readAllLines(transformerResultsPath, StandardCharsets.UTF_8);
+            List<String> paths = Files.readAllLines(transformerResultsPath, UTF_8);
             for (String path : paths) {
                 if (path.startsWith(OUTPUT_FILE_PATH_PREFIX)) {
                     builder.addProducedOutput(path.substring(2));

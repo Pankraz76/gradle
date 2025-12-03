@@ -16,6 +16,11 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp.version;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import net.rubygrapefruit.platform.MissingRegistryEntryException;
 import net.rubygrapefruit.platform.WindowsRegistry;
 import org.apache.commons.io.FileUtils;
@@ -23,10 +28,6 @@ import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.gradle.internal.UncheckedException;
 import org.gradle.util.internal.VersionNumber;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class DefaultVisualCppMetadataProvider implements VisualCppMetadataProvider {
     private static final String VS2017_METADATA_FILE_PATH = "VC/Auxiliary/Build/Microsoft.VCToolsVersion.default.txt";
@@ -69,7 +70,7 @@ public class DefaultVisualCppMetadataProvider implements VisualCppMetadataProvid
             return null;
         }
         try {
-            String versionString = FileUtils.readFileToString(msvcVersionFile, StandardCharsets.UTF_8).trim();
+            String versionString = FileUtils.readFileToString(msvcVersionFile, UTF_8).trim();
             File visualCppDir = new File(installDir, VS2017_COMPILER_PATH_PREFIX + "/" + versionString);
             return new DefaultVisualCppMetadata(visualCppDir, VersionNumber.parse(versionString));
         } catch (IOException e) {

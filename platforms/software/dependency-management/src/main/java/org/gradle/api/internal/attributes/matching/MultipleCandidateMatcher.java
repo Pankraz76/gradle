@@ -16,20 +16,22 @@
 
 package org.gradle.api.internal.attributes.matching;
 
-import com.google.common.collect.Sets;
-import org.gradle.api.attributes.Attribute;
-import org.gradle.api.internal.attributes.ImmutableAttributes;
-import org.gradle.api.internal.attributes.ImmutableAttributesEntry;
-import org.gradle.internal.Cast;
-import org.gradle.internal.component.model.AttributeMatchingExplanationBuilder;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
 
+import com.google.common.collect.Sets;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.IntFunction;
+import org.gradle.api.attributes.Attribute;
+import org.gradle.api.internal.attributes.ImmutableAttributes;
+import org.gradle.api.internal.attributes.ImmutableAttributesEntry;
+import org.gradle.internal.Cast;
+import org.gradle.internal.component.model.AttributeMatchingExplanationBuilder;
+import org.jspecify.annotations.Nullable;
 
 /**
  * This is the heart of the attribute matching algorithm and is used whenever there are multiple candidates to choose from.
@@ -389,9 +391,9 @@ class MultipleCandidateMatcher {
         }
         if (candidateValues == null) {
             if (compatibleValue == null) {
-                return Collections.emptySet();
+                return emptySet();
             }
-            return Collections.singleton(compatibleValue);
+            return singleton(compatibleValue);
         }
         return candidateValues;
     }

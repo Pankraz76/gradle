@@ -16,14 +16,15 @@
 
 package org.gradle.internal.jacoco.rules;
 
-import org.gradle.api.Action;
-import org.gradle.internal.reflect.Instantiator;
-import org.gradle.testing.jacoco.tasks.rules.JacocoViolationRule;
-import org.gradle.testing.jacoco.tasks.rules.JacocoViolationRulesContainer;
+import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.api.Action;
+import org.gradle.internal.reflect.Instantiator;
+import org.gradle.testing.jacoco.tasks.rules.JacocoViolationRule;
+import org.gradle.testing.jacoco.tasks.rules.JacocoViolationRulesContainer;
 
 public class JacocoViolationRulesContainerImpl implements JacocoViolationRulesContainer {
 
@@ -47,7 +48,7 @@ public class JacocoViolationRulesContainerImpl implements JacocoViolationRulesCo
 
     @Override
     public List<JacocoViolationRule> getRules() {
-        return Collections.unmodifiableList(rules);
+        return unmodifiableList(rules);
     }
 
     @Override

@@ -15,15 +15,16 @@
  */
 package org.gradle.plugins.ide.internal.tooling.eclipse;
 
-import com.google.common.collect.Lists;
-import org.gradle.plugins.ide.internal.tooling.model.DefaultGradleProject;
-import org.gradle.tooling.internal.gradle.DefaultProjectIdentifier;
-import org.gradle.tooling.internal.gradle.GradleProjectIdentity;
+import static java.util.Collections.emptyList;
 
+import com.google.common.collect.Lists;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.plugins.ide.internal.tooling.model.DefaultGradleProject;
+import org.gradle.tooling.internal.gradle.DefaultProjectIdentifier;
+import org.gradle.tooling.internal.gradle.GradleProjectIdentity;
 
 /**
  * An implementation for {@link org.gradle.tooling.model.eclipse.EclipseProject}.
@@ -53,14 +54,14 @@ public class DefaultEclipseProject implements Serializable, GradleProjectIdentit
         this.path = path;
         this.description = description;
         this.projectDirectory = projectDirectory;
-        this.tasks = Collections.emptyList();
+        this.tasks = emptyList();
         this.children = Lists.newArrayList(children);
-        this.classpath = Collections.emptyList();
-        this.sourceDirectories = Collections.emptyList();
-        this.projectDependencies = Collections.emptyList();
-        this.projectNatures = Collections.emptyList();
-        this.buildCommands = Collections.emptyList();
-        this.classpathContainers = Collections.emptyList();
+        this.classpath = emptyList();
+        this.sourceDirectories = emptyList();
+        this.projectDependencies = emptyList();
+        this.projectNatures = emptyList();
+        this.buildCommands = emptyList();
+        this.classpathContainers = emptyList();
     }
 
     @Override

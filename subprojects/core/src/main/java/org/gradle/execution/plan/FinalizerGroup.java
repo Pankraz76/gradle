@@ -16,13 +16,13 @@
 
 package org.gradle.execution.plan;
 
+import static java.util.Collections.singleton;
+import static java.util.Collections.singletonList;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.SetMultimap;
-import kotlin.collections.ArrayDeque;
-import org.jspecify.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -30,6 +30,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import kotlin.collections.ArrayDeque;
+import org.jspecify.annotations.Nullable;
 
 /**
  * The set of nodes reachable from a particular finalizer node.
@@ -141,7 +143,7 @@ public class FinalizerGroup extends HasFinalizers {
 
     @Override
     public boolean isCanCancel() {
-        if (!isCanCancel(Collections.singletonList(this))) {
+        if (!isCanCancel(singletonList(this))) {
             return false;
         } else {
             return delegate.isCanCancel();
@@ -203,7 +205,7 @@ public class FinalizerGroup extends HasFinalizers {
                     blockingNodesBuilder.put(member, waitForFinalizers);
                 } else {
                     // All finalized nodes are also members. Block until some other finalized node is started
-                    blockingNodesBuilder.put(member, new WaitForFinalizedNodesToBecomeActive(Collections.singleton(member)));
+                    blockingNodesBuilder.put(member, new WaitForFinalizedNodesToBecomeActive(singleton(member)));
                 }
             } else {
                 if (dependenciesThatAreMembers.contains(member)) {

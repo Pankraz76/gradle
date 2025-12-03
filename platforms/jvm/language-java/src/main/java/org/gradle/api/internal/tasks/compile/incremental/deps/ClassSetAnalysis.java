@@ -16,13 +16,11 @@
 
 package org.gradle.api.internal.tasks.compile.incremental.deps;
 
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
+
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.CompilerApiData;
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource;
-import org.gradle.api.internal.tasks.compile.incremental.processing.AnnotationProcessingData;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +31,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.CompilerApiData;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource;
+import org.gradle.api.internal.tasks.compile.incremental.processing.AnnotationProcessingData;
 
 /**
  * Combines {@link ClassSetAnalysisData}, {@link AnnotationProcessingData} and {@link CompilerApiData} to implement the transitive change detection algorithm.
@@ -59,11 +61,11 @@ public class ClassSetAnalysis {
     public ClassSetDiff findChangesSince(ClassSetAnalysis other) {
         DependentsSet directChanges = classAnalysis.getChangedClassesSince(other.classAnalysis);
         if (directChanges.isDependencyToAll()) {
-            return new ClassSetDiff(directChanges, Collections.emptyMap());
+            return new ClassSetDiff(directChanges, emptyMap());
         }
-        DependentsSet transitiveChanges = other.findTransitiveDependents(directChanges.getAllDependentClasses(), Collections.emptyMap());
+        DependentsSet transitiveChanges = other.findTransitiveDependents(directChanges.getAllDependentClasses(), emptyMap());
         if (transitiveChanges.isDependencyToAll()) {
-            return new ClassSetDiff(transitiveChanges, Collections.emptyMap());
+            return new ClassSetDiff(transitiveChanges, emptyMap());
         }
         DependentsSet allChanges = DependentsSet.merge(Arrays.asList(directChanges, transitiveChanges));
         Map<String, IntSet> changedConstants = findChangedConstants(other, allChanges);
@@ -73,7 +75,7 @@ public class ClassSetAnalysis {
     @SuppressWarnings("MixedMutabilityReturnType")
     private Map<String, IntSet> findChangedConstants(ClassSetAnalysis other, DependentsSet affectedClasses) {
         if (affectedClasses.isDependencyToAll()) {
-            return Collections.emptyMap();
+            return emptyMap();
         }
         Set<String> dependentClasses = affectedClasses.getAllDependentClasses();
         Map<String, IntSet> result = new HashMap<>(dependentClasses.size());
@@ -150,9 +152,9 @@ public class ClassSetAnalysis {
     }
 
     public DependentsSet getAnnotationProcessingDependentsSet(String className) {
-        Set<String> generatedClasses = annotationProcessingData.getGeneratedTypesByOrigin().getOrDefault(className, Collections.emptySet());
-        Set<GeneratedResource> generatedResources = annotationProcessingData.getGeneratedResourcesByOrigin().getOrDefault(className, Collections.emptySet());
-        return DependentsSet.dependents(Collections.emptySet(), generatedClasses, generatedResources);
+        Set<String> generatedClasses = annotationProcessingData.getGeneratedTypesByOrigin().getOrDefault(className, emptySet());
+        Set<GeneratedResource> generatedResources = annotationProcessingData.getGeneratedResourcesByOrigin().getOrDefault(className, emptySet());
+        return DependentsSet.dependents(emptySet(), generatedClasses, generatedResources);
     }
 
     /**
@@ -163,7 +165,7 @@ public class ClassSetAnalysis {
      */
     public Set<String> getTypesToReprocess(Set<String> compiledClasses) {
         if (compiledClasses.isEmpty()) {
-            return Collections.emptySet();
+            return emptySet();
         }
         Set<String> typesToReprocess = new HashSet<>(annotationProcessingData.getAggregatedTypes());
         for (Map.Entry<String, Set<String>> entry : annotationProcessingData.getGeneratedTypesByOrigin().entrySet()) {
@@ -172,7 +174,7 @@ public class ClassSetAnalysis {
             }
         }
         for (String toReprocess : new ArrayList<>(typesToReprocess)) {
-            typesToReprocess.removeAll(annotationProcessingData.getGeneratedTypesByOrigin().getOrDefault(toReprocess, Collections.emptySet()));
+            typesToReprocess.removeAll(annotationProcessingData.getGeneratedTypesByOrigin().getOrDefault(toReprocess, emptySet()));
         }
         return typesToReprocess;
     }

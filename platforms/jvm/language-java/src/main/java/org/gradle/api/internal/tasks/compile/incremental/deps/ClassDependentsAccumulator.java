@@ -16,17 +16,19 @@
 
 package org.gradle.api.internal.tasks.compile.incremental.deps;
 
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.ints.IntSet;
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
-import org.gradle.internal.hash.HashCode;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
+import org.gradle.internal.hash.HashCode;
 
 public class ClassDependentsAccumulator {
 
@@ -80,7 +82,7 @@ public class ClassDependentsAccumulator {
     @VisibleForTesting
     Map<String, DependentsSet> getDependentsMap() {
         if (dependenciesToAll.isEmpty() && privateDependents.isEmpty() && accessibleDependents.isEmpty()) {
-            return Collections.emptyMap();
+            return emptyMap();
         }
         ImmutableMap.Builder<String, DependentsSet> builder = ImmutableMap.builder();
         for (Map.Entry<String, String> entry : dependenciesToAll.entrySet()) {
@@ -89,12 +91,12 @@ public class ClassDependentsAccumulator {
         Set<String> collected = new HashSet<>();
         for (Map.Entry<String, Set<String>> entry : accessibleDependents.entrySet()) {
             if (collected.add(entry.getKey())) {
-                builder.put(entry.getKey(), DependentsSet.dependentClasses(privateDependents.getOrDefault(entry.getKey(), Collections.emptySet()), entry.getValue()));
+                builder.put(entry.getKey(), DependentsSet.dependentClasses(privateDependents.getOrDefault(entry.getKey(), emptySet()), entry.getValue()));
             }
         }
         for (Map.Entry<String, Set<String>> entry : privateDependents.entrySet()) {
             if (collected.add(entry.getKey())) {
-                builder.put(entry.getKey(), DependentsSet.dependentClasses(entry.getValue(), accessibleDependents.getOrDefault(entry.getKey(), Collections.emptySet())));
+                builder.put(entry.getKey(), DependentsSet.dependentClasses(entry.getValue(), accessibleDependents.getOrDefault(entry.getKey(), emptySet())));
             }
         }
         return builder.build();

@@ -16,21 +16,21 @@
 
 package org.gradle.internal.instrumentation.processor.codegen.groovy;
 
-import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.TypeName;
-import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
-import org.gradle.internal.instrumentation.processor.codegen.JavadocUtils;
-import org.gradle.internal.instrumentation.processor.codegen.TypeUtils;
-
-import java.lang.reflect.Array;
-import java.util.Map;
-import java.util.Objects;
-
+import static java.util.Objects.requireNonNull;
 import static org.gradle.internal.instrumentation.processor.codegen.groovy.InterceptGroovyCallsGenerator.SIGNATURE_AWARE_CALL_INTERCEPTOR_SIGNATURE_MATCH;
 import static org.gradle.internal.instrumentation.processor.codegen.groovy.ParameterMatchEntry.Kind.PARAMETER;
 import static org.gradle.internal.instrumentation.processor.codegen.groovy.ParameterMatchEntry.Kind.RECEIVER;
 import static org.gradle.internal.instrumentation.processor.codegen.groovy.ParameterMatchEntry.Kind.RECEIVER_AS_CLASS;
 import static org.gradle.internal.instrumentation.processor.codegen.groovy.ParameterMatchEntry.Kind.VARARG;
+
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.TypeName;
+import java.lang.reflect.Array;
+import java.util.Map;
+import java.util.Objects;
+import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
+import org.gradle.internal.instrumentation.processor.codegen.JavadocUtils;
+import org.gradle.internal.instrumentation.processor.codegen.TypeUtils;
 
 /**
  * Based on the {@link SignatureTree}, generates a method body that checks the
@@ -97,7 +97,7 @@ class MatchesSignatureGeneratingSignatureTreeVisitor {
     private void generateVarargCheck(ParameterMatchEntry entry, SignatureTree child, int paramIndex) {
         TypeName entryParamType = TypeUtils.typeName(entry.type);
         CallInterceptionRequest childRequest = child.getLeafOrNull();
-        Objects.requireNonNull(childRequest, "vararg parameter must be the last in the signature");
+        requireNonNull(childRequest, "vararg parameter must be the last in the signature");
 
         result.add("// Trying to match the vararg invocation\n");
         CodeBlock varargMatched = CodeBlock.of("varargMatched");

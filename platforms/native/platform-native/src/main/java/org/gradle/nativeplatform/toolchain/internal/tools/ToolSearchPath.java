@@ -16,12 +16,7 @@
 
 package org.gradle.nativeplatform.toolchain.internal.tools;
 
-import org.gradle.api.GradleException;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.logging.text.DiagnosticsVisitor;
-import org.gradle.internal.logging.text.TreeFormatter;
-import org.gradle.internal.os.OperatingSystem;
-import org.gradle.nativeplatform.toolchain.internal.ToolType;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -33,6 +28,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.gradle.api.GradleException;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.logging.text.DiagnosticsVisitor;
+import org.gradle.internal.logging.text.TreeFormatter;
+import org.gradle.internal.os.OperatingSystem;
+import org.gradle.nativeplatform.toolchain.internal.ToolType;
 
 public class ToolSearchPath {
     private final Map<String, File> executables = new HashMap<String, File>();
@@ -116,12 +117,12 @@ public class ToolSearchPath {
         try {
             byte[] header = new byte[10];
             instr.readFully(header);
-            if (!new String(header, StandardCharsets.UTF_8).equals("!<symlink>")) {
+            if (!new String(header, UTF_8).equals("!<symlink>")) {
                 return null;
             }
             byte[] pathContent = new byte[(int) symlink.length() - 11];
             instr.readFully(pathContent);
-            pathStr = new String(pathContent, StandardCharsets.UTF_8);
+            pathStr = new String(pathContent, UTF_8);
         } finally {
             instr.close();
         }

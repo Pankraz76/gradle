@@ -16,7 +16,15 @@
 
 package org.gradle.api.internal.artifacts.ivyservice;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+
 import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import javax.inject.Inject;
 import org.gradle.StartParameter;
 import org.gradle.api.InvalidUserCodeException;
 import org.gradle.api.artifacts.ResolutionStrategy;
@@ -97,12 +105,6 @@ import org.gradle.internal.operations.BuildOperationExecutor;
 import org.gradle.internal.resolve.resolver.ResolvedVariantCache;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Performs a graph resolution. This class acts as the entry-point to the dependency resolution process.
@@ -235,13 +237,13 @@ public class ResolutionExecutor {
         InMemoryResolutionResultBuilder resolutionResultBuilder = new InMemoryResolutionResultBuilder(params.getIncludeAllSelectableVariantResults());
         DefaultResolvedArtifactsBuilder artifactsBuilder = new DefaultResolvedArtifactsBuilder(buildProjectDependencies);
 
-        ComponentResolvers resolvers = getResolvers(params, legacyParams, Collections.emptyList());
+        ComponentResolvers resolvers = getResolvers(params, legacyParams, emptyList());
         DependencyGraphVisitor artifactsGraphVisitor = artifactVisitorFor(artifactsBuilder, params.getArtifactTypeRegistry());
 
         ImmutableList<DependencyGraphVisitor> visitors = ImmutableList.of(failureCollector, resolutionResultBuilder, artifactsGraphVisitor);
         doResolve(params, legacyParams, ImmutableList.of(), resolvers, IS_LOCAL_EDGE, visitors);
 
-        Set<UnresolvedDependency> unresolvedDependencies = failureCollector.complete(Collections.emptySet());
+        Set<UnresolvedDependency> unresolvedDependencies = failureCollector.complete(emptySet());
         VisitedGraphResults graphResults = new DefaultVisitedGraphResults(resolutionResultBuilder.getResolutionResult(), unresolvedDependencies);
         VisitedArtifactResults artifactsResults = artifactsBuilder.complete();
 
@@ -317,7 +319,7 @@ public class ResolutionExecutor {
 
         VisitedArtifactResults artifactsResults = artifactsBuilder.complete();
 
-        Set<UnresolvedDependency> lockingFailures = Collections.emptySet();
+        Set<UnresolvedDependency> lockingFailures = emptySet();
         if (lockingVisitor != null) {
             lockingFailures = lockingVisitor.collectLockingFailures();
         }
@@ -525,7 +527,7 @@ public class ResolutionExecutor {
         );
 
         return new LocalComponentDependencyMetadata(
-            selector, null, Collections.emptyList(), Collections.emptyList(),
+            selector, null, emptyList(), emptyList(),
             false, false, false, true, false, true, lock.getReason()
         );
     }

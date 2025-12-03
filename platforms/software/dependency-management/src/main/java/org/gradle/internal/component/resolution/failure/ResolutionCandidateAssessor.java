@@ -16,8 +16,16 @@
 
 package org.gradle.internal.component.resolution.failure;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.Describable;
 import org.gradle.api.attributes.Attribute;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact.ResolvedVariant;
@@ -32,12 +40,6 @@ import org.gradle.internal.component.model.GraphSelectionCandidates;
 import org.gradle.internal.component.model.VariantGraphResolveMetadata;
 import org.gradle.internal.component.model.VariantGraphResolveState;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * A utility class used by {@link ResolutionFailureHandler} to assess and classify
@@ -60,8 +62,8 @@ public final class ResolutionCandidateAssessor {
     public List<AssessedCandidate> assessResolvedVariants(List<? extends ResolvedVariant> resolvedVariants) {
         return resolvedVariants.stream()
             .map(variant -> assessCandidate(variant.asDescribable().getCapitalizedDisplayName(), variant.getCapabilities(), variant.getAttributes().asImmutable()))
-            .sorted(Comparator.comparing(AssessedCandidate::getDisplayName))
-            .collect(Collectors.toList());
+            .sorted(comparing(AssessedCandidate::getDisplayName))
+            .collect(toList());
     }
 
     public List<AssessedCandidate> assessResolvedVariantStates(List<? extends VariantGraphResolveState> variantStates, ImmutableCapability defaultCapabilityForComponent) {
@@ -70,23 +72,23 @@ public final class ResolutionCandidateAssessor {
             .map(variant -> {
                 ImmutableCapabilities capabilities = variant.getCapabilities().orElse(defaultCapabilityForComponent);
                 return assessCandidate(variant.getDisplayName(), capabilities, variant.getAttributes().asImmutable());
-            }).sorted(Comparator.comparing(AssessedCandidate::getDisplayName))
-            .collect(Collectors.toList());
+            }).sorted(comparing(AssessedCandidate::getDisplayName))
+            .collect(toList());
     }
 
     public List<AssessedCandidate> assessNodeMetadatas(Set<VariantGraphResolveMetadata> nodes) {
         return nodes.stream()
             .map(variant -> assessCandidate(variant.getDisplayName(), variant.getCapabilities(), variant.getAttributes().asImmutable()))
-            .sorted(Comparator.comparing(AssessedCandidate::getDisplayName))
-            .collect(Collectors.toList());
+            .sorted(comparing(AssessedCandidate::getDisplayName))
+            .collect(toList());
     }
 
     public List<AssessedCandidate> assessGraphSelectionCandidates(GraphSelectionCandidates candidates) {
         return candidates.getVariantsForAttributeMatching().stream()
             .map(VariantGraphResolveState::getMetadata)
             .map(variantMetadata -> assessCandidate(variantMetadata.getDisplayName(), variantMetadata.getCapabilities(), variantMetadata.getAttributes()))
-            .sorted(Comparator.comparing(AssessedCandidate::getDisplayName))
-            .collect(Collectors.toList());
+            .sorted(comparing(AssessedCandidate::getDisplayName))
+            .collect(toList());
     }
 
     public AssessedCandidate assessCandidate(
@@ -101,7 +103,7 @@ public final class ResolutionCandidateAssessor {
         ImmutableList.Builder<AssessedAttribute<?>> onlyOnProducer = ImmutableList.builder();
 
         Sets.union(requestedAttributes.getAttributes().keySet(), candidateAttributes.getAttributes().keySet()).stream()
-            .sorted(Comparator.comparing(Attribute::getName))
+            .sorted(comparing(Attribute::getName))
             .forEach(attribute -> classifyAttribute(requestedAttributes, candidateAttributes, attributeMatcher, attribute, alreadyAssessed, compatible, incompatible, onlyOnConsumer, onlyOnProducer));
 
         return new AssessedCandidate(candidateDisplayName, candidateAttributes, candidateCapabilities, compatible.build(), incompatible.build(), onlyOnConsumer.build(), onlyOnProducer.build());

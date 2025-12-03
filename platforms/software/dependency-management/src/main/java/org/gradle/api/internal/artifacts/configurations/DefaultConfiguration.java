@@ -16,9 +16,37 @@
 
 package org.gradle.api.internal.artifacts.configurations;
 
+import static java.util.Collections.singleton;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.unmodifiableSet;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.joining;
+import static org.gradle.api.internal.artifacts.configurations.ConfigurationInternal.InternalState.UNRESOLVED;
+import static org.gradle.api.internal.artifacts.result.DefaultResolvedComponentResult.eachElement;
+import static org.gradle.util.internal.ConfigureUtil.configure;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import groovy.lang.Closure;
+import java.io.File;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.Describable;
 import org.gradle.api.DomainObjectSet;
@@ -110,30 +138,6 @@ import org.gradle.util.internal.CollectionUtils;
 import org.gradle.util.internal.ConfigureUtil;
 import org.gradle.util.internal.WrapUtil;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Queue;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.gradle.api.internal.artifacts.configurations.ConfigurationInternal.InternalState.UNRESOLVED;
-import static org.gradle.api.internal.artifacts.result.DefaultResolvedComponentResult.eachElement;
-import static org.gradle.util.internal.ConfigureUtil.configure;
 
 /**
  * The default {@link Configuration} implementation.
@@ -325,7 +329,7 @@ public abstract class DefaultConfiguration extends AbstractFileCollection implem
 
     @Override
     public Set<Configuration> getExtendsFrom() {
-        return Collections.unmodifiableSet(extendsFrom);
+        return unmodifiableSet(extendsFrom);
     }
 
     @Override
@@ -355,7 +359,7 @@ public abstract class DefaultConfiguration extends AbstractFileCollection implem
         validateMutation(MutationType.HIERARCHY);
         assertNotDetachedExtensionDoingExtending(Arrays.asList(extendsFrom));
         for (Configuration extended : extendsFrom) {
-            ConfigurationInternal other = Objects.requireNonNull(Cast.uncheckedCast(extended));
+            ConfigurationInternal other = requireNonNull(Cast.uncheckedCast(extended));
             if (!domainObjectContext.equals(other.getDomainObjectContext())) {
                 throw new InvalidUserDataException(String.format(
                     "%s in %s cannot extend %s from %s. Configurations can only extend from configurations in the same context.",
@@ -412,7 +416,7 @@ public abstract class DefaultConfiguration extends AbstractFileCollection implem
     @Override
     public Set<Configuration> getHierarchy() {
         if (extendsFrom.isEmpty()) {
-            return Collections.singleton(this);
+            return singleton(this);
         }
         Set<Configuration> result = WrapUtil.toLinkedSet(this);
         collectSuperConfigs(this, result);
@@ -734,7 +738,7 @@ public abstract class DefaultConfiguration extends AbstractFileCollection implem
         ConfigurationInternal src = this;
         while (src != null) {
             if (!sources.add(src)) {
-                String cycle = sources.stream().map(Configuration::getName).collect(Collectors.joining(" -> ")) + " -> " + getName();
+                String cycle = sources.stream().map(Configuration::getName).collect(joining(" -> ")) + " -> " + getName();
                 throw new InvalidUserDataException("Cycle detected in consistent resolution sources: " + cycle);
             }
             src = src.getConsistentResolutionSource();
@@ -905,7 +909,7 @@ public abstract class DefaultConfiguration extends AbstractFileCollection implem
     @Override
     public Set<ExcludeRule> getExcludeRules() {
         initExcludeRules();
-        return Collections.unmodifiableSet(parsedExcludeRules);
+        return unmodifiableSet(parsedExcludeRules);
     }
 
     @Override
@@ -1603,7 +1607,7 @@ public abstract class DefaultConfiguration extends AbstractFileCollection implem
             String summarizedExtensionTargets = StreamSupport.stream(extendsFrom.spliterator(), false)
                 .map(ConfigurationInternal.class::cast)
                 .map(ConfigurationInternal::getDisplayName)
-                .collect(Collectors.joining(", "));
+                .collect(joining(", "));
             GradleException ex = new GradleException(getDisplayName() + " cannot extend " + summarizedExtensionTargets);
             ProblemId id = ProblemId.create("extend-detached-not-allowed", "Extending a detachedConfiguration is not allowed", GradleCoreProblemGroup.configurationUsage());
             throw configurationServices.getProblems().getInternalReporter().throwing(ex, id, spec -> {
@@ -1808,7 +1812,7 @@ public abstract class DefaultConfiguration extends AbstractFileCollection implem
         public static String summarizeProperUsage(ProperMethodUsage... properUsages) {
             return Arrays.stream(properUsages)
                 .map(ProperMethodUsage::buildProperName)
-                .collect(Collectors.joining(", "));
+                .collect(joining(", "));
         }
     }
 
@@ -1823,7 +1827,7 @@ public abstract class DefaultConfiguration extends AbstractFileCollection implem
 
         @Override
         public List<String> getResolutions() {
-            return Collections.singletonList(resolution);
+            return singletonList(resolution);
         }
     }
 }

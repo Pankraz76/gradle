@@ -15,10 +15,11 @@
  */
 package org.gradle.tooling;
 
-import org.gradle.api.Incubating;
+import static java.util.Collections.emptyList;
 
 import java.util.Collections;
 import java.util.List;
+import org.gradle.api.Incubating;
 
 /**
  * Thrown when there is some problem using a Gradle connection.
@@ -57,11 +58,11 @@ public class GradleConnectionException extends RuntimeException {
     @Incubating
     public List<Failure> getFailures() {
         if (failures == null) {
-            return Collections.emptyList();
+            return emptyList();
         }
         List<Failure> result = failures.get();
         if (result == null) {
-            return Collections.emptyList();
+            return emptyList();
         }
         return result;
     }

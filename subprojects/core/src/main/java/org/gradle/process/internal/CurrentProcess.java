@@ -16,14 +16,15 @@
 
 package org.gradle.process.internal;
 
-import org.gradle.api.internal.file.FileCollectionFactory;
-import org.gradle.internal.instrumentation.agent.AgentUtils;
-import org.gradle.internal.jvm.JavaInfo;
-import org.gradle.internal.jvm.Jvm;
+import static java.util.stream.Collectors.toList;
 
 import java.lang.management.ManagementFactory;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.gradle.api.internal.file.FileCollectionFactory;
+import org.gradle.internal.instrumentation.agent.AgentUtils;
+import org.gradle.internal.jvm.JavaInfo;
+import org.gradle.internal.jvm.Jvm;
 
 public class CurrentProcess {
     private final JavaInfo jvm;
@@ -57,7 +58,7 @@ public class CurrentProcess {
         // TODO(mlopatkin) figure out a nicer way of handling the presence of agent in the foreground daemon.
         //  Currently it is hard to have a proper "-javaagent:/path/to/jar" in clients that start the daemon, so all code deals with a boolean flag shouldApplyAgent instead.
         //  It is also possible to have the agent attached at runtime, without the flag, so flag checking is preferred.
-        jvmOptions.setAllJvmArgs(arguments.stream().filter(arg -> !AgentUtils.isGradleInstrumentationAgentSwitch(arg)).collect(Collectors.toList()));
+        jvmOptions.setAllJvmArgs(arguments.stream().filter(arg -> !AgentUtils.isGradleInstrumentationAgentSwitch(arg)).collect(toList()));
         return jvmOptions;
     }
 }

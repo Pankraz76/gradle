@@ -16,6 +16,22 @@
 
 package org.gradle.language.nativeplatform.internal;
 
+import static java.util.Collections.singleton;
+import static java.util.stream.Collectors.toSet;
+import static org.gradle.language.cpp.CppBinary.DEBUGGABLE_ATTRIBUTE;
+import static org.gradle.language.cpp.CppBinary.LINKAGE_ATTRIBUTE;
+import static org.gradle.language.cpp.CppBinary.OPTIMIZED_ATTRIBUTE;
+import static org.gradle.nativeplatform.MachineArchitecture.ARCHITECTURE_ATTRIBUTE;
+import static org.gradle.nativeplatform.OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.Action;
 import org.gradle.api.Named;
@@ -36,21 +52,6 @@ import org.gradle.nativeplatform.TargetMachineFactory;
 import org.gradle.nativeplatform.internal.DefaultTargetMachineFactory;
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.gradle.language.cpp.CppBinary.DEBUGGABLE_ATTRIBUTE;
-import static org.gradle.language.cpp.CppBinary.LINKAGE_ATTRIBUTE;
-import static org.gradle.language.cpp.CppBinary.OPTIMIZED_ATTRIBUTE;
-import static org.gradle.nativeplatform.MachineArchitecture.ARCHITECTURE_ATTRIBUTE;
-import static org.gradle.nativeplatform.OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE;
 
 public class Dimensions {
     public static String createDimensionSuffix(Named dimensionValue, Collection<?> multivalueProperty) {
@@ -194,11 +195,11 @@ public class Dimensions {
     }
 
     private static Set<OperatingSystemFamily> targetMachinesToOperatingSystems(Collection<TargetMachine> targetMachines) {
-        return targetMachines.stream().map(TargetMachine::getOperatingSystemFamily).collect(Collectors.toSet());
+        return targetMachines.stream().map(TargetMachine::getOperatingSystemFamily).collect(toSet());
     }
 
     private static Set<MachineArchitecture> targetMachinesToArchitectures(Collection<TargetMachine> targetMachines) {
-        return targetMachines.stream().map(TargetMachine::getArchitecture).collect(Collectors.toSet());
+        return targetMachines.stream().map(TargetMachine::getArchitecture).collect(toSet());
     }
 
     private static void addCommonAttributes(BuildType buildType, TargetMachine targetMachine, AttributeContainer runtimeAttributes) {
@@ -216,7 +217,7 @@ public class Dimensions {
      * @since 5.1
      */
     public static Set<TargetMachine> useHostAsDefaultTargetMachine(TargetMachineFactory targetMachineFactory) {
-        return Collections.singleton(((DefaultTargetMachineFactory) targetMachineFactory).host());
+        return singleton(((DefaultTargetMachineFactory) targetMachineFactory).host());
     }
 
     public static boolean tryToBuildOnHost(NativeVariantIdentity identity) {

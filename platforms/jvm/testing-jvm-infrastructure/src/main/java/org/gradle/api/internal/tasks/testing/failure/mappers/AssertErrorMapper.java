@@ -16,13 +16,14 @@
 
 package org.gradle.api.internal.tasks.testing.failure.mappers;
 
+import static java.util.Collections.singletonList;
+
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.internal.tasks.testing.failure.TestFailureMapper;
 import org.gradle.api.internal.tasks.testing.failure.ThrowableToTestFailureMapper;
 import org.gradle.api.tasks.testing.TestFailure;
 import org.jspecify.annotations.NullMarked;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Maps {@link AssertionError} to {@link TestFailure}.
@@ -33,7 +34,7 @@ import java.util.List;
 public class AssertErrorMapper extends TestFailureMapper {
     @Override
     protected List<String> getSupportedClassNames() {
-        return Collections.singletonList(
+        return singletonList(
             AssertionError.class.getName()
         );
     }
@@ -43,7 +44,7 @@ public class AssertErrorMapper extends TestFailureMapper {
         Throwable cause = throwable.getCause();
         List<TestFailure> causeFailure = null;
         if (cause != null) {
-            causeFailure = Collections.singletonList(rootMapper.createFailure(cause));
+            causeFailure = singletonList(rootMapper.createFailure(cause));
         }
 
         return TestFailure.fromTestAssertionFailure(throwable, null, null, causeFailure);

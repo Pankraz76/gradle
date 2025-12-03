@@ -16,6 +16,9 @@
 
 package org.gradle.api.internal.artifacts.ivyservice;
 
+import static java.util.Collections.emptyList;
+
+import java.util.Collections;
 import org.gradle.api.artifacts.result.ResolutionResult;
 import org.gradle.api.artifacts.result.ResolvedVariantResult;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.DependencyGraphComponent;
@@ -28,8 +31,6 @@ import org.gradle.api.internal.artifacts.ivyservice.resolveengine.result.Resolve
 import org.gradle.api.internal.artifacts.result.MinimalResolutionResult;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
 
 /**
  * Dependency graph visitor that will build a {@link ResolutionResult} eagerly.
@@ -67,7 +68,7 @@ public class InMemoryResolutionResultBuilder implements DependencyGraphVisitor {
         if (includeAllSelectableVariantResults) {
             resolutionResultBuilder.visitComponentVariants(component.getResolveState().getAllSelectableVariantResults());
         } else {
-            resolutionResultBuilder.visitComponentVariants(Collections.emptyList());
+            resolutionResultBuilder.visitComponentVariants(emptyList());
         }
 
         resolutionResultBuilder.endVisitComponent();

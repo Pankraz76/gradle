@@ -16,9 +16,9 @@
 
 package org.gradle.api.internal.tasks.compile.incremental.compilerapi.constants;
 
-import com.google.common.collect.Iterables;
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
+import static java.util.Collections.emptySet;
 
+import com.google.common.collect.Iterables;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
 
 /**
  * A builder helper class to construct the ConstantToDependentsMapping
@@ -65,8 +66,8 @@ public class ConstantToDependentsMappingBuilder implements Serializable {
     public ConstantToDependentsMapping build() {
         Map<String, DependentsSet> constantDependents = new HashMap<>();
         for (String constantOrigin : Iterables.concat(privateDependents.keySet(), accessibleDependents.keySet())) {
-            Set<String> privateDependents = this.privateDependents.getOrDefault(constantOrigin, Collections.emptySet());
-            Set<String> accessibleDependents = this.accessibleDependents.getOrDefault(constantOrigin, Collections.emptySet());
+            Set<String> privateDependents = this.privateDependents.getOrDefault(constantOrigin, emptySet());
+            Set<String> accessibleDependents = this.accessibleDependents.getOrDefault(constantOrigin, emptySet());
             constantDependents.put(constantOrigin, DependentsSet.dependentClasses(privateDependents, accessibleDependents));
         }
         return new ConstantToDependentsMapping(constantDependents);

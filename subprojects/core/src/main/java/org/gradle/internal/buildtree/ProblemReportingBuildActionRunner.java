@@ -16,7 +16,13 @@
 
 package org.gradle.internal.buildtree;
 
+import static java.util.Comparator.comparing;
+
 import com.google.common.collect.ImmutableList;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import org.gradle.api.invocation.Gradle;
 import org.gradle.internal.InternalBuildAdapter;
 import org.gradle.internal.exception.ExceptionAnalyser;
@@ -24,11 +30,6 @@ import org.gradle.internal.initialization.layout.BuildTreeLocations;
 import org.gradle.internal.invocation.BuildAction;
 import org.gradle.problems.buildtree.ProblemReporter;
 import org.gradle.problems.buildtree.ProblemReporter.ProblemConsumer;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class ProblemReportingBuildActionRunner implements BuildActionRunner {
     private final BuildActionRunner delegate;
@@ -45,7 +46,7 @@ public class ProblemReportingBuildActionRunner implements BuildActionRunner {
         this.delegate = delegate;
         this.exceptionAnalyser = exceptionAnalyser;
         this.buildTreeLocations = buildTreeLocations;
-        this.reporters = ImmutableList.sortedCopyOf(Comparator.comparing(ProblemReporter::getId), reporters);
+        this.reporters = ImmutableList.sortedCopyOf(comparing(ProblemReporter::getId), reporters);
     }
 
     @Override

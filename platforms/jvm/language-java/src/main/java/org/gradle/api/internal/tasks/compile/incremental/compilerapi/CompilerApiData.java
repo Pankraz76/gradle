@@ -16,20 +16,21 @@
 
 package org.gradle.api.internal.tasks.compile.incremental.compilerapi;
 
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.constants.ConstantToDependentsMapping;
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentSetSerializer;
-import org.gradle.internal.serialize.HierarchicalNameSerializer;
-import org.gradle.internal.serialize.AbstractSerializer;
-import org.gradle.internal.serialize.Decoder;
-import org.gradle.internal.serialize.Encoder;
-import org.gradle.internal.serialize.MapSerializer;
-import org.gradle.internal.serialize.SetSerializer;
+import static java.util.Collections.emptyMap;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.constants.ConstantToDependentsMapping;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentSetSerializer;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
+import org.gradle.internal.serialize.AbstractSerializer;
+import org.gradle.internal.serialize.Decoder;
+import org.gradle.internal.serialize.Encoder;
+import org.gradle.internal.serialize.HierarchicalNameSerializer;
+import org.gradle.internal.serialize.MapSerializer;
+import org.gradle.internal.serialize.SetSerializer;
 
 public class CompilerApiData {
 
@@ -62,7 +63,7 @@ public class CompilerApiData {
     }
 
     public static CompilerApiData unavailable() {
-        return new CompilerApiData(false, false, Collections.emptyMap(), ConstantToDependentsMapping.empty());
+        return new CompilerApiData(false, false, emptyMap(), ConstantToDependentsMapping.empty());
     }
 
     public static CompilerApiData withoutConstantsMapping(Map<String, Set<String>> sourceToClassMapping) {

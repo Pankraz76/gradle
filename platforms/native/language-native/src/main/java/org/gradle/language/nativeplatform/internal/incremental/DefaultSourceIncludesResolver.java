@@ -15,7 +15,20 @@
  */
 package org.gradle.language.nativeplatform.internal.incremental;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
 import com.google.common.base.Objects;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.internal.FileUtils;
 import org.gradle.internal.file.FileType;
 import org.gradle.internal.hash.HashCode;
@@ -29,17 +42,6 @@ import org.gradle.language.nativeplatform.internal.MacroFunction;
 import org.gradle.language.nativeplatform.internal.incremental.sourceparser.ComplexExpression;
 import org.gradle.language.nativeplatform.internal.incremental.sourceparser.SimpleExpression;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class DefaultSourceIncludesResolver implements SourceIncludesResolver {
     private static final MissingIncludeFile MISSING_INCLUDE_FILE = new MissingIncludeFile();
@@ -156,7 +158,7 @@ public class DefaultSourceIncludesResolver implements SourceIncludesResolver {
             return resolveTokenConcatenationToTokens(visibleMacros, expression, visitor, tokenLookup);
         }
         if (expression.getType() != IncludeType.MACRO && expression.getType() != IncludeType.MACRO_FUNCTION && expression.getType() != IncludeType.EXPAND_TOKEN_CONCATENATION) {
-            return Collections.singletonList(expression);
+            return singletonList(expression);
         }
 
         // Otherwise, macro or macro function call
@@ -177,7 +179,7 @@ public class DefaultSourceIncludesResolver implements SourceIncludesResolver {
         Collection<Expression> leftValues = resolveExpressionToTokens(visibleMacros, left, visitor, tokenLookup);
         Collection<Expression> rightValues = resolveExpressionToTokens(visibleMacros, right, visitor, tokenLookup);
         if (leftValues.isEmpty() || rightValues.isEmpty()) {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         List<Expression> expressions = new ArrayList<Expression>(leftValues.size() * rightValues.size());
@@ -238,7 +240,7 @@ public class DefaultSourceIncludesResolver implements SourceIncludesResolver {
                 List<Expression> arguments = expression.getArguments();
                 if (arguments.isEmpty() && macro.getParameterCount() == 1) {
                     // Provide an implicit empty argument
-                    arguments = Collections.singletonList(SimpleExpression.EMPTY_EXPRESSIONS);
+                    arguments = singletonList(SimpleExpression.EMPTY_EXPRESSIONS);
                 }
                 if (macro.getParameterCount() == arguments.size()) {
                     found = true;

@@ -16,7 +16,20 @@
 
 package org.gradle.process.internal.worker.child;
 
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.base.Joiner;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.internal.ClassPathRegistry;
 import org.gradle.api.internal.file.temp.TemporaryFileProvider;
 import org.gradle.api.logging.LogLevel;
@@ -32,18 +45,6 @@ import org.gradle.process.internal.worker.GradleWorkerMain;
 import org.gradle.process.internal.worker.WorkerProcessBuilder;
 import org.gradle.process.internal.worker.messaging.WorkerConfig;
 import org.gradle.process.internal.worker.messaging.WorkerConfigSerializer;
-
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * A factory for a worker process which loads the application classes using the JVM's system ClassLoader.
@@ -208,7 +209,7 @@ public class ApplicationClassesInSystemClassLoaderWorkerImplementationFactory {
                 } catch (URISyntaxException e) {
                     throw new RuntimeException(e);
                 }
-            }).collect(Collectors.toList()));
+            }).collect(toList()));
         }
         List<String> argumentList = new ArrayList<>();
         if (!modulePath.isEmpty()) {

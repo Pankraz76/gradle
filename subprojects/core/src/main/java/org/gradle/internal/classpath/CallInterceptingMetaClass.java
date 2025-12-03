@@ -16,6 +16,11 @@
 
 package org.gradle.internal.classpath;
 
+import static java.util.Objects.requireNonNull;
+import static org.gradle.internal.classpath.InstrumentedGroovyCallsTracker.CallKind.GET_PROPERTY;
+import static org.gradle.internal.classpath.InstrumentedGroovyCallsTracker.CallKind.INVOKE_METHOD;
+import static org.gradle.internal.classpath.InstrumentedGroovyCallsTracker.CallKind.SET_PROPERTY;
+
 import groovy.lang.AdaptingMetaClass;
 import groovy.lang.MetaClass;
 import groovy.lang.MetaClassImpl;
@@ -25,6 +30,10 @@ import groovy.lang.MetaProperty;
 import groovy.lang.MissingMethodException;
 import groovy.lang.MissingPropertyException;
 import groovy.lang.Tuple;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.Callable;
 import org.codehaus.groovy.reflection.CachedClass;
 import org.codehaus.groovy.reflection.ClassInfo;
 import org.codehaus.groovy.runtime.MetaClassHelper;
@@ -42,15 +51,6 @@ import org.gradle.internal.metaobject.InstrumentedMetaClass;
 import org.gradle.internal.metaobject.InterceptedMetaProperty;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.Callable;
-
-import static org.gradle.internal.classpath.InstrumentedGroovyCallsTracker.CallKind.GET_PROPERTY;
-import static org.gradle.internal.classpath.InstrumentedGroovyCallsTracker.CallKind.INVOKE_METHOD;
-import static org.gradle.internal.classpath.InstrumentedGroovyCallsTracker.CallKind.SET_PROPERTY;
 
 /**
  * A metaclass implementation that consults the Groovy call interception infrastructure ({@link InstrumentedGroovyCallsTracker} and {@link CallInterceptorResolver}).
@@ -139,7 +139,7 @@ public class CallInterceptingMetaClass extends MetaClassImpl implements Adapting
                     propertyType, original,
                     theClass, callsTracker, getterCallerAndInterceptor != null ? getterCallerAndInterceptor.right : null,
                     setterCallerAndInterceptor != null ? setterCallerAndInterceptor.right : null,
-                    Objects.requireNonNull(consumerClass));
+                    requireNonNull(consumerClass));
             }
         }
         return original;

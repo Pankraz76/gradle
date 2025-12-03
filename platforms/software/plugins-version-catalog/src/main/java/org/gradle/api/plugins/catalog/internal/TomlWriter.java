@@ -15,11 +15,7 @@
  */
 package org.gradle.api.plugins.catalog.internal;
 
-import org.gradle.api.internal.artifacts.ImmutableVersionConstraint;
-import org.gradle.api.internal.catalog.DefaultVersionCatalog;
-import org.gradle.api.internal.catalog.DependencyModel;
-import org.gradle.api.internal.catalog.PluginModel;
-import org.gradle.api.internal.catalog.parser.TomlCatalogFileParser;
+import static java.util.stream.Collectors.joining;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -27,6 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import org.gradle.api.internal.artifacts.ImmutableVersionConstraint;
+import org.gradle.api.internal.catalog.DefaultVersionCatalog;
+import org.gradle.api.internal.catalog.DependencyModel;
+import org.gradle.api.internal.catalog.PluginModel;
+import org.gradle.api.internal.catalog.parser.TomlCatalogFileParser;
 
 class TomlWriter {
     private final static Pattern SEPARATOR = Pattern.compile("[_.-]");
@@ -121,7 +122,7 @@ class TomlWriter {
             writeLn(normalizeForToml(alias) + " = [" + bundle.stream()
                 .map(TomlWriter::normalizeForToml)
                 .map(TomlWriter::quoted)
-                .collect(Collectors.joining(", ")) + "]");
+                .collect(joining(", ")) + "]");
         }
         writeLn();
     }
@@ -179,7 +180,7 @@ class TomlWriter {
             if (rejectedVersions.contains("+")) {
                 parts.add("rejectAll = true");
             } else {
-                parts.add("reject = [" + rejectedVersions.stream().map(TomlWriter::quoted).collect(Collectors.joining(", ")) + "]");
+                parts.add("reject = [" + rejectedVersions.stream().map(TomlWriter::quoted).collect(joining(", ")) + "]");
             }
         }
         sb.append(String.join(", ", parts)).append(" }");

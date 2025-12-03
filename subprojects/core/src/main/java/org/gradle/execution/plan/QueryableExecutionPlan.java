@@ -16,12 +16,14 @@
 
 package org.gradle.execution.plan;
 
-import org.gradle.api.Task;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import org.gradle.api.Task;
 
 /**
  * An execution plan that has been finalized and can no longer be mutated.
@@ -32,17 +34,17 @@ public interface QueryableExecutionPlan {
     QueryableExecutionPlan EMPTY = new QueryableExecutionPlan() {
         @Override
         public Set<Task> getTasks() {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         @Override
         public Set<Task> getRequestedTasks() {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         @Override
         public Set<Task> getFilteredTasks() {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         @Override
@@ -52,7 +54,7 @@ public interface QueryableExecutionPlan {
 
         @Override
         public ScheduledNodes getScheduledNodes() {
-            return visitor -> visitor.accept(Collections.emptyList(), Collections.emptySet());
+            return visitor -> visitor.accept(emptyList(), emptySet());
         }
 
         @Override

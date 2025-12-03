@@ -15,10 +15,26 @@
  */
 package org.gradle.api.internal.artifacts.verification.verifier;
 
+import static java.nio.charset.StandardCharsets.US_ASCII;
+import static java.util.Comparator.comparing;
+import static java.util.Map.Entry.comparingByKey;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.internal.artifacts.verification.exceptions.ComponentVerificationException;
 import org.gradle.api.internal.artifacts.verification.exceptions.DependencyVerificationException;
@@ -33,20 +49,8 @@ import org.gradle.api.internal.artifacts.verification.model.ImmutableComponentVe
 import org.gradle.internal.component.external.model.ModuleComponentArtifactIdentifier;
 import org.jspecify.annotations.Nullable;
 
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 public class DependencyVerifierBuilder {
-    private static final Comparator<ModuleComponentIdentifier> MODULE_COMPONENT_IDENTIFIER_COMPARATOR = Comparator.comparing(ModuleComponentIdentifier::getGroup)
+    private static final Comparator<ModuleComponentIdentifier> MODULE_COMPONENT_IDENTIFIER_COMPARATOR = comparing(ModuleComponentIdentifier::getGroup)
         .thenComparing(ModuleComponentIdentifier::getModule)
         .thenComparing(ModuleComponentIdentifier::getVersion);
     private final Map<ModuleComponentIdentifier, ComponentVerificationsBuilder> byComponent = new HashMap<>();
@@ -161,7 +165,7 @@ public class DependencyVerifierBuilder {
     public DependencyVerifier build() {
         ImmutableMap.Builder<ModuleComponentIdentifier, ComponentVerificationMetadata> builder = ImmutableMap.builderWithExpectedSize(byComponent.size());
         byComponent.entrySet().stream()
-            .sorted(Map.Entry.comparingByKey(MODULE_COMPONENT_IDENTIFIER_COMPARATOR))
+            .sorted(comparingByKey(MODULE_COMPONENT_IDENTIFIER_COMPARATOR))
             .forEachOrdered(entry -> builder.put(entry.getKey(), entry.getValue().build()));
         return new DependencyVerifier(builder.build(), new DependencyVerificationConfiguration(isVerifyMetadata, isVerifySignatures, trustedArtifacts, useKeyServers, ImmutableList.copyOf(keyServers), ImmutableSet.copyOf(ignoredKeys), ImmutableList.copyOf(trustedKeys), keyringFormat), topLevelComments);
     }
@@ -210,8 +214,8 @@ public class DependencyVerifierBuilder {
                     byArtifact.entrySet()
                         .stream()
                         .map(ComponentVerificationsBuilder::toArtifactVerification)
-                        .sorted(Comparator.comparing(ArtifactVerificationMetadata::getArtifactName))
-                        .collect(Collectors.toList())
+                        .sorted(comparing(ArtifactVerificationMetadata::getArtifactName))
+                        .collect(toList())
                 );
             } catch (InvalidGpgKeyIdsException ex) {
                 throw new ComponentVerificationException(component, ex::formatMessage);
@@ -239,8 +243,8 @@ public class DependencyVerifierBuilder {
             return builder.values()
                 .stream()
                 .map(ChecksumBuilder::build)
-                .sorted(Comparator.comparing(Checksum::getKind))
-                .collect(Collectors.toList());
+                .sorted(comparing(Checksum::getKind))
+                .collect(toList());
         }
 
         public void addTrustedKey(String key) {
@@ -274,8 +278,8 @@ public class DependencyVerifierBuilder {
                 //
                 // By getting ASCII bytes (aka. strictly 1 byte per character, no variable-length magic)
                 // we can safely check if the fingerprint is of the correct length.
-                .filter(key -> key.getBytes(StandardCharsets.US_ASCII).length < 40)
-                .collect(Collectors.toList());
+                .filter(key -> key.getBytes(US_ASCII).length < 40)
+                .collect(toList());
 
             if (wrongPgpKeys.isEmpty()) {
                 return pgpKeys;

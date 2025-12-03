@@ -15,8 +15,11 @@
  */
 package org.gradle.internal.component.local.model;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import java.util.List;
 import org.gradle.api.artifacts.capability.CapabilitySelector;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier;
@@ -29,8 +32,6 @@ import org.gradle.api.internal.artifacts.capability.SpecificCapabilitySelector;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
 import org.gradle.api.internal.project.ProjectIdentity;
 import org.gradle.util.Path;
-
-import java.util.List;
 
 public class DefaultProjectComponentSelector implements ProjectComponentSelectorInternal {
 
@@ -110,7 +111,7 @@ public class DefaultProjectComponentSelector implements ProjectComponentSelector
         return capabilitySelectors.stream()
             .filter(c -> c instanceof SpecificCapabilitySelector)
             .map(c -> ((DefaultSpecificCapabilitySelector) c).getBackingCapability())
-            .collect(ImmutableList.toImmutableList());
+            .collect(toImmutableList());
     }
 
     @Override

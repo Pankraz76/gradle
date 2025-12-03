@@ -16,7 +16,10 @@
 
 package org.gradle.launcher.cli;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.annotations.VisibleForTesting;
+import java.util.Objects;
 import org.gradle.api.Action;
 import org.gradle.api.internal.DocumentationRegistry;
 import org.gradle.api.logging.LogLevel;
@@ -24,8 +27,6 @@ import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.gradle.api.logging.configuration.LoggingConfiguration;
 import org.gradle.launcher.bootstrap.ExecutionListener;
-
-import java.util.Objects;
 
 final class DebugLoggerWarningAction implements Action<ExecutionListener> {
 
@@ -55,9 +56,9 @@ final class DebugLoggerWarningAction implements Action<ExecutionListener> {
         LoggingConfiguration loggingConfiguration,
         Action<ExecutionListener> action
     ) {
-        this.logger = Objects.requireNonNull(logger, "logger");
-        this.loggingConfiguration = Objects.requireNonNull(loggingConfiguration, "loggingConfiguration");
-        this.action = Objects.requireNonNull(action, "action");
+        this.logger = requireNonNull(logger, "logger");
+        this.loggingConfiguration = requireNonNull(loggingConfiguration, "loggingConfiguration");
+        this.action = requireNonNull(action, "action");
     }
 
     private void logWarningIfEnabled() {

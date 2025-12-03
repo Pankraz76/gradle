@@ -16,10 +16,11 @@
 
 package org.gradle.internal.hash;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.gradle.internal.hash.HashCode.Usage.SAFE_TO_REUSE_BYTES;
+
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
-import org.jspecify.annotations.Nullable;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,8 +30,7 @@ import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import static org.gradle.internal.hash.HashCode.Usage.SAFE_TO_REUSE_BYTES;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Some popular hash functions. Replacement for Guava's hashing utilities.
@@ -347,7 +347,7 @@ public class Hashing {
 
         @Override
         public void putString(CharSequence value) {
-            putBytes(value.toString().getBytes(StandardCharsets.UTF_8));
+            putBytes(value.toString().getBytes(UTF_8));
         }
 
         @Override

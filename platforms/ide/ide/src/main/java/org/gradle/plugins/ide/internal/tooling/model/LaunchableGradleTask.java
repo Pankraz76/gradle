@@ -16,14 +16,15 @@
 
 package org.gradle.plugins.ide.internal.tooling.model;
 
-import org.gradle.TaskExecutionRequest;
-import org.gradle.tooling.internal.gradle.DefaultProjectIdentifier;
-import org.gradle.tooling.internal.protocol.InternalLaunchable;
+import static java.util.Collections.singletonList;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.TaskExecutionRequest;
+import org.gradle.tooling.internal.gradle.DefaultProjectIdentifier;
+import org.gradle.tooling.internal.protocol.InternalLaunchable;
 
 /**
  * Structurally implements {@link org.gradle.tooling.model.Task} model.
@@ -86,7 +87,7 @@ public class LaunchableGradleTask implements Serializable, InternalLaunchable, T
 
     @Override
     public List<String> getArgs() {
-        return Collections.singletonList(path);
+        return singletonList(path);
     }
 
     @Override

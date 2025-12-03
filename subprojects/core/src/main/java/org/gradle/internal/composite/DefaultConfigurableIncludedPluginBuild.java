@@ -16,13 +16,14 @@
 
 package org.gradle.internal.composite;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Preconditions;
+import java.io.File;
 import org.gradle.api.initialization.ConfigurableIncludedPluginBuild;
 import org.gradle.api.tasks.TaskReference;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
 
 public class DefaultConfigurableIncludedPluginBuild implements ConfigurableIncludedPluginBuild {
 
@@ -43,7 +44,7 @@ public class DefaultConfigurableIncludedPluginBuild implements ConfigurableInclu
 
     @Override
     public void setName(@NonNull String name) {
-        Preconditions.checkNotNull(name, "name must not be null");
+        checkNotNull(name, "name must not be null");
         this.name = name;
     }
 

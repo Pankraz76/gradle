@@ -16,9 +16,23 @@
 
 package org.gradle.jvm.toolchain.internal;
 
+import static java.util.Collections.emptySet;
+import static java.util.Comparator.comparing;
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import java.io.File;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.function.Predicate;
+import javax.inject.Inject;
 import org.gradle.api.GradleException;
 import org.gradle.api.internal.file.FileFactory;
 import org.gradle.api.internal.provider.DefaultProvider;
@@ -37,17 +51,6 @@ import org.gradle.internal.service.scopes.ServiceScope;
 import org.gradle.jvm.toolchain.JavaToolchainSpec;
 import org.gradle.jvm.toolchain.internal.install.JavaToolchainProvisioningService;
 import org.gradle.jvm.toolchain.internal.install.JvmInstallationMetadataMatcher;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.function.Predicate;
 
 @ServiceScope(Scope.Build.class)
 public class JavaToolchainQueryService {
@@ -134,11 +137,11 @@ public class JavaToolchainQueryService {
     }
 
     public ProviderInternal<JavaToolchain> findMatchingToolchain(JavaToolchainSpec filter) {
-        return findMatchingToolchain(filter, Collections.emptySet());
+        return findMatchingToolchain(filter, emptySet());
     }
 
     public ProviderInternal<JavaToolchain> findMatchingToolchain(JavaToolchainSpec filter, Set<JavaInstallationCapability> requiredCapabilities) {
-        JavaToolchainSpecInternal filterInternal = (JavaToolchainSpecInternal) Objects.requireNonNull(filter);
+        JavaToolchainSpecInternal filterInternal = (JavaToolchainSpecInternal) requireNonNull(filter);
         return new DefaultProvider<>(() -> resolveToolchain(filterInternal, requiredCapabilities));
     }
 
@@ -209,7 +212,7 @@ public class JavaToolchainQueryService {
         return registry.toolchains().stream()
             .filter(result -> result.metadata.isValidInstallation())
             .filter(result -> matcher.test(result.metadata))
-            .min(Comparator.comparing(result -> result.metadata, new JvmInstallationMetadataComparator(currentJavaHome)))
+            .min(comparing(result -> result.metadata, new JvmInstallationMetadataComparator(currentJavaHome)))
             .map(result -> {
                 warnIfAutoProvisionedToolchainUsedWithoutRepositoryDefinitions(result);
                 return new JavaToolchain(result.metadata, fileFactory, new JavaToolchainInput(spec), false);

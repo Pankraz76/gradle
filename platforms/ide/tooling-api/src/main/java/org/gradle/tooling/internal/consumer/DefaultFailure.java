@@ -16,13 +16,15 @@
 
 package org.gradle.tooling.internal.consumer;
 
-import org.gradle.tooling.Failure;
-import org.gradle.tooling.events.problems.Problem;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.tooling.Failure;
+import org.gradle.tooling.events.problems.Problem;
 
 public class DefaultFailure implements Failure {
 
@@ -68,8 +70,8 @@ public class DefaultFailure implements Failure {
         t.printStackTrace(wrt);
         Throwable cause = t.getCause();
         List<DefaultFailure> causes = cause != null && cause != t
-            ? Collections.singletonList(fromThrowable(cause))
-            : Collections.emptyList();
+            ? singletonList(fromThrowable(cause))
+            : emptyList();
         return new DefaultFailure(t.getMessage(), out.toString(), causes);
     }
 

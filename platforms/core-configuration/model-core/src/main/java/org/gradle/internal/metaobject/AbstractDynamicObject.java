@@ -15,15 +15,16 @@
  */
 package org.gradle.internal.metaobject;
 
+import static java.util.Collections.emptyMap;
+
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.MissingMethodException;
 import groovy.lang.MissingPropertyException;
-import org.codehaus.groovy.runtime.metaclass.MissingMethodExecutionFailed;
-import org.jspecify.annotations.Nullable;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import org.codehaus.groovy.runtime.metaclass.MissingMethodExecutionFailed;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An empty {@link DynamicObject}.
@@ -150,7 +151,7 @@ public abstract class AbstractDynamicObject implements DynamicObject {
 
     @Override
     public Map<String, ? extends @Nullable Object> getProperties() {
-        return Collections.emptyMap();
+        return emptyMap();
     }
 
     @Override

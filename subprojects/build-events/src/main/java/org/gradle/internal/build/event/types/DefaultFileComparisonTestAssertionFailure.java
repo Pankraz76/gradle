@@ -15,12 +15,15 @@
  */
 package org.gradle.internal.build.event.types;
 
-import org.gradle.tooling.internal.protocol.InternalFailure;
-import org.gradle.tooling.internal.protocol.InternalFileComparisonTestAssertionFailure;
-import org.jspecify.annotations.NullMarked;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.unmodifiableList;
 
 import java.util.Collections;
 import java.util.List;
+import org.gradle.tooling.internal.protocol.InternalFailure;
+import org.gradle.tooling.internal.protocol.InternalFileComparisonTestAssertionFailure;
+import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class DefaultFileComparisonTestAssertionFailure extends DefaultTestAssertionFailure implements InternalFileComparisonTestAssertionFailure {
@@ -48,9 +51,9 @@ public class DefaultFileComparisonTestAssertionFailure extends DefaultTestAssert
         List<InternalFailure> causeFailure;
         if (causes.isEmpty()) {
             Throwable cause = t.getCause();
-            causeFailure = cause != null && cause != t ? Collections.singletonList(DefaultFailure.fromThrowable(cause)) : Collections.emptyList();
+            causeFailure = cause != null && cause != t ? singletonList(DefaultFailure.fromThrowable(cause)) : emptyList();
         } else {
-            causeFailure = Collections.unmodifiableList(causes);
+            causeFailure = unmodifiableList(causes);
         }
         return new DefaultFileComparisonTestAssertionFailure(message, stacktrace, causeFailure, expected, actual, className, stacktrace, expectedContent, actualContent);
     }

@@ -15,6 +15,16 @@
  */
 package org.gradle.api.internal.file.archive;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.utils.IOUtils;
@@ -33,16 +43,6 @@ import org.gradle.internal.file.Chmod;
 import org.gradle.internal.hash.FileHasher;
 import org.gradle.internal.hash.HashCode;
 import org.gradle.util.internal.GFileUtils;
-
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import static java.lang.String.format;
 
 public class TarFileTree extends AbstractArchiveFileTree {
     private static final String TAR_ENTRY_PREFIX = "tar entry";
@@ -103,7 +103,7 @@ public class TarFileTree extends AbstractArchiveFileTree {
 
             try {
                 try {
-                    Objects.requireNonNull(visitor);
+                    requireNonNull(visitor);
                     visitImpl(visitor, expandedDir, inputStream);
                 } finally {
                     inputStream.close();

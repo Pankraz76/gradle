@@ -16,7 +16,15 @@
 
 package org.gradle.initialization;
 
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.base.Splitter;
+import java.io.File;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.gradle.api.Transformer;
 import org.gradle.api.artifacts.verification.DependencyVerificationMode;
 import org.gradle.api.internal.StartParameterInternal;
@@ -34,13 +42,6 @@ import org.gradle.internal.buildoption.Option;
 import org.gradle.internal.buildoption.Origin;
 import org.gradle.internal.buildoption.StringBuildOption;
 import org.gradle.internal.watch.registry.WatchMode;
-
-import java.io.File;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class StartParameterBuildOptions extends BuildOptionSet<StartParameterInternal> {
 
@@ -416,7 +417,7 @@ public class StartParameterBuildOptions extends BuildOptionSet<StartParameterInt
                 .splitToList(value)
                 .stream()
                 .map(String::toLowerCase)
-                .collect(Collectors.toList());
+                .collect(toList());
             settings.setWriteDependencyVerifications(checksums);
         }
     }

@@ -16,8 +16,23 @@
 
 package org.gradle.api.internal.runtimeshaded;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Arrays.asList;
+
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import org.gradle.api.GradleException;
 import org.gradle.internal.classpath.ClasspathBuilder;
 import org.gradle.internal.classpath.ClasspathEntryVisitor;
@@ -36,21 +51,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.ClassRemapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-
-import static java.util.Arrays.asList;
 
 class RuntimeShadedJarCreator {
     private static final int ADDITIONAL_PROGRESS_STEPS = 2;
@@ -108,7 +108,7 @@ class RuntimeShadedJarCreator {
     private void writeServiceFiles(ClasspathBuilder.EntryBuilder builder, Map<String, List<String>> services) throws IOException {
         for (Map.Entry<String, List<String>> service : services.entrySet()) {
             String allProviders = Joiner.on("\n").join(service.getValue());
-            builder.put(SERVICES_DIR_PREFIX + service.getKey(), allProviders.getBytes(StandardCharsets.UTF_8));
+            builder.put(SERVICES_DIR_PREFIX + service.getKey(), allProviders.getBytes(UTF_8));
         }
     }
 
@@ -152,7 +152,7 @@ class RuntimeShadedJarCreator {
         }
 
         byte[] bytes = entry.getContent();
-        String content = new String(bytes, StandardCharsets.UTF_8).replaceAll("(?m)^#.*", "").trim(); // clean up comments and new lines
+        String content = new String(bytes, UTF_8).replaceAll("(?m)^#.*", "").trim(); // clean up comments and new lines
 
         String[] descriptorImplClasses = periodsToSlashes(separateLines(content));
         String[] relocatedImplClassNames = maybeRelocateResources(descriptorImplClasses);

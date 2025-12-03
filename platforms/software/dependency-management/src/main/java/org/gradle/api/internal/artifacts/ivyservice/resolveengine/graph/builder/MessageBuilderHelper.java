@@ -15,9 +15,11 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.builder;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,16 +36,16 @@ import java.util.stream.Stream;
         return findPathsTo(edge).stream().map(path -> {
             String header = Iterables.getLast(path).getSelector().getDependencyMetadata().isConstraint() ? "Constraint" : "Dependency";
             String formattedPath = streamNodeNames(path)
-                .collect(Collectors.joining(" --> "));
+                .collect(joining(" --> "));
 
             return header + " path: " + formattedPath;
-        }).collect(Collectors.toList());
+        }).collect(toList());
     }
 
     /* package */ static List<List<String>> segmentedPathsTo(EdgeState edge) {
         return findPathsTo(edge).stream()
-            .map(p -> streamNodeNames(p).collect(Collectors.toList()))
-            .collect(Collectors.toList());
+            .map(p -> streamNodeNames(p).collect(toList()))
+            .collect(toList());
     }
 
     private static List<List<EdgeState>> findPathsTo(EdgeState edge) {

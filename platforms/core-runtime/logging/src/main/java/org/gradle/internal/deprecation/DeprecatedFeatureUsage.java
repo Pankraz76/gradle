@@ -16,6 +16,9 @@
 
 package org.gradle.internal.deprecation;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import org.gradle.api.problems.DocLink;
@@ -23,8 +26,6 @@ import org.gradle.api.problems.internal.DeprecationData;
 import org.gradle.api.problems.internal.InternalDocLink;
 import org.gradle.internal.featurelifecycle.FeatureUsage;
 import org.jspecify.annotations.Nullable;
-
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class DeprecatedFeatureUsage extends FeatureUsage {
 
@@ -49,10 +50,10 @@ public class DeprecatedFeatureUsage extends FeatureUsage {
         Class<?> calledFrom
     ) {
         super(summary, calledFrom);
-        this.removalDetails = Preconditions.checkNotNull(removalDetails);
+        this.removalDetails = checkNotNull(removalDetails);
         this.advice = advice;
         this.contextualAdvice = contextualAdvice;
-        this.type = Preconditions.checkNotNull(type);
+        this.type = checkNotNull(type);
         this.documentation = documentation;
         this.problemIdDisplayName = problemIdDisplayName;
         this.problemId = problemId;

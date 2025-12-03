@@ -16,9 +16,10 @@
 
 package org.gradle.api.internal.artifacts.configurations;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-
 import java.util.Set;
 
 /**
@@ -86,11 +87,11 @@ public final class ConfigurationRolesForMigration {
      * initial role but not allowed in the eventual role will be deprecated in the returned role.
      */
     private static ConfigurationRole difference(ConfigurationRole initialRole, ConfigurationRole eventualRole) {
-        Preconditions.checkArgument(
+        checkArgument(
             !initialRole.isConsumptionDeprecated() && !initialRole.isResolutionDeprecated() && !initialRole.isDeclarationAgainstDeprecated(),
             "The initial role must not contain deprecated usages."
         );
-        Preconditions.checkArgument(
+        checkArgument(
             !eventualRole.isConsumptionDeprecated() && !eventualRole.isResolutionDeprecated() && !eventualRole.isDeclarationAgainstDeprecated(),
             "The eventual role must not contain deprecated usages."
         );

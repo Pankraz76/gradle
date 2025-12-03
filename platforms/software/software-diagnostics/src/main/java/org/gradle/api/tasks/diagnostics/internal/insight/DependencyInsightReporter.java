@@ -16,7 +16,19 @@
 
 package org.gradle.api.tasks.diagnostics.internal.insight;
 
+import static java.util.Collections.emptySet;
+import static java.util.Collections.unmodifiableSet;
+
 import com.google.common.collect.ImmutableSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.artifacts.result.ComponentSelectionCause;
 import org.gradle.api.artifacts.result.ComponentSelectionDescriptor;
@@ -43,16 +55,6 @@ import org.gradle.internal.exceptions.MultiCauseException;
 import org.gradle.internal.exceptions.ResolutionProvider;
 import org.gradle.internal.logging.text.TreeFormatter;
 import org.gradle.util.internal.CollectionUtils;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 public class DependencyInsightReporter {
 
@@ -196,14 +198,14 @@ public class DependencyInsightReporter {
                 }
             }
 
-            return Collections.unmodifiableSet(parentResolutions);
+            return unmodifiableSet(parentResolutions);
         }
 
         if (throwable instanceof ResolutionProvider) {
             return ImmutableSet.copyOf(((ResolutionProvider) throwable).getResolutions());
         }
 
-        return Collections.emptySet();
+        return emptySet();
     }
 
     private static DefaultSection buildSelectionReasonSection(ComponentSelectionReason reason) {

@@ -16,6 +16,15 @@
 
 package org.gradle.api.tasks.diagnostics.internal.configurations.renderer;
 
+import static java.util.Collections.singletonList;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.GradleException;
 import org.gradle.api.tasks.diagnostics.internal.configurations.model.ConfigurationReportModel;
@@ -27,12 +36,6 @@ import org.gradle.api.tasks.diagnostics.internal.configurations.model.ReportSeco
 import org.gradle.api.tasks.diagnostics.internal.configurations.spec.AbstractConfigurationReportSpec;
 import org.gradle.internal.logging.text.StyledTextOutput;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * The {@link AbstractConfigurationReportRenderer} extension that can be used to render a {@link ConfigurationReportModel}
@@ -76,7 +79,7 @@ public final class ConsoleConfigurationReportRenderer extends AbstractConfigurat
     private void writeSearchResults(ConfigurationReportModel data) {
         Optional<ReportConfiguration> searchResult = data.getConfigNamed(spec.getSearchTarget().get());
         if (searchResult.isPresent()) {
-            writeResults(data, Collections.singletonList(searchResult.get()));
+            writeResults(data, singletonList(searchResult.get()));
         } else {
             message("There are no " + spec.getFullReportedTypeDesc() + "s on project '" + data.getProjectName() + "' named '" + spec.getSearchTarget().get() + "'.");
         }
@@ -85,14 +88,14 @@ public final class ConsoleConfigurationReportRenderer extends AbstractConfigurat
     private void writeLegacyResults(ConfigurationReportModel data) {
         final List<ReportConfiguration> legacyConfigs = data.getAllConfigs().stream()
             .filter(c -> c.isLegacy() || spec.isPurelyCorrectType(c))
-            .collect(Collectors.toList());
+            .collect(toList());
         writeResults(data, legacyConfigs);
     }
 
     private void writeNonLegacyResults(ConfigurationReportModel data) {
         final List<ReportConfiguration> nonLegacyConfigs = data.getAllConfigs().stream()
             .filter(spec::isPurelyCorrectType)
-            .collect(Collectors.toList());
+            .collect(toList());
         if (nonLegacyConfigs.isEmpty()) {
             message("There are no purely " + spec.getReportedConfigurationDirection() + " " + spec.getReportedTypeAlias() + "s present in project '" + data.getProjectName() + "'.");
 
@@ -259,14 +262,14 @@ public final class ConsoleConfigurationReportRenderer extends AbstractConfigurat
 
         final List<FormattedExtension> extensionsToPrint = extensions.stream()
             .map(e -> new FormattedExtension(e.getName(), false))
-            .collect(Collectors.toList());
+            .collect(toList());
         if (recursive) {
             int nonRecursiveCount = extensionsToPrint.size();
             extensionsToPrint.addAll(extensions.stream()
                 .flatMap(e -> e.getExtendedConfigurations().stream())
                 .filter(e -> extensionsToPrint.stream().noneMatch(eToP -> eToP.name.equals(e.getName())))
                 .map(e -> new FormattedExtension(e.getName(), true))
-                .collect(Collectors.toList()));
+                .collect(toList()));
             if (nonRecursiveCount != extensionsToPrint.size()) {
                 recursiveExtensionsPrinted = true;
             }
@@ -275,7 +278,7 @@ public final class ConsoleConfigurationReportRenderer extends AbstractConfigurat
         if (!extensions.isEmpty()) {
             printSection("Extended Configurations", () -> {
                 extensionsToPrint.stream()
-                    .sorted(Comparator.comparing(e -> e.name))
+                    .sorted(comparing(e -> e.name))
                     .forEach(e -> {
                         indent(true);
                         output.withStyle(StyledTextOutput.Style.Identifier).text(e.name);

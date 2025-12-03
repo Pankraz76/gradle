@@ -16,14 +16,15 @@
 
 package org.gradle.language.nativeplatform.internal.incremental.sourceparser;
 
-import com.google.common.base.Joiner;
-import org.gradle.language.nativeplatform.internal.Expression;
-import org.gradle.language.nativeplatform.internal.IncludeType;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptyList;
 
+import com.google.common.base.Joiner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.language.nativeplatform.internal.Expression;
+import org.gradle.language.nativeplatform.internal.IncludeType;
+import org.jspecify.annotations.Nullable;
 
 public abstract class AbstractExpression implements Expression {
     @Override
@@ -38,7 +39,7 @@ public abstract class AbstractExpression implements Expression {
 
     @Override
     public List<Expression> getArguments() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override

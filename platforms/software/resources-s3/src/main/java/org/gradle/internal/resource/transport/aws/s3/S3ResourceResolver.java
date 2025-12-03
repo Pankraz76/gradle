@@ -16,13 +16,15 @@
 
 package org.gradle.internal.resource.transport.aws.s3;
 
+import static com.google.common.base.Predicates.notNull;
+import static java.util.Collections.emptyList;
+
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -59,10 +61,10 @@ public class S3ResourceResolver {
         if (null != objectSummaries) {
             return ImmutableList.copyOf(Iterables.filter(
                 Iterables.transform(objectSummaries, EXTRACT_FILE_NAME),
-                Predicates.notNull()
+                notNull()
             ));
         }
-        return Collections.emptyList();
+        return emptyList();
 
     }
 
@@ -80,6 +82,6 @@ public class S3ResourceResolver {
             }
             return builder.build();
         }
-        return Collections.emptyList();
+        return emptyList();
     }
 }

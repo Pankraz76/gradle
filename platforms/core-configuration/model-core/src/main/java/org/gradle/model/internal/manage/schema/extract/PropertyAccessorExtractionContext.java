@@ -16,11 +16,10 @@
 
 package org.gradle.model.internal.manage.schema.extract;
 
-import com.google.common.collect.ImmutableList;
-import org.gradle.internal.Cast;
-import org.gradle.internal.reflect.PropertyAccessorType;
-import org.gradle.model.internal.asm.AsmClassGeneratorUtils;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.unmodifiableMap;
 
+import com.google.common.collect.ImmutableList;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -31,6 +30,9 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.gradle.internal.Cast;
+import org.gradle.internal.reflect.PropertyAccessorType;
+import org.gradle.model.internal.asm.AsmClassGeneratorUtils;
 
 public class PropertyAccessorExtractionContext {
     private final PropertyAccessorType accessorType;
@@ -62,7 +64,7 @@ public class PropertyAccessorExtractionContext {
                 }
             }
         }
-        return Collections.unmodifiableMap(annotations);
+        return unmodifiableMap(annotations);
     }
 
     public PropertyAccessorType getAccessorType() {
@@ -112,7 +114,7 @@ public class PropertyAccessorExtractionContext {
                 getters.add(getter);
             }
         } else {
-            getters = Collections.singletonList(mostSpecificDeclaration);
+            getters = singletonList(mostSpecificDeclaration);
         }
         return getters;
     }

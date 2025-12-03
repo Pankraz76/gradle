@@ -16,14 +16,16 @@
 
 package org.gradle.internal.typeconversion;
 
-import org.gradle.internal.Cast;
-import org.gradle.internal.exceptions.DiagnosticsVisitor;
-import org.gradle.util.internal.GUtil;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import org.gradle.internal.Cast;
+import org.gradle.internal.exceptions.DiagnosticsVisitor;
+import org.gradle.util.internal.GUtil;
 
 /**
  * Flattens or collectionizes input and passes the input notations to the delegates. Returns a set.
@@ -48,10 +50,10 @@ public class FlatteningNotationParser<N, T> implements NotationParser<N, Set<T>>
     public Set<T> parseNotation(N notation) {
         Collection<N> notations = Cast.uncheckedNonnullCast(GUtil.collectionize(notation));
         if (notations.isEmpty()) {
-            return Collections.emptySet();
+            return emptySet();
         }
         if (notations.size() == 1) {
-            return Collections.singleton(delegate.parseNotation(notations.iterator().next()));
+            return singleton(delegate.parseNotation(notations.iterator().next()));
         }
         Set<T> out = new LinkedHashSet<T>();
         for (N n : notations) {

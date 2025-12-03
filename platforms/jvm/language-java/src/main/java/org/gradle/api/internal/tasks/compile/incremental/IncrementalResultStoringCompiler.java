@@ -16,9 +16,19 @@
 
 package org.gradle.api.internal.tasks.compile.incremental;
 
+import static java.util.Collections.emptySet;
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import java.io.File;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import org.gradle.api.GradleException;
 import org.gradle.api.internal.tasks.compile.ApiCompilerResult;
 import org.gradle.api.internal.tasks.compile.JavaCompileSpec;
@@ -37,14 +47,6 @@ import org.gradle.api.internal.tasks.compile.incremental.recomp.RecompilationSpe
 import org.gradle.api.internal.tasks.compile.processing.AnnotationProcessorDeclaration;
 import org.gradle.api.tasks.WorkResult;
 import org.gradle.language.base.internal.compile.Compiler;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * Stores the incremental class dependency analysis after compilation has finished.
@@ -78,7 +80,7 @@ class IncrementalResultStoringCompiler<T extends JavaCompileSpec> implements Com
         CompilerApiData compilerApiData = getCompilerApiData(spec, result);
         ClassSetAnalysisData minimizedClasspathSnapshot = classpathSnapshot.reduceToTypesAffecting(outputSnapshot, compilerApiData);
         PreviousCompilationData data = new PreviousCompilationData(outputSnapshot, annotationProcessingData, minimizedClasspathSnapshot, compilerApiData);
-        File previousCompilationDataFile = Objects.requireNonNull(spec.getCompileOptions().getPreviousCompilationDataFile());
+        File previousCompilationDataFile = requireNonNull(spec.getCompileOptions().getPreviousCompilationDataFile());
         previousCompilationAccess.writePreviousCompilationData(data, previousCompilationDataFile);
     }
 
@@ -92,7 +94,7 @@ class IncrementalResultStoringCompiler<T extends JavaCompileSpec> implements Com
                 result = ((IncrementalCompilationResult) result).getCompilerResult();
             }
 
-            Set<String> changedClasses = recompilationSpec == null ? Collections.emptySet() : recompilationSpec.getClassesToCompile();
+            Set<String> changedClasses = recompilationSpec == null ? emptySet() : recompilationSpec.getClassesToCompile();
             ConstantToDependentsMapping previousConstantToDependentsMapping = previousCompilerApiData == null ? null : previousCompilerApiData.getConstantToClassMapping();
             Map<String, Set<String>> previousSourceClassesMapping = previousCompilerApiData == null ? null : previousCompilerApiData.getSourceToClassMapping();
             if (result instanceof ApiCompilerResult) {
@@ -139,7 +141,7 @@ class IncrementalResultStoringCompiler<T extends JavaCompileSpec> implements Com
             recompilationSpec = ((IncrementalCompilationResult) result).getRecompilationSpec();
             result = ((IncrementalCompilationResult) result).getCompilerResult();
         }
-        Set<String> changedClasses = recompilationSpec == null ? Collections.emptySet() : recompilationSpec.getClassesToCompile();
+        Set<String> changedClasses = recompilationSpec == null ? emptySet() : recompilationSpec.getClassesToCompile();
 
         if (result instanceof ApiCompilerResult) {
             AnnotationProcessingResult processingResult = ((ApiCompilerResult) result).getAnnotationProcessingResult();

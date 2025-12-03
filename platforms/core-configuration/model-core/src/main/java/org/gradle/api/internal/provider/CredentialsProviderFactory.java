@@ -16,6 +16,14 @@
 
 package org.gradle.api.internal.provider;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import org.gradle.api.ProjectConfigurationException;
 import org.gradle.api.credentials.AwsCredentials;
 import org.gradle.api.credentials.Credentials;
@@ -31,13 +39,6 @@ import org.gradle.internal.credentials.DefaultHttpHeaderCredentials;
 import org.gradle.internal.credentials.DefaultPasswordCredentials;
 import org.gradle.internal.logging.text.TreeFormatter;
 import org.jspecify.annotations.Nullable;
-
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 public class CredentialsProviderFactory implements TaskExecutionGraphListener {
 
@@ -83,7 +84,7 @@ public class CredentialsProviderFactory implements TaskExecutionGraphListener {
     public void graphPopulated(TaskExecutionGraph graph) {
         if (!missingProviderErrors.isEmpty()) {
             throw new ProjectConfigurationException("Credentials required for this build could not be resolved.",
-                missingProviderErrors.stream().map(MissingValueException::new).collect(Collectors.toList()));
+                missingProviderErrors.stream().map(MissingValueException::new).collect(toList()));
         }
     }
 

@@ -16,17 +16,17 @@
 
 package org.gradle.api.plugins.antlr.internal;
 
-import com.google.common.collect.Lists;
-import org.gradle.api.file.FileCollection;
-import org.gradle.api.plugins.antlr.AntlrTask;
-import org.gradle.internal.deprecation.DeprecationLogger;
+import static java.util.Collections.emptySet;
+import static org.gradle.api.plugins.antlr.internal.AntlrSpec.PACKAGE_ARG;
 
+import com.google.common.collect.Lists;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import static org.gradle.api.plugins.antlr.internal.AntlrSpec.PACKAGE_ARG;
+import org.gradle.api.file.FileCollection;
+import org.gradle.api.plugins.antlr.AntlrTask;
+import org.gradle.internal.deprecation.DeprecationLogger;
 
 public class AntlrSpecFactory {
 
@@ -64,7 +64,7 @@ public class AntlrSpecFactory {
         }
         Set<File> sourceSetDirectoriesFiles;
         if (sourceSetDirectories == null) {
-            sourceSetDirectoriesFiles = Collections.emptySet();
+            sourceSetDirectoriesFiles = emptySet();
         } else {
             sourceSetDirectoriesFiles = sourceSetDirectories.getFiles();
         }

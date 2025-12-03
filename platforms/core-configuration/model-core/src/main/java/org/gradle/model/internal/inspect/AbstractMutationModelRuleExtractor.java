@@ -16,14 +16,15 @@
 
 package org.gradle.model.internal.inspect;
 
-import org.gradle.internal.Cast;
-import org.gradle.model.internal.core.ModelActionRole;
-import org.gradle.model.internal.core.MutableModelNode;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptyList;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.internal.Cast;
+import org.gradle.model.internal.core.ModelActionRole;
+import org.gradle.model.internal.core.MutableModelNode;
+import org.jspecify.annotations.Nullable;
 
 public abstract class AbstractMutationModelRuleExtractor<T extends Annotation> extends AbstractAnnotationDrivenModelRuleExtractor<T> {
     @Nullable
@@ -61,7 +62,7 @@ public abstract class AbstractMutationModelRuleExtractor<T extends Annotation> e
 
         @Override
         public List<? extends Class<?>> getRuleDependencies() {
-            return Collections.emptyList();
+            return emptyList();
         }
     }
 }

@@ -16,8 +16,16 @@
 
 package org.gradle.internal.execution.impl;
 
+import static java.util.Comparator.comparing;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedSet;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Supplier;
 import org.gradle.api.problems.internal.InternalProblem;
 import org.gradle.api.problems.internal.InternalProblems;
 import org.gradle.internal.execution.WorkValidationContext;
@@ -25,13 +33,6 @@ import org.gradle.internal.reflect.DefaultTypeValidationContext;
 import org.gradle.internal.reflect.ProblemRecordingTypeValidationContext;
 import org.gradle.internal.reflect.validation.TypeValidationContext;
 import org.gradle.plugin.use.PluginId;
-
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Supplier;
 
 public class DefaultWorkValidationContext implements WorkValidationContext {
     private final Set<Class<?>> types = new HashSet<>();
@@ -71,6 +72,6 @@ public class DefaultWorkValidationContext implements WorkValidationContext {
 
     @Override
     public ImmutableSortedSet<Class<?>> getValidatedTypes() {
-        return ImmutableSortedSet.copyOf(Comparator.comparing(Class::getName), types);
+        return ImmutableSortedSet.copyOf(comparing(Class::getName), types);
     }
 }

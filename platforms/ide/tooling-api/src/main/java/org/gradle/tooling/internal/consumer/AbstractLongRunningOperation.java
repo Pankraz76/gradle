@@ -15,8 +15,19 @@
  */
 package org.gradle.tooling.internal.consumer;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.internal.classpath.ClassPath;
 import org.gradle.tooling.CancellationToken;
 import org.gradle.tooling.Failure;
@@ -27,16 +38,6 @@ import org.gradle.tooling.events.OperationType;
 import org.gradle.tooling.internal.consumer.parameters.ConsumerOperationParameters;
 import org.gradle.util.internal.CollectionUtils;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public abstract class AbstractLongRunningOperation<T extends AbstractLongRunningOperation<T>> implements LongRunningOperation {
     private BuildFailedProgressAdapter buildFailedProgressAdapter = new BuildFailedProgressAdapter();
@@ -78,13 +79,13 @@ public abstract class AbstractLongRunningOperation<T extends AbstractLongRunning
 
     @Override
     public T addArguments(String... arguments) {
-        operationParamsBuilder.addArguments(CollectionUtils.toList(Preconditions.checkNotNull(arguments)));
+        operationParamsBuilder.addArguments(CollectionUtils.toList(checkNotNull(arguments)));
         return getThis();
     }
 
     @Override
     public T addArguments(Iterable<String> arguments) {
-        operationParamsBuilder.addArguments(CollectionUtils.toList(Preconditions.checkNotNull(arguments)));
+        operationParamsBuilder.addArguments(CollectionUtils.toList(checkNotNull(arguments)));
         return getThis();
     }
 
@@ -132,14 +133,14 @@ public abstract class AbstractLongRunningOperation<T extends AbstractLongRunning
 
     @Override
     public T addJvmArguments(String... jvmArguments) {
-        Preconditions.checkNotNull(jvmArguments);
+        checkNotNull(jvmArguments);
         operationParamsBuilder.addJvmArguments(rationalizeInput(jvmArguments));
         return getThis();
     }
 
     @Override
     public T addJvmArguments(@Nullable Iterable<String> jvmArguments) {
-        Preconditions.checkNotNull(jvmArguments);
+        checkNotNull(jvmArguments);
         operationParamsBuilder.addJvmArguments(rationalizeInput(jvmArguments));
         return getThis();
     }
@@ -180,7 +181,7 @@ public abstract class AbstractLongRunningOperation<T extends AbstractLongRunning
 
     @Override
     public T withCancellationToken(CancellationToken cancellationToken) {
-        operationParamsBuilder.setCancellationToken(Preconditions.checkNotNull(cancellationToken));
+        operationParamsBuilder.setCancellationToken(checkNotNull(cancellationToken));
         return getThis();
     }
 

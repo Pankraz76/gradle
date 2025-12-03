@@ -16,6 +16,9 @@
 
 package org.gradle.internal.resource.transport.http;
 
+import static java.util.Collections.singletonList;
+
+import java.util.Collections;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolException;
@@ -23,8 +26,6 @@ import org.apache.http.client.RedirectStrategy;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.protocol.HttpContext;
 import org.gradle.internal.verifier.HttpRedirectVerifier;
-
-import java.util.Collections;
 
 final class RedirectVerifyingStrategyDecorator implements RedirectStrategy {
 
@@ -44,7 +45,7 @@ final class RedirectVerifyingStrategyDecorator implements RedirectStrategy {
     @Override
     public HttpUriRequest getRedirect(HttpRequest request, HttpResponse response, HttpContext context) throws ProtocolException {
         HttpUriRequest redirectRequest = delegate.getRedirect(request, response, context);
-        verifier.validateRedirects(Collections.singletonList(redirectRequest.getURI()));
+        verifier.validateRedirects(singletonList(redirectRequest.getURI()));
         return redirectRequest;
     }
 }

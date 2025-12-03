@@ -16,6 +16,13 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.builder;
 
+import static java.util.Collections.binarySearch;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 import org.gradle.api.internal.artifacts.ResolvedVersionConstraint;
 import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.ExactVersionSelector;
 import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.LatestVersionSelector;
@@ -25,12 +32,6 @@ import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.VersionS
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.selectors.ResolvableSelectorState;
 import org.gradle.internal.component.model.IvyArtifactName;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
 
 public class ModuleSelectors<T extends ResolvableSelectorState> implements Iterable<T> {
 
@@ -118,7 +119,7 @@ public class ModuleSelectors<T extends ResolvableSelectorState> implements Itera
     }
 
     private void doAddWhenListHasManyElements(List<T> selectors, T selector, int size) {
-        int insertionPoint = Collections.binarySearch(selectors, selector, selectorComparator);
+        int insertionPoint = binarySearch(selectors, selector, selectorComparator);
         insertionPoint = advanceToPreserveOrder(selectors, selector, size, insertionPoint);
         if (insertionPoint < 0) {
             insertionPoint = ~insertionPoint;

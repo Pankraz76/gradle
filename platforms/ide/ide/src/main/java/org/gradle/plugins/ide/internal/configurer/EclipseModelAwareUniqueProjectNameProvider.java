@@ -15,11 +15,10 @@
  */
 package org.gradle.plugins.ide.internal.configurer;
 
-import org.gradle.api.internal.project.ProjectIdentity;
-import org.gradle.api.internal.project.ProjectState;
-import org.gradle.api.internal.project.ProjectStateRegistry;
-import org.gradle.plugins.ide.eclipse.model.EclipseModel;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,22 +26,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toMap;
+import org.gradle.api.internal.project.ProjectIdentity;
+import org.gradle.api.internal.project.ProjectState;
+import org.gradle.api.internal.project.ProjectStateRegistry;
+import org.gradle.plugins.ide.eclipse.model.EclipseModel;
+import org.jspecify.annotations.Nullable;
 
 public class EclipseModelAwareUniqueProjectNameProvider extends AbstractUniqueProjectNameProvider {
 
     @Nullable
     private Map<ProjectIdentity, String> deduplicated;
-    private List<ProjectStateWrapper> reservedNames = Collections.emptyList();
-    private Map<ProjectIdentity, ProjectStateWrapper> projectToInformationMap = Collections.emptyMap();
+    private List<ProjectStateWrapper> reservedNames = emptyList();
+    private Map<ProjectIdentity, ProjectStateWrapper> projectToInformationMap = emptyMap();
 
     public EclipseModelAwareUniqueProjectNameProvider(ProjectStateRegistry projectRegistry) {
         super(projectRegistry);
     }
 
     public synchronized void setReservedProjectNames(List<String> reservedNames) {
-        this.reservedNames = reservedNames.stream().map(ProjectStateWrapper::new).collect(Collectors.toList());
+        this.reservedNames = reservedNames.stream().map(ProjectStateWrapper::new).collect(toList());
         deduplicated = null;
     }
 

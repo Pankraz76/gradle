@@ -16,19 +16,20 @@
 
 package org.gradle.api.internal.attributes;
 
+import static java.util.Comparator.comparing;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import org.gradle.api.Named;
-import org.gradle.api.attributes.Attribute;
-import org.gradle.api.attributes.AttributeContainer;
-import org.gradle.api.provider.Provider;
-import org.jspecify.annotations.Nullable;
-
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
+import org.gradle.api.Named;
+import org.gradle.api.attributes.Attribute;
+import org.gradle.api.attributes.AttributeContainer;
+import org.gradle.api.provider.Provider;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Joins a primary and fallback attribute container to each other. Any attribute in the primary
@@ -128,7 +129,7 @@ import java.util.TreeMap;
 
     @Override
     public String toString() {
-        final Map<Attribute<?>, Object> sorted = new TreeMap<>(Comparator.comparing(Attribute::getName));
+        final Map<Attribute<?>, Object> sorted = new TreeMap<>(comparing(Attribute::getName));
         fallback.keySet().forEach(key -> sorted.put(key, fallback.getAttribute(key)));
         primary.keySet().forEach(key -> sorted.put(key, primary.getAttribute(key)));
         return sorted.toString();

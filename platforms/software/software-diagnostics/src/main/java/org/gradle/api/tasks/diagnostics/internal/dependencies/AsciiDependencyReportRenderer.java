@@ -15,6 +15,13 @@
  */
 package org.gradle.api.tasks.diagnostics.internal.dependencies;
 
+import static java.util.Collections.singletonList;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Description;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Identifier;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Info;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.UserInput;
+
+import java.util.Collections;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.result.ResolvedComponentResult;
 import org.gradle.api.tasks.diagnostics.internal.ConfigurationDetails;
@@ -30,13 +37,6 @@ import org.gradle.initialization.StartParameterBuildOptions;
 import org.gradle.internal.graph.GraphRenderer;
 import org.gradle.internal.logging.text.StyledTextOutput;
 import org.jspecify.annotations.NullMarked;
-
-import java.util.Collections;
-
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Description;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Identifier;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Info;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.UserInput;
 
 /**
  * Simple dependency graph renderer that emits an ASCII tree.
@@ -101,7 +101,7 @@ public class AsciiDependencyReportRenderer extends TextReportRenderer implements
             return;
         }
 
-        dependencyGraphRenderer.render(Collections.singletonList(root));
+        dependencyGraphRenderer.render(singletonList(root));
     }
 
     @Override

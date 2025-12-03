@@ -16,17 +16,18 @@
 
 package org.gradle.internal.composite;
 
+import static java.util.Collections.emptySet;
+
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.internal.GradleInternal;
 import org.gradle.initialization.IncludedBuildSpec;
 import org.gradle.initialization.SettingsLoader;
 import org.gradle.initialization.SettingsState;
 import org.gradle.internal.build.BuildIncluder;
 import org.gradle.internal.build.CompositeBuildParticipantBuildState;
-
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 public class ChildBuildRegisteringSettingsLoader implements SettingsLoader {
 
@@ -52,7 +53,7 @@ public class ChildBuildRegisteringSettingsLoader implements SettingsLoader {
     private Set<IncludedBuildInternal> getIncludedBuildInternals(SettingsState state) {
         List<IncludedBuildSpec> includedBuilds = state.getSettings().getIncludedBuilds();
         if (includedBuilds.isEmpty()) {
-            return Collections.emptySet();
+            return emptySet();
         }
         Set<IncludedBuildInternal> children = new LinkedHashSet<>(includedBuilds.size());
         for (IncludedBuildSpec includedBuildSpec : includedBuilds) {

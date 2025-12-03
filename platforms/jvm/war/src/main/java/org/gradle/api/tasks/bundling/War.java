@@ -15,8 +15,16 @@
  */
 package org.gradle.api.tasks.bundling;
 
+import static java.util.Collections.emptyList;
+import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
+
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.concurrent.Callable;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.file.CopySpec;
 import org.gradle.api.file.DirectoryProperty;
@@ -36,14 +44,6 @@ import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyPro
 import org.gradle.util.internal.ConfigureUtil;
 import org.gradle.work.DisableCachingByDefault;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.concurrent.Callable;
-
-import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
 
 /**
  * Assembles a WAR archive.
@@ -65,11 +65,11 @@ public abstract class War extends Jar {
         webInf = (DefaultCopySpec) getRootSpec().addChildBeforeSpec(getMainSpec()).into("WEB-INF");
         webInf.into("classes", spec -> spec.from((Callable<Iterable<File>>) () -> {
             FileCollection classpath = getClasspath();
-            return classpath != null ? classpath.filter(spec(File::isDirectory)) : Collections.emptyList();
+            return classpath != null ? classpath.filter(spec(File::isDirectory)) : emptyList();
         }));
         webInf.into("lib", spec -> spec.from((Callable<Iterable<File>>) () -> {
             FileCollection classpath = getClasspath();
-            return classpath != null ? classpath.filter(spec(File::isFile)) : Collections.emptyList();
+            return classpath != null ? classpath.filter(spec(File::isFile)) : emptyList();
         }));
 
         CopySpecInternal renameSpec = webInf.addChild();

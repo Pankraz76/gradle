@@ -16,6 +16,13 @@
 
 package org.gradle.plugins.ide.internal.tooling;
 
+import static java.util.Collections.singletonList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Project;
 import org.gradle.api.internal.GradleInternal;
@@ -38,12 +45,6 @@ import org.gradle.plugins.ide.internal.tooling.idea.DefaultIdeaModule;
 import org.gradle.plugins.ide.internal.tooling.idea.DefaultIdeaProject;
 import org.gradle.plugins.ide.internal.tooling.java.DefaultInstalledJdk;
 import org.gradle.plugins.ide.internal.tooling.model.DefaultGradleProject;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Builds the {@link org.gradle.tooling.model.idea.IdeaProject} model
@@ -140,7 +141,7 @@ public class IdeaModelBuilder implements IdeaModelBuilderInternal {
             .setName(ideaModule.getName())
             .setParent(ideaProject)
             .setGradleProject(rootGradleProject.findByPath(ideaModule.getProject().getPath()))
-            .setContentRoots(Collections.singletonList(contentRoot))
+            .setContentRoots(singletonList(contentRoot))
             .setJdkName(ideaModule.getJdkName())
             .setCompilerOutput(IdeaModuleBuilderSupport.buildCompilerOutput(ideaModule));
 

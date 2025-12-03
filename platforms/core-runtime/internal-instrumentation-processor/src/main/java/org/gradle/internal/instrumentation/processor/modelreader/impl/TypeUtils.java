@@ -16,23 +16,25 @@
 
 package org.gradle.internal.instrumentation.processor.modelreader.impl;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
-import org.jspecify.annotations.NonNull;
-import org.objectweb.asm.Type;
-
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import org.jspecify.annotations.NonNull;
+import org.objectweb.asm.Type;
 
 public class TypeUtils {
     public static Type extractType(TypeMirror typeMirror) {
@@ -111,9 +113,9 @@ public class TypeUtils {
             // Ensure that the elements have a stable order, as the annotation processing engine does not guarantee that for type elements.
             // The order in which the executable elements are listed should be the order in which they appear in the code but
             // we take an extra measure of care here and ensure the ordering between all elements.
-            .sorted(Comparator.comparing(TypeUtils::elementQualifiedName))
+            .sorted(comparing(TypeUtils::elementQualifiedName))
             .distinct()
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     public static String elementQualifiedName(Element element) {

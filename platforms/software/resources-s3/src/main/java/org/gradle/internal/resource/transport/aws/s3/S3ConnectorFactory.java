@@ -16,11 +16,12 @@
 
 package org.gradle.internal.resource.transport.aws.s3;
 
+import static java.util.Collections.singleton;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.gradle.api.credentials.AwsCredentials;
 import org.gradle.authentication.Authentication;
 import org.gradle.authentication.aws.AwsImAuthentication;
@@ -32,7 +33,7 @@ import org.gradle.internal.resource.transfer.ExternalResourceConnector;
 public class S3ConnectorFactory implements ResourceConnectorFactory {
     @Override
     public Set<String> getSupportedProtocols() {
-        return Collections.singleton("s3");
+        return singleton("s3");
     }
 
     @Override

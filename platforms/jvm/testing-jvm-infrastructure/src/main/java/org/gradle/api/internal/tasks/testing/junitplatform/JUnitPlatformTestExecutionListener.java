@@ -16,6 +16,26 @@
 
 package org.gradle.api.internal.tasks.testing.junitplatform;
 
+import static java.util.Objects.requireNonNull;
+import static org.gradle.api.tasks.testing.TestResult.ResultType.SKIPPED;
+import static org.junit.platform.engine.TestExecutionResult.Status.ABORTED;
+import static org.junit.platform.engine.TestExecutionResult.Status.FAILED;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 import org.gradle.api.internal.tasks.testing.DefaultNestedTestSuiteDescriptor;
 import org.gradle.api.internal.tasks.testing.DefaultParameterizedTestDescriptor;
 import org.gradle.api.internal.tasks.testing.DefaultTestClassDescriptor;
@@ -57,26 +77,6 @@ import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.TestPlan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.function.Function;
-
-import static org.gradle.api.tasks.testing.TestResult.ResultType.SKIPPED;
-import static org.junit.platform.engine.TestExecutionResult.Status.ABORTED;
-import static org.junit.platform.engine.TestExecutionResult.Status.FAILED;
 
 /**
  * A {@link TestExecutionListener} that maps JUnit5 events to Gradle test events.
@@ -251,7 +251,7 @@ public class JUnitPlatformTestExecutionListener implements TestExecutionListener
     }
 
     private void reportSkipped(TestIdentifier testIdentifier) {
-        Objects.requireNonNull(currentTestPlan);
+        requireNonNull(currentTestPlan);
         currentTestPlan.getChildren(testIdentifier).stream()
             .filter(child -> !wasStarted(child))
             .forEach(this::executionSkipped);
@@ -433,7 +433,7 @@ public class JUnitPlatformTestExecutionListener implements TestExecutionListener
 
     @SuppressWarnings("deprecation")
     private Optional<TestIdentifier> getParent(TestIdentifier testIdentifier) {
-        Objects.requireNonNull(currentTestPlan);
+        requireNonNull(currentTestPlan);
         try {
             return testIdentifier.getParentIdObject().map(currentTestPlan::getTestIdentifier);
         // Some versions of the JDK throw a BootstrapMethodError
@@ -521,7 +521,7 @@ public class JUnitPlatformTestExecutionListener implements TestExecutionListener
     }
 
     private boolean hasDifferentSourceThanAncestor(TestIdentifier testIdentifier) {
-        Objects.requireNonNull(currentTestPlan);
+        requireNonNull(currentTestPlan);
 
         Optional<TestIdentifier> parent = currentTestPlan.getParent(testIdentifier);
         while (parent.isPresent()) {

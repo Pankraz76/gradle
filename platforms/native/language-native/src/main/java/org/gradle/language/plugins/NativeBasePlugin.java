@@ -16,6 +16,15 @@
 
 package org.gradle.language.plugins;
 
+import static java.util.Collections.emptyList;
+import static org.gradle.api.artifacts.type.ArtifactTypeDefinition.DIRECTORY_TYPE;
+import static org.gradle.api.artifacts.type.ArtifactTypeDefinition.ZIP_TYPE;
+import static org.gradle.language.cpp.CppBinary.LINKAGE_ATTRIBUTE;
+
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import javax.inject.Inject;
 import org.gradle.api.DomainObjectSet;
 import org.gradle.api.Incubating;
 import org.gradle.api.Plugin;
@@ -78,15 +87,6 @@ import org.gradle.nativeplatform.tasks.LinkSharedLibrary;
 import org.gradle.nativeplatform.tasks.StripSymbols;
 import org.gradle.nativeplatform.toolchain.NativeToolChain;
 import org.gradle.nativeplatform.toolchain.internal.PlatformToolProvider;
-
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.Set;
-import java.util.concurrent.Callable;
-
-import static org.gradle.api.artifacts.type.ArtifactTypeDefinition.DIRECTORY_TYPE;
-import static org.gradle.api.artifacts.type.ArtifactTypeDefinition.ZIP_TYPE;
-import static org.gradle.language.cpp.CppBinary.LINKAGE_ATTRIBUTE;
 
 /**
  * A common base plugin for the native plugins.
@@ -194,7 +194,7 @@ public abstract class NativeBasePlugin implements Plugin<Project> {
                         if (!targetsCurrentMachine) {
                             task.getLogger().warn("'" + component.getName() + "' component in project '" + project.getPath() + "' does not target this operating system.");
                         }
-                        return Collections.emptyList();
+                        return emptyList();
                     });
                 });
             }

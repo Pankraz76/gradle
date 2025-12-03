@@ -16,6 +16,8 @@
 
 package org.gradle.api.tasks.diagnostics.internal.artifact.transforms.model;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +53,7 @@ public final class ArtifactTransformReportModel {
     public ArtifactTransformReportModel filterTransformsByType(String typeName) {
         List<ReportArtifactTransform> matchingTransforms = transforms.stream()
             .filter(t -> t.getTransformClass().getSimpleName().contains(typeName))
-            .collect(Collectors.toList());
+            .collect(toList());
         return new ArtifactTransformReportModel(projectDisplayName, matchingTransforms);
     }
 }

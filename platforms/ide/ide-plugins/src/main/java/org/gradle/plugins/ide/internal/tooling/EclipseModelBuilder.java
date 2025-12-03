@@ -16,7 +16,22 @@
 
 package org.gradle.plugins.ide.internal.tooling;
 
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+
 import com.google.common.annotations.VisibleForTesting;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.Strings;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -75,18 +90,6 @@ import org.gradle.tooling.provider.model.ParameterizedToolingModelBuilder;
 import org.gradle.util.internal.CollectionUtils;
 import org.gradle.util.internal.GUtil;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 public class EclipseModelBuilder implements ParameterizedToolingModelBuilder<EclipseRuntime> {
     private final GradleProjectBuilderInternal gradleProjectBuilder;
     private final EclipseModelAwareUniqueProjectNameProvider uniqueProjectNameProvider;
@@ -126,7 +129,7 @@ public class EclipseModelBuilder implements ParameterizedToolingModelBuilder<Ecl
         List<EclipseWorkspaceProject> projects = eclipseRuntime.getWorkspace().getProjects();
         HashSet<EclipseWorkspaceProject> projectsInBuild = new HashSet<>(projects);
         projectsInBuild.removeAll(gatherExternalProjects((ProjectInternal) project.getRootProject(), projects));
-        projectOpenStatus = projectsInBuild.stream().collect(Collectors.toMap(EclipseWorkspaceProject::getName, EclipseModelBuilder::isProjectOpen, (a, b) -> a || b));
+        projectOpenStatus = projectsInBuild.stream().collect(toMap(EclipseWorkspaceProject::getName, EclipseModelBuilder::isProjectOpen, (a, b) -> a || b));
 
         return buildAll(modelName, project);
     }
@@ -424,17 +427,17 @@ public class EclipseModelBuilder implements ParameterizedToolingModelBuilder<Ecl
     @SuppressWarnings("MixedMutabilityReturnType")
     private List<String> calculateReservedProjectNames(ProjectInternal rootProject, EclipseRuntime parameter) {
         if (parameter == null) {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         EclipseWorkspace workspace = parameter.getWorkspace();
         if (workspace == null) {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         List<EclipseWorkspaceProject> projects = workspace.getProjects();
         if (projects == null) {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         List<String> reservedProjectNames = new ArrayList<>();
@@ -449,7 +452,7 @@ public class EclipseModelBuilder implements ParameterizedToolingModelBuilder<Ecl
     private List<EclipseWorkspaceProject> gatherExternalProjects(ProjectInternal rootProject, List<EclipseWorkspaceProject> projects) {
         // The eclipse workspace contains projects from root and included builds. Check projects from all builds
         // so that models built for included builds do not consider projects from parent builds as external.
-        Set<File> gradleProjectLocations = collectAllProjects(new ArrayList<>(), getRootBuild(rootProject.getGradle()), new HashSet<>()).stream().map(p -> p.getProjectDir().getAbsoluteFile()).collect(Collectors.toSet());
+        Set<File> gradleProjectLocations = collectAllProjects(new ArrayList<>(), getRootBuild(rootProject.getGradle()), new HashSet<>()).stream().map(p -> p.getProjectDir().getAbsoluteFile()).collect(toSet());
         List<EclipseWorkspaceProject> externalProjects = new ArrayList<>();
         for (EclipseWorkspaceProject project : projects) {
             if (project == null || project.getLocation() == null || project.getName() == null || project.getLocation() == null) {

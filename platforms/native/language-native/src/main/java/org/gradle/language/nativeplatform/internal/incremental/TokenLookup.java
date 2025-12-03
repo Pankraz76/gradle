@@ -16,14 +16,15 @@
 
 package org.gradle.language.nativeplatform.internal.incremental;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import org.gradle.language.nativeplatform.internal.Expression;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import org.gradle.language.nativeplatform.internal.Expression;
 
 /**
  * Captures the intermediate states during the resolution of macro #include directives, to short-circuit work that has already been done.
@@ -45,7 +46,7 @@ class TokenLookup {
 
     Collection<Expression> tokensFor(Expression expression) {
         if (tokensFor == null) {
-            return Collections.emptyList();
+            return emptyList();
         }
         return tokensFor.get(expression);
     }

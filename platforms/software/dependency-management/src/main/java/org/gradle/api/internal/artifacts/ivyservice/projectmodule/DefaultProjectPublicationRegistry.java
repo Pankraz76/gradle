@@ -16,19 +16,20 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.projectmodule;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.artifacts.DefaultBuildIdentifier;
 import org.gradle.api.internal.project.HoldsProjectState;
 import org.gradle.api.internal.project.ProjectIdentity;
 import org.gradle.internal.Cast;
 import org.gradle.util.Path;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class DefaultProjectPublicationRegistry implements ProjectPublicationRegistry, HoldsProjectState {
     private final SetMultimap<Path, ProjectPublication> publicationsByProjectId = LinkedHashMultimap.create();
@@ -40,7 +41,7 @@ public class DefaultProjectPublicationRegistry implements ProjectPublicationRegi
         synchronized (publicationsByProjectId) {
             Collection<ProjectPublication> projectPublications = publicationsByProjectId.get(projectIdentityPath);
             if (projectPublications.isEmpty()) {
-                return Collections.emptyList();
+                return emptyList();
             }
             List<T> result = new ArrayList<>(projectPublications.size());
             for (ProjectPublication publication : projectPublications) {
@@ -58,7 +59,7 @@ public class DefaultProjectPublicationRegistry implements ProjectPublicationRegi
         synchronized (publicationsByBuildId) {
             Collection<PublicationForProject<?>> buildPublications = publicationsByBuildId.get(buildIdentity);
             if (buildPublications.isEmpty()) {
-                return Collections.emptyList();
+                return emptyList();
             }
             List<PublicationForProject<T>> result = new ArrayList<>(buildPublications.size());
             for (PublicationForProject<?> reference : buildPublications) {

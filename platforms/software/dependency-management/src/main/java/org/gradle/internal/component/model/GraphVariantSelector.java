@@ -16,9 +16,17 @@
 
 package org.gradle.internal.component.model;
 
+import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.artifacts.capability.CapabilitySelector;
 import org.gradle.api.capabilities.Capability;
 import org.gradle.api.internal.artifacts.capability.CapabilitySelectorInternal;
@@ -39,11 +47,6 @@ import org.gradle.internal.deprecation.DeprecationLogger;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Uses attribute matching to select a list of one or more variants for a component in a graph
@@ -225,12 +228,12 @@ public class GraphVariantSelector {
     }
 
     private static List<VariantGraphResolveState> findVariantsProvidingExactlySameClassifier(List<VariantGraphResolveState> matches, String classifier) {
-        List<VariantGraphResolveState> sameClassifier = Collections.emptyList();
+        List<VariantGraphResolveState> sameClassifier = emptyList();
         // let's see if we can find a single variant which has exactly the requested artifacts
         for (VariantGraphResolveState match : matches) {
             if (variantProvidesClassifier(match, classifier)) {
-                if (sameClassifier == Collections.EMPTY_LIST) {
-                    sameClassifier = Collections.singletonList(match);
+                if (sameClassifier == EMPTY_LIST) {
+                    sameClassifier = singletonList(match);
                 } else {
                     sameClassifier = Lists.newArrayList(sameClassifier);
                     sameClassifier.add(match);

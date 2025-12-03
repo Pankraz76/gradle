@@ -16,6 +16,11 @@
 
 package org.gradle.language.cpp.internal;
 
+import static java.util.Collections.singleton;
+
+import java.util.Collections;
+import java.util.Set;
+import javax.inject.Inject;
 import org.gradle.api.Task;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
@@ -43,10 +48,6 @@ import org.gradle.nativeplatform.tasks.LinkExecutable;
 import org.gradle.nativeplatform.toolchain.internal.NativeToolChainInternal;
 import org.gradle.nativeplatform.toolchain.internal.PlatformToolProvider;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.Set;
 
 public class DefaultCppExecutable extends DefaultCppBinary implements CppExecutable, ConfigurableComponentWithExecutable, ConfigurableComponentWithRuntimeUsage, SoftwareComponentInternal {
     private final RegularFileProperty executableFile;
@@ -130,7 +131,7 @@ public class DefaultCppExecutable extends DefaultCppBinary implements CppExecuta
     @Override
     public Set<? extends UsageContext> getUsages() {
         Configuration runtimeElements = runtimeElementsProperty.get();
-        return Collections.singleton(new ConfigurationSoftwareComponentVariant(getIdentity().getRuntimeVariant(), runtimeElements.getAllArtifacts(), runtimeElements));
+        return singleton(new ConfigurationSoftwareComponentVariant(getIdentity().getRuntimeVariant(), runtimeElements.getAllArtifacts(), runtimeElements));
     }
 
     @Override

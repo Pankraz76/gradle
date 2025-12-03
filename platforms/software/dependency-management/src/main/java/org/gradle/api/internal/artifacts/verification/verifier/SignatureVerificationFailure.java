@@ -15,6 +15,12 @@
  */
 package org.gradle.api.internal.artifacts.verification.verifier;
 
+import static java.util.Map.Entry.comparingByKey;
+
+import java.io.File;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import org.bouncycastle.openpgp.PGPPublicKey;
 import org.bouncycastle.openpgp.PGPPublicKeyRing;
 import org.gradle.internal.logging.text.TreeFormatter;
@@ -22,11 +28,6 @@ import org.gradle.security.internal.PGPUtils;
 import org.gradle.security.internal.PublicKeyResultBuilder;
 import org.gradle.security.internal.PublicKeyService;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class SignatureVerificationFailure extends AbstractVerificationFailure {
     private final Map<String, SignatureError> errors;
@@ -60,7 +61,7 @@ public class SignatureVerificationFailure extends AbstractVerificationFailure {
         formatter.startChildren();
         errors.entrySet()
             .stream()
-            .sorted(Map.Entry.comparingByKey())
+            .sorted(comparingByKey())
             .forEachOrdered(entry -> formatter.node(toMessage(entry.getKey(), entry.getValue())));
         formatter.endChildren();
     }

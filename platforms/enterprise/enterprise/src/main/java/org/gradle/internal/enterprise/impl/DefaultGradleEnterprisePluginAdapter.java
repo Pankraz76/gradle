@@ -16,6 +16,17 @@
 
 package org.gradle.internal.enterprise.impl;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.problems.internal.BuildOperationProblem;
 import org.gradle.internal.enterprise.GradleEnterprisePluginBuildState;
 import org.gradle.internal.enterprise.GradleEnterprisePluginConfig;
@@ -32,15 +43,6 @@ import org.gradle.internal.operations.notify.BuildOperationNotificationListenerR
 import org.gradle.operations.problems.Failure;
 import org.gradle.operations.problems.Problem;
 import org.jspecify.annotations.Nullable;
-
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Captures the state to recreate the {@link GradleEnterprisePluginService} instance.
@@ -149,9 +151,9 @@ public class DefaultGradleEnterprisePluginAdapter implements GradleEnterprisePlu
         }
 
         private List<Failure> getBuildFailures() {
-            return Objects.requireNonNull(buildFailures).stream()
+            return requireNonNull(buildFailures).stream()
                 .map(DevelocityBuildFailure::new)
-                .collect(Collectors.toList());
+                .collect(toList());
         }
 
     }
@@ -194,14 +196,14 @@ public class DefaultGradleEnterprisePluginAdapter implements GradleEnterprisePlu
         public List<Failure> getCauses() {
             return failure.getCauses().stream()
                 .map(DevelocityBuildFailure::new)
-                .collect(Collectors.toList());
+                .collect(toList());
         }
 
         @Override
         public List<Problem> getProblems() {
             return failure.getProblems().stream()
                 .map(BuildOperationProblem::new)
-                .collect(Collectors.toList());
+                .collect(toList());
         }
 
         private static List<String> getClassLevelAnnotations(Class<?> cls) {

@@ -16,14 +16,9 @@
 
 package org.gradle.api.publish.maven.internal.validation;
 
-import com.google.common.base.Strings;
-import org.gradle.api.artifacts.PublishArtifact;
-import org.gradle.api.artifacts.PublishException;
-import org.gradle.api.publish.internal.validation.PublicationErrorChecker;
-import org.gradle.api.publish.maven.MavenArtifact;
-import org.gradle.api.publish.maven.internal.artifact.DefaultMavenArtifactSet;
-import org.jspecify.annotations.NullMarked;
+import static java.util.stream.Collectors.joining;
 
+import com.google.common.base.Strings;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -32,6 +27,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.gradle.api.artifacts.PublishArtifact;
+import org.gradle.api.artifacts.PublishException;
+import org.gradle.api.publish.internal.validation.PublicationErrorChecker;
+import org.gradle.api.publish.maven.MavenArtifact;
+import org.gradle.api.publish.maven.internal.artifact.DefaultMavenArtifactSet;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Static util class containing publication checks specific to Maven publications.
@@ -111,7 +112,7 @@ public abstract class MavenPublicationErrorChecker extends PublicationErrorCheck
             ? Stream.of("... (" + (differencesByArtifact.size() - 3) + " more artifact(s) not shown)")
             : Stream.empty();
         return Stream.concat(differencesFormatted, warningForNonPrintedArtifacts)
-            .collect(Collectors.joining("\n", "", "\n"));
+            .collect(joining("\n", "", "\n"));
     }
 
     private static String formatDifferenceSet(String projectDisplayName, Path buildDir, PublishArtifact expected, MavenArtifact actual, Set<ArtifactDifference> differenceSet) {
@@ -129,7 +130,7 @@ public abstract class MavenPublicationErrorChecker extends PublicationErrorCheck
                 default:
                     throw new IllegalArgumentException("Unknown difference: " + diff);
             }
-        }).collect(Collectors.joining("\n"));
+        }).collect(joining("\n"));
     }
 
     @NullMarked

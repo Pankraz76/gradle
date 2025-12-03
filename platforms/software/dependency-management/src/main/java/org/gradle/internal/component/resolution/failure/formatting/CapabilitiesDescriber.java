@@ -15,10 +15,11 @@
  */
 package org.gradle.internal.component.resolution.failure.formatting;
 
-import org.gradle.api.capabilities.Capability;
+import static java.util.stream.Collectors.joining;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
+import org.gradle.api.capabilities.Capability;
 
 /**
  * Static utility methods for describing capabilities.
@@ -41,7 +42,7 @@ public final class CapabilitiesDescriber {
         return capabilities.stream()
             .map(CapabilitiesDescriber::describeCapability)
             .sorted()
-            .collect(Collectors.joining(" and "));
+            .collect(joining(" and "));
     }
 
     private static String describeCapability(Capability c) {

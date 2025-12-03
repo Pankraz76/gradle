@@ -16,6 +16,14 @@
 
 package org.gradle.api.internal.tasks;
 
+import static java.util.Collections.emptyMap;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.function.Consumer;
+import javax.inject.Inject;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.file.CompositeFileCollection;
@@ -27,13 +35,6 @@ import org.gradle.api.tasks.SourceSetOutput;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.internal.logging.text.TreeFormatter;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.function.Consumer;
 
 public abstract class DefaultSourceSetOutput extends CompositeFileCollection implements SourceSetOutput {
     private final ConfigurableFileCollection outputDirectories;
@@ -121,7 +122,7 @@ public abstract class DefaultSourceSetOutput extends CompositeFileCollection imp
 
     @Override
     public void dir(Object dir) {
-        this.dir(Collections.emptyMap(), dir);
+        this.dir(emptyMap(), dir);
     }
 
     @Override

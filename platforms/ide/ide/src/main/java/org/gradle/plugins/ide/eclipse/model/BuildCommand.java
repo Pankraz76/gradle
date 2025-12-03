@@ -16,9 +16,10 @@
 
 package org.gradle.plugins.ide.eclipse.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -35,8 +36,8 @@ public class BuildCommand implements Serializable {
     }
 
     public BuildCommand(String name, Map<String, String> arguments) {
-        this.name = Preconditions.checkNotNull(name);
-        this.arguments = Preconditions.checkNotNull(arguments);
+        this.name = checkNotNull(name);
+        this.arguments = checkNotNull(arguments);
     }
 
     public String getName() {

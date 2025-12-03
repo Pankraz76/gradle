@@ -16,6 +16,13 @@
 
 package org.gradle.internal.instrumentation.processor.codegen.jvmbytecode;
 
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static org.gradle.internal.instrumentation.processor.codegen.GradleReferencedType.GENERATED_ANNOTATION;
+import static org.gradle.internal.instrumentation.processor.codegen.TypeUtils.typeName;
+
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
@@ -23,6 +30,19 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.lang.model.element.Modifier;
 import org.gradle.internal.instrumentation.api.annotations.CallableKind;
 import org.gradle.internal.instrumentation.api.annotations.ParameterKind;
 import org.gradle.internal.instrumentation.api.jvmbytecode.BridgeMethodBuilder;
@@ -47,23 +67,6 @@ import org.jspecify.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.MethodNode;
-
-import javax.lang.model.element.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.gradle.internal.instrumentation.processor.codegen.GradleReferencedType.GENERATED_ANNOTATION;
-import static org.gradle.internal.instrumentation.processor.codegen.TypeUtils.typeName;
 
 /**
  * Generates a single bytecode rewriter class.
@@ -105,7 +108,7 @@ public class InterceptJvmCallsGenerator extends RequestGroupingInstrumentationCl
             .orElseThrow(() -> new IllegalStateException(RequestExtra.InterceptJvmCalls.class.getSimpleName() + " should be present at this stage!"));
 
         Map<CallableOwnerInfo, List<CallInterceptionRequest>> requestsByOwner = requestsClassGroup.stream().collect(
-            Collectors.groupingBy(it -> it.getInterceptedCallable().getOwner(), LinkedHashMap::new, Collectors.toList())
+            groupingBy(it -> it.getInterceptedCallable().getOwner(), LinkedHashMap::new, toList())
         );
 
         MethodSpec.Builder visitMethodInsnBuilder = getVisitMethodInsnBuilder();
@@ -237,7 +240,7 @@ public class InterceptJvmCallsGenerator extends RequestGroupingInstrumentationCl
     private static Map<Type, FieldSpec> generateFieldsForImplementationOwners(Collection<CallInterceptionRequest> interceptionRequests) {
         Set<String> knownSimpleNames = new HashSet<>();
         return interceptionRequests.stream().map(it -> it.getImplementationInfo().getOwner()).distinct()
-            .collect(Collectors.toMap(Function.identity(), implementationType -> {
+            .collect(toMap(identity(), implementationType -> {
                 ClassName implementationClassName = NameUtil.getClassName(implementationType.getClassName());
                 String fieldTypeName = knownSimpleNames.add(implementationClassName.simpleName()) ?
                     implementationClassName.simpleName() :

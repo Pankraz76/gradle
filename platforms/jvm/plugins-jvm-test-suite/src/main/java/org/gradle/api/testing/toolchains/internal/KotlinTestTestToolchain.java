@@ -16,9 +16,10 @@
 
 package org.gradle.api.testing.toolchains.internal;
 
-import org.gradle.api.artifacts.Dependency;
+import static java.util.Collections.singletonList;
 
 import java.util.Collections;
+import org.gradle.api.artifacts.Dependency;
 
 /**
  * A {@link JUnitPlatformTestToolchain} that uses the KotlinTest test engine.
@@ -34,6 +35,6 @@ abstract public class KotlinTestTestToolchain extends JUnitPlatformTestToolchain
 
     @Override
     public Iterable<Dependency> getImplementationDependencies() {
-        return Collections.singletonList(getDependencyFactory().create(GROUP_NAME + ":" + getParameters().getKotlinTestVersion().get()));
+        return singletonList(getDependencyFactory().create(GROUP_NAME + ":" + getParameters().getKotlinTestVersion().get()));
     }
 }

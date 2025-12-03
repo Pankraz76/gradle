@@ -16,6 +16,8 @@
 
 package org.gradle.plugins.ide.eclipse.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -27,8 +29,8 @@ public class AccessRule {
     private String pattern;
 
     public AccessRule(String kind, String pattern) {
-        this.kind = Preconditions.checkNotNull(kind);
-        this.pattern = Preconditions.checkNotNull(pattern);
+        this.kind = checkNotNull(kind);
+        this.pattern = checkNotNull(pattern);
     }
 
     public String getKind() {

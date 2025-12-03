@@ -16,14 +16,15 @@
 
 package org.gradle.api.internal.provider;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Objects;
 import org.gradle.api.Action;
 import org.gradle.api.Task;
 import org.gradle.internal.evaluation.EvaluationContext;
 import org.gradle.internal.evaluation.EvaluationOwner;
 import org.gradle.internal.evaluation.EvaluationScopeContext;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Objects;
 
 class OrElseValueProducer implements ValueSupplier.ValueProducer {
     private final EvaluationOwner owner;
@@ -42,7 +43,7 @@ class OrElseValueProducer implements ValueSupplier.ValueProducer {
     }
 
     private OrElseValueProducer(EvaluationScopeContext context, ProviderInternal<?> left, @Nullable ProviderInternal<?> right, ValueSupplier.ValueProducer rightProducer) {
-        this.owner = Objects.requireNonNull(context.getOwner());
+        this.owner = requireNonNull(context.getOwner());
         this.left = left;
         this.right = right;
         this.leftProducer = left.getProducer();

@@ -15,12 +15,13 @@
  */
 package org.gradle.api.internal.attributes;
 
-import org.gradle.internal.service.scopes.Scope;
-import org.gradle.internal.service.scopes.ServiceScope;
+import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.internal.service.scopes.Scope;
+import org.gradle.internal.service.scopes.ServiceScope;
 
 @ServiceScope(Scope.Project.class)
 public class AttributeDescriberRegistry {
@@ -32,7 +33,7 @@ public class AttributeDescriberRegistry {
     }
 
     public List<AttributeDescriber> getDescribers() {
-        return Collections.unmodifiableList(consumerAttributeDescribers);
+        return unmodifiableList(consumerAttributeDescribers);
     }
 
 }

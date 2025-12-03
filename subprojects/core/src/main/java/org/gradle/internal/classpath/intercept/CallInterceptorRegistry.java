@@ -16,19 +16,20 @@
 
 package org.gradle.internal.classpath.intercept;
 
-import com.google.common.annotations.VisibleForTesting;
-import org.gradle.internal.classpath.GroovyCallInterceptorsProvider;
-import org.gradle.internal.instrumentation.api.types.BytecodeInterceptorFilter;
-import org.jspecify.annotations.NullMarked;
+import static java.util.Collections.synchronizedMap;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
+import org.gradle.internal.classpath.GroovyCallInterceptorsProvider;
+import org.gradle.internal.instrumentation.api.types.BytecodeInterceptorFilter;
+import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class CallInterceptorRegistry {
-    private static final Map<ClassLoader, Boolean> LOADED_FROM_CLASSLOADERS = Collections.synchronizedMap(new WeakHashMap<>());
+    private static final Map<ClassLoader, Boolean> LOADED_FROM_CLASSLOADERS = synchronizedMap(new WeakHashMap<>());
     private static volatile Map<BytecodeInterceptorFilter, CallSiteDecorator> groovyDecorators = new ConcurrentHashMap<>();
     private static volatile Map<BytecodeInterceptorFilter, JvmBytecodeInterceptorSet> jvmInterceptorSets = new ConcurrentHashMap<>();
     private static volatile CallSiteInterceptorSet currentGroovyCallInterceptorSet = new DefaultCallSiteInterceptorSet(GroovyCallInterceptorsProvider.DEFAULT);

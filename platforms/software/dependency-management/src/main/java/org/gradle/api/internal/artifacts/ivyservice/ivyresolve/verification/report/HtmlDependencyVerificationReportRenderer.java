@@ -15,18 +15,7 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.ivyresolve.verification.report;
 
-import org.bouncycastle.openpgp.PGPPublicKey;
-import org.gradle.api.internal.DocumentationRegistry;
-import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.verification.RepositoryAwareVerificationFailure;
-import org.gradle.api.internal.artifacts.verification.verifier.ChecksumVerificationFailure;
-import org.gradle.api.internal.artifacts.verification.verifier.DeletedArtifact;
-import org.gradle.api.internal.artifacts.verification.verifier.MissingChecksums;
-import org.gradle.api.internal.artifacts.verification.verifier.MissingSignature;
-import org.gradle.api.internal.artifacts.verification.verifier.OnlyIgnoredKeys;
-import org.gradle.api.internal.artifacts.verification.verifier.SignatureVerificationFailure;
-import org.gradle.api.internal.artifacts.verification.verifier.VerificationFailure;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.component.external.model.ModuleComponentArtifactIdentifier;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,6 +30,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import org.bouncycastle.openpgp.PGPPublicKey;
+import org.gradle.api.internal.DocumentationRegistry;
+import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.verification.RepositoryAwareVerificationFailure;
+import org.gradle.api.internal.artifacts.verification.verifier.ChecksumVerificationFailure;
+import org.gradle.api.internal.artifacts.verification.verifier.DeletedArtifact;
+import org.gradle.api.internal.artifacts.verification.verifier.MissingChecksums;
+import org.gradle.api.internal.artifacts.verification.verifier.MissingSignature;
+import org.gradle.api.internal.artifacts.verification.verifier.OnlyIgnoredKeys;
+import org.gradle.api.internal.artifacts.verification.verifier.SignatureVerificationFailure;
+import org.gradle.api.internal.artifacts.verification.verifier.VerificationFailure;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.component.external.model.ModuleComponentArtifactIdentifier;
 
 /**
  * Generates an HTML report for verification. This report, unlike the text report,
@@ -153,7 +154,7 @@ class HtmlDependencyVerificationReportRenderer implements DependencyVerification
 
     private File doWriteReport() {
         File reportFile = new File(htmlReportOutputDirectory, "dependency-verification-report.html");
-        try (Writer prn = new OutputStreamWriter(new FileOutputStream(reportFile, false), StandardCharsets.UTF_8)) {
+        try (Writer prn = new OutputStreamWriter(new FileOutputStream(reportFile, false), UTF_8)) {
             prn.write(contents.toString());
         } catch (IOException e) {
             throw UncheckedException.throwAsUncheckedException(e);

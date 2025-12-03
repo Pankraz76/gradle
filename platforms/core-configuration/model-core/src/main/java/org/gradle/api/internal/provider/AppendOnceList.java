@@ -16,16 +16,17 @@
 
 package org.gradle.api.internal.provider;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
-
-import javax.annotation.CheckReturnValue;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
+import javax.annotation.CheckReturnValue;
 
 /**
  * A special append-only list used in collection properties implementations.
@@ -69,7 +70,7 @@ class AppendOnceList<E> implements Iterable<E> {
      * @param element the element to append
      */
     private AppendOnceList(AppendOnceList<E> parent, E element) {
-        Preconditions.checkState(parent.buffer.size() == parent.size, "Can only append an element to the list once");
+        checkState(parent.buffer.size() == parent.size, "Can only append an element to the list once");
         buffer = parent.buffer;
         buffer.add(element);
         size = parent.size + 1;

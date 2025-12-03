@@ -16,17 +16,17 @@
 
 package org.gradle.api.tasks.diagnostics.internal.text;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Header;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Normal;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import org.gradle.internal.logging.text.StyledTextOutput;
-import org.gradle.reporting.ReportRenderer;
-
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Header;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Normal;
+import org.gradle.internal.logging.text.StyledTextOutput;
+import org.gradle.reporting.ReportRenderer;
 
 /**
  * Simple utility for printing a table.
@@ -76,7 +76,7 @@ public class StyledTable {
             // Print the separator row
             printRow(
                 model, output, colWidths,
-                IntStream.range(0, colWidths.length).mapToObj(i -> "").collect(ImmutableList.toImmutableList()),
+                IntStream.range(0, colWidths.length).mapToObj(i -> "").collect(toImmutableList()),
                 '-'
             );
             output.println();

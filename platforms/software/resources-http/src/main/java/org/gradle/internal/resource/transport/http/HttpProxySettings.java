@@ -16,6 +16,8 @@
 package org.gradle.internal.resource.transport.http;
 
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Preconditions;
 import org.gradle.api.credentials.Credentials;
 import org.jspecify.annotations.NullMarked;
@@ -47,7 +49,7 @@ public interface HttpProxySettings {
         private final String password;
 
         public HttpProxyCredentials(String username, @Nullable String password) {
-            this.username = Preconditions.checkNotNull(username);
+            this.username = checkNotNull(username);
             this.password = password;
         }
 

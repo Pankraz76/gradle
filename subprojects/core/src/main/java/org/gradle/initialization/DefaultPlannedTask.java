@@ -16,13 +16,14 @@
 
 package org.gradle.initialization;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
+import java.util.stream.Collectors;
 import org.gradle.execution.plan.PlannedNodeInternal;
 import org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.PlannedTask;
 import org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.TaskIdentity;
 import org.gradle.internal.taskgraph.NodeIdentity;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Default implementation of {@link PlannedTask}.
@@ -58,7 +59,7 @@ public class DefaultPlannedTask implements PlannedTask, PlannedNodeInternal {
     @Override
     public List<TaskIdentity> getDependencies() {
         if (!nodeDependencies.stream().allMatch(TaskIdentity.class::isInstance)) {
-            List<? extends NodeIdentity> nonTaskDependencies = nodeDependencies.stream().filter(it -> !(it instanceof TaskIdentity)).collect(Collectors.toList());
+            List<? extends NodeIdentity> nonTaskDependencies = nodeDependencies.stream().filter(it -> !(it instanceof TaskIdentity)).collect(toList());
             throw new IllegalStateException("Task-only dependencies are available only for task plans." +
                 " '" + taskIdentity + "' from the requested execution plan has dependencies with higher detail level: " + nonTaskDependencies);
         }

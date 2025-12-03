@@ -16,6 +16,25 @@
 
 package org.gradle.api.internal.tasks.testing.junit;
 
+import static java.util.Collections.unmodifiableMap;
+import static java.util.Objects.requireNonNull;
+import static java.util.regex.Pattern.DOTALL;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.gradle.api.internal.tasks.testing.ClassTestDefinition;
 import org.gradle.api.internal.tasks.testing.DefaultTestClassDescriptor;
 import org.gradle.api.internal.tasks.testing.DefaultTestDescriptor;
@@ -42,22 +61,6 @@ import org.junit.runner.Description;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A {@link RunListener} that maps JUnit4 events to Gradle test events.
@@ -116,7 +119,7 @@ public class JUnitTestEventAdapter extends RunListener {
 
     private static final DefaultThrowableToTestFailureMapper FAILURE_MAPPER = new DefaultThrowableToTestFailureMapper(MAPPERS);
 
-    private static final Pattern DESCRIPTOR_PATTERN = Pattern.compile("(.*)\\((.*)\\)(\\[\\d+])?", Pattern.DOTALL);
+    private static final Pattern DESCRIPTOR_PATTERN = Pattern.compile("(.*)\\((.*)\\)(\\[\\d+])?", DOTALL);
     private final IdGenerator<?> idGenerator;
     private final TestResultProcessor resultProcessor;
     private final Clock clock;
@@ -542,12 +545,12 @@ public class JUnitTestEventAdapter extends RunListener {
         Map<Description, TestNode> childDescToParentNode = new HashMap<>();
         addParentIds(description, descToNode, childDescToParentNode);
         this.postRunStartData = new PostRunStartData(
-            Collections.unmodifiableMap(descToNode),
-            Collections.unmodifiableMap(childDescToParentNode)
+            unmodifiableMap(descToNode),
+            unmodifiableMap(childDescToParentNode)
         );
 
         // Start root immediately so output is captured for it
-        startParentByNodeIfNeeded(Objects.requireNonNull(descToNode.get(description)), clock.getCurrentTime());
+        startParentByNodeIfNeeded(requireNonNull(descToNode.get(description)), clock.getCurrentTime());
     }
 
     private void addParentIds(
@@ -578,7 +581,7 @@ public class JUnitTestEventAdapter extends RunListener {
             PostRunStartData postRunStartData = requirePostRunStartData();
             Description parent;
             while ((parent = activeParents.pollLast()) != null) {
-                Object parentId = Objects.requireNonNull(postRunStartData.descToNode.get(parent)).resolveId();
+                Object parentId = requireNonNull(postRunStartData.descToNode.get(parent)).resolveId();
                 resultProcessor.completed(parentId, new TestCompleteEvent(now));
             }
 

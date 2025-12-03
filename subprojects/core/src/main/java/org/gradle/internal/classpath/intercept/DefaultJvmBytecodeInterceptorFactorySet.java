@@ -16,12 +16,13 @@
 
 package org.gradle.internal.classpath.intercept;
 
-import org.gradle.internal.instrumentation.api.jvmbytecode.JvmBytecodeCallInterceptor;
-import org.gradle.internal.instrumentation.api.metadata.InstrumentationMetadata;
-import org.gradle.internal.instrumentation.api.types.BytecodeInterceptorFilter;
+import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.gradle.internal.instrumentation.api.jvmbytecode.JvmBytecodeCallInterceptor;
+import org.gradle.internal.instrumentation.api.metadata.InstrumentationMetadata;
+import org.gradle.internal.instrumentation.api.types.BytecodeInterceptorFilter;
 
 public class DefaultJvmBytecodeInterceptorFactorySet implements JvmBytecodeInterceptorFactorySet {
 
@@ -35,13 +36,13 @@ public class DefaultJvmBytecodeInterceptorFactorySet implements JvmBytecodeInter
     public JvmBytecodeInterceptorSet getJvmBytecodeInterceptorSet(BytecodeInterceptorFilter filter) {
         List<JvmBytecodeCallInterceptor.Factory> factories = provider.getInterceptorFactories().stream()
             .filter(filter::matches)
-            .collect(Collectors.toList());
+            .collect(toList());
         return new JvmBytecodeInterceptorSet() {
             @Override
             public List<JvmBytecodeCallInterceptor> getInterceptors(InstrumentationMetadata classData) {
                 return factories.stream()
                     .map(factory -> factory.create(classData, filter))
-                    .collect(Collectors.toList());
+                    .collect(toList());
             }
 
             @Override

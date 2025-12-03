@@ -16,7 +16,14 @@
 
 package org.gradle.api.internal.tasks.compile;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.annotations.VisibleForTesting;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import org.gradle.api.internal.file.FileCollectionInternal;
 import org.gradle.api.internal.file.FileCollectionStructureVisitor;
 import org.gradle.api.internal.file.FileTreeInternal;
@@ -26,12 +33,6 @@ import org.gradle.util.internal.RelativePathUtil;
 import org.jspecify.annotations.NullMarked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Relativizes paths relative to a set of source directories in order to create a platform-independent mapping
@@ -62,7 +63,7 @@ public class CompilationSourceDirs {
     public static List<File> inferSourceRoots(FileTreeInternal sources) {
         SourceRoots visitor = new SourceRoots();
         sources.visitStructure(visitor);
-        return visitor.canInferSourceRoots ? visitor.sourceRoots : Collections.emptyList();
+        return visitor.canInferSourceRoots ? visitor.sourceRoots : emptyList();
     }
 
     /**

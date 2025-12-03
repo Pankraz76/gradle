@@ -16,9 +16,16 @@
 
 package org.gradle.internal.component.external.model;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
 import org.gradle.internal.Describables;
@@ -28,12 +35,6 @@ import org.gradle.internal.component.model.ModuleConfigurationMetadata;
 import org.gradle.internal.component.model.ModuleSources;
 import org.gradle.internal.component.model.VariantResolveMetadata;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Common base class for the realised versions of {@link ModuleComponentResolveMetadata} implementations.
@@ -84,7 +85,7 @@ public abstract class AbstractRealisedModuleComponentResolveMetadata extends Abs
         if (graphVariants == null) {
             graphVariants = buildVariantsForGraphTraversal(getVariants());
         }
-        return graphVariants.orElse(Collections.emptyList());
+        return graphVariants.orElse(emptyList());
     }
 
     private Optional<List<? extends ExternalModuleVariantGraphResolveMetadata>> buildVariantsForGraphTraversal(List<? extends ComponentVariant> variants) {

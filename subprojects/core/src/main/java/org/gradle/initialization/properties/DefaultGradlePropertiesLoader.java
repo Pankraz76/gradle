@@ -16,17 +16,17 @@
 
 package org.gradle.initialization.properties;
 
-import org.gradle.api.internal.StartParameterInternal;
-import org.gradle.initialization.Environment;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.util.Collections.emptyMap;
+import static org.gradle.api.Project.GRADLE_PROPERTIES;
 
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.gradle.api.Project.GRADLE_PROPERTIES;
+import org.gradle.api.internal.StartParameterInternal;
+import org.gradle.initialization.Environment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultGradlePropertiesLoader implements GradlePropertiesLoader {
 
@@ -53,7 +53,7 @@ public class DefaultGradlePropertiesLoader implements GradlePropertiesLoader {
     @Override
     public Map<String, String> loadFrom(File dir) {
         Map<String, String> loadedProperties = environment.propertiesFile(new File(dir, GRADLE_PROPERTIES));
-        return loadedProperties == null ? Collections.emptyMap() : loadedProperties;
+        return loadedProperties == null ? emptyMap() : loadedProperties;
     }
 
     @Override

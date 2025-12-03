@@ -16,6 +16,11 @@
 
 package org.gradle.nativeplatform.internal.configure;
 
+import static java.util.Collections.singletonList;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.internal.file.FileCollectionFactory;
 import org.gradle.nativeplatform.BuildType;
 import org.gradle.nativeplatform.Flavor;
@@ -31,10 +36,6 @@ import org.gradle.platform.base.internal.DefaultPlatformRequirement;
 import org.gradle.platform.base.internal.PlatformRequirement;
 import org.gradle.platform.base.internal.PlatformResolvers;
 import org.gradle.util.internal.CollectionUtils;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Cross cutting rules for all instances of {@link org.gradle.nativeplatform.NativeComponentSpec}
@@ -70,7 +71,7 @@ public class NativeComponentRules {
         List<PlatformRequirement> targetPlatforms = targetedComponent.getTargetPlatforms();
         if (targetPlatforms.isEmpty()) {
             PlatformRequirement requirement = DefaultPlatformRequirement.create(nativePlatforms.getDefaultPlatformName());
-            targetPlatforms = Collections.singletonList(requirement);
+            targetPlatforms = singletonList(requirement);
         }
         return CollectionUtils.collect(targetPlatforms, platformRequirement -> platforms.resolve(NativePlatform.class, platformRequirement));
     }

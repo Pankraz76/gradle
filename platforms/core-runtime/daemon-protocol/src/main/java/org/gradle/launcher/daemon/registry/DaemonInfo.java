@@ -16,8 +16,16 @@
 
 package org.gradle.launcher.daemon.registry;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.gradle.launcher.daemon.server.api.DaemonState.Busy;
+import static org.gradle.launcher.daemon.server.api.DaemonState.Idle;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 import org.gradle.internal.remote.Address;
 import org.gradle.internal.serialize.Decoder;
 import org.gradle.internal.serialize.Encoder;
@@ -27,14 +35,6 @@ import org.gradle.launcher.daemon.context.DaemonConnectDetails;
 import org.gradle.launcher.daemon.context.DaemonContext;
 import org.gradle.launcher.daemon.context.DefaultDaemonContext;
 import org.gradle.launcher.daemon.server.api.DaemonState;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
-import static org.gradle.launcher.daemon.server.api.DaemonState.Busy;
-import static org.gradle.launcher.daemon.server.api.DaemonState.Idle;
 
 /**
  * Provides information about a daemon that is potentially available to do some work.
@@ -55,10 +55,10 @@ public class DaemonInfo implements Serializable, DaemonConnectDetails {
 
     @VisibleForTesting
     DaemonInfo(Address address, DaemonContext context, byte[] token, DaemonState state, Clock busyClock) {
-        this.address = Preconditions.checkNotNull(address);
-        this.context = Preconditions.checkNotNull(context);
-        this.token = Preconditions.checkNotNull(token);
-        this.clock = Preconditions.checkNotNull(busyClock);
+        this.address = checkNotNull(address);
+        this.context = checkNotNull(context);
+        this.token = checkNotNull(token);
+        this.clock = checkNotNull(busyClock);
         this.lastBusy = -1; // Will be overwritten by setIdle if not idle.
         setState(state);
     }

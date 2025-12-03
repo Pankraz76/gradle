@@ -16,6 +16,13 @@
 
 package org.gradle.api.internal.artifacts.transform;
 
+import static java.util.Collections.disjoint;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
 import org.gradle.api.internal.artifacts.TransformRegistration;
 import org.gradle.api.internal.artifacts.VariantTransformRegistry;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact.ResolvedVariant;
@@ -30,12 +37,6 @@ import org.gradle.internal.lazy.Lazy;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiFunction;
 
 /**
  * Finds all the variants that can be created from a given set of producer variants using
@@ -178,7 +179,7 @@ public class ConsumerProvidedVariantFinder {
                 // Construct new states for processing at the next depth in case we can't find any solutions at this depth.
                 for (int i = 0; i < candidates.size(); i++) {
                     TransformRegistration candidate = candidates.get(i);
-                    if (!Collections.disjoint(state.requested.keySet(), candidate.getTo().keySet())) {
+                    if (!disjoint(state.requested.keySet(), candidate.getTo().keySet())) {
                         nextDepth.add(new ChainState(
                             new ChainNode(state.chain, candidate),
                             attributesFactory.concat(state.requested, candidate.getFrom()),

@@ -16,7 +16,14 @@
 
 package org.gradle.caching.http.internal;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.annotations.VisibleForTesting;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.Collections;
+import javax.inject.Inject;
 import org.gradle.api.GradleException;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.authentication.Authentication;
@@ -32,12 +39,6 @@ import org.gradle.internal.resource.transport.http.HttpSettings;
 import org.gradle.internal.resource.transport.http.SslContextFactory;
 import org.gradle.internal.verifier.HttpRedirectVerifier;
 import org.gradle.internal.verifier.HttpRedirectVerifierFactory;
-
-import javax.inject.Inject;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Build cache factory for HTTP backend.
@@ -72,7 +73,7 @@ public class DefaultHttpBuildCacheServiceFactory implements BuildCacheServiceFac
             credentials = extractCredentialsFromUserInfo(objectFactory, url);
         }
 
-        Collection<Authentication> authentications = Collections.emptyList();
+        Collection<Authentication> authentications = emptyList();
         if (credentialsPresent(credentials)) {
             DefaultBasicAuthentication basicAuthentication = new DefaultBasicAuthentication("basic");
             basicAuthentication.setCredentials(credentials);

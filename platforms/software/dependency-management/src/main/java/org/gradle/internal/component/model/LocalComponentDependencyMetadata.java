@@ -16,15 +16,17 @@
 
 package org.gradle.internal.component.model;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.artifacts.component.ComponentSelector;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
 import org.gradle.api.internal.attributes.immutable.ImmutableAttributesSchema;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Information about a locally resolved dependency.
@@ -77,7 +79,7 @@ public class LocalComponentDependencyMetadata implements LocalOriginDependencyMe
     }
 
     private static List<IvyArtifactName> asImmutable(List<IvyArtifactName> artifactNames) {
-        return artifactNames.isEmpty() ? Collections.emptyList() : artifactNames instanceof ImmutableList ? artifactNames : ImmutableList.copyOf(artifactNames);
+        return artifactNames.isEmpty() ? emptyList() : artifactNames instanceof ImmutableList ? artifactNames : ImmutableList.copyOf(artifactNames);
     }
 
     @Override
@@ -105,7 +107,7 @@ public class LocalComponentDependencyMetadata implements LocalOriginDependencyMe
                 consumerSchema
             );
 
-            return Collections.singletonList(selected);
+            return singletonList(selected);
         }
 
         return null;

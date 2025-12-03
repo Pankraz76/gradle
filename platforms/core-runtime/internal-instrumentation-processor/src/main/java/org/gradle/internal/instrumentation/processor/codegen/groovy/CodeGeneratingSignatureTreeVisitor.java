@@ -16,25 +16,26 @@
 
 package org.gradle.internal.instrumentation.processor.codegen.groovy;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.function.Function.identity;
+import static org.gradle.internal.instrumentation.processor.codegen.groovy.ParameterMatchEntry.Kind.PARAMETER;
+import static org.gradle.internal.instrumentation.processor.codegen.groovy.ParameterMatchEntry.Kind.RECEIVER;
+import static org.gradle.internal.instrumentation.processor.codegen.groovy.ParameterMatchEntry.Kind.RECEIVER_AS_CLASS;
+import static org.gradle.internal.instrumentation.processor.codegen.groovy.ParameterMatchEntry.Kind.VARARG;
+
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.TypeName;
-import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
-import org.gradle.internal.instrumentation.model.CallableInfo;
-import org.gradle.internal.instrumentation.model.CallableKindInfo;
-import org.gradle.internal.instrumentation.processor.codegen.TypeUtils;
-import org.objectweb.asm.Type;
-
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 import java.util.function.Function;
 import java.util.stream.Stream;
-
-import static org.gradle.internal.instrumentation.processor.codegen.groovy.ParameterMatchEntry.Kind.PARAMETER;
-import static org.gradle.internal.instrumentation.processor.codegen.groovy.ParameterMatchEntry.Kind.RECEIVER;
-import static org.gradle.internal.instrumentation.processor.codegen.groovy.ParameterMatchEntry.Kind.RECEIVER_AS_CLASS;
-import static org.gradle.internal.instrumentation.processor.codegen.groovy.ParameterMatchEntry.Kind.VARARG;
+import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
+import org.gradle.internal.instrumentation.model.CallableInfo;
+import org.gradle.internal.instrumentation.model.CallableKindInfo;
+import org.gradle.internal.instrumentation.processor.codegen.TypeUtils;
+import org.objectweb.asm.Type;
 
 class CodeGeneratingSignatureTreeVisitor {
     private final Stack<CodeBlock> paramVariablesStack = new Stack<>();
@@ -93,7 +94,7 @@ class CodeGeneratingSignatureTreeVisitor {
             paramVariablesStack.stream(),
             maybeZeroForKotlinDefault,
             maybeCallerClassName
-        ).flatMap(Function.identity()).collect(CodeBlock.joining(", "));
+        ).flatMap(identity()).collect(CodeBlock.joining(", "));
     }
 
     private void emitInvocationCodeWithReturn(CallInterceptionRequest request, CodeBlock argsCode) {
@@ -138,7 +139,7 @@ class CodeGeneratingSignatureTreeVisitor {
         result.endControlFlow();
         result.beginControlFlow("if ($L)", varargMatched);
         paramVariablesStack.push(varargVariable);
-        CallInterceptionRequest request = Objects.requireNonNull(child.getLeafOrNull());
+        CallInterceptionRequest request = requireNonNull(child.getLeafOrNull());
         emitInvocationCodeWithReturn(request, prepareInvocationArgs(request));
         paramVariablesStack.pop();
         result.endControlFlow();

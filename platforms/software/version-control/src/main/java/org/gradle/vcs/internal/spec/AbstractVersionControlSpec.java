@@ -16,14 +16,15 @@
 
 package org.gradle.vcs.internal.spec;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Preconditions;
+import java.util.List;
 import org.gradle.api.Action;
 import org.gradle.api.initialization.definition.InjectedPluginDependencies;
 import org.gradle.initialization.definition.DefaultInjectedPluginDependencies;
 import org.gradle.initialization.definition.DefaultInjectedPluginDependency;
 import org.gradle.vcs.VersionControlSpec;
-
-import java.util.List;
 
 public abstract class AbstractVersionControlSpec implements VersionControlSpec {
     private String rootDir = "";
@@ -36,7 +37,7 @@ public abstract class AbstractVersionControlSpec implements VersionControlSpec {
 
     @Override
     public void setRootDir(String rootDir) {
-        Preconditions.checkNotNull(rootDir, "rootDir should be non-null for '%s'.", getDisplayName());
+        checkNotNull(rootDir, "rootDir should be non-null for '%s'.", getDisplayName());
         this.rootDir = rootDir;
     }
 

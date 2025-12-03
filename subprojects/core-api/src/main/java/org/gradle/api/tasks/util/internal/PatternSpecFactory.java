@@ -16,6 +16,17 @@
 
 package org.gradle.api.tasks.util.internal;
 
+import static java.util.Comparator.naturalOrder;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.apache.tools.ant.DirectoryScanner;
 import org.gradle.api.InvalidUserCodeException;
 import org.gradle.api.file.FileTreeElement;
@@ -28,16 +39,6 @@ import org.gradle.api.tasks.util.PatternSet;
 import org.gradle.internal.file.excludes.FileSystemDefaultExcludesListener;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * The basic implementation for converting {@link PatternSet}s to {@link Spec}s.
@@ -106,9 +107,9 @@ public class PatternSpecFactory implements FileSystemDefaultExcludesListener {
 
     private void failOnChangedDefaultExcludes(Set<String> excludesFromSettings, Set<String> newDefaultExcludes) {
         List<String> sortedExcludesFromSettings = new ArrayList<String>(excludesFromSettings);
-        sortedExcludesFromSettings.sort(Comparator.naturalOrder());
+        sortedExcludesFromSettings.sort(naturalOrder());
         List<String> sortedNewExcludes = new ArrayList<String>(newDefaultExcludes);
-        sortedNewExcludes.sort(Comparator.naturalOrder());
+        sortedNewExcludes.sort(naturalOrder());
         throw new InvalidUserCodeException(String.format("Cannot change default excludes during the build. They were changed from %s to %s. Configure default excludes in the settings script instead.",  sortedExcludesFromSettings, sortedNewExcludes));
     }
 

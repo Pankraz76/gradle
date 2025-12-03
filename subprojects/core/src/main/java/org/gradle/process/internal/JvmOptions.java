@@ -16,18 +16,8 @@
 
 package org.gradle.process.internal;
 
-import org.apache.commons.lang3.StringUtils;
-import org.gradle.api.file.ConfigurableFileCollection;
-import org.gradle.api.file.FileCollection;
-import org.gradle.api.internal.file.FileCollectionFactory;
-import org.gradle.cache.internal.HeapProportionalCacheSizer;
-import org.gradle.process.JavaForkOptions;
-import org.gradle.process.internal.JvmDebugSpec.DefaultJvmDebugSpec;
-import org.gradle.process.internal.JvmDebugSpec.JavaDebugOptionsBackedSpec;
-import org.gradle.util.internal.ArgumentsSplitter;
-import org.gradle.util.internal.GUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.util.Collections.unmodifiableList;
+import static java.util.stream.Collectors.toList;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -40,6 +30,18 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import org.gradle.api.file.ConfigurableFileCollection;
+import org.gradle.api.file.FileCollection;
+import org.gradle.api.internal.file.FileCollectionFactory;
+import org.gradle.cache.internal.HeapProportionalCacheSizer;
+import org.gradle.process.JavaForkOptions;
+import org.gradle.process.internal.JvmDebugSpec.DefaultJvmDebugSpec;
+import org.gradle.process.internal.JvmDebugSpec.JavaDebugOptionsBackedSpec;
+import org.gradle.util.internal.ArgumentsSplitter;
+import org.gradle.util.internal.GUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JvmOptions {
     private static final String XMS_PREFIX = "-Xms";
@@ -112,7 +114,7 @@ public class JvmOptions {
         // (identical properties later in the command line override earlier ones)
         args.addAll(getAllImmutableJvmArgs());
 
-        return Collections.unmodifiableList(args);
+        return unmodifiableList(args);
     }
 
     protected void formatSystemProperties(Map<String, ?> properties, List<String> args) {
@@ -197,7 +199,7 @@ public class JvmOptions {
     }
 
     public List<String> getJvmArgs() {
-        return extraJvmArgs.stream().map(Object::toString).collect(Collectors.toList());
+        return extraJvmArgs.stream().map(Object::toString).collect(toList());
     }
 
     public void setJvmArgs(Iterable<?> arguments) {

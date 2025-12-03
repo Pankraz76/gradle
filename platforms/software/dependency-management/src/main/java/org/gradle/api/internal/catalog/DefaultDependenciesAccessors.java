@@ -15,8 +15,26 @@
  */
 package org.gradle.api.internal.catalog;
 
+import static java.util.Collections.emptyMap;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.joining;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import java.io.File;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.artifacts.VersionCatalog;
@@ -75,21 +93,6 @@ import org.gradle.util.internal.IncubationLogger;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class DefaultDependenciesAccessors implements DependenciesAccessors {
     private final static String SUPPORTED_PROJECT_NAMES = "[a-zA-Z]([A-Za-z0-9\\-_])*";
@@ -208,7 +211,7 @@ public class DefaultDependenciesAccessors implements DependenciesAccessors {
             project.getChildren()
                 .stream()
                 .map(ProjectDescriptor::getName)
-                .collect(Collectors.groupingBy(AbstractSourceGenerator::toJavaName))
+                .collect(groupingBy(AbstractSourceGenerator::toJavaName))
                 .entrySet()
                 .stream()
                 .filter(e -> e.getValue().size() > 1)
@@ -248,7 +251,7 @@ public class DefaultDependenciesAccessors implements DependenciesAccessors {
         ProviderFactory providerFactory = project.getProviders();
         try {
             if (models.isEmpty()) {
-                addVersionCatalogsProjectExtension(container, Collections.emptyMap());
+                addVersionCatalogsProjectExtension(container, emptyMap());
             } else {
                 ImmutableMap.Builder<String, VersionCatalog> catalogs = ImmutableMap.builderWithExpectedSize(models.size());
                 for (DefaultVersionCatalog model : models) {
@@ -294,7 +297,7 @@ public class DefaultDependenciesAccessors implements DependenciesAccessors {
             }
             return catalogs.build();
         }
-        return Collections.emptyMap();
+        return emptyMap();
     }
 
     private String pluginsBlockAccessorClassNameSuffix(DefaultVersionCatalog model) {
@@ -482,7 +485,7 @@ public class DefaultDependenciesAccessors implements DependenciesAccessors {
             return allprojects.stream()
                 .map(ProjectDescriptor::getPath)
                 .sorted()
-                .collect(Collectors.joining(","));
+                .collect(joining(","));
         }
 
         @Override

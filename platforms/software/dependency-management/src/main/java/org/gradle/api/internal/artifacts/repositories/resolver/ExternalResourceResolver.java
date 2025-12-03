@@ -16,9 +16,21 @@
 
 package org.gradle.api.internal.artifacts.repositories.resolver;
 
+import static java.nio.charset.StandardCharsets.US_ASCII;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.api.artifacts.ComponentMetadataListerDetails;
 import org.gradle.api.artifacts.ComponentMetadataSupplierDetails;
 import org.gradle.api.artifacts.ModuleIdentifier;
@@ -71,14 +83,6 @@ import org.gradle.util.internal.CollectionUtils;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
 public abstract class ExternalResourceResolver implements ConfiguredModuleComponentRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalResourceResolver.class);
@@ -255,7 +259,7 @@ public abstract class ExternalResourceResolver implements ConfiguredModuleCompon
 
     protected Set<ModuleComponentArtifactMetadata> findOptionalArtifacts(ComponentArtifactResolveMetadata module, String type, String classifier) {
         if (!(module.getId() instanceof ModuleComponentIdentifier)) {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         ModuleComponentIdentifier moduleId = (ModuleComponentIdentifier) module.getId();
@@ -265,7 +269,7 @@ public abstract class ExternalResourceResolver implements ConfiguredModuleCompon
         if (createArtifactResolver(module.getSources()).artifactExists(artifact, new DefaultResourceAwareResolveResult())) {
             return ImmutableSet.of(artifact);
         }
-        return Collections.emptySet();
+        return emptySet();
     }
 
     private ModuleDescriptorArtifactMetadata getMetaDataArtifactFor(ModuleComponentIdentifier moduleComponentIdentifier) {
@@ -340,7 +344,7 @@ public abstract class ExternalResourceResolver implements ConfiguredModuleCompon
     private byte[] createChecksumFile(File src, String algorithm) {
         HashCode hash = checksumService.hash(src, algorithm);
         String formattedHashString = hash.toString();
-        return formattedHashString.getBytes(StandardCharsets.US_ASCII);
+        return formattedHashString.getBytes(US_ASCII);
     }
 
     public List<String> getIvyPatterns() {
@@ -392,7 +396,7 @@ public abstract class ExternalResourceResolver implements ConfiguredModuleCompon
 
             ModuleComponentIdentifier moduleId = (ModuleComponentIdentifier) module.getId();
             ModuleDescriptorArtifactMetadata artifact = getMetaDataArtifactFor(moduleId);
-            result.resolved(Collections.singleton(artifact));
+            result.resolved(singleton(artifact));
         }
 
         @Override
@@ -500,7 +504,7 @@ public abstract class ExternalResourceResolver implements ConfiguredModuleCompon
 
         @Override
         public List<String> getAttempted() {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         @Override

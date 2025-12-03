@@ -16,14 +16,16 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import org.gradle.nativeplatform.platform.internal.NativePlatformInternal;
-import org.gradle.util.internal.VersionNumber;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.gradle.nativeplatform.platform.internal.NativePlatformInternal;
+import org.gradle.util.internal.VersionNumber;
 
 public class LegacyWindowsSdkInstall implements WindowsSdkInstall {
     private static final String[] BINPATHS_X86 = {
@@ -127,7 +129,7 @@ public class LegacyWindowsSdkInstall implements WindowsSdkInstall {
             );
             for (File file : includesSdk8) {
                 if (!file.isDirectory()) {
-                    return Collections.singletonList(new File(baseDir, "Include"));
+                    return singletonList(new File(baseDir, "Include"));
                 }
             }
             return includesSdk8;
@@ -135,12 +137,12 @@ public class LegacyWindowsSdkInstall implements WindowsSdkInstall {
 
         @Override
         public List<File> getLibDirs() {
-            return Collections.singletonList(getAvailableFile(libPaths));
+            return singletonList(getAvailableFile(libPaths));
         }
 
         @Override
         public Map<String, String> getPreprocessorMacros() {
-            return Collections.emptyMap();
+            return emptyMap();
         }
 
         @Override
@@ -150,7 +152,7 @@ public class LegacyWindowsSdkInstall implements WindowsSdkInstall {
 
         @Override
         public List<File> getPath() {
-            return Collections.singletonList(getBinDir());
+            return singletonList(getBinDir());
         }
 
         private File getBinDir() {

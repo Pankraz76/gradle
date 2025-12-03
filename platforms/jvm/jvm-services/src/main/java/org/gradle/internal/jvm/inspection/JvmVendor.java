@@ -16,6 +16,8 @@
 
 package org.gradle.internal.jvm.inspection;
 
+import static java.util.regex.Pattern.CASE_INSENSITIVE;
+
 import java.util.regex.Pattern;
 
 public interface JvmVendor {
@@ -43,13 +45,13 @@ public interface JvmVendor {
 
         KnownJvmVendor(String indicatorString, String displayName) {
             this.indicatorString = indicatorString;
-            this.indicatorPattern = Pattern.compile(indicatorString, Pattern.CASE_INSENSITIVE);
+            this.indicatorPattern = Pattern.compile(indicatorString, CASE_INSENSITIVE);
             this.displayName = displayName;
         }
 
         KnownJvmVendor(String indicatorString, String pattern, String displayName) {
             this.indicatorString = indicatorString;
-            this.indicatorPattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+            this.indicatorPattern = Pattern.compile(pattern, CASE_INSENSITIVE);
             this.displayName = displayName;
         }
 

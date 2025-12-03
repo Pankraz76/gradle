@@ -16,16 +16,18 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import net.rubygrapefruit.platform.SystemInfo;
-import org.gradle.nativeplatform.platform.internal.NativePlatformInternal;
-import org.gradle.util.internal.VersionNumber;
-import org.jspecify.annotations.NullMarked;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import net.rubygrapefruit.platform.SystemInfo;
+import org.gradle.nativeplatform.platform.internal.NativePlatformInternal;
+import org.gradle.util.internal.VersionNumber;
+import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public class WindowsKitSdkInstall extends WindowsKitInstall implements WindowsSdkInstall {
@@ -99,7 +101,7 @@ public class WindowsKitSdkInstall extends WindowsKitInstall implements WindowsSd
 
         @Override
         public List<File> getLibDirs() {
-            return Collections.singletonList(new File(getBaseDir(), "Lib/" + getImplementationVersion().toString() + "/um/" + platformDirName));
+            return singletonList(new File(getBaseDir(), "Lib/" + getImplementationVersion().toString() + "/um/" + platformDirName));
         }
 
         @Override
@@ -109,12 +111,12 @@ public class WindowsKitSdkInstall extends WindowsKitInstall implements WindowsSd
 
         @Override
         public Map<String, String> getPreprocessorMacros() {
-            return Collections.emptyMap();
+            return emptyMap();
         }
 
         @Override
         public List<File> getPath() {
-            return Collections.singletonList(getBinDir());
+            return singletonList(getBinDir());
         }
 
         private File getBinDir() {

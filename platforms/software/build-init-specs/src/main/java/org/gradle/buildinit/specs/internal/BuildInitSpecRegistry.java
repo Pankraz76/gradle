@@ -16,12 +16,8 @@
 
 package org.gradle.buildinit.specs.internal;
 
-import org.gradle.api.logging.Logger;
-import org.gradle.api.logging.Logging;
-import org.gradle.buildinit.specs.BuildInitGenerator;
-import org.gradle.buildinit.specs.BuildInitSpec;
-import org.gradle.internal.service.scopes.Scope;
-import org.gradle.internal.service.scopes.ServiceScope;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +26,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.gradle.api.logging.Logger;
+import org.gradle.api.logging.Logging;
+import org.gradle.buildinit.specs.BuildInitGenerator;
+import org.gradle.buildinit.specs.BuildInitSpec;
+import org.gradle.internal.service.scopes.Scope;
+import org.gradle.internal.service.scopes.ServiceScope;
 
 /**
  * A registry of the available {@link BuildInitSpec}s that can be used to generate new projects via the {@code init} task.
@@ -64,7 +66,7 @@ public final class BuildInitSpecRegistry {
     }
 
     public List<BuildInitSpec> getAllSpecs() {
-        return specsByGeneratorType.values().stream().flatMap(List::stream).collect(Collectors.toList());
+        return specsByGeneratorType.values().stream().flatMap(List::stream).collect(toList());
     }
 
     public boolean isEmpty() {
@@ -82,7 +84,7 @@ public final class BuildInitSpecRegistry {
         List<BuildInitSpec> matchingSpecs = specsByGeneratorType.values().stream()
             .flatMap(List::stream)
             .filter(spec -> Objects.equals(spec.getType(), type))
-            .collect(Collectors.toList());
+            .collect(toList());
 
         switch (matchingSpecs.size()) {
             case 0:
@@ -91,12 +93,12 @@ public final class BuildInitSpecRegistry {
                     getAllSpecs().stream()
                         .map(BuildInitSpec::getType)
                         .map(t -> " - " + t)
-                        .collect(Collectors.joining(System.lineSeparator()))
+                        .collect(joining(System.lineSeparator()))
                 );
             case 1:
                 return matchingSpecs.get(0);
             default:
-                throw new IllegalStateException("Multiple project specs: " + matchingSpecs.stream().map(BuildInitSpec::getDisplayName).collect(Collectors.joining(", ")) + " with type: '" + type + "' were found!");
+                throw new IllegalStateException("Multiple project specs: " + matchingSpecs.stream().map(BuildInitSpec::getDisplayName).collect(joining(", ")) + " with type: '" + type + "' were found!");
         }
     }
 

@@ -16,6 +16,10 @@
 
 package org.gradle.language.swift.internal;
 
+import static java.util.Collections.singleton;
+
+import java.util.Collections;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ConfigurationContainer;
@@ -34,9 +38,6 @@ import org.gradle.nativeplatform.Linkage;
 import org.gradle.nativeplatform.toolchain.internal.NativeToolChainInternal;
 import org.gradle.nativeplatform.toolchain.internal.PlatformToolProvider;
 
-import javax.inject.Inject;
-import java.util.Collections;
-
 public abstract class DefaultSwiftLibrary extends DefaultSwiftComponent<SwiftBinary> implements SwiftLibrary {
     private final ConfigurationContainer configurations;
     private final DefaultLibraryDependencies dependencies;
@@ -45,7 +46,7 @@ public abstract class DefaultSwiftLibrary extends DefaultSwiftComponent<SwiftBin
     public DefaultSwiftLibrary(String name, ConfigurationContainer configurations) {
         super(name);
         this.configurations = configurations;
-        getLinkage().convention(Collections.singleton(Linkage.SHARED));
+        getLinkage().convention(singleton(Linkage.SHARED));
         dependencies = getObjectFactory().newInstance(DefaultLibraryDependencies.class, getNames().withSuffix("implementation"), getNames().withSuffix("api"));
     }
 

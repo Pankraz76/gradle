@@ -16,10 +16,11 @@
 
 package org.gradle.api.internal.attributes;
 
-import org.gradle.api.attributes.Attribute;
-import org.gradle.internal.isolation.Isolatable;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
+import org.gradle.api.attributes.Attribute;
+import org.gradle.internal.isolation.Isolatable;
 
 /**
  * An entry of an {@link ImmutableAttributes} container. This type contains
@@ -48,7 +49,7 @@ public interface ImmutableAttributesEntry<T> {
      * Get an isolated instance of the entry's value.
      */
     default T getIsolatedValue() {
-        return Objects.requireNonNull(getValue().isolate());
+        return requireNonNull(getValue().isolate());
     }
 
     /**

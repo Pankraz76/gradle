@@ -15,6 +15,13 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.ivyresolve;
 
+import static java.util.stream.Collectors.toSet;
+
+import java.io.File;
+import java.time.Duration;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.ComponentMetadataSupplierDetails;
 import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
@@ -36,8 +43,8 @@ import org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact.Resol
 import org.gradle.api.internal.artifacts.repositories.resolver.MetadataFetchingCost;
 import org.gradle.api.internal.component.ArtifactType;
 import org.gradle.internal.action.InstantiatingAction;
-import org.gradle.internal.component.external.model.ModuleComponentArtifactMetadata;
 import org.gradle.internal.component.external.model.ExternalModuleComponentGraphResolveState;
+import org.gradle.internal.component.external.model.ModuleComponentArtifactMetadata;
 import org.gradle.internal.component.external.model.ModuleComponentGraphResolveStateFactory;
 import org.gradle.internal.component.external.model.ModuleComponentResolveMetadata;
 import org.gradle.internal.component.model.ComponentArtifactMetadata;
@@ -57,12 +64,6 @@ import org.gradle.internal.resolve.result.DefaultBuildableModuleComponentMetaDat
 import org.gradle.util.internal.BuildCommencedTimeProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.time.Duration;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * A ModuleComponentRepository that loads and saves resolution results in the dependency resolution cache.
@@ -171,7 +172,7 @@ public class CachingModuleComponentRepository implements ModuleComponentReposito
                 Set<ModuleVersionIdentifier> versions = versionList
                     .stream()
                     .map(original -> DefaultModuleVersionIdentifier.newId(moduleId, original))
-                    .collect(Collectors.toSet());
+                    .collect(toSet());
                 CacheExpirationControl.Expiry expiry = cacheExpirationControl.versionListExpiry(moduleId, versions, cachedModuleVersionList.getAge());
                 if (expiry.isMustCheck()) {
                     LOGGER.debug("Version listing in dynamic revision cache is expired: will perform fresh resolve of '{}' in '{}'", selector, delegate.getName());
@@ -367,7 +368,7 @@ public class CachingModuleComponentRepository implements ModuleComponentReposito
                     Set<ModuleVersionIdentifier> versions = versionList
                         .stream()
                         .map(original -> DefaultModuleVersionIdentifier.newId(moduleId, original))
-                        .collect(Collectors.toSet());
+                        .collect(toSet());
                     moduleVersionsCache.cacheModuleVersionList(delegate, moduleId, versionList);
                     listener.onDynamicVersionSelection(
                         selector,

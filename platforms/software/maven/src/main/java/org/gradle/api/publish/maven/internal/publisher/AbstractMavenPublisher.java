@@ -16,6 +16,15 @@
 
 package org.gradle.api.publish.maven.internal.publisher;
 
+import static java.nio.charset.StandardCharsets.US_ASCII;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.concurrent.Callable;
+import java.util.regex.Pattern;
 import org.apache.maven.artifact.repository.metadata.Metadata;
 import org.apache.maven.artifact.repository.metadata.Versioning;
 import org.apache.maven.artifact.repository.metadata.io.xpp3.MetadataXpp3Reader;
@@ -39,14 +48,6 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
-import java.util.concurrent.Callable;
-import java.util.regex.Pattern;
 
 @NullMarked
 abstract class AbstractMavenPublisher implements MavenPublisher {
@@ -322,7 +323,7 @@ abstract class AbstractMavenPublisher implements MavenPublisher {
                 throw UncheckedException.throwAsUncheckedException(e);
             }
             String formattedHashString = hash.toZeroPaddedString(hashFunction.getHexDigits());
-            return formattedHashString.getBytes(StandardCharsets.US_ASCII);
+            return formattedHashString.getBytes(US_ASCII);
         }
 
         private void putResource(ExternalResourceName externalResource, ReadableContent readableContent) {

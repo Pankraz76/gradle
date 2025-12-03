@@ -16,6 +16,11 @@
 
 package org.gradle.internal.buildconfiguration.tasks;
 
+import static java.util.stream.Collectors.toMap;
+import static org.gradle.internal.buildconfiguration.tasks.DaemonJvmPropertiesUtils.getPlatformFromToolchainProperty;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.gradle.internal.buildconfiguration.DaemonJvmPropertiesDefaults;
 import org.gradle.jvm.toolchain.JavaLanguageVersion;
 import org.gradle.jvm.toolchain.JvmVendorSpec;
@@ -23,11 +28,6 @@ import org.gradle.jvm.toolchain.internal.DefaultJavaLanguageVersion;
 import org.gradle.jvm.toolchain.internal.DefaultJvmVendorSpec;
 import org.gradle.platform.BuildPlatform;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.buildconfiguration.tasks.DaemonJvmPropertiesUtils.getPlatformFromToolchainProperty;
 
 public class DaemonJvmPropertiesAccessor {
 
@@ -67,6 +67,6 @@ public class DaemonJvmPropertiesAccessor {
     public Map<BuildPlatform, String> getToolchainDownloadUrls() {
         return properties.entrySet().stream()
             .filter(entry -> entry.getKey().startsWith(DaemonJvmPropertiesDefaults.TOOLCHAIN_URL_PROPERTY_PREFIX))
-                .collect(Collectors.toMap(entry -> getPlatformFromToolchainProperty(entry.getKey()), Map.Entry::getValue));
+                .collect(toMap(entry -> getPlatformFromToolchainProperty(entry.getKey()), Map.Entry::getValue));
     }
 }

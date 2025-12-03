@@ -16,19 +16,19 @@
 
 package org.gradle.buildinit.plugins.internal;
 
-import org.gradle.api.internal.DocumentationRegistry;
-import org.gradle.buildinit.plugins.internal.model.Description;
-import org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework;
-import org.gradle.buildinit.plugins.internal.modifiers.Language;
-import org.gradle.buildinit.plugins.internal.modifiers.ModularizationOption;
+import static java.util.Collections.singleton;
+import static java.util.stream.Collectors.toList;
+import static org.gradle.util.internal.GroovyDependencyUtil.groovyGroupName;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
-import static org.gradle.util.internal.GroovyDependencyUtil.groovyGroupName;
+import org.gradle.api.internal.DocumentationRegistry;
+import org.gradle.buildinit.plugins.internal.model.Description;
+import org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework;
+import org.gradle.buildinit.plugins.internal.modifiers.Language;
+import org.gradle.buildinit.plugins.internal.modifiers.ModularizationOption;
 
 public abstract class JvmProjectInitDescriptor extends LanguageLibraryProjectInitDescriptor {
 
@@ -92,7 +92,7 @@ public abstract class JvmProjectInitDescriptor extends LanguageLibraryProjectIni
     public Set<BuildInitTestFramework> getTestFrameworks(ModularizationOption modularizationOption) {
         if (modularizationOption == ModularizationOption.WITH_LIBRARY_PROJECTS) {
             // This is the only supported option
-            return Collections.singleton(BuildInitTestFramework.JUNIT_JUPITER);
+            return singleton(BuildInitTestFramework.JUNIT_JUPITER);
         }
         return description.getSupportedTestFrameworks();
     }

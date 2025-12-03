@@ -16,7 +16,12 @@
 
 package org.gradle.api.internal.tasks.compile.incremental;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.Iterables;
+import java.io.File;
+import java.util.Collection;
+import java.util.Objects;
 import org.gradle.api.internal.tasks.compile.CleaningJavaCompiler;
 import org.gradle.api.internal.tasks.compile.JavaCompileSpec;
 import org.gradle.api.internal.tasks.compile.incremental.recomp.CurrentCompilation;
@@ -33,10 +38,6 @@ import org.gradle.internal.time.Timer;
 import org.gradle.language.base.internal.compile.Compiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.Objects;
 
 /**
  * A compiler that selects classes for compilation. It also handles restore of output state in case of a compile failure.
@@ -69,7 +70,7 @@ class SelectiveCompiler<T extends JavaCompileSpec> implements org.gradle.languag
             LOG.info("Full recompilation is required because no incremental change information is available. This is usually caused by clean builds or changing compiler arguments.");
             return rebuildAllCompiler.execute(spec);
         }
-        File previousCompilationDataFile = Objects.requireNonNull(spec.getCompileOptions().getPreviousCompilationDataFile());
+        File previousCompilationDataFile = requireNonNull(spec.getCompileOptions().getPreviousCompilationDataFile());
         if (!previousCompilationDataFile.exists()) {
             LOG.info("Full recompilation is required because no previous compilation result is available.");
             return rebuildAllCompiler.execute(spec);

@@ -16,6 +16,11 @@
 
 package org.gradle.plugin.use.resolve.service.internal;
 
+import static java.util.stream.Collectors.joining;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ConfigurationContainer;
 import org.gradle.api.artifacts.Dependency;
@@ -40,10 +45,6 @@ import org.gradle.plugin.use.resolve.internal.PluginResolutionResult;
 import org.gradle.plugin.use.resolve.internal.PluginResolutionVisitor;
 import org.gradle.plugin.use.resolve.internal.PluginResolver;
 import org.gradle.plugin.use.resolve.service.internal.InjectedClasspathInstrumentationStrategy.TransformMode;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class DefaultInjectedClasspathPluginResolver implements ClientInjectedClasspathPluginResolver, PluginResolver {
 
@@ -123,7 +124,7 @@ public class DefaultInjectedClasspathPluginResolver implements ClientInjectedCla
     public PluginResolutionResult resolve(PluginRequestInternal pluginRequest) {
         PluginImplementation<?> plugin = pluginRegistry.get().lookup(pluginRequest.getId());
         if (plugin == null) {
-            String classpathStr = injectedClasspath.getAsFiles().stream().map(File::getAbsolutePath).collect(Collectors.joining(File.pathSeparator));
+            String classpathStr = injectedClasspath.getAsFiles().stream().map(File::getAbsolutePath).collect(joining(File.pathSeparator));
             return PluginResolutionResult.notFound(getDescription(), "classpath: " + classpathStr);
         } else {
             return PluginResolutionResult.found(new InjectedClasspathPluginResolution(plugin));

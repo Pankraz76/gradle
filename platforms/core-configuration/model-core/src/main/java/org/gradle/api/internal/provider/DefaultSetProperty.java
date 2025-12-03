@@ -16,18 +16,18 @@
 
 package org.gradle.api.internal.provider;
 
+import static java.util.Collections.emptySet;
+import static org.gradle.internal.Cast.uncheckedNonnullCast;
+
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
+import java.util.Collections;
+import java.util.Set;
 import org.gradle.api.internal.lambdas.SerializableLambdas.SerializableSupplier;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.SetProperty;
 import org.gradle.internal.Cast;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.Set;
-
-import static org.gradle.internal.Cast.uncheckedNonnullCast;
 
 public class DefaultSetProperty<T> extends AbstractCollectionProperty<T, Set<T>> implements SetProperty<T> {
     private static final SerializableSupplier<ImmutableCollection.Builder<Object>> FACTORY = ImmutableSet::builder;
@@ -41,7 +41,7 @@ public class DefaultSetProperty<T> extends AbstractCollectionProperty<T, Set<T>>
      */
     // Should be removed when https://github.com/gradle/gradle/issues/20266 is resolved
     public static <T> void addOptionalProvider(SetProperty<T> set, Provider<? extends T> provider) {
-        set.addAll(provider.map(Collections::singleton).orElse(Collections.emptySet()));
+        set.addAll(provider.map(Collections::singleton).orElse(emptySet()));
     }
 
     public DefaultSetProperty(PropertyHost host, Class<T> elementType) {

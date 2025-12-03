@@ -15,6 +15,21 @@
  */
 package org.gradle.api.internal.initialization;
 
+import static java.util.Collections.emptyList;
+import static org.gradle.api.attributes.LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE;
+import static org.gradle.api.internal.initialization.DefaultScriptClassPathResolver.InstrumentationPhase.ANALYZED_ARTIFACT;
+import static org.gradle.api.internal.initialization.DefaultScriptClassPathResolver.InstrumentationPhase.INSTRUMENTED_AND_UPGRADED;
+import static org.gradle.api.internal.initialization.DefaultScriptClassPathResolver.InstrumentationPhase.INSTRUMENTED_ONLY;
+import static org.gradle.api.internal.initialization.DefaultScriptClassPathResolver.InstrumentationPhase.NOT_INSTRUMENTED;
+import static org.gradle.api.internal.initialization.transform.utils.InstrumentationClasspathMerger.FileType.ARTIFACT;
+import static org.gradle.api.internal.initialization.transform.utils.InstrumentationClasspathMerger.FileType.INTERCEPTED_METHODS_REPORT;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.api.Action;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.artifacts.ArtifactCollection;
@@ -50,21 +65,6 @@ import org.gradle.internal.instrumentation.reporting.PropertyUpgradeReportConfig
 import org.gradle.internal.lazy.Lazy;
 import org.gradle.internal.logging.util.Log4jBannedVersion;
 import org.gradle.util.GradleVersion;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static org.gradle.api.attributes.LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE;
-import static org.gradle.api.internal.initialization.DefaultScriptClassPathResolver.InstrumentationPhase.ANALYZED_ARTIFACT;
-import static org.gradle.api.internal.initialization.DefaultScriptClassPathResolver.InstrumentationPhase.INSTRUMENTED_AND_UPGRADED;
-import static org.gradle.api.internal.initialization.DefaultScriptClassPathResolver.InstrumentationPhase.INSTRUMENTED_ONLY;
-import static org.gradle.api.internal.initialization.DefaultScriptClassPathResolver.InstrumentationPhase.NOT_INSTRUMENTED;
-import static org.gradle.api.internal.initialization.transform.utils.InstrumentationClasspathMerger.FileType.ARTIFACT;
-import static org.gradle.api.internal.initialization.transform.utils.InstrumentationClasspathMerger.FileType.INTERCEPTED_METHODS_REPORT;
 
 public class DefaultScriptClassPathResolver implements ScriptClassPathResolver {
 
@@ -159,8 +159,8 @@ public class DefaultScriptClassPathResolver implements ScriptClassPathResolver {
             );
 
             MethodInterceptionReportCollector reportCollector = propertyUpgradeReportConfig.getReportCollector();
-            instrumentedClasspath.getOrDefault(INTERCEPTED_METHODS_REPORT, Collections.emptyList()).forEach(reportCollector::collect);
-            return TransformedClassPath.handleInstrumentingArtifactTransform(instrumentedClasspath.getOrDefault(ARTIFACT, Collections.emptyList()));
+            instrumentedClasspath.getOrDefault(INTERCEPTED_METHODS_REPORT, emptyList()).forEach(reportCollector::collect);
+            return TransformedClassPath.handleInstrumentingArtifactTransform(instrumentedClasspath.getOrDefault(ARTIFACT, emptyList()));
         }
     }
 

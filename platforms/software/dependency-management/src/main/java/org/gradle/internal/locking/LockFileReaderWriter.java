@@ -16,17 +16,10 @@
 
 package org.gradle.internal.locking;
 
-import com.google.common.collect.ImmutableList;
-import org.gradle.api.file.RegularFileProperty;
-import org.gradle.api.internal.DocumentationRegistry;
-import org.gradle.api.internal.DomainObjectContext;
-import org.gradle.api.internal.file.FileResolver;
-import org.gradle.api.logging.Logger;
-import org.gradle.api.logging.Logging;
-import org.gradle.internal.resource.local.FileResourceListener;
-import org.gradle.util.internal.GFileUtils;
-import org.jspecify.annotations.Nullable;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.stream.Collectors.joining;
 
+import com.google.common.collect.ImmutableList;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -43,6 +36,15 @@ import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.gradle.api.file.RegularFileProperty;
+import org.gradle.api.internal.DocumentationRegistry;
+import org.gradle.api.internal.DomainObjectContext;
+import org.gradle.api.internal.file.FileResolver;
+import org.gradle.api.logging.Logger;
+import org.gradle.api.logging.Logging;
+import org.gradle.internal.resource.local.FileResourceListener;
+import org.gradle.util.internal.GFileUtils;
+import org.jspecify.annotations.Nullable;
 
 public class LockFileReaderWriter {
 
@@ -53,7 +55,7 @@ public class LockFileReaderWriter {
     static final String UNIQUE_LOCKFILE_NAME = "gradle.lockfile";
     static final String FILE_SUFFIX = ".lockfile";
     static final String DEPENDENCY_LOCKING_FOLDER = "gradle/dependency-locks";
-    static final Charset CHARSET = StandardCharsets.UTF_8;
+    static final Charset CHARSET = UTF_8;
     static final List<String> LOCKFILE_HEADER_LIST = ImmutableList.of("# This is a Gradle generated file for dependency locking.", "# Manual edits can break the build and are not advised.", "# This file is expected to be part of source control.");
     static final String EMPTY_RESOLUTIONS_ENTRY = "empty=";
     static final String BUILD_SCRIPT_PREFIX = "buildscript-";
@@ -230,10 +232,10 @@ public class LockFileReaderWriter {
             List<String> content = new ArrayList<>(50);
             content.addAll(LOCKFILE_HEADER_LIST);
             for (Map.Entry<String, List<String>> entry : dependencyToLockId.entrySet()) {
-                String builder = entry.getKey() + "=" + entry.getValue().stream().sorted().collect(Collectors.joining(","));
+                String builder = entry.getKey() + "=" + entry.getValue().stream().sorted().collect(joining(","));
                 content.add(builder);
             }
-            content.add("empty=" + emptyLockIds.stream().sorted().collect(Collectors.joining(",")));
+            content.add("empty=" + emptyLockIds.stream().sorted().collect(joining(",")));
             Files.write(lockfilePath, content, CHARSET);
         } catch (IOException e) {
             throw new RuntimeException("Unable to write unique lockfile", e);

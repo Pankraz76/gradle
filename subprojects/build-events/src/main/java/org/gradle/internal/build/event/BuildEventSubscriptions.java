@@ -16,12 +16,13 @@
 
 package org.gradle.internal.build.event;
 
-import com.google.common.collect.ImmutableSet;
-import org.gradle.tooling.events.OperationType;
+import static java.util.Collections.disjoint;
 
+import com.google.common.collect.ImmutableSet;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
+import org.gradle.tooling.events.OperationType;
 
 /**
  * Provides information about what events the build client is interested in.
@@ -51,7 +52,7 @@ public class BuildEventSubscriptions {
     }
 
     private boolean isNoneRequested(OperationType... types) {
-        return Collections.disjoint(operationTypes, Arrays.asList(types));
+        return disjoint(operationTypes, Arrays.asList(types));
     }
 
 }

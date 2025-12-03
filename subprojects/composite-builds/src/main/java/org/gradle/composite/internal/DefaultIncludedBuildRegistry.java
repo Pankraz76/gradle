@@ -16,7 +16,21 @@
 
 package org.gradle.composite.internal;
 
+import static java.util.Comparator.comparing;
+
 import com.google.common.base.MoreObjects;
+import java.io.File;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
 import org.gradle.api.GradleException;
 import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.BuildDefinition;
@@ -38,19 +52,6 @@ import org.gradle.internal.event.ListenerManager;
 import org.gradle.internal.scopeids.id.BuildInvocationScopeId;
 import org.gradle.util.Path;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
 
 public class DefaultIncludedBuildRegistry implements BuildStateRegistry, Stoppable {
     private final IncludedBuildFactory includedBuildFactory;
@@ -201,7 +202,7 @@ public class DefaultIncludedBuildRegistry implements BuildStateRegistry, Stoppab
     @Override
     public void visitBuilds(Consumer<? super BuildState> visitor) {
         List<BuildState> ordered = new ArrayList<>(buildsByPath.values());
-        ordered.sort(Comparator.comparing(BuildState::getIdentityPath));
+        ordered.sort(comparing(BuildState::getIdentityPath));
         for (BuildState buildState : ordered) {
             visitor.accept(buildState);
         }

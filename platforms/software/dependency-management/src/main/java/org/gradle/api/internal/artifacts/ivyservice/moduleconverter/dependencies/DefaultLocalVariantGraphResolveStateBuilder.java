@@ -15,8 +15,17 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.moduleconverter.dependencies;
 
+import static java.util.Collections.emptySet;
+import static java.util.Comparator.comparing;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 import org.gradle.api.Named;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.Dependency;
@@ -55,13 +64,6 @@ import org.gradle.internal.model.CalculatedValue;
 import org.gradle.internal.model.CalculatedValueContainerFactory;
 import org.gradle.internal.model.ModelContainer;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Encapsulates all logic required to build a {@link LocalVariantGraphResolveMetadata} from a
@@ -123,7 +125,7 @@ public class DefaultLocalVariantGraphResolveStateBuilder implements LocalVariant
             idGenerator.nextVariantId(),
             metadata,
             dependencies,
-            Collections.emptySet()
+            emptySet()
         );
     }
 
@@ -240,7 +242,7 @@ public class DefaultLocalVariantGraphResolveStateBuilder implements LocalVariant
             // For historical reasons, and to maintain behavior, dependencies
             // are ordered based on the name of the extended configurations.
             ArrayList<Configuration> sortedHierarchy = new ArrayList<>(hierarchy);
-            sortedHierarchy.sort(Comparator.comparing(Named::getName));
+            sortedHierarchy.sort(comparing(Named::getName));
             sortedHierarchy.forEach(config -> {
                 DependencyState defined = getDefinedState((ConfigurationInternal) config, dependencyCache);
                 dependencies.addAll(defined.dependencies);

@@ -16,6 +16,10 @@
 
 package org.gradle.tooling.internal.provider.runner;
 
+import static java.util.Collections.emptyList;
+
+import java.util.Collections;
+import java.util.List;
 import org.gradle.internal.build.event.BuildEventSubscriptions;
 import org.gradle.internal.operations.BuildOperationDescriptor;
 import org.gradle.internal.operations.OperationFinishEvent;
@@ -27,9 +31,6 @@ import org.gradle.tooling.internal.protocol.events.InternalOperationFinishedProg
 import org.gradle.tooling.internal.protocol.events.InternalOperationStartedProgressEvent;
 import org.gradle.tooling.internal.protocol.events.InternalProgressEvent;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Maps build operations of a particular type into progress events to forward to the tooling API client.
@@ -44,7 +45,7 @@ public interface BuildOperationMapper<DETAILS, TO extends InternalOperationDescr
      * build operation execution. If this mapper is not enabled, the trackers can be ignored.
      */
     default List<? extends BuildOperationTracker> getTrackers() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     /**

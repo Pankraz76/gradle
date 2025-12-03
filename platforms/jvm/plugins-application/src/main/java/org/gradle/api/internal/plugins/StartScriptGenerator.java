@@ -15,15 +15,7 @@
  */
 package org.gradle.api.internal.plugins;
 
-import org.apache.tools.ant.taskdefs.Chmod;
-import org.gradle.api.Action;
-import org.gradle.internal.IoActions;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.os.OperatingSystem;
-import org.gradle.jvm.application.scripts.JavaAppStartScriptGenerationDetails;
-import org.gradle.jvm.application.scripts.ScriptGenerator;
-import org.gradle.util.internal.AntUtil;
-import org.gradle.util.internal.CollectionUtils;
+import static java.util.Collections.emptyList;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -34,6 +26,15 @@ import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Collections;
 import java.util.Set;
+import org.apache.tools.ant.taskdefs.Chmod;
+import org.gradle.api.Action;
+import org.gradle.internal.IoActions;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.os.OperatingSystem;
+import org.gradle.jvm.application.scripts.JavaAppStartScriptGenerationDetails;
+import org.gradle.jvm.application.scripts.ScriptGenerator;
+import org.gradle.util.internal.AntUtil;
+import org.gradle.util.internal.CollectionUtils;
 
 public class StartScriptGenerator {
 
@@ -41,9 +42,9 @@ public class StartScriptGenerator {
     private String optsEnvironmentVar;
     private String exitEnvironmentVar;
     private AppEntryPoint entryPoint;
-    private Iterable<String> defaultJvmOpts = Collections.emptyList();
+    private Iterable<String> defaultJvmOpts = emptyList();
     private Iterable<String> classpath;
-    private Iterable<String> modulePath = Collections.emptyList();
+    private Iterable<String> modulePath = emptyList();
     private String scriptRelPath;
     private String appNameSystemProperty;
 

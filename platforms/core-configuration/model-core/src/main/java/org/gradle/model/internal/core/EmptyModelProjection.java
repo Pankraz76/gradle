@@ -16,12 +16,13 @@
 
 package org.gradle.model.internal.core;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.base.Optional;
+import java.util.Collections;
 import org.gradle.model.internal.core.rule.describe.ModelRuleDescriptor;
 import org.gradle.model.internal.type.ModelType;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
 
 public class EmptyModelProjection implements ModelProjection {
 
@@ -49,7 +50,7 @@ public class EmptyModelProjection implements ModelProjection {
 
     @Override
     public Iterable<String> getTypeDescriptions(MutableModelNode node) {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override

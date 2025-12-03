@@ -16,20 +16,20 @@
 
 package org.gradle.internal.extensibility;
 
+import static java.util.Collections.emptyMap;
+import static org.gradle.internal.Cast.uncheckedNonnullCast;
+
 import groovy.lang.Closure;
 import groovy.lang.GroovyObjectSupport;
 import groovy.lang.MissingPropertyException;
 import groovy.lang.ReadOnlyPropertyException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import org.gradle.api.internal.plugins.ExtraPropertiesExtensionInternal;
 import org.gradle.api.internal.properties.GradleProperties;
 import org.gradle.api.plugins.ExtraPropertiesExtension;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.gradle.internal.Cast.uncheckedNonnullCast;
 
 public class DefaultExtraPropertiesExtension extends GroovyObjectSupport implements ExtraPropertiesExtensionInternal {
 
@@ -137,7 +137,7 @@ public class DefaultExtraPropertiesExtension extends GroovyObjectSupport impleme
     }
 
     private Map<String, Object> getGradlePropertiesAsMap() {
-        return gradleProperties == null ? Collections.emptyMap() : uncheckedNonnullCast(gradleProperties.getProperties());
+        return gradleProperties == null ? emptyMap() : uncheckedNonnullCast(gradleProperties.getProperties());
     }
 
     @SuppressWarnings("rawtypes")

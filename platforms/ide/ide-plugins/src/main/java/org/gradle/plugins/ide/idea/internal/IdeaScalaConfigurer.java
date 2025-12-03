@@ -15,6 +15,10 @@
  */
 package org.gradle.plugins.ide.idea.internal;
 
+import static com.google.common.base.Predicates.equalTo;
+import static org.gradle.plugins.ide.internal.generator.XmlPersistableConfigurationObject.findOrCreateFirstChildNamed;
+import static org.gradle.plugins.ide.internal.generator.XmlPersistableConfigurationObject.findOrCreateFirstChildWithAttributeValue;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -22,6 +26,14 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import groovy.util.Node;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 import org.gradle.api.Action;
 import org.gradle.api.GradleScriptException;
 import org.gradle.api.Project;
@@ -44,18 +56,6 @@ import org.gradle.plugins.ide.idea.model.IdeaModule;
 import org.gradle.plugins.ide.idea.model.ModuleLibrary;
 import org.gradle.plugins.ide.idea.model.ProjectLibrary;
 import org.gradle.util.internal.VersionNumber;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
-
-import static org.gradle.plugins.ide.internal.generator.XmlPersistableConfigurationObject.findOrCreateFirstChildNamed;
-import static org.gradle.plugins.ide.internal.generator.XmlPersistableConfigurationObject.findOrCreateFirstChildWithAttributeValue;
 
 public class IdeaScalaConfigurer {
 
@@ -120,7 +120,7 @@ public class IdeaScalaConfigurer {
         for (final Project scalaProject : scalaProjects) {
             ProjectState owner = ((ProjectInternal) scalaProject).getOwner();
             ProjectLibrary library = owner.fromMutableState(p -> createScalaSdkLibrary(p, useScalaSdk));
-            ProjectLibrary duplicate = Iterables.find(scalaCompilerLibraries.values(), Predicates.equalTo(library), null);
+            ProjectLibrary duplicate = Iterables.find(scalaCompilerLibraries.values(), equalTo(library), null);
             scalaCompilerLibraries.put(owner.getIdentity().getProjectPath().toString(), duplicate == null ? library : duplicate);
         }
         return scalaCompilerLibraries;

@@ -16,7 +16,22 @@
 
 package org.gradle.internal.jvm.inspection;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
 import com.google.common.annotations.VisibleForTesting;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.GradleException;
 import org.gradle.api.internal.file.FileResolver;
 import org.gradle.api.logging.Logger;
@@ -38,19 +53,6 @@ import org.gradle.jvm.toolchain.internal.JdkCacheDirectory;
 import org.gradle.jvm.toolchain.internal.LocationListInstallationSupplier;
 import org.gradle.jvm.toolchain.internal.ToolchainConfiguration;
 import org.jspecify.annotations.NullMarked;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 @NullMarked
 public class DefaultJavaInstallationRegistry implements JavaInstallationRegistry {
@@ -146,7 +148,7 @@ public class DefaultJavaInstallationRegistry implements JavaInstallationRegistry
             .parallelStream()
             .peek(location -> progressLogger.progress("Extracting toolchain metadata from " + location.getDisplayName()))
             .map(this::resolveMetadata)
-            .collect(Collectors.toList());
+            .collect(toList());
         progressLogger.completed();
         return result;
     }
@@ -171,7 +173,7 @@ public class DefaultJavaInstallationRegistry implements JavaInstallationRegistry
             .map(this::maybeGetEnclosedInstallation)
             .filter(this::installationHasExecutable)
             .filter(distinctByKey(InstallationLocation::getLocation))
-            .collect(Collectors.toSet());
+            .collect(toSet());
     }
 
     protected boolean installationExists(InstallationLocation installationLocation) {

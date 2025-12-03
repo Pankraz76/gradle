@@ -15,8 +15,18 @@
  */
 package org.gradle.api.plugins.quality;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singleton;
+import static java.util.Collections.singletonList;
+import static org.gradle.api.internal.lambdas.SerializableLambdas.action;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import javax.inject.Inject;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.file.FileCollection;
@@ -33,14 +43,6 @@ import org.gradle.jvm.toolchain.JavaToolchainService;
 import org.gradle.jvm.toolchain.JavaToolchainSpec;
 import org.gradle.jvm.toolchain.internal.CurrentJvmToolchainSpec;
 import org.gradle.util.internal.VersionNumber;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import static org.gradle.api.internal.lambdas.SerializableLambdas.action;
 
 /**
  * A plugin for the <a href="https://pmd.github.io/">PMD</a> source code analyzer.
@@ -129,9 +131,9 @@ public abstract class PmdPlugin extends AbstractCodeQualityPlugin<Pmd> {
 
     private static List<String> ruleSetsConvention(PmdExtension extension) {
         if (extension.getRuleSetConfig() == null && extension.getRuleSetFiles().isEmpty()) {
-            return Collections.singletonList("category/java/errorprone.xml");
+            return singletonList("category/java/errorprone.xml");
         } else {
-            return Collections.emptyList();
+            return emptyList();
         }
     }
 
@@ -188,11 +190,11 @@ public abstract class PmdPlugin extends AbstractCodeQualityPlugin<Pmd> {
     static Set<String> calculateDefaultDependencyNotation(final String versionString) {
         final VersionNumber toolVersion = VersionNumber.parse(versionString);
         if (toolVersion.compareTo(VersionNumber.version(5)) < 0) {
-            return Collections.singleton("pmd:pmd:" + versionString);
+            return singleton("pmd:pmd:" + versionString);
         } else if (toolVersion.compareTo(VersionNumber.parse("5.2.0")) < 0) {
-            return Collections.singleton("net.sourceforge.pmd:pmd:" + versionString);
+            return singleton("net.sourceforge.pmd:pmd:" + versionString);
         } else if (toolVersion.getMajor() < 7) {
-            return Collections.singleton("net.sourceforge.pmd:pmd-java:" + versionString);
+            return singleton("net.sourceforge.pmd:pmd-java:" + versionString);
         }
 
         // starting from version 7, PMD is split into multiple modules

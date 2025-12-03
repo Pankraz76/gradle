@@ -15,14 +15,15 @@
  */
 package org.gradle.plugins.ide.idea.model;
 
-import org.gradle.api.artifacts.ModuleVersionIdentifier;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.singletonList;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import org.gradle.api.artifacts.ModuleVersionIdentifier;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Single entry module library
@@ -40,7 +41,7 @@ public class SingleEntryModuleLibrary extends ModuleLibrary {
      * @param scope scope
      */
     public SingleEntryModuleLibrary(FilePath library, Set<FilePath> javadoc, Set<FilePath> source, String scope) {
-        super(Collections.singletonList(library), javadoc, source, new ArrayList<>(), scope);
+        super(singletonList(library), javadoc, source, new ArrayList<>(), scope);
     }
 
     /**
@@ -53,9 +54,9 @@ public class SingleEntryModuleLibrary extends ModuleLibrary {
      */
     public SingleEntryModuleLibrary(FilePath library, @Nullable FilePath javadoc, @Nullable FilePath source, String scope) {
         super(
-            Collections.singletonList(library),
-            javadoc != null ? Collections.singletonList(javadoc) : new ArrayList<>(),
-            source != null ? Collections.singletonList(source) : new ArrayList<>(),
+            singletonList(library),
+            javadoc != null ? singletonList(javadoc) : new ArrayList<>(),
+            source != null ? singletonList(source) : new ArrayList<>(),
             new LinkedHashSet<>(),
             scope
         );

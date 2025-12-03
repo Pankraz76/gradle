@@ -16,10 +16,19 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.ivyresolve.parser;
 
+import static java.util.stream.Collectors.toMap;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Sets;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.ivy.core.module.descriptor.DefaultDependencyDescriptor;
 import org.apache.ivy.core.module.descriptor.DependencyArtifactDescriptor;
 import org.apache.ivy.core.module.descriptor.DependencyDescriptor;
@@ -42,14 +51,6 @@ import org.gradle.internal.component.external.model.ivy.IvyDependencyDescriptor;
 import org.gradle.internal.component.model.DefaultIvyArtifactName;
 import org.gradle.internal.component.model.Exclude;
 import org.gradle.internal.component.model.IvyArtifactName;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class IvyModuleDescriptorConverter {
 
@@ -74,7 +75,7 @@ public class IvyModuleDescriptorConverter {
     public Map<NamespaceId, String> extractExtraAttributes(ModuleDescriptor ivyDescriptor) {
         Map<String, String> extraInfo = ivyDescriptor.getExtraInfo();
         return extraInfo.entrySet().stream().collect(
-            Collectors.toMap(e -> NamespaceId.decode(e.getKey()), Map.Entry::getValue));
+            toMap(e -> NamespaceId.decode(e.getKey()), Map.Entry::getValue));
     }
 
     public List<Exclude> extractExcludes(ModuleDescriptor ivyDescriptor) {

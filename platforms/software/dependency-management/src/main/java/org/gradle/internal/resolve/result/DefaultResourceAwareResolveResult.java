@@ -16,20 +16,21 @@
 
 package org.gradle.internal.resolve.result;
 
-import com.google.common.collect.ImmutableList;
-import org.gradle.internal.resource.ExternalResourceName;
+import static java.util.Collections.emptyList;
 
+import com.google.common.collect.ImmutableList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.gradle.internal.resource.ExternalResourceName;
 
 public class DefaultResourceAwareResolveResult implements ResourceAwareResolveResult {
     private Set<String> attempted;
 
     @Override
     public List<String> getAttempted() {
-        return attempted == null ? Collections.emptyList() : ImmutableList.copyOf(attempted);
+        return attempted == null ? emptyList() : ImmutableList.copyOf(attempted);
     }
 
     @Override

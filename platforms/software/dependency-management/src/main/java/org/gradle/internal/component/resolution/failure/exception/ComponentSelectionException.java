@@ -16,17 +16,18 @@
 
 package org.gradle.internal.component.resolution.failure.exception;
 
-import org.gradle.internal.component.resolution.failure.type.AbstractComponentSelectionFailure;
+import static java.util.Collections.emptyList;
 
 import java.util.Collections;
 import java.util.List;
+import org.gradle.internal.component.resolution.failure.type.AbstractComponentSelectionFailure;
 
 /**
  * An exception that indicates that component selection failed.
  */
 public class ComponentSelectionException extends AbstractResolutionFailureException {
     public ComponentSelectionException(String message, AbstractComponentSelectionFailure failure) {
-        this(message, failure, Collections.emptyList());
+        this(message, failure, emptyList());
     }
 
     public ComponentSelectionException(String message, AbstractComponentSelectionFailure failure, List<String> resolutions) {

@@ -15,6 +15,10 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.ivyresolve;
 
+import static java.util.Collections.emptyList;
+
+import java.util.Collections;
+import java.util.Map;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.ComponentMetadataSupplierDetails;
 import org.gradle.api.artifacts.ModuleIdentifier;
@@ -37,9 +41,6 @@ import org.gradle.internal.resolve.result.BuildableArtifactSetResolveResult;
 import org.gradle.internal.resolve.result.BuildableModuleComponentMetaDataResolveResult;
 import org.gradle.internal.resolve.result.BuildableModuleVersionListingResolveResult;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.Map;
 
 public class FilteredModuleComponentRepository implements ModuleComponentRepository<ExternalModuleComponentGraphResolveState> {
     private final ModuleComponentRepository<ExternalModuleComponentGraphResolveState> delegate;
@@ -97,7 +98,7 @@ public class FilteredModuleComponentRepository implements ModuleComponentReposit
             ModuleIdentifier identifier = selector.getModuleIdentifier();
             whenModulePresent(identifier, null,
                     () -> delegate.listModuleVersions(selector, overrideMetadata, result),
-                    () -> result.listed(Collections.emptyList()));
+                    () -> result.listed(emptyList()));
         }
 
         @Override

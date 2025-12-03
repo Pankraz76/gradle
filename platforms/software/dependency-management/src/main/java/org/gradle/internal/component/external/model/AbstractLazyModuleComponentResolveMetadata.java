@@ -16,10 +16,23 @@
 
 package org.gradle.internal.component.external.model;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
+
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.internal.artifacts.NamedVariantIdentifier;
@@ -29,15 +42,6 @@ import org.gradle.internal.component.model.ModuleConfigurationMetadata;
 import org.gradle.internal.component.model.ModuleSources;
 import org.gradle.internal.component.model.VariantGraphResolveMetadata;
 import org.gradle.internal.component.model.VariantIdentifier;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Common base class for the lazy versions of {@link ModuleComponentResolveMetadata} implementations.
@@ -117,10 +121,10 @@ public abstract class AbstractLazyModuleComponentResolveMetadata extends Abstrac
         Map<String, ExternalModuleVariantGraphResolveMetadata> variantsByName;
         ImmutableList.Builder<ExternalModuleVariantGraphResolveMetadata> builder = new ImmutableList.Builder<>();
         if (variants.isPresent()) {
-            variantsByName = variants.get().stream().collect(Collectors.toMap(VariantGraphResolveMetadata::getName, Function.identity()));
+            variantsByName = variants.get().stream().collect(toMap(VariantGraphResolveMetadata::getName, identity()));
             builder.addAll(variants.get());
         } else {
-            variantsByName = Collections.emptyMap();
+            variantsByName = emptyMap();
         }
         for (AdditionalVariant additionalVariant : variantMetadataRules.getAdditionalVariants()) {
             String baseName = additionalVariant.getBase();
@@ -152,7 +156,7 @@ public abstract class AbstractLazyModuleComponentResolveMetadata extends Abstrac
         if (graphVariants == null) {
             graphVariants = buildVariantsForGraphTraversal();
         }
-        return graphVariants.orElse(Collections.emptyList());
+        return graphVariants.orElse(emptyList());
     }
 
     @Override

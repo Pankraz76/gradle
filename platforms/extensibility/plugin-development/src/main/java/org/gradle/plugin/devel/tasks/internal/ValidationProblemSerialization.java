@@ -16,6 +16,8 @@
 
 package org.gradle.plugin.devel.tasks.internal;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -31,6 +33,14 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Stream;
 import org.gradle.api.problems.AdditionalData;
 import org.gradle.api.problems.DocLink;
 import org.gradle.api.problems.FileLocation;
@@ -59,15 +69,6 @@ import org.gradle.internal.reflect.validation.TypeValidationProblemRenderer;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 @NullMarked
 public class ValidationProblemSerialization {
@@ -255,7 +256,7 @@ public class ValidationProblemSerialization {
             FileLocation fileLocation = readObject(in);
             in.endObject();
 
-            Objects.requireNonNull(fileLocation, "path must not be null");
+            requireNonNull(fileLocation, "path must not be null");
             return fileLocation;
         }
 
@@ -330,7 +331,7 @@ public class ValidationProblemSerialization {
             DefaultPluginIdLocation problemLocation = readObject(in);
             in.endObject();
 
-            Objects.requireNonNull(problemLocation, "pluginId must not be null");
+            requireNonNull(problemLocation, "pluginId must not be null");
             return problemLocation;
         }
 
@@ -369,7 +370,7 @@ public class ValidationProblemSerialization {
             DefaultTaskLocation buildTreePath = readObject(in);
             in.endObject();
 
-            Objects.requireNonNull(buildTreePath, "buildTreePath must not be null");
+            requireNonNull(buildTreePath, "buildTreePath must not be null");
             return buildTreePath;
         }
 

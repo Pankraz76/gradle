@@ -15,12 +15,12 @@
  */
 package org.gradle.plugins.ide.eclipse.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import org.gradle.plugins.ide.eclipse.model.internal.PathUtil;
-
-import static com.google.common.base.Strings.emptyToNull;
-import static com.google.common.base.Strings.isNullOrEmpty;
 
 /**
  * Link.
@@ -33,14 +33,14 @@ public class Link {
     private String locationUri;
 
     public Link(String name, String type, String location, String locationUri) {
-        Preconditions.checkArgument(!isNullOrEmpty(name));
-        Preconditions.checkArgument(!isNullOrEmpty(type));
-        Preconditions.checkArgument(isNullOrEmpty(location) || isNullOrEmpty(locationUri));
-        Preconditions.checkArgument(!isNullOrEmpty(location) || !isNullOrEmpty(locationUri));
+        checkArgument(!Strings.isNullOrEmpty(name));
+        checkArgument(!Strings.isNullOrEmpty(type));
+        checkArgument(Strings.isNullOrEmpty(location) || Strings.isNullOrEmpty(locationUri));
+        checkArgument(!Strings.isNullOrEmpty(location) || !Strings.isNullOrEmpty(locationUri));
         this.name = name;
         this.type = type;
-        this.location = PathUtil.normalizePath(emptyToNull(location));
-        this.locationUri = emptyToNull(locationUri);
+        this.location = PathUtil.normalizePath(Strings.emptyToNull(location));
+        this.locationUri = Strings.emptyToNull(locationUri);
     }
 
     public String getName() {

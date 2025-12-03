@@ -15,6 +15,17 @@
  */
 package org.gradle.testfixtures.internal;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.synchronizedMap;
+
+import java.io.File;
+import java.time.Instant;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import org.gradle.cache.CacheCleanupStrategy;
 import org.gradle.cache.CacheOpenException;
 import org.gradle.cache.IndexedCache;
@@ -29,21 +40,12 @@ import org.gradle.internal.serialize.Serializer;
 import org.gradle.util.internal.GFileUtils;
 import org.jspecify.annotations.Nullable;
 
-import java.io.File;
-import java.time.Instant;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 public class TestInMemoryCacheFactory implements CacheFactory {
     /*
      * In case multiple threads is accessing the cache, for example when running JUnit 5 tests in parallel,
      * the map must be protected from concurrent modification.
      */
-    final Map<Pair<File, String>, IndexedCache<?, ?>> caches = Collections.synchronizedMap(new LinkedHashMap<>());
+    final Map<Pair<File, String>, IndexedCache<?, ?>> caches = synchronizedMap(new LinkedHashMap<>());
 
     @Override
     public PersistentCache open(File cacheDir, String displayName, Map<String, ?> properties, LockOptions lockOptions, @Nullable Consumer<? super PersistentCache> initializer, @Nullable CacheCleanupStrategy cacheCleanupStrategy) throws CacheOpenException {
@@ -98,7 +100,7 @@ public class TestInMemoryCacheFactory implements CacheFactory {
 
         @Override
         public Collection<File> getReservedCacheFiles() {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         private void assertNotClosed() {

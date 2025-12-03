@@ -16,6 +16,16 @@
 
 package org.gradle.api.publish.maven.internal.publication;
 
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
+
+import java.io.File;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.DomainObjectCollection;
 import org.gradle.api.DomainObjectSet;
@@ -67,16 +77,6 @@ import org.gradle.internal.typeconversion.NotationParser;
 import org.gradle.util.internal.CollectionUtils;
 import org.gradle.util.internal.GUtil;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-
-import static java.util.stream.Collectors.toMap;
 
 public abstract class DefaultMavenPublication implements MavenPublicationInternal {
 
@@ -407,7 +407,7 @@ public abstract class DefaultMavenPublication implements MavenPublicationInterna
         return artifactsToBePublished()
             .stream()
             .collect(toMap(
-                Function.identity(),
+                identity(),
                 DefaultMavenPublication::normalizedArtifactFor
             ));
     }

@@ -16,13 +16,8 @@
 
 package org.gradle.internal.resource.transport.http;
 
-import org.gradle.api.resources.ResourceException;
-import org.gradle.internal.resource.UriTextResource;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +29,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.gradle.api.resources.ResourceException;
+import org.gradle.internal.resource.UriTextResource;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ApacheDirectoryListingParser {
 
@@ -44,12 +46,12 @@ public class ApacheDirectoryListingParser {
         if (contentType == null || !contentType.startsWith("text/html")) {
             throw new ResourceException(baseURI, String.format("Unsupported ContentType %s for directory listing '%s'", contentType, baseURI));
         }
-        Charset contentEncoding = UriTextResource.extractCharacterEncoding(contentType, StandardCharsets.UTF_8);
+        Charset contentEncoding = UriTextResource.extractCharacterEncoding(contentType, UTF_8);
         Document document = Jsoup.parse(content, contentEncoding.name(), baseURI.toString());
         Elements elements = document.select("a[href]");
         List<String> hrefs = elements.stream()
             .map(it -> it.attr("href"))
-            .collect(Collectors.toList());
+            .collect(toList());
         List<URI> uris = resolveURIs(baseURI, hrefs);
         return filterNonDirectChilds(baseURI, uris);
     }

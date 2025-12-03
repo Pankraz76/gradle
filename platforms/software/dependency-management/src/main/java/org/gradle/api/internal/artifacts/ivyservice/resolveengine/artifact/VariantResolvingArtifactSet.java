@@ -16,7 +16,12 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.artifacts.capability.CapabilitySelector;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
@@ -34,10 +39,6 @@ import org.gradle.internal.component.model.VariantGraphResolveState;
 import org.gradle.internal.component.model.VariantResolveMetadata;
 import org.gradle.internal.resolve.resolver.ExcludingVariantArtifactSet;
 import org.gradle.internal.resolve.resolver.VariantArtifactResolver;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 /**
  * An {@link ArtifactSet} representing the artifacts contributed by a single variant in a dependency
@@ -146,7 +147,7 @@ public class VariantResolvingArtifactSet implements ArtifactSet {
             capabilitySelectors,
             component,
             artifactSelectionServices.getConsumerSchema(),
-            Collections.emptyList()
+            emptyList()
         );
 
         // It is fine if no graph variants satisfy our request.

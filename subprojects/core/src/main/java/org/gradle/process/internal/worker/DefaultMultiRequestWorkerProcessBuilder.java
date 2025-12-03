@@ -16,6 +16,11 @@
 
 package org.gradle.process.internal.worker;
 
+import static java.util.Collections.emptyList;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.Set;
 import org.gradle.api.logging.LogLevel;
 import org.gradle.internal.Cast;
 import org.gradle.internal.classloader.ClasspathUtil;
@@ -32,10 +37,6 @@ import org.gradle.process.internal.worker.request.RequestProtocol;
 import org.gradle.process.internal.worker.request.RequestSerializerRegistry;
 import org.gradle.process.internal.worker.request.ResponseProtocol;
 import org.gradle.process.internal.worker.request.WorkerAction;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.Set;
 
 class DefaultMultiRequestWorkerProcessBuilder<IN, OUT> implements MultiRequestWorkerProcessBuilder<IN, OUT> {
 
@@ -134,7 +135,7 @@ class DefaultMultiRequestWorkerProcessBuilder<IN, OUT> implements MultiRequestWo
         workerProcessBuilder.worker(new WorkerAction(this.workerImplementation));
 
         if (useApplicationClassloaderOnly) {
-            workerProcessBuilder.setImplementationClasspath(Collections.emptyList());
+            workerProcessBuilder.setImplementationClasspath(emptyList());
         } else {
             ClassPath implementationClasspath = ClasspathUtil.getClasspath(this.workerImplementation.getClassLoader());
             workerProcessBuilder.setImplementationClasspath(implementationClasspath.getAsURLs());

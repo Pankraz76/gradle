@@ -16,6 +16,18 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.result;
 
+import static java.util.stream.Collectors.toList;
+import static org.gradle.internal.UncheckedException.throwAsUncheckedException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.UnresolvedDependency;
 import org.gradle.api.artifacts.component.ComponentSelector;
 import org.gradle.api.internal.artifacts.capability.CapabilitySelectorSerializer;
@@ -36,18 +48,6 @@ import org.gradle.internal.resolve.ModuleVersionResolveException;
 import org.gradle.internal.serialize.Decoder;
 import org.gradle.internal.time.Time;
 import org.gradle.internal.time.Timer;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.UncheckedException.throwAsUncheckedException;
 
 public class StreamingResolutionResultBuilder implements DependencyGraphVisitor {
     private final static byte ROOT = 1;
@@ -136,7 +136,7 @@ public class StreamingResolutionResultBuilder implements DependencyGraphVisitor 
         final Collection<? extends DependencyGraphEdge> dependencies = mayHaveVirtualPlatforms
             ? node.getOutgoingEdges().stream()
             .filter(dep -> !dep.isTargetVirtualPlatform())
-            .collect(Collectors.toList())
+            .collect(toList())
             : node.getOutgoingEdges();
         if (!dependencies.isEmpty()) {
             store.write(encoder -> {

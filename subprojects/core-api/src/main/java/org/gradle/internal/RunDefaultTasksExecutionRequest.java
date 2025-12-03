@@ -16,13 +16,14 @@
 
 package org.gradle.internal;
 
-import org.gradle.TaskExecutionRequest;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptyList;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.TaskExecutionRequest;
+import org.jspecify.annotations.Nullable;
 
 public class RunDefaultTasksExecutionRequest implements TaskExecutionRequest, Serializable {
     @Nullable
@@ -41,7 +42,7 @@ public class RunDefaultTasksExecutionRequest implements TaskExecutionRequest, Se
 
     @Override
     public List<String> getArgs() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Nullable

@@ -16,6 +16,18 @@
 
 package org.gradle.jvm.toolchain.internal.install;
 
+import static java.util.stream.Collectors.joining;
+
+import java.io.File;
+import java.net.URI;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
+import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
 import org.gradle.authentication.Authentication;
@@ -39,17 +51,6 @@ import org.gradle.jvm.toolchain.internal.install.exceptions.ToolchainProvisionin
 import org.gradle.platform.internal.CurrentBuildPlatform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.net.URI;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
-import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
 
 public class DefaultJavaToolchainProvisioningService implements JavaToolchainProvisioningService {
 
@@ -273,7 +274,7 @@ public class DefaultJavaToolchainProvisioningService implements JavaToolchainPro
         }
 
         private static String failureMessage(Map<String, Exception> failures) {
-            return failures.entrySet().stream().map(e -> e.getKey() + " (" + e.getValue().getMessage() + ")").collect(Collectors.joining(", "));
+            return failures.entrySet().stream().map(e -> e.getKey() + " (" + e.getValue().getMessage() + ")").collect(joining(", "));
         }
     }
 }

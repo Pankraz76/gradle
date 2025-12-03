@@ -16,6 +16,10 @@
 
 package org.gradle.api.plugins;
 
+import static java.util.Collections.emptySet;
+
+import java.util.Collections;
+import javax.inject.Inject;
 import org.gradle.api.NamedDomainObjectProvider;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -51,9 +55,6 @@ import org.gradle.internal.deprecation.DeprecationLogger;
 import org.gradle.jvm.component.internal.DefaultJvmSoftwareComponent;
 import org.gradle.jvm.component.internal.JvmSoftwareComponentInternal;
 import org.gradle.testing.base.TestingExtension;
-
-import javax.inject.Inject;
-import java.util.Collections;
 
 
 /**
@@ -285,7 +286,7 @@ public abstract class JavaPlugin implements Plugin<Project> {
         JvmFeatureInternal feature = new DefaultJvmFeature(
             JvmConstants.JAVA_MAIN_FEATURE_NAME,
             sourceSet,
-            Collections.emptySet(),
+            emptySet(),
             project,
             false
         );

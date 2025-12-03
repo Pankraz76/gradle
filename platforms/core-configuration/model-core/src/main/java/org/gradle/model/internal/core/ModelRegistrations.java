@@ -16,10 +16,16 @@
 
 package org.gradle.model.internal.core;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singleton;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.annotation.concurrent.ThreadSafe;
 import org.gradle.api.Action;
@@ -31,10 +37,6 @@ import org.gradle.internal.Factory;
 import org.gradle.model.internal.core.rule.describe.ModelRuleDescriptor;
 import org.gradle.model.internal.core.rule.describe.SimpleModelRuleDescriptor;
 import org.gradle.model.internal.type.ModelType;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @ThreadSafe
 public abstract class ModelRegistrations {
@@ -120,7 +122,7 @@ public abstract class ModelRegistrations {
         }
 
         public <T> Builder action(ModelActionRole role, ModelReference<T> input, BiAction<MutableModelNode, T> action) {
-            return action(role, new InputsUsingBuilderAction(reference, descriptorReference, Collections.singleton(input), new SingleInputNodeBiAction<T>(input.getType(), action)));
+            return action(role, new InputsUsingBuilderAction(reference, descriptorReference, singleton(input), new SingleInputNodeBiAction<T>(input.getType(), action)));
         }
 
         public Builder action(ModelActionRole role, Iterable<? extends ModelReference<?>> inputs, BiAction<? super MutableModelNode, ? super List<ModelView<?>>> action) {
@@ -192,7 +194,7 @@ public abstract class ModelRegistrations {
 
             @Override
             public List<? extends ModelReference<?>> getInputs() {
-                return Collections.emptyList();
+                return emptyList();
             }
         }
 

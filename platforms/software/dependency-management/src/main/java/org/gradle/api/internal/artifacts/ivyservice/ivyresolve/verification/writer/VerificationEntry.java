@@ -15,14 +15,15 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.ivyresolve.verification.writer;
 
-import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.verification.ArtifactVerificationOperation;
-import org.gradle.internal.component.external.model.ModuleComponentArtifactIdentifier;
+import static java.util.Comparator.comparing;
 
 import java.io.File;
 import java.util.Comparator;
+import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.verification.ArtifactVerificationOperation;
+import org.gradle.internal.component.external.model.ModuleComponentArtifactIdentifier;
 
 abstract class VerificationEntry implements Comparable<VerificationEntry> {
-    private static final Comparator<VerificationEntry> ENTRY_COMPARATOR = Comparator.comparing(VerificationEntry::getGroup)
+    private static final Comparator<VerificationEntry> ENTRY_COMPARATOR = comparing(VerificationEntry::getGroup)
         .thenComparing(VerificationEntry::getModule)
         .thenComparing(VerificationEntry::getVersion)
         .thenComparing(VerificationEntry::getFile)

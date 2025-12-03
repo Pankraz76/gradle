@@ -16,6 +16,13 @@
 
 package org.gradle.internal.operations.trace;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singleton;
+import static java.util.Collections.unmodifiableMap;
+import static java.util.Objects.requireNonNull;
+import static org.gradle.internal.Cast.uncheckedCast;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -33,30 +40,6 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
-import org.gradle.StartParameter;
-import org.gradle.api.attributes.Attribute;
-import org.gradle.api.attributes.AttributeContainer;
-import org.gradle.internal.Cast;
-import org.gradle.internal.IoActions;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.buildoption.DefaultInternalOptions;
-import org.gradle.internal.buildoption.InternalFlag;
-import org.gradle.internal.buildoption.InternalOption;
-import org.gradle.internal.buildoption.InternalOptions;
-import org.gradle.internal.buildoption.StringInternalOption;
-import org.gradle.internal.concurrent.Stoppable;
-import org.gradle.internal.operations.BuildOperationDescriptor;
-import org.gradle.internal.operations.BuildOperationListener;
-import org.gradle.internal.operations.BuildOperationListenerManager;
-import org.gradle.internal.operations.OperationFinishEvent;
-import org.gradle.internal.operations.OperationIdentifier;
-import org.gradle.internal.operations.OperationProgressEvent;
-import org.gradle.internal.operations.OperationStartEvent;
-import org.gradle.internal.service.scopes.Scope;
-import org.gradle.internal.service.scopes.ServiceScope;
-import org.gradle.util.internal.GFileUtils;
-import org.jspecify.annotations.Nullable;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.Closeable;
@@ -87,8 +70,29 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
-
-import static org.gradle.internal.Cast.uncheckedCast;
+import org.gradle.StartParameter;
+import org.gradle.api.attributes.Attribute;
+import org.gradle.api.attributes.AttributeContainer;
+import org.gradle.internal.Cast;
+import org.gradle.internal.IoActions;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.buildoption.DefaultInternalOptions;
+import org.gradle.internal.buildoption.InternalFlag;
+import org.gradle.internal.buildoption.InternalOption;
+import org.gradle.internal.buildoption.InternalOptions;
+import org.gradle.internal.buildoption.StringInternalOption;
+import org.gradle.internal.concurrent.Stoppable;
+import org.gradle.internal.operations.BuildOperationDescriptor;
+import org.gradle.internal.operations.BuildOperationListener;
+import org.gradle.internal.operations.BuildOperationListenerManager;
+import org.gradle.internal.operations.OperationFinishEvent;
+import org.gradle.internal.operations.OperationIdentifier;
+import org.gradle.internal.operations.OperationProgressEvent;
+import org.gradle.internal.operations.OperationStartEvent;
+import org.gradle.internal.service.scopes.Scope;
+import org.gradle.internal.service.scopes.ServiceScope;
+import org.gradle.util.internal.GFileUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Writes files describing the build operation stream for a build.
@@ -306,13 +310,13 @@ public class BuildOperationTrace implements Stoppable {
 
         private void writeSummaryTree(final List<BuildOperationRecord> roots) throws IOException {
             Path outputPath = withSuffix(basePath, "-tree.txt");
-            try (BufferedWriter writer = Files.newBufferedWriter(outputPath, StandardCharsets.UTF_8)) {
+            try (BufferedWriter writer = Files.newBufferedWriter(outputPath, UTF_8)) {
                 doWriteSummaryTree(roots, writer);
             }
         }
 
         private void doWriteSummaryTree(List<BuildOperationRecord> roots, BufferedWriter writer) throws IOException {
-            Deque<Queue<BuildOperationRecord>> stack = new ArrayDeque<>(Collections.singleton(new ArrayDeque<>(roots)));
+            Deque<Queue<BuildOperationRecord>> stack = new ArrayDeque<>(singleton(new ArrayDeque<>(roots)));
             StringBuilder stringBuilder = new StringBuilder();
 
             while (!stack.isEmpty()) {
@@ -458,9 +462,9 @@ public class BuildOperationTrace implements Stoppable {
                             start.displayName,
                             start.startTime,
                             finish.endTime,
-                            detailsMap == null ? null : Collections.unmodifiableMap(detailsMap),
+                            detailsMap == null ? null : unmodifiableMap(detailsMap),
                             start.detailsClassName,
-                            resultMap == null ? null : Collections.unmodifiableMap(resultMap),
+                            resultMap == null ? null : unmodifiableMap(resultMap),
                             finish.resultClassName,
                             finish.failureMsg,
                             pending.progress,
@@ -497,7 +501,7 @@ public class BuildOperationTrace implements Stoppable {
                     "Dangling pending operations",
                     0L, 0L, null, null, null, null, null,
                     danglingProgress,
-                    Collections.emptyList()
+                    emptyList()
                 ));
             }
 
@@ -573,7 +577,7 @@ public class BuildOperationTrace implements Stoppable {
              */
             ImmutableMap.Builder<Attribute<?>, ?> builder = ImmutableMap.builder();
             for (Attribute<?> attribute : attributeContainer.keySet()) {
-                builder.put(attribute, Cast.uncheckedCast(Objects.requireNonNull(attributeContainer.getAttribute(attribute))));
+                builder.put(attribute, Cast.uncheckedCast(requireNonNull(attributeContainer.getAttribute(attribute))));
             }
             serializers.defaultSerializeValue(builder.build(), gen);
         }

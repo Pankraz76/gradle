@@ -16,7 +16,12 @@
 
 package org.gradle.internal.resource.transfer;
 
+import static java.nio.charset.StandardCharsets.US_ASCII;
+
 import com.google.common.io.Files;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.internal.artifacts.ivyservice.ArtifactCacheLockingAccessCoordinator;
@@ -43,10 +48,6 @@ import org.gradle.util.internal.BuildCommencedTimeProvider;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class DefaultCacheAwareExternalResourceAccessor implements CacheAwareExternalResourceAccessor {
 
@@ -154,7 +155,7 @@ public class DefaultCacheAwareExternalResourceAccessor implements CacheAwareExte
             ExternalResourceName sha1Location = location.append(".sha1");
             ExternalResource resource = delegate.resource(sha1Location, revalidate);
             ExternalResourceReadResult<HashCode> result = resource.withContentIfPresent(inputStream -> {
-                String sha = IOUtils.toString(inputStream, StandardCharsets.US_ASCII);
+                String sha = IOUtils.toString(inputStream, US_ASCII);
                 // Servers may return SHA-1 with leading zeros stripped
                 sha = StringUtils.leftPad(sha, Hashing.sha1().getHexDigits(), '0');
                 return HashCode.fromString(sha);

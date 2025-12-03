@@ -16,6 +16,11 @@
 
 package org.gradle.tooling.internal.consumer;
 
+import static java.util.Collections.emptyList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.tooling.Failure;
 import org.gradle.tooling.events.FailureResult;
 import org.gradle.tooling.events.FinishEvent;
@@ -23,10 +28,6 @@ import org.gradle.tooling.events.OperationResult;
 import org.gradle.tooling.events.ProgressEvent;
 import org.gradle.tooling.events.ProgressListener;
 import org.jspecify.annotations.NullMarked;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @NullMarked
 public class BuildFailedProgressAdapter implements ProgressListener {
@@ -40,7 +41,7 @@ public class BuildFailedProgressAdapter implements ProgressListener {
             if (result instanceof FailureResult) {
                 this.failures = new ArrayList<>(((FailureResult) result).getFailures());
             } else {
-                this.failures = Collections.emptyList();
+                this.failures = emptyList();
             }
         }
     }

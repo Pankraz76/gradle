@@ -16,16 +16,18 @@
 
 package org.gradle.api.internal.tasks.compile.processing;
 
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
 
-import javax.lang.model.element.Element;
-import javax.lang.model.element.PackageElement;
-import javax.lang.model.element.TypeElement;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.PackageElement;
+import javax.lang.model.element.TypeElement;
+import org.jspecify.annotations.Nullable;
 
 public class ElementUtils {
 
@@ -38,11 +40,11 @@ public class ElementUtils {
     @SuppressWarnings("MixedMutabilityReturnType")
     public static Set<String> getTopLevelTypeNames(Collection<? extends Element> originatingElements) {
         if (originatingElements == null || originatingElements.size() == 0) {
-            return Collections.emptySet();
+            return emptySet();
         }
         if (originatingElements.size() == 1) {
             String topLevelTypeName = getTopLevelTypeName(originatingElements.iterator().next());
-            return Collections.singleton(topLevelTypeName);
+            return singleton(topLevelTypeName);
         }
         Set<String> typeNames = new LinkedHashSet<>();
         for (Element element : originatingElements) {

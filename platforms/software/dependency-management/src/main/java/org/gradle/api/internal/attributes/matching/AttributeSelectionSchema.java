@@ -16,14 +16,15 @@
 
 package org.gradle.api.internal.attributes.matching;
 
-import org.gradle.api.attributes.Attribute;
-import org.gradle.api.internal.attributes.ImmutableAttributes;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptyList;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import org.gradle.api.attributes.Attribute;
+import org.gradle.api.internal.attributes.ImmutableAttributes;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Exposes operations for working with attributes. These operations are intended to be
@@ -94,7 +95,7 @@ public interface AttributeSelectionSchema {
         }
 
         public PrecedenceResult(Collection<Integer> unsortedIndices) {
-            this(Collections.emptyList(), unsortedIndices);
+            this(emptyList(), unsortedIndices);
         }
 
         public List<Integer> getSortedOrder() {

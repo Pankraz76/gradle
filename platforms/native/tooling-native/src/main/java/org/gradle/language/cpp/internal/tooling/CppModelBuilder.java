@@ -16,7 +16,15 @@
 
 package org.gradle.language.cpp.internal.tooling;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableList;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.internal.project.ProjectInternal;
@@ -45,13 +53,6 @@ import org.gradle.plugins.ide.internal.tooling.model.LaunchableGradleTask;
 import org.gradle.tooling.internal.gradle.DefaultProjectIdentifier;
 import org.gradle.tooling.model.cpp.CppProject;
 import org.gradle.tooling.provider.model.ToolingModelBuilder;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class CppModelBuilder implements ToolingModelBuilder {
     @Override
@@ -139,7 +140,7 @@ public class CppModelBuilder implements ToolingModelBuilder {
     @SuppressWarnings("MixedMutabilityReturnType")
     private List<DefaultMacroDirective> macroDefines(CppCompile compileTask) {
         if (compileTask.getMacros().isEmpty()) {
-            return Collections.emptyList();
+            return emptyList();
         }
         List<DefaultMacroDirective> macros = new ArrayList<DefaultMacroDirective>(compileTask.getMacros().size());
         for (Map.Entry<String, String> entry : compileTask.getMacros().entrySet()) {

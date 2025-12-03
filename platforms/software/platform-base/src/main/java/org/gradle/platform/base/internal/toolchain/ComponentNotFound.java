@@ -16,10 +16,11 @@
 
 package org.gradle.platform.base.internal.toolchain;
 
-import org.gradle.internal.logging.text.DiagnosticsVisitor;
+import static java.util.Collections.emptyList;
 
 import java.util.Collection;
 import java.util.Collections;
+import org.gradle.internal.logging.text.DiagnosticsVisitor;
 
 public class ComponentNotFound<T> implements SearchResult<T> {
     private final String message;
@@ -27,7 +28,7 @@ public class ComponentNotFound<T> implements SearchResult<T> {
 
     public ComponentNotFound(String message) {
         this.message = message;
-        this.locations = Collections.emptyList();
+        this.locations = emptyList();
     }
 
     public ComponentNotFound(String message, Collection<String> locations) {

@@ -16,14 +16,15 @@
 
 package org.gradle.api.internal.provider.sources;
 
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
+
 import com.google.common.collect.ImmutableMap;
+import java.util.Map;
+import java.util.stream.Stream;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.ValueSource;
 import org.gradle.api.provider.ValueSourceParameters;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Map;
-import java.util.stream.Stream;
 
 public abstract class MapWithPrefixedKeysValueSource<P extends MapWithPrefixedKeysValueSource.Parameters> implements ValueSource<Map<String, String>, P> {
     public interface Parameters extends ValueSourceParameters {
@@ -42,6 +43,6 @@ public abstract class MapWithPrefixedKeysValueSource<P extends MapWithPrefixedKe
     protected Map<String, String> collectWithKeyPrefix(String prefix, Stream<Map.Entry<String, String>> items) {
         return items
             .filter(e -> e.getKey().startsWith(prefix))
-            .collect(ImmutableMap.toImmutableMap(Map.Entry::getKey, Map.Entry::getValue));
+            .collect(toImmutableMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }

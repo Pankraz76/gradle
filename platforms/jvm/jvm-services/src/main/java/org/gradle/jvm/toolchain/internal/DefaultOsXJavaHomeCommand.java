@@ -16,13 +16,10 @@
 
 package org.gradle.jvm.toolchain.internal;
 
-import com.google.common.annotations.VisibleForTesting;
-import org.gradle.process.ProcessExecutionException;
-import org.gradle.process.internal.ClientExecHandleBuilder;
-import org.gradle.process.internal.ClientExecHandleBuilderFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toSet;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -35,6 +32,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.gradle.process.ProcessExecutionException;
+import org.gradle.process.internal.ClientExecHandleBuilder;
+import org.gradle.process.internal.ClientExecHandleBuilderFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultOsXJavaHomeCommand implements OsXJavaHomeCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultOsXJavaHomeCommand.class);
@@ -56,7 +58,7 @@ public class DefaultOsXJavaHomeCommand implements OsXJavaHomeCommand {
                 return Stream.of(javaHome);
             }
             return Stream.empty();
-        }).map(File::new).collect(Collectors.toSet());
+        }).map(File::new).collect(toSet());
     }
 
     @Override
@@ -72,7 +74,7 @@ public class DefaultOsXJavaHomeCommand implements OsXJavaHomeCommand {
                 LOGGER.info(errorMessage);
             }
         }
-        return Collections.emptySet();
+        return emptySet();
     }
 
     @SuppressWarnings("DefaultCharset") //TODO: evaluate errorprone suppression (https://github.com/gradle/gradle/issues/35864)

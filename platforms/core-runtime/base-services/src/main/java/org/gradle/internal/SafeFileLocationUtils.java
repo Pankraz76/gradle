@@ -16,15 +16,15 @@
 
 package org.gradle.internal;
 
+import static java.nio.charset.StandardCharsets.US_ASCII;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Utf8;
 import com.google.common.collect.Streams;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import com.google.common.io.BaseEncoding;
-import org.apache.commons.io.FileSystem;
-import org.gradle.api.GradleException;
-
 import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -35,6 +35,8 @@ import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.stream.IntStream;
+import org.apache.commons.io.FileSystem;
+import org.gradle.api.GradleException;
 
 /**
  * Sibling class to {@link FileUtils}, focused on obtaining safe file locations and names.
@@ -54,7 +56,7 @@ public final class SafeFileLocationUtils {
      * and visually distinctive. Uses "cut" instead of "truncated" to keep it short.
      * </p>
      */
-    private static final byte[] TRUNCATED_PREFIX_BYTES = "_cut_".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] TRUNCATED_PREFIX_BYTES = "_cut_".getBytes(UTF_8);
 
     /**
      * The maximum file name length in bytes for most filesystems (e.g. ext4, NTFS).
@@ -183,7 +185,7 @@ public final class SafeFileLocationUtils {
 
         public String getCleanString() {
             // Decode new string if we had to replace characters, otherwise return original name
-            return hadIllegalChars ? new String(cleanBytes, StandardCharsets.UTF_8) : original;
+            return hadIllegalChars ? new String(cleanBytes, UTF_8) : original;
         }
     }
 
@@ -287,14 +289,14 @@ public final class SafeFileLocationUtils {
         // Copy hyphen
         result.put((byte) '-');
         // Copy hash
-        byte[] encodedBytes = encoded.getBytes(StandardCharsets.US_ASCII);
+        byte[] encodedBytes = encoded.getBytes(US_ASCII);
         result.put(encodedBytes);
         // Copy extensions if any
         if (extensions != null) {
             result.put(extensions);
         }
         // Decode back to string
-        return new String(result.array(), 0, result.position(), StandardCharsets.UTF_8);
+        return new String(result.array(), 0, result.position(), UTF_8);
     }
 
     /**

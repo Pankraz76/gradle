@@ -16,14 +16,10 @@
 
 package org.gradle.api.internal.file.collections;
 
-import com.google.common.base.Preconditions;
-import org.gradle.api.file.FileTreeElement;
-import org.gradle.api.file.FileVisitor;
-import org.gradle.api.file.RelativePath;
-import org.gradle.api.specs.Spec;
-import org.gradle.internal.nativeintegration.filesystem.FileSystem;
-import org.jspecify.annotations.Nullable;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Comparator.comparing;
 
+import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -33,10 +29,15 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
+import org.gradle.api.file.FileTreeElement;
+import org.gradle.api.file.FileVisitor;
+import org.gradle.api.file.RelativePath;
+import org.gradle.api.specs.Spec;
+import org.gradle.internal.nativeintegration.filesystem.FileSystem;
+import org.jspecify.annotations.Nullable;
 
 public class ReproducibleDirectoryWalker implements DirectoryWalker {
-    private final static Comparator<PathWithAttributes> FILES_FIRST = Comparator
-        .comparing(PathWithAttributes::isDirectory)
+    private final static Comparator<PathWithAttributes> FILES_FIRST = comparing(PathWithAttributes::isDirectory)
         .thenComparing(p -> p.path.toString());
 
     private final FileSystem fileSystem;
@@ -57,7 +58,7 @@ public class ReproducibleDirectoryWalker implements DirectoryWalker {
         }
 
         Path path = pathWithAttributes.path;
-        BasicFileAttributes attrs = Preconditions.checkNotNull(pathWithAttributes.attributes);
+        BasicFileAttributes attrs = checkNotNull(pathWithAttributes.attributes);
         if (attrs.isDirectory()) {
             FileVisitResult fvr = pathVisitor.preVisitDirectory(path, attrs);
             if (fvr == FileVisitResult.SKIP_SUBTREE || fvr == FileVisitResult.TERMINATE) {

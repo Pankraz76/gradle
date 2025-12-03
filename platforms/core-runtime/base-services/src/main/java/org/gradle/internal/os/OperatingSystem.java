@@ -15,8 +15,8 @@
  */
 package org.gradle.internal.os;
 
-import org.gradle.internal.scan.UsedByScanPlugin;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptyList;
+import static org.gradle.internal.FileUtils.withExtension;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,8 +25,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
-
-import static org.gradle.internal.FileUtils.withExtension;
+import org.gradle.internal.scan.UsedByScanPlugin;
+import org.jspecify.annotations.Nullable;
 
 
 @SuppressWarnings("ClassInitializationDeadlock")
@@ -171,7 +171,7 @@ public abstract class OperatingSystem {
     public List<File> getPath() {
         String path = System.getenv(getPathVar());
         if (path == null) {
-            return Collections.emptyList();
+            return emptyList();
         }
         List<File> entries = new ArrayList<File>();
         for (String entry : path.split(Pattern.quote(File.pathSeparator))) {

@@ -16,16 +16,9 @@
 
 package org.gradle.language.nativeplatform.internal.incremental;
 
-import com.google.common.collect.ImmutableSet;
-import org.gradle.internal.hash.HashCode;
-import org.gradle.internal.vfs.FileSystemAccess;
-import org.gradle.language.nativeplatform.internal.Include;
-import org.gradle.language.nativeplatform.internal.IncludeDirectives;
-import org.gradle.language.nativeplatform.internal.IncludeType;
-import org.jspecify.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.util.Collections.emptyList;
 
+import com.google.common.collect.ImmutableSet;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,6 +29,14 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.gradle.internal.hash.HashCode;
+import org.gradle.internal.vfs.FileSystemAccess;
+import org.gradle.language.nativeplatform.internal.Include;
+import org.gradle.language.nativeplatform.internal.IncludeDirectives;
+import org.gradle.language.nativeplatform.internal.IncludeType;
+import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IncrementalCompileFilesFactory {
 
@@ -272,8 +273,8 @@ public class IncrementalCompileFilesFactory {
             this.file = file;
             result = IncludeFileResolutionResult.NoMacroIncludes;
             includeDirectives = null;
-            included = Collections.emptyList();
-            edges = Collections.emptyList();
+            included = emptyList();
+            edges = emptyList();
             includeFileDirectives = null;
         }
 

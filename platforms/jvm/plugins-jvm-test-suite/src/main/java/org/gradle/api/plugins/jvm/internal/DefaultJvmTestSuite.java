@@ -16,6 +16,13 @@
 
 package org.gradle.api.plugins.jvm.internal;
 
+import static java.util.Collections.singleton;
+import static org.gradle.internal.Cast.uncheckedCast;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer;
 import org.gradle.api.artifacts.ConfigurationContainer;
@@ -53,13 +60,6 @@ import org.gradle.internal.instantiation.InstantiatorFactory;
 import org.gradle.internal.isolated.IsolationScheme;
 import org.gradle.internal.service.ServiceLookup;
 import org.gradle.internal.service.ServiceRegistry;
-
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.gradle.internal.Cast.uncheckedCast;
 
 /**
  * Default implementation of a {@link JvmTestSuite}.
@@ -316,7 +316,7 @@ public abstract class DefaultJvmTestSuite implements JvmTestSuite {
             IsolationScheme<JvmTestToolchain<?>, JvmTestToolchainParameters> isolationScheme = new IsolationScheme<>(uncheckedCast(JvmTestToolchain.class), JvmTestToolchainParameters.class, JvmTestToolchainParameters.None.class);
             Class<T> parametersType = isolationScheme.parameterTypeFor(type);
             T parameters = parametersType == null ? null : objectFactory.newInstance(parametersType);
-            ServiceLookup lookup = isolationScheme.servicesForImplementation(parameters, parentServices, Collections.singleton(DependencyFactory.class));
+            ServiceLookup lookup = isolationScheme.servicesForImplementation(parameters, parentServices, singleton(DependencyFactory.class));
             return new FrameworkCachingJvmTestToolchain<>(instantiatorFactory.decorate(lookup).newInstance(type));
         }
     }

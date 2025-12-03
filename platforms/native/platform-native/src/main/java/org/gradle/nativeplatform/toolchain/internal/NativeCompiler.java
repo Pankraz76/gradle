@@ -16,7 +16,13 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
+import static java.util.Collections.singletonList;
+
 import com.google.common.collect.Iterables;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.Action;
 import org.gradle.api.Transformer;
 import org.gradle.api.tasks.WorkResult;
@@ -27,11 +33,6 @@ import org.gradle.internal.operations.BuildOperationQueue;
 import org.gradle.internal.os.OperatingSystem;
 import org.gradle.internal.work.WorkerLeaseService;
 import org.gradle.nativeplatform.internal.CompilerOutputFileNamingSchemeFactory;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public abstract class NativeCompiler<T extends NativeCompileSpec> extends AbstractCompiler<T> {
     private final Transformer<T, T> specTransformer;
@@ -72,7 +73,7 @@ public abstract class NativeCompiler<T extends NativeCompileSpec> extends Abstra
     }
 
     protected List<String> getSourceArgs(File sourceFile) {
-        return Collections.singletonList(sourceFile.getAbsolutePath());
+        return singletonList(sourceFile.getAbsolutePath());
     }
 
     protected abstract List<String> getOutputArgs(T spec, File outputFile);

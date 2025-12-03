@@ -16,16 +16,17 @@
 
 package org.gradle.api.internal.tasks.compile.incremental.recomp;
 
+import static java.util.stream.Collectors.toSet;
+
 import com.google.common.collect.ImmutableSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.internal.file.FileOperations;
 import org.gradle.api.internal.tasks.compile.GroovyJavaJointCompileSpec;
 import org.gradle.api.internal.tasks.compile.JavaCompileSpec;
 import org.gradle.internal.file.Deleter;
 import org.gradle.work.FileChange;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class GroovyRecompilationSpecProvider extends AbstractRecompilationSpecProvider {
 
@@ -62,7 +63,7 @@ public class GroovyRecompilationSpecProvider extends AbstractRecompilationSpecPr
             .flatMap(classToCompile -> sourceFileClassNameConverter.getRelativeSourcePaths(classToCompile).stream())
             .filter(sourcePath -> sourcePath.endsWith(".java"))
             .flatMap(sourcePath -> sourceFileClassNameConverter.getClassNames(sourcePath).stream())
-            .collect(Collectors.toSet());
+            .collect(toSet());
         if (!classesWithJavaSource.isEmpty()) {
             // We need to collect just accessible dependents, since it seems
             // private references to classes are not problematic when Groovy compiler loads a class

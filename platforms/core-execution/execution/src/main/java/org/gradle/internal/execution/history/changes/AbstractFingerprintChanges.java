@@ -16,7 +16,11 @@
 
 package org.gradle.internal.execution.history.changes;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.ImmutableMap;
+import java.util.Objects;
+import java.util.SortedMap;
 import org.gradle.internal.fingerprint.CurrentFileCollectionFingerprint;
 import org.gradle.internal.fingerprint.FileCollectionFingerprint;
 import org.gradle.internal.fingerprint.FingerprintingStrategy;
@@ -24,9 +28,6 @@ import org.gradle.internal.fingerprint.impl.AbsolutePathFingerprintingStrategy;
 import org.gradle.internal.fingerprint.impl.IgnoredPathFingerprintingStrategy;
 import org.gradle.internal.fingerprint.impl.NameOnlyFingerprintingStrategy;
 import org.gradle.internal.fingerprint.impl.RelativePathFingerprintingStrategy;
-
-import java.util.Objects;
-import java.util.SortedMap;
 
 public abstract class AbstractFingerprintChanges implements ChangeContainer {
     private static final ImmutableMap<String, FingerprintCompareStrategy> COMPARE_STRATEGY_MAPPING = ImmutableMap.<String, FingerprintCompareStrategy>builder()
@@ -72,6 +73,6 @@ public abstract class AbstractFingerprintChanges implements ChangeContainer {
 
     protected FingerprintCompareStrategy determineCompareStrategy(CurrentFileCollectionFingerprint currentFingerprint) {
         FingerprintCompareStrategy strategy = COMPARE_STRATEGY_MAPPING.get(currentFingerprint.getStrategyIdentifier());
-        return Objects.requireNonNull(strategy);
+        return requireNonNull(strategy);
     }
 }

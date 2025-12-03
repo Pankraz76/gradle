@@ -16,6 +16,13 @@
 
 package org.gradle.tooling.internal.provider.connection;
 
+import static java.util.Collections.emptyList;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.gradle.api.logging.LogLevel;
 import org.gradle.api.logging.configuration.LoggingConfiguration;
 import org.gradle.cli.CommandLineConverter;
@@ -25,14 +32,6 @@ import org.gradle.cli.SystemPropertiesCommandLineConverter;
 import org.gradle.internal.logging.LoggingConfigurationBuildOptions;
 import org.gradle.internal.logging.LoggingConfigurationBuildOptions.LogLevelOption;
 import org.jspecify.annotations.NonNull;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import static java.util.Optional.empty;
 
 public class BuildLogLevelMixIn {
     private final LogLevel logLevel;
@@ -56,7 +55,7 @@ public class BuildLogLevelMixIn {
         propertiesCommandLineConverter.configure(parser);
 
         List<String> arguments = parameters.getArguments();
-        ParsedCommandLine parsedCommandLine = parser.parse(arguments == null ? Collections.emptyList() : arguments);
+        ParsedCommandLine parsedCommandLine = parser.parse(arguments == null ? emptyList() : arguments);
 
         //configure verbosely only if arguments do not specify any log level.
         return getLogLevelFromCommandLineOptions(loggingBuildOptions, parsedCommandLine)
@@ -88,7 +87,7 @@ public class BuildLogLevelMixIn {
                 // fall through
             }
         }
-        return empty();
+        return Optional.empty();
 
     }
 }

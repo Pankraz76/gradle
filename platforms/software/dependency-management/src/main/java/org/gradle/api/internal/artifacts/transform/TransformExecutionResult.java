@@ -16,12 +16,13 @@
 
 package org.gradle.api.internal.artifacts.transform;
 
-import com.google.common.collect.ImmutableList;
-import org.gradle.api.InvalidUserDataException;
-import org.gradle.api.file.RelativePath;
+import static com.google.common.collect.ImmutableList.toImmutableList;
 
+import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.util.function.Consumer;
+import org.gradle.api.InvalidUserDataException;
+import org.gradle.api.file.RelativePath;
 
 /**
  * The result of running a single transform action on a single input artifact.
@@ -112,7 +113,7 @@ public abstract class TransformExecutionResult {
                 ImmutableList<File> resolvedOutputs = executionOutputs.stream()
                     .map(ProducedExecutionOutput.class::cast)
                     .map(output -> output.resolveForWorkspaceDirectly(workspaceDir))
-                    .collect(ImmutableList.toImmutableList());
+                    .collect(toImmutableList());
                 return inputArtifact -> resolvedOutputs;
             }
         }
@@ -130,10 +131,10 @@ public abstract class TransformExecutionResult {
             public TransformWorkspaceResult resolveForWorkspace(File workspaceDir) {
                 ImmutableList<TransformWorkspaceOutput> resolvedOutputs = executionOutputs.stream()
                     .map(output -> output.resolveForWorkspace(workspaceDir))
-                    .collect(ImmutableList.toImmutableList());
+                    .collect(toImmutableList());
                 return inputArtifact -> resolvedOutputs.stream()
                     .map(output -> output.resolveForInputArtifact(inputArtifact))
-                    .collect(ImmutableList.toImmutableList());
+                    .collect(toImmutableList());
             }
         }
 

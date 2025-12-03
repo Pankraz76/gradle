@@ -16,21 +16,22 @@
 
 package org.gradle.api.internal.tasks.compile.processing;
 
-import org.gradle.api.internal.tasks.compile.incremental.processing.AnnotationProcessorResult;
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource;
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toSet;
+import static org.gradle.api.internal.tasks.compile.incremental.processing.IncrementalAnnotationProcessorType.AGGREGATING;
 
-import javax.annotation.processing.RoundEnvironment;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
-import javax.tools.JavaFileManager;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static org.gradle.api.internal.tasks.compile.incremental.processing.IncrementalAnnotationProcessorType.AGGREGATING;
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
+import javax.tools.JavaFileManager;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource;
+import org.gradle.api.internal.tasks.compile.incremental.processing.AnnotationProcessorResult;
 
 /**
  * The strategy used for aggregating annotation processors.
@@ -70,14 +71,14 @@ class AggregatingProcessingStrategy extends IncrementalProcessingStrategy {
 
     private static Set<String> namesOfElements(Set<? extends Element> orig) {
         if (orig == null || orig.isEmpty()) {
-            return Collections.emptySet();
+            return emptySet();
         }
         return orig
             .stream()
             .map(ElementUtils::getTopLevelType)
             .map(ElementUtils::getElementName)
             .filter(Objects::nonNull)
-            .collect(Collectors.toSet());
+            .collect(toSet());
     }
 
     @Override

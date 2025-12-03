@@ -16,18 +16,14 @@
 
 package org.gradle.api.internal.tasks.testing.junit.result;
 
+import static java.time.format.DateTimeFormatter.ISO_INSTANT;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singleton;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
-import org.gradle.api.internal.tasks.testing.DefaultTestFileAttachmentDataEvent;
-import org.gradle.api.internal.tasks.testing.DefaultTestKeyValueDataEvent;
-import org.gradle.api.internal.tasks.testing.TestMetadataEvent;
-import org.gradle.api.internal.tasks.testing.results.serializable.SerializableFailure;
-import org.gradle.api.tasks.testing.TestOutputEvent;
-import org.gradle.api.tasks.testing.TestResult;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.xml.SimpleXmlWriter;
-import org.gradle.util.internal.TextUtil;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
@@ -39,8 +35,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static java.time.format.DateTimeFormatter.ISO_INSTANT;
+import org.gradle.api.internal.tasks.testing.DefaultTestFileAttachmentDataEvent;
+import org.gradle.api.internal.tasks.testing.DefaultTestKeyValueDataEvent;
+import org.gradle.api.internal.tasks.testing.TestMetadataEvent;
+import org.gradle.api.internal.tasks.testing.results.serializable.SerializableFailure;
+import org.gradle.api.tasks.testing.TestOutputEvent;
+import org.gradle.api.tasks.testing.TestResult;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.xml.SimpleXmlWriter;
+import org.gradle.util.internal.TextUtil;
 
 public class JUnitXmlResultWriter {
 
@@ -75,7 +78,7 @@ public class JUnitXmlResultWriter {
                 .attribute("time", String.valueOf(result.getDuration() / 1000.0));
 
             writer.startElement("properties");
-            List<DefaultTestKeyValueDataEvent> keyValues = result.getMetadatas().stream().filter(DefaultTestKeyValueDataEvent.class::isInstance).map(DefaultTestKeyValueDataEvent.class::cast).collect(Collectors.toList());
+            List<DefaultTestKeyValueDataEvent> keyValues = result.getMetadatas().stream().filter(DefaultTestKeyValueDataEvent.class::isInstance).map(DefaultTestKeyValueDataEvent.class::cast).collect(toList());
             writeProperties(writer, keyValues);
             writer.endElement();
 
@@ -88,9 +91,9 @@ public class JUnitXmlResultWriter {
                 writeTestCasesWithDiscreteRerunHandling(writer, methodResults, className, classId);
             }
 
-            List<DefaultTestFileAttachmentDataEvent> fileAttachments = result.getMetadatas().stream().filter(DefaultTestFileAttachmentDataEvent.class::isInstance).map(DefaultTestFileAttachmentDataEvent.class::cast).collect(Collectors.toList());
+            List<DefaultTestFileAttachmentDataEvent> fileAttachments = result.getMetadatas().stream().filter(DefaultTestFileAttachmentDataEvent.class::isInstance).map(DefaultTestFileAttachmentDataEvent.class::cast).collect(toList());
             writeOutputs(writer, "system-out", classId, options.includeSystemOutLog, !options.outputPerTestCase, TestOutputEvent.Destination.StdOut, fileAttachments);
-            writeOutputs(writer, "system-err", classId, options.includeSystemErrLog, !options.outputPerTestCase, TestOutputEvent.Destination.StdErr, Collections.emptyList());
+            writeOutputs(writer, "system-err", classId, options.includeSystemErrLog, !options.outputPerTestCase, TestOutputEvent.Destination.StdErr, emptyList());
 
             writer.endElement();
         } catch (IOException e) {
@@ -164,9 +167,9 @@ public class JUnitXmlResultWriter {
             public Iterable<? extends TestCaseExecution> apply(final TestMethodResult execution) {
                 switch (execution.getResultType()) {
                     case SUCCESS:
-                        return Collections.singleton(success(classId, execution.getId(), execution.getMetadatas()));
+                        return singleton(success(classId, execution.getId(), execution.getMetadatas()));
                     case SKIPPED:
-                        return Collections.singleton(skipped(classId, execution.getId(), execution.getAssumptionFailure(), execution.getMetadatas()));
+                        return singleton(skipped(classId, execution.getId(), execution.getAssumptionFailure(), execution.getMetadatas()));
                     case FAILURE:
                         return failures(classId, execution, allFailed
                             ? execution == firstExecution ? FailureType.FAILURE : FailureType.RERUN_FAILURE
@@ -195,7 +198,7 @@ public class JUnitXmlResultWriter {
             String name = methodResult.getDisplayName();
             Integer index = latestGroupForName.get(name);
             if (index == null) {
-                List<TestMethodResult> executions = Collections.singletonList(methodResult);
+                List<TestMethodResult> executions = singletonList(methodResult);
                 groupedExecutions.add(executions);
                 if (methodResult.getResultType() == TestResult.ResultType.FAILURE) {
                     latestGroupForName.put(name, groupedExecutions.size() - 1);
@@ -231,9 +234,9 @@ public class JUnitXmlResultWriter {
             case FAILURE:
                 return failures(classId, methodResult, FailureType.FAILURE);
             case SKIPPED:
-                return Collections.singleton(skipped(classId, methodResult.getId(), methodResult.getAssumptionFailure(), methodResult.getMetadatas()));
+                return singleton(skipped(classId, methodResult.getId(), methodResult.getAssumptionFailure(), methodResult.getMetadatas()));
             case SUCCESS:
-                return Collections.singleton(success(classId, methodResult.getId(), methodResult.getMetadatas()));
+                return singleton(success(classId, methodResult.getId(), methodResult.getMetadatas()));
             default:
                 throw new IllegalStateException("Unexpected result type: " + methodResult.getResultType());
         }
@@ -265,7 +268,7 @@ public class JUnitXmlResultWriter {
         }
 
         protected void write(SimpleXmlWriter writer) throws IOException {
-            List<DefaultTestKeyValueDataEvent> keyValues = metadatas.stream().filter(DefaultTestKeyValueDataEvent.class::isInstance).map(DefaultTestKeyValueDataEvent.class::cast).collect(Collectors.toList());
+            List<DefaultTestKeyValueDataEvent> keyValues = metadatas.stream().filter(DefaultTestKeyValueDataEvent.class::isInstance).map(DefaultTestKeyValueDataEvent.class::cast).collect(toList());
             if (!keyValues.isEmpty()) {
                 writer.startElement("properties");
                 writeProperties(writer, keyValues);
@@ -274,7 +277,7 @@ public class JUnitXmlResultWriter {
         }
 
         protected void writeOutput(SimpleXmlWriter writer) throws IOException {
-            List<DefaultTestFileAttachmentDataEvent> fileAttachments = metadatas.stream().filter(DefaultTestFileAttachmentDataEvent.class::isInstance).map(DefaultTestFileAttachmentDataEvent.class::cast).collect(Collectors.toList());
+            List<DefaultTestFileAttachmentDataEvent> fileAttachments = metadatas.stream().filter(DefaultTestFileAttachmentDataEvent.class::isInstance).map(DefaultTestFileAttachmentDataEvent.class::cast).collect(toList());
             boolean mayWrite = (options.includeSystemOutLog && outputProvider.has(TestOutputEvent.Destination.StdOut)) || !fileAttachments.isEmpty();
             if (mayWrite) {
                 writer.startElement("system-out");
@@ -420,7 +423,7 @@ public class JUnitXmlResultWriter {
         List<SerializableFailure> failures = methodResult.getFailures();
         if (failures.isEmpty()) {
             // This can happen with a failing engine. For now, we just ignore this.
-            return Collections.emptyList();
+            return emptyList();
         }
         final SerializableFailure firstFailure = failures.get(0);
         return Iterables.transform(failures, new Function<SerializableFailure, TestCaseExecution>() {

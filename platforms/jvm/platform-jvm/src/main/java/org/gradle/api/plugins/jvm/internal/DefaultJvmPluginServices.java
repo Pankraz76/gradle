@@ -15,6 +15,12 @@
  */
 package org.gradle.api.plugins.jvm.internal;
 
+import static java.util.stream.Collectors.toList;
+
+import java.io.File;
+import java.util.Date;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ConfigurationPublications;
@@ -35,11 +41,6 @@ import org.gradle.api.tasks.SourceSet;
 import org.gradle.internal.Cast;
 import org.gradle.internal.instantiation.InstanceGenerator;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.Date;
-import java.util.stream.Collectors;
 
 public class DefaultJvmPluginServices implements JvmPluginServices {
     private final ObjectFactory objectFactory;
@@ -147,7 +148,7 @@ public class DefaultJvmPluginServices implements JvmPluginServices {
             FileCollection classesDirs = sourceSet.getOutput().getClassesDirs();
             return classesDirs.getFiles().stream()
                 .map(file -> new LazyJavaDirectoryArtifact(taskDependencyFactory, ArtifactTypeDefinition.JVM_CLASS_DIRECTORY, classesDirs, providerFactory.provider(() -> file)))
-                .collect(Collectors.toList());
+                .collect(toList());
         });
         return variant;
     }

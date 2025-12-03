@@ -16,9 +16,10 @@
 
 package org.gradle.api.testing.toolchains.internal;
 
-import org.gradle.api.artifacts.Dependency;
+import static java.util.Collections.singletonList;
 
 import java.util.Collections;
+import org.gradle.api.artifacts.Dependency;
 
 /**
  * A {@link JUnitPlatformTestToolchain} that uses the JUnit Jupiter test engine.
@@ -34,6 +35,6 @@ abstract public class JUnitJupiterTestToolchain extends JUnitPlatformTestToolcha
 
     @Override
     public Iterable<Dependency> getImplementationDependencies() {
-        return Collections.singletonList(getDependencyFactory().create(GROUP_NAME + ":" + getParameters().getJupiterVersion().get()));
+        return singletonList(getDependencyFactory().create(GROUP_NAME + ":" + getParameters().getJupiterVersion().get()));
     }
 }

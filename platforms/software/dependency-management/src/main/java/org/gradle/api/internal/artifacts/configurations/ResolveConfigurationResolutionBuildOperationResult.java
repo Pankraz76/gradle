@@ -16,8 +16,17 @@
 
 package org.gradle.api.internal.artifacts.configurations;
 
+import static java.util.Collections.singletonMap;
+import static org.gradle.api.internal.artifacts.result.DefaultResolvedComponentResult.eachElement;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.function.Supplier;
 import org.gradle.api.Named;
 import org.gradle.api.artifacts.result.ResolvedComponentResult;
 import org.gradle.api.attributes.Attribute;
@@ -30,15 +39,6 @@ import org.gradle.api.internal.attributes.ImmutableAttributes;
 import org.gradle.internal.Actions;
 import org.gradle.internal.lazy.Lazy;
 import org.gradle.internal.operations.trace.CustomOperationTraceSerialization;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.function.Supplier;
-
-import static org.gradle.api.internal.artifacts.result.DefaultResolvedComponentResult.eachElement;
 
 class ResolveConfigurationResolutionBuildOperationResult implements ResolveConfigurationDependenciesBuildOperationType.Result, CustomOperationTraceSerialization {
     private final Supplier<ResolvedDependencyGraph> graphSource;
@@ -71,7 +71,7 @@ class ResolveConfigurationResolutionBuildOperationResult implements ResolveConfi
         final Map<String, Map<String, String>> components = new HashMap<>();
         eachElement(getRootComponent(), component -> components.put(
             component.getId().getDisplayName(),
-            Collections.singletonMap("repoId", getRepositoryId(component))
+            singletonMap("repoId", getRepositoryId(component))
         ), Actions.doNothing(), new HashSet<>());
         model.put("components", components);
 

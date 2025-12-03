@@ -16,16 +16,17 @@
 
 package org.gradle.internal.logging.events;
 
+import static java.util.Collections.singletonList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.logging.LogLevel;
 import org.gradle.internal.SystemProperties;
 import org.gradle.internal.logging.text.StyledTextOutput;
 import org.gradle.internal.operations.OperationIdentifier;
 import org.gradle.internal.operations.logging.LogEventLevel;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class StyledTextOutputEvent extends RenderableOutputEvent implements org.gradle.internal.logging.events.operations.StyledTextBuildOperationProgressDetails {
@@ -34,7 +35,7 @@ public class StyledTextOutputEvent extends RenderableOutputEvent implements org.
     private final List<Span> spans;
 
     public StyledTextOutputEvent(long timestamp, String category, LogLevel logLevel, @Nullable OperationIdentifier buildOperationIdentifier, String text) {
-        this(timestamp, category, logLevel, buildOperationIdentifier, Collections.singletonList(new Span(StyledTextOutput.Style.Normal, text)));
+        this(timestamp, category, logLevel, buildOperationIdentifier, singletonList(new Span(StyledTextOutput.Style.Normal, text)));
     }
 
     public StyledTextOutputEvent(long timestamp, String category, LogLevel logLevel, @Nullable OperationIdentifier buildOperationIdentifier, List<Span> spans) {

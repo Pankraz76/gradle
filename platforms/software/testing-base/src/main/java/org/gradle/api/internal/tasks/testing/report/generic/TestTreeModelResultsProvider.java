@@ -16,12 +16,24 @@
 
 package org.gradle.api.internal.tasks.testing.report.generic;
 
+import static java.util.Collections.singletonList;
+import static java.util.Comparator.comparing;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 import org.gradle.api.Action;
 import org.gradle.api.internal.tasks.testing.junit.result.TestClassResult;
 import org.gradle.api.internal.tasks.testing.junit.result.TestMethodResult;
@@ -38,16 +50,6 @@ import org.gradle.api.tasks.testing.TestOutputEvent;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.serialize.Serializer;
 import org.jspecify.annotations.Nullable;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * A {@link TestResultsProvider} that provides results from a {@link TestTreeModel}. This handles condensing the multiple
@@ -67,7 +69,7 @@ public final class TestTreeModelResultsProvider implements TestResultsProvider {
         SerializableTestResultStore resultsStore = new SerializableTestResultStore(resultsDir);
         Serializer<TestOutputEvent> testOutputEventSerializer = TestEventSerializer.create().build(TestOutputEvent.class);
         try  {
-            TestTreeModel root = TestTreeModel.loadModelFromStores(Collections.singletonList(resultsStore));
+            TestTreeModel root = TestTreeModel.loadModelFromStores(singletonList(resultsStore));
             TestTreeModelResultsProvider resultsProvider = new TestTreeModelResultsProvider(root, resultsStore.createOutputReader(testOutputEventSerializer));
             resultsConsumer.accept(resultsProvider);
         } catch (Exception e) {
@@ -91,7 +93,7 @@ public final class TestTreeModelResultsProvider implements TestResultsProvider {
     }
 
     private static final Comparator<PerRootInfo> PER_ROOT_INFO_BY_START_TIME =
-        Comparator.comparing(leaf -> leaf.getResults().get(0).getStartTime());
+        comparing(leaf -> leaf.getResults().get(0).getStartTime());
 
     private static Map<Long, ClassNode> createClasses(TestTreeModel root) {
         Map<org.gradle.util.Path, TestTreeModel> parentOfPath = buildParentOfPathMap(root);

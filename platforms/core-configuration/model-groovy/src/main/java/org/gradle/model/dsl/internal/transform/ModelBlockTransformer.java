@@ -16,6 +16,11 @@
 
 package org.gradle.model.dsl.internal.transform;
 
+import static java.util.Collections.singletonList;
+
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
 import org.codehaus.groovy.ast.expr.MethodCallExpression;
 import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.control.CompilationFailedException;
@@ -27,10 +32,6 @@ import org.gradle.groovy.scripts.internal.AstUtils;
 import org.gradle.groovy.scripts.internal.ScriptBlock;
 import org.jspecify.annotations.Nullable;
 
-import java.net.URI;
-import java.util.Collections;
-import java.util.List;
-
 public class ModelBlockTransformer extends AbstractScriptTransformer {
     @Override
     protected int getPhase() {
@@ -38,7 +39,7 @@ public class ModelBlockTransformer extends AbstractScriptTransformer {
     }
 
     public static final String MODEL = "model";
-    private static final List<String> SCRIPT_BLOCK_NAMES = Collections.singletonList(MODEL);
+    private static final List<String> SCRIPT_BLOCK_NAMES = singletonList(MODEL);
 
     public static final String NON_LITERAL_CLOSURE_TO_TOP_LEVEL_MODEL_MESSAGE = "The top level model() method can only be called with a literal closure argument";
 

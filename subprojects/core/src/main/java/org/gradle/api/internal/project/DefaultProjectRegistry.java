@@ -15,16 +15,18 @@
  */
 package org.gradle.api.internal.project;
 
-import org.gradle.internal.scan.UsedByScanPlugin;
-import org.gradle.internal.service.scopes.Scope;
-import org.gradle.internal.service.scopes.ServiceScope;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.unmodifiableSet;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.gradle.internal.scan.UsedByScanPlugin;
+import org.gradle.internal.service.scopes.Scope;
+import org.gradle.internal.service.scopes.ServiceScope;
+import org.jspecify.annotations.Nullable;
 
 // This default implementation is referenced by the Develocity plugin in ImportJUnitXmlReports.
 // We must leave this type in until we no longer support a Develocity plugin version that use this API.
@@ -76,13 +78,13 @@ public class DefaultProjectRegistry implements ProjectRegistry, HoldsProjectStat
         if (projects.get(path) != null) {
             result.add(projects.get(path));
         }
-        return Collections.unmodifiableSet(result);
+        return unmodifiableSet(result);
     }
 
     @Override
     public Set<ProjectInternal> getSubProjects(String path) {
         Set<ProjectInternal> subprojects = subProjects.get(path);
-        return subprojects != null && !subprojects.isEmpty() ? Collections.unmodifiableSet(subprojects) : Collections.emptySet();
+        return subprojects != null && !subprojects.isEmpty() ? unmodifiableSet(subprojects) : emptySet();
     }
 
 }

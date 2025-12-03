@@ -15,7 +15,15 @@
  */
 package org.gradle.api.internal.artifacts;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.ImmutableSet;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.gradle.api.Named;
 import org.gradle.api.attributes.Attribute;
 import org.gradle.api.attributes.Bundling;
@@ -27,12 +35,6 @@ import org.gradle.api.attributes.java.TargetJvmEnvironment;
 import org.gradle.api.attributes.java.TargetJvmVersion;
 import org.gradle.api.internal.attributes.AttributeDescriber;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Describes JVM ecosystem related attributes.
@@ -142,8 +144,8 @@ import java.util.stream.Collectors;
     private void processExtraAttributes(Map<Attribute<?>, ?> attributes, StringBuilder sb) {
         List<Attribute<?>> describableAttributes = attributes.keySet().stream()
             .filter(a -> !isDescribable(a))
-            .sorted(Comparator.comparing(Attribute::getName))
-            .collect(Collectors.toList());
+            .sorted(comparing(Attribute::getName))
+            .collect(toList());
 
         if (!describableAttributes.isEmpty()) {
             sb.append(", as well as ");

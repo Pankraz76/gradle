@@ -15,6 +15,24 @@
  */
 package org.gradle.api.tasks.diagnostics;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Description;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Header;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Identifier;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Info;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.UserInput;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.Incubating;
 import org.gradle.api.Project;
@@ -33,23 +51,6 @@ import org.gradle.plugin.software.internal.ProjectFeatureImplementation;
 import org.gradle.plugin.software.internal.ProjectFeatureSupportInternal;
 import org.gradle.util.Path;
 import org.gradle.work.DisableCachingByDefault;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Description;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Header;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Identifier;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Info;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.UserInput;
 
 /**
  * <p>Displays a list of projects in the build. An instance of this type is used when you execute the {@code projects}
@@ -138,7 +139,7 @@ public abstract class ProjectReportTask extends AbstractProjectBasedReportTask<P
         return ((ProjectInternal) project).getOwner().getChildProjects().stream()
             .sorted(ProjectOrderingUtil::compare)
             .map(state -> calculateReportModelFor(state.getMutableModel()))
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private List<Path> calculateIncludedBuildIdentityPaths() {
@@ -165,8 +166,8 @@ public abstract class ProjectReportTask extends AbstractProjectBasedReportTask<P
     private void renderProjectTypeInfo(Map<ProjectDetails, ProjectReportModel> modelsByProjectDetails) {
         List<ProjectFeatureImplementation<?, ?>> projectFeatures = modelsByProjectDetails.values().stream()
             .flatMap(model -> model.getAllProjectTypes().stream())
-            .sorted(Comparator.comparing(ProjectFeatureImplementation::getFeatureName))
-            .collect(Collectors.toList());
+            .sorted(comparing(ProjectFeatureImplementation::getFeatureName))
+            .collect(toList());
 
         StyledTextOutput textOutput = getRenderer().getTextOutput();
         if (!projectFeatures.isEmpty()) {
@@ -270,7 +271,7 @@ public abstract class ProjectReportTask extends AbstractProjectBasedReportTask<P
             renderSectionTitle("Project locations", textOutput);
             textOutput.println();
 
-            projectLocations.sort(Comparator.comparing(ProjectDetails::getDisplayName));
+            projectLocations.sort(comparing(ProjectDetails::getDisplayName));
             for (ProjectDetails project : projectLocations) {
                 textOutput.withStyle(Identifier).text(project.getDisplayName());
                 textOutput.withStyle(Description).text(" - ").text(File.separatorChar).text(project.getRelativeProjectDir());

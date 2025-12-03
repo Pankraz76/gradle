@@ -15,6 +15,11 @@
  */
 package org.gradle.internal.service.scopes;
 
+import static java.util.Collections.singletonMap;
+import static org.gradle.internal.execution.steps.AfterExecutionOutputFilter.NO_FILTER;
+
+import java.util.Collections;
+import java.util.function.Supplier;
 import org.gradle.StartParameter;
 import org.gradle.api.internal.cache.StringInterner;
 import org.gradle.api.internal.changedetection.state.DefaultExecutionHistoryCacheAccess;
@@ -90,11 +95,6 @@ import org.gradle.internal.vfs.FileSystemAccess;
 import org.gradle.internal.vfs.VirtualFileSystem;
 import org.gradle.util.GradleVersion;
 
-import java.util.Collections;
-import java.util.function.Supplier;
-
-import static org.gradle.internal.execution.steps.AfterExecutionOutputFilter.NO_FILTER;
-
 public class ExecutionBuildServices implements ServiceRegistrationProvider {
     @Provides
     ExecutionHistoryCacheAccess createCacheAccess(BuildScopedCacheBuilderFactory cacheBuilderFactory) {
@@ -122,7 +122,7 @@ public class ExecutionBuildServices implements ServiceRegistrationProvider {
             .createCrossVersionCacheBuilder("buildOutputCleanup")
             .withDisplayName("Build Output Cleanup Cache")
             .withInitialLockMode(FileLockManager.LockMode.OnDemand)
-            .withProperties(Collections.singletonMap("gradle.version", GradleVersion.current().getVersion()))
+            .withProperties(singletonMap("gradle.version", GradleVersion.current().getVersion()))
             .open();
         return new DefaultOutputFilesRepository(cacheAccess, inMemoryCacheDecoratorFactory);
     }

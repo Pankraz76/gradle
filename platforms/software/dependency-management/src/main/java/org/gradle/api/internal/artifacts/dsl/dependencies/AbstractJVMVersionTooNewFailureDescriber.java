@@ -16,6 +16,15 @@
 
 package org.gradle.api.internal.artifacts.dsl.dependencies;
 
+import static java.util.Comparator.comparing;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.attributes.Attribute;
 import org.gradle.api.attributes.AttributeContainer;
@@ -24,14 +33,8 @@ import org.gradle.api.attributes.java.TargetJvmVersion;
 import org.gradle.internal.component.resolution.failure.ResolutionCandidateAssessor;
 import org.gradle.internal.component.resolution.failure.describer.AbstractResolutionFailureDescriber;
 import org.gradle.internal.component.resolution.failure.describer.ResolutionFailureDescriber;
-import org.gradle.internal.component.resolution.failure.type.NoCompatibleVariantsFailure;
 import org.gradle.internal.component.resolution.failure.interfaces.ResolutionFailure;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import org.gradle.internal.component.resolution.failure.type.NoCompatibleVariantsFailure;
 
 /**
  * Abstract base class for building {@link ResolutionFailureDescriber}s that describe {@link ResolutionFailure}s caused by
@@ -58,7 +61,7 @@ public abstract class AbstractJVMVersionTooNewFailureDescriber extends AbstractR
     private boolean allLibraryCandidatesIncompatibleDueToJVMVersionTooLow(NoCompatibleVariantsFailure failure) {
         List<ResolutionCandidateAssessor.AssessedCandidate> libraryCandidates = failure.getCandidates().stream()
             .filter(this::isLibraryCandidate)
-            .collect(Collectors.toList());
+            .collect(toList());
         if (!libraryCandidates.isEmpty()) {
             boolean requestingJDKVersion = failure.getRequestedAttributes().contains(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE);
             boolean allIncompatibleDueToJDKVersion = libraryCandidates.stream().allMatch(this::isJVMVersionAttributeIncompatible);
@@ -74,14 +77,14 @@ public abstract class AbstractJVMVersionTooNewFailureDescriber extends AbstractR
             .map(this::findMinJVMSupported)
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .min(Comparator.comparing(JavaVersion::getMajorVersion));
+            .min(comparing(JavaVersion::getMajorVersion));
     }
 
     private Optional<JavaVersion> findMinJVMSupported(ResolutionCandidateAssessor.AssessedCandidate candidate) {
         return candidate.getIncompatibleAttributes().stream()
             .filter(this::isJVMVersionAttribute)
-            .map(jvmVersionAttribute -> JavaVersion.toVersion(Objects.requireNonNull(jvmVersionAttribute.getProvided())))
-            .min(Comparator.comparing(JavaVersion::getMajorVersion));
+            .map(jvmVersionAttribute -> JavaVersion.toVersion(requireNonNull(jvmVersionAttribute.getProvided())))
+            .min(comparing(JavaVersion::getMajorVersion));
     }
 
     private boolean isLibraryCandidate(ResolutionCandidateAssessor.AssessedCandidate candidate) {

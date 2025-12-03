@@ -16,6 +16,8 @@
 
 package org.gradle.language.swift.tasks.internal;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -114,7 +116,7 @@ public class SymbolHider {
                     break;
                 }
             }
-            return new String(name, 0, nullCharIndex, StandardCharsets.UTF_8);
+            return new String(name, 0, nullCharIndex, UTF_8);
         }
     }
 

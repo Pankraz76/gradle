@@ -16,38 +16,39 @@
 
 package org.gradle.internal.component.resolution.failure;
 
-import org.gradle.internal.component.resolution.failure.describer.AmbiguousArtifactTransformsFailureDescriber;
-import org.gradle.internal.component.resolution.failure.describer.AmbiguousArtifactsFailureDescriber;
-import org.gradle.internal.component.resolution.failure.describer.AmbiguousVariantsFailureDescriber;
-import org.gradle.internal.component.resolution.failure.describer.ModuleRejectedFailureDescriber;
-import org.gradle.internal.component.resolution.failure.describer.ModuleRejectedIncompatibleConstraintsFailureDescriber;
-import org.gradle.internal.component.resolution.failure.describer.NoCompatibleArtifactFailureDescriber;
-import org.gradle.internal.component.resolution.failure.describer.NoCompatibleVariantsFailureDescriber;
-import org.gradle.internal.component.resolution.failure.describer.ConfigurationNotCompatibleFailureDescriber;
-import org.gradle.internal.component.resolution.failure.describer.IncompatibleMultipleNodesValidationFailureDescriber;
-import org.gradle.internal.component.resolution.failure.describer.MissingAttributeAmbiguousVariantsFailureDescriber;
-import org.gradle.internal.component.resolution.failure.describer.NoVariantsWithMatchingCapabilitiesFailureDescriber;
-import org.gradle.internal.component.resolution.failure.describer.ConfigurationDoesNotExistFailureDescriber;
-import org.gradle.internal.component.resolution.failure.describer.ResolutionFailureDescriber;
-import org.gradle.internal.component.resolution.failure.describer.UnknownArtifactSelectionFailureDescriber;
-import org.gradle.internal.component.resolution.failure.type.AmbiguousArtifactTransformsFailure;
-import org.gradle.internal.component.resolution.failure.type.AmbiguousArtifactsFailure;
-import org.gradle.internal.component.resolution.failure.type.ModuleRejectedFailure;
-import org.gradle.internal.component.resolution.failure.type.NoCompatibleArtifactFailure;
-import org.gradle.internal.component.resolution.failure.type.NoCompatibleVariantsFailure;
-import org.gradle.internal.component.resolution.failure.type.IncompatibleMultipleNodesValidationFailure;
-import org.gradle.internal.component.resolution.failure.type.ConfigurationNotCompatibleFailure;
-import org.gradle.internal.component.resolution.failure.type.NoVariantsWithMatchingCapabilitiesFailure;
-import org.gradle.internal.component.resolution.failure.type.ConfigurationDoesNotExistFailure;
-import org.gradle.internal.component.resolution.failure.interfaces.ResolutionFailure;
-import org.gradle.internal.component.resolution.failure.type.UnknownArtifactSelectionFailure;
-import org.gradle.internal.component.resolution.failure.type.AmbiguousVariantsFailure;
-import org.gradle.internal.instantiation.InstanceGenerator;
+import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import org.gradle.internal.component.resolution.failure.describer.AmbiguousArtifactTransformsFailureDescriber;
+import org.gradle.internal.component.resolution.failure.describer.AmbiguousArtifactsFailureDescriber;
+import org.gradle.internal.component.resolution.failure.describer.AmbiguousVariantsFailureDescriber;
+import org.gradle.internal.component.resolution.failure.describer.ConfigurationDoesNotExistFailureDescriber;
+import org.gradle.internal.component.resolution.failure.describer.ConfigurationNotCompatibleFailureDescriber;
+import org.gradle.internal.component.resolution.failure.describer.IncompatibleMultipleNodesValidationFailureDescriber;
+import org.gradle.internal.component.resolution.failure.describer.MissingAttributeAmbiguousVariantsFailureDescriber;
+import org.gradle.internal.component.resolution.failure.describer.ModuleRejectedFailureDescriber;
+import org.gradle.internal.component.resolution.failure.describer.ModuleRejectedIncompatibleConstraintsFailureDescriber;
+import org.gradle.internal.component.resolution.failure.describer.NoCompatibleArtifactFailureDescriber;
+import org.gradle.internal.component.resolution.failure.describer.NoCompatibleVariantsFailureDescriber;
+import org.gradle.internal.component.resolution.failure.describer.NoVariantsWithMatchingCapabilitiesFailureDescriber;
+import org.gradle.internal.component.resolution.failure.describer.ResolutionFailureDescriber;
+import org.gradle.internal.component.resolution.failure.describer.UnknownArtifactSelectionFailureDescriber;
+import org.gradle.internal.component.resolution.failure.interfaces.ResolutionFailure;
+import org.gradle.internal.component.resolution.failure.type.AmbiguousArtifactTransformsFailure;
+import org.gradle.internal.component.resolution.failure.type.AmbiguousArtifactsFailure;
+import org.gradle.internal.component.resolution.failure.type.AmbiguousVariantsFailure;
+import org.gradle.internal.component.resolution.failure.type.ConfigurationDoesNotExistFailure;
+import org.gradle.internal.component.resolution.failure.type.ConfigurationNotCompatibleFailure;
+import org.gradle.internal.component.resolution.failure.type.IncompatibleMultipleNodesValidationFailure;
+import org.gradle.internal.component.resolution.failure.type.ModuleRejectedFailure;
+import org.gradle.internal.component.resolution.failure.type.NoCompatibleArtifactFailure;
+import org.gradle.internal.component.resolution.failure.type.NoCompatibleVariantsFailure;
+import org.gradle.internal.component.resolution.failure.type.NoVariantsWithMatchingCapabilitiesFailure;
+import org.gradle.internal.component.resolution.failure.type.UnknownArtifactSelectionFailure;
+import org.gradle.internal.instantiation.InstanceGenerator;
 
 /**
  * An ordered registry of {@link ResolutionFailureDescriber} instances that can be queried
@@ -117,7 +118,7 @@ public final class ResolutionFailureDescriberRegistry {
      */
     public <FAILURE extends ResolutionFailure> List<ResolutionFailureDescriber<FAILURE>> getDescribers(Class<FAILURE> failureType) {
         List<ResolutionFailureDescriber<FAILURE>> result = new ArrayList<>();
-        describers.getOrDefault(failureType, Collections.emptyList()).forEach(d -> {
+        describers.getOrDefault(failureType, emptyList()).forEach(d -> {
             @SuppressWarnings("unchecked") ResolutionFailureDescriber<FAILURE> typedDescriber = (ResolutionFailureDescriber<FAILURE>) d;
             result.add(typedDescriber);
         });

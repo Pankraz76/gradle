@@ -16,6 +16,12 @@
 
 package org.gradle.tooling.provider.model.internal;
 
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Supplier;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.internal.project.ProjectState;
@@ -26,12 +32,6 @@ import org.gradle.internal.buildtree.IntermediateBuildActionRunner;
 import org.gradle.internal.buildtree.ToolingModelRequestContext;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Supplier;
-
-import static java.util.stream.Collectors.toList;
 
 @NullMarked
 public class DefaultIntermediateToolingModelProvider implements IntermediateToolingModelProvider {
@@ -53,7 +53,7 @@ public class DefaultIntermediateToolingModelProvider implements IntermediateTool
     @Override
     public <T> List<T> getModels(ProjectState requester, List<ProjectState> targets, String modelName, Class<T> modelType, @Nullable Object parameter) {
         if (targets.isEmpty()) {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         List<Object> rawModels = fetchModels(requester, targets, modelName, parameter);

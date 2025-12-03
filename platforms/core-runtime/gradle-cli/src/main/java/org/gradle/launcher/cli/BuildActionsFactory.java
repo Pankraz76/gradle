@@ -16,7 +16,13 @@
 
 package org.gradle.launcher.cli;
 
+import static java.util.UUID.randomUUID;
+
 import com.google.common.annotations.VisibleForTesting;
+import java.lang.management.ManagementFactory;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.UUID;
 import org.gradle.StartParameter;
 import org.gradle.api.Action;
 import org.gradle.api.internal.StartParameterInternal;
@@ -63,11 +69,6 @@ import org.gradle.process.internal.CurrentProcess;
 import org.gradle.tooling.internal.provider.ForwardStdInToThisProcess;
 import org.gradle.tooling.internal.provider.RunInProcess;
 
-import java.lang.management.ManagementFactory;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.UUID;
-
 class BuildActionsFactory implements CommandLineActionCreator {
     private final ServiceRegistry loggingServices;
     private final FileCollectionFactory fileCollectionFactory;
@@ -96,7 +97,7 @@ class BuildActionsFactory implements CommandLineActionCreator {
         }
         if (daemonParameters.isForeground()) {
             ForegroundDaemonConfiguration conf = new ForegroundDaemonConfiguration(
-                UUID.randomUUID().toString(), daemonParameters.getBaseDir(), daemonParameters.getIdleTimeout(), daemonParameters.getPeriodicCheckInterval(), fileCollectionFactory,
+                randomUUID().toString(), daemonParameters.getBaseDir(), daemonParameters.getIdleTimeout(), daemonParameters.getPeriodicCheckInterval(), fileCollectionFactory,
                 daemonParameters.shouldApplyInstrumentationAgent(), daemonParameters.getNativeServicesMode());
             return Actions.toAction(new ForegroundDaemonAction(loggingServices, conf));
         }
@@ -153,7 +154,7 @@ class BuildActionsFactory implements CommandLineActionCreator {
     @VisibleForTesting
     static DaemonContext buildDaemonContextForCurrentProcess(DaemonRequestContext requestContext, CurrentProcess currentProcess) {
         return new DefaultDaemonContext(
-            UUID.randomUUID().toString(),
+            randomUUID().toString(),
             currentProcess.getJvm().getJavaHome(),
             JavaLanguageVersion.current(),
             Jvm.current().getVendor(),

@@ -15,11 +15,12 @@
  */
 package org.gradle.api.tasks.diagnostics.internal;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.TreeMultimap;
-import org.gradle.util.Path;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -27,8 +28,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.google.common.base.Strings.isNullOrEmpty;
+import org.gradle.util.Path;
 
 public class AggregateMultiProjectTaskReportModel implements TaskReportModel {
     private final List<TaskReportModel> projects = new ArrayList<>();
@@ -40,9 +40,9 @@ public class AggregateMultiProjectTaskReportModel implements TaskReportModel {
     public AggregateMultiProjectTaskReportModel(boolean mergeTasksWithSameName, boolean detail, String group, List<String> groups) {
         this.mergeTasksWithSameName = mergeTasksWithSameName;
         this.detail = detail;
-        this.groupsOfInterest = Stream.concat(isNullOrEmpty(group) ? Stream.empty() : Stream.of(group), groups.stream())
+        this.groupsOfInterest = Stream.concat(Strings.isNullOrEmpty(group) ? Stream.empty() : Stream.of(group), groups.stream())
                 .map(String::toLowerCase)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public void add(TaskReportModel project) {
@@ -50,7 +50,7 @@ public class AggregateMultiProjectTaskReportModel implements TaskReportModel {
     }
 
     public void build() {
-        groups = TreeMultimap.create(String::compareToIgnoreCase, Comparator.comparing(TaskDetails::getPath));
+        groups = TreeMultimap.create(String::compareToIgnoreCase, comparing(TaskDetails::getPath));
         for (TaskReportModel project : projects) {
             for (String group : project.getGroups()) {
                 if (isVisible(group)) {

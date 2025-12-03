@@ -15,14 +15,10 @@
  */
 package org.gradle.api.internal.artifacts.verification.verifier;
 
-import com.google.common.collect.ImmutableList;
-import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
-import org.gradle.api.internal.artifacts.verification.exceptions.InvalidGpgKeyIdsException;
-import org.gradle.api.internal.artifacts.verification.model.IgnoredKey;
-import org.gradle.internal.component.external.model.ModuleComponentArtifactIdentifier;
-import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
+import static java.nio.charset.StandardCharsets.US_ASCII;
+import static java.util.Collections.singletonList;
 
+import com.google.common.collect.ImmutableList;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -30,6 +26,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
+import org.gradle.api.internal.artifacts.verification.exceptions.InvalidGpgKeyIdsException;
+import org.gradle.api.internal.artifacts.verification.model.IgnoredKey;
+import org.gradle.internal.component.external.model.ModuleComponentArtifactIdentifier;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 @NullMarked
 public class DependencyVerificationConfiguration {
@@ -248,8 +250,8 @@ public class DependencyVerificationConfiguration {
             //
             // By getting ASCII bytes (aka. strictly 1 byte per character, no variable-length magic)
             // we can safely check if the fingerprint is of the correct length.
-            if (keyId.getBytes(StandardCharsets.US_ASCII).length < 40) {
-                throw new InvalidGpgKeyIdsException(Collections.singletonList(keyId));
+            if (keyId.getBytes(US_ASCII).length < 40) {
+                throw new InvalidGpgKeyIdsException(singletonList(keyId));
             } else {
                 this.keyId = keyId.toUpperCase(Locale.ROOT);
             }

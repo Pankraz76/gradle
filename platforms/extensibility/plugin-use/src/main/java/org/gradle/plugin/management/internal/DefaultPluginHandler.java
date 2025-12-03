@@ -15,7 +15,13 @@
  */
 package org.gradle.plugin.management.internal;
 
+import static java.util.stream.Collectors.toList;
+import static org.gradle.plugin.use.resolve.internal.ArtifactRepositoriesPluginResolver.PLUGIN_MARKER_SUFFIX;
+
 import com.google.common.collect.ImmutableList;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.Dependency;
@@ -27,12 +33,6 @@ import org.gradle.api.initialization.dsl.ScriptHandler;
 import org.gradle.api.internal.artifacts.DefaultModuleIdentifier;
 import org.gradle.api.plugins.PluginContainer;
 import org.gradle.plugin.management.internal.autoapply.AutoAppliedPluginRegistry;
-
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.gradle.plugin.use.resolve.internal.ArtifactRepositoriesPluginResolver.PLUGIN_MARKER_SUFFIX;
 
 public class DefaultPluginHandler implements PluginHandler {
 
@@ -74,7 +74,7 @@ public class DefaultPluginHandler implements PluginHandler {
                 .map(it -> !isAlreadyAppliedOrRequested(it, initialRequests, pluginContainer, scriptHandler))
                 .orElse(true)
             )
-            .collect(Collectors.toList())
+            .collect(toList())
         ));
     }
 

@@ -16,15 +16,16 @@
 
 package org.gradle.internal.buildoption;
 
-import org.gradle.cli.CommandLineParser;
-import org.gradle.cli.ParsedCommandLine;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.unmodifiableList;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import org.gradle.cli.CommandLineParser;
+import org.gradle.cli.ParsedCommandLine;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A build option that takes a string value e.g. {@code "--max-workers=4"}.
@@ -48,7 +49,7 @@ public abstract class EnumBuildOption<E extends Enum<E>, T> extends AbstractBuil
         super(gradleProperty, deprecatedProperty, commandLineOptionConfigurations);
         this.displayName = displayName;
         this.enumClass = enumClass;
-        this.possibleValues = Collections.unmodifiableList(Arrays.asList(possibleValues));
+        this.possibleValues = unmodifiableList(Arrays.asList(possibleValues));
     }
 
     public EnumBuildOption(

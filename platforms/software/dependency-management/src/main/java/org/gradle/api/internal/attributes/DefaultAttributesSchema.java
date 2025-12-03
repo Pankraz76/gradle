@@ -16,14 +16,10 @@
 
 package org.gradle.api.internal.attributes;
 
-import org.gradle.api.Action;
-import org.gradle.api.attributes.Attribute;
-import org.gradle.api.attributes.AttributeMatchingStrategy;
-import org.gradle.internal.instantiation.InstantiatorFactory;
-import org.gradle.internal.isolation.IsolatableFactory;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.unmodifiableMap;
+import static java.util.Collections.unmodifiableSet;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,6 +27,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.inject.Inject;
+import org.gradle.api.Action;
+import org.gradle.api.attributes.Attribute;
+import org.gradle.api.attributes.AttributeMatchingStrategy;
+import org.gradle.internal.instantiation.InstantiatorFactory;
+import org.gradle.internal.isolation.IsolatableFactory;
+import org.jspecify.annotations.Nullable;
 
 public class DefaultAttributesSchema implements AttributesSchemaInternal {
     private final InstantiatorFactory instantiatorFactory;
@@ -108,20 +111,20 @@ public class DefaultAttributesSchema implements AttributesSchemaInternal {
 
     @Override
     public List<Attribute<?>> getAttributeDisambiguationPrecedence() {
-        return Collections.unmodifiableList(new ArrayList<>(precedence));
+        return unmodifiableList(new ArrayList<>(precedence));
     }
 
     // endregion
 
     @Override
     public Map<Attribute<?>, DefaultAttributeMatchingStrategy<?>> getStrategies() {
-        return Collections.unmodifiableMap(strategies);
+        return unmodifiableMap(strategies);
     }
 
 
     @Override
     public Set<Attribute<?>> getAttributePrecedence() {
-        return Collections.unmodifiableSet(precedence);
+        return unmodifiableSet(precedence);
     }
 
 }

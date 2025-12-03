@@ -16,6 +16,8 @@
 
 package org.gradle.internal.classpath.types;
 
+import static java.util.Collections.emptySet;
+
 import java.util.Collections;
 import java.util.Set;
 
@@ -45,7 +47,7 @@ public interface InstrumentationTypeRegistry {
     class EmptyInstrumentationTypeRegistry implements InstrumentationTypeRegistry {
         @Override
         public Set<String> getSuperTypes(String type) {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         @Override

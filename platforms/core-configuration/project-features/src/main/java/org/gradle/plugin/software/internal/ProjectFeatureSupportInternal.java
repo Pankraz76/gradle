@@ -16,6 +16,16 @@
 
 package org.gradle.plugin.software.internal;
 
+import static java.util.Collections.unmodifiableMap;
+import static java.util.Objects.requireNonNull;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Supplier;
+import javax.inject.Inject;
 import org.gradle.api.Named;
 import org.gradle.api.internal.DynamicObjectAware;
 import org.gradle.api.internal.plugins.BuildModel;
@@ -24,14 +34,6 @@ import org.gradle.api.model.ObjectFactory;
 import org.gradle.internal.extensibility.ExtensibleDynamicObject;
 import org.gradle.internal.metaobject.DynamicInvokeResult;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 public class ProjectFeatureSupportInternal {
 
@@ -107,7 +109,7 @@ public class ProjectFeatureSupportInternal {
 
         @Override
         public Map<ProjectFeatureImplementation<?, ?>, Object> childrenDefinitions() {
-            return Collections.unmodifiableMap(childrenDefinitions);
+            return unmodifiableMap(childrenDefinitions);
         }
 
         @Override
@@ -139,7 +141,7 @@ public class ProjectFeatureSupportInternal {
     public static @Nullable ProjectFeatureDefinitionContext tryGetContext(Object definition) {
         DynamicInvokeResult result = ((DynamicObjectAware) definition).getAsDynamicObject().tryInvokeMethod(ProjectFeaturesDynamicObject.CONTEXT_METHOD_NAME);
         if (result.isFound()) {
-            return (ProjectFeatureDefinitionContext) Objects.requireNonNull(result.getValue());
+            return (ProjectFeatureDefinitionContext) requireNonNull(result.getValue());
         } else {
             return null;
         }

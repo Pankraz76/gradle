@@ -16,15 +16,9 @@
 
 package org.gradle.internal.component.resolution.failure.describer;
 
-import org.gradle.api.attributes.Attribute;
-import org.gradle.api.internal.attributes.AttributeDescriber;
-import org.gradle.api.internal.attributes.AttributeDescriberRegistry;
-import org.gradle.internal.component.model.AttributeDescriberSelector;
-import org.gradle.internal.component.resolution.failure.ResolutionCandidateAssessor;
-import org.gradle.internal.component.resolution.failure.type.AmbiguousVariantsFailure;
-import org.gradle.internal.logging.text.TreeFormatter;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +28,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
+import org.gradle.api.attributes.Attribute;
+import org.gradle.api.internal.attributes.AttributeDescriber;
+import org.gradle.api.internal.attributes.AttributeDescriberRegistry;
+import org.gradle.internal.component.model.AttributeDescriberSelector;
+import org.gradle.internal.component.resolution.failure.ResolutionCandidateAssessor;
+import org.gradle.internal.component.resolution.failure.type.AmbiguousVariantsFailure;
+import org.gradle.internal.logging.text.TreeFormatter;
 
 /**
  * A {@link ResolutionFailureDescriber} that describes an {@link AmbiguousVariantsFailure} where
@@ -65,14 +67,14 @@ public abstract class MissingAttributeAmbiguousVariantsFailureDescriber extends 
             candidate.getOnlyOnCandidateAttributes().forEach(candidateAttribute -> {
                 Attribute<?> attribute = candidateAttribute.getAttribute();
                 Set<String> unrequestedValuesForAttribute = unrequestedAttributesWithValues.computeIfAbsent(attribute.getName(), name -> new HashSet<>());
-                unrequestedValuesForAttribute.add(Objects.requireNonNull(candidateAttribute.getProvided()).toString());
+                unrequestedValuesForAttribute.add(requireNonNull(candidateAttribute.getProvided()).toString());
             });
         });
 
         // List of map entries where there is a distinct attribute value for every available candidate
         List<Map.Entry<String, Set<String>>> attributesDistinctlyIdentifyingCandidates = unrequestedAttributesWithValues.entrySet().stream()
             .filter(entry -> entry.getValue().size() == failure.getCandidates().size())
-            .collect(Collectors.toList());
+            .collect(toList());
 
         if (attributesDistinctlyIdentifyingCandidates.size() == 1) {
             suggestableDistinctAttributes.put(failure, attributesDistinctlyIdentifyingCandidates.get(0).getKey());
@@ -111,7 +113,7 @@ public abstract class MissingAttributeAmbiguousVariantsFailureDescriber extends 
     private String attributeValueForCandidate(ResolutionCandidateAssessor.AssessedCandidate candidate, String distinguishingAttribute) {
         return candidate.getOnlyOnCandidateAttributes().stream()
             .filter(attribute -> Objects.equals(attribute.getAttribute().getName(), distinguishingAttribute))
-            .map(assessedAttribute -> Objects.requireNonNull(assessedAttribute.getProvided()).toString())
+            .map(assessedAttribute -> requireNonNull(assessedAttribute.getProvided()).toString())
             .findFirst().orElseThrow(IllegalStateException::new);
     }
 

@@ -16,15 +16,16 @@
 
 package org.gradle.internal.logging.console;
 
+import static java.util.Collections.singletonList;
+
+import java.util.Collections;
+import java.util.List;
 import org.gradle.internal.logging.events.StyledTextOutputEvent;
 import org.gradle.internal.logging.text.StyledTextOutput;
 import org.gradle.internal.nativeintegration.console.ConsoleMetaData;
 
-import java.util.Collections;
-import java.util.List;
-
 public class DefaultWorkInProgressFormatter {
-    private final static List<StyledTextOutputEvent.Span> IDLE_SPANS = Collections.singletonList(new StyledTextOutputEvent.Span("> IDLE"));
+    private final static List<StyledTextOutputEvent.Span> IDLE_SPANS = singletonList(new StyledTextOutputEvent.Span("> IDLE"));
     private final ConsoleMetaData consoleMetaData;
 
     public DefaultWorkInProgressFormatter(ConsoleMetaData consoleMetaData) {
@@ -50,7 +51,7 @@ public class DefaultWorkInProgressFormatter {
             return IDLE_SPANS;
         }
 
-        return Collections.singletonList(new StyledTextOutputEvent.Span(StyledTextOutput.Style.Header, trim(builder)));
+        return singletonList(new StyledTextOutputEvent.Span(StyledTextOutput.Style.Header, trim(builder)));
     }
 
     public List<StyledTextOutputEvent.Span> format() {

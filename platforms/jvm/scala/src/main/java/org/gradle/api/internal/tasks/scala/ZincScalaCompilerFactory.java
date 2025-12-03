@@ -16,7 +16,24 @@
 
 package org.gradle.api.internal.tasks.scala;
 
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.Iterables;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.gradle.cache.FileLockManager;
@@ -40,21 +57,6 @@ import xsbti.ArtifactInfo;
 import xsbti.compile.ClasspathOptionsUtil;
 import xsbti.compile.ScalaCompiler;
 import xsbti.compile.ZincCompilerUtil;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("deprecation")
 public class ZincScalaCompilerFactory {
@@ -217,8 +219,8 @@ public class ZincScalaCompilerFactory {
                 // generate from sources jar
                 final Timer timer = Time.startTimer();
                 RawCompiler rawCompiler = new RawCompiler(scalaInstance, ClasspathOptionsUtil.manual(), logger);
-                scala.collection.Iterable<Path> sourceJars = JavaConverters.collectionAsScalaIterable(Collections.singletonList(compilerBridgeSourceJar.toPath()));
-                List<Path> xsbtiJarsAsPath = Arrays.stream(scalaInstance.allJars()).map(File::toPath).collect(Collectors.toList());
+                scala.collection.Iterable<Path> sourceJars = JavaConverters.collectionAsScalaIterable(singletonList(compilerBridgeSourceJar.toPath()));
+                List<Path> xsbtiJarsAsPath = Arrays.stream(scalaInstance.allJars()).map(File::toPath).collect(toList());
                 scala.collection.Iterable<Path> xsbtiJars = JavaConverters.collectionAsScalaIterable(xsbtiJarsAsPath);
                 AnalyzingCompiler$.MODULE$.compileSources(sourceJars, bridgeJar.toPath(), xsbtiJars, "compiler-bridge", rawCompiler, logger);
 

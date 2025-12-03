@@ -965,7 +965,7 @@ public class BuildProgressListenerAdapter implements InternalBuildProgressListen
 
         } else {
             originLocations = basicProblemDetails.getLocations();
-            contextualLocations = Collections.emptyList();
+            contextualLocations = emptyList();
         }
         return new DefaultProblem(
             toProblemDefinition(basicProblemDetails.getDefinition()),

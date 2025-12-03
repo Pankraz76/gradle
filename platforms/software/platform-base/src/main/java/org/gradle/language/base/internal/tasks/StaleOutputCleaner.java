@@ -15,18 +15,19 @@
  */
 package org.gradle.language.base.internal.tasks;
 
-import com.google.common.collect.ImmutableSet;
-import org.gradle.internal.execution.history.OutputsCleaner;
-import org.gradle.internal.file.Deleter;
-import org.gradle.internal.file.FileType;
+import static java.util.stream.Collectors.toSet;
 
-import javax.annotation.CheckReturnValue;
+import com.google.common.collect.ImmutableSet;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.annotation.CheckReturnValue;
+import org.gradle.internal.execution.history.OutputsCleaner;
+import org.gradle.internal.file.Deleter;
+import org.gradle.internal.file.FileType;
 
 public abstract class StaleOutputCleaner {
 
@@ -55,7 +56,7 @@ public abstract class StaleOutputCleaner {
     public static boolean cleanOutputs(Deleter deleter, Iterable<File> filesToDelete, ImmutableSet<File> directoriesToClean) {
         Set<String> prefixes = directoriesToClean.stream()
             .map(directoryToClean -> directoryToClean.getAbsolutePath() + File.separator)
-            .collect(Collectors.toSet());
+            .collect(toSet());
 
         OutputsCleaner outputsCleaner = new OutputsCleaner(
             deleter,

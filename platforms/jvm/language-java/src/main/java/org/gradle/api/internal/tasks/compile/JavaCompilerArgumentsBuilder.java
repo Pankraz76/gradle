@@ -16,19 +16,20 @@
 
 package org.gradle.api.internal.tasks.compile;
 
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.base.Joiner;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.JavaVersion;
 import org.gradle.internal.Cast;
 import org.gradle.util.internal.GUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class JavaCompilerArgumentsBuilder {
     public static final Logger LOGGER = LoggerFactory.getLogger(JavaCompilerArgumentsBuilder.class);
@@ -87,7 +88,7 @@ public class JavaCompilerArgumentsBuilder {
         List<String> compArgs = compilerArgs
             .stream()
             .map(Object::toString)
-            .collect(Collectors.toList());
+            .collect(toList());
 
         validateCompilerArgs(compArgs);
 

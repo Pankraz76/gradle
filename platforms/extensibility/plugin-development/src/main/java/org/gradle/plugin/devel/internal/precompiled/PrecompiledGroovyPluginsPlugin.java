@@ -16,6 +16,15 @@
 
 package org.gradle.plugin.devel.internal.precompiled;
 
+import static java.util.stream.Collectors.toList;
+import static org.gradle.api.internal.plugins.DefaultPluginManager.CORE_PLUGIN_NAMESPACE;
+import static org.gradle.api.internal.plugins.DefaultPluginManager.CORE_PLUGIN_PREFIX;
+
+import java.io.File;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.file.DirectoryProperty;
@@ -29,15 +38,6 @@ import org.gradle.internal.deprecation.Documentation;
 import org.gradle.internal.resource.TextFileResourceLoader;
 import org.gradle.plugin.devel.GradlePluginDevelopmentExtension;
 import org.gradle.plugin.devel.plugins.JavaGradlePluginPlugin;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.gradle.api.internal.plugins.DefaultPluginManager.CORE_PLUGIN_NAMESPACE;
-import static org.gradle.api.internal.plugins.DefaultPluginManager.CORE_PLUGIN_PREFIX;
 
 public abstract class PrecompiledGroovyPluginsPlugin implements Plugin<Project> {
 
@@ -63,7 +63,7 @@ public abstract class PrecompiledGroovyPluginsPlugin implements Plugin<Project> 
         List<PrecompiledGroovyScript> scriptPlugins = scriptPluginFiles.stream()
             .map(file -> new PrecompiledGroovyScript(file, getTextFileResourceLoader()))
             .peek(scriptPlugin -> validateScriptPlugin(project, scriptPlugin))
-            .collect(Collectors.toList());
+            .collect(toList());
 
         declarePluginMetadata(pluginExtension, scriptPlugins);
 

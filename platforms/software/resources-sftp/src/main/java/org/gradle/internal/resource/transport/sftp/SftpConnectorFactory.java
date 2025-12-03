@@ -16,6 +16,11 @@
 
 package org.gradle.internal.resource.transport.sftp;
 
+import static java.util.Collections.singleton;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import org.gradle.api.credentials.PasswordCredentials;
 import org.gradle.authentication.Authentication;
 import org.gradle.internal.authentication.AllSchemesAuthentication;
@@ -23,10 +28,6 @@ import org.gradle.internal.resource.connector.ResourceConnectorFactory;
 import org.gradle.internal.resource.connector.ResourceConnectorSpecification;
 import org.gradle.internal.resource.transfer.DefaultExternalResourceConnector;
 import org.gradle.internal.resource.transfer.ExternalResourceConnector;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 public class SftpConnectorFactory implements ResourceConnectorFactory {
     private final SftpClientFactory sftpClientFactory;
@@ -37,7 +38,7 @@ public class SftpConnectorFactory implements ResourceConnectorFactory {
 
     @Override
     public Set<String> getSupportedProtocols() {
-        return Collections.singleton("sftp");
+        return singleton("sftp");
     }
 
     @Override

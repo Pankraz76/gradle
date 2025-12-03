@@ -16,22 +16,24 @@
 package org.gradle.internal.resource.transport.http;
 
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-import org.apache.http.conn.ssl.DefaultHostnameVerifier;
-import org.gradle.authentication.Authentication;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.verifier.HttpRedirectVerifier;
-
+import java.security.GeneralSecurityException;
+import java.security.cert.X509Certificate;
+import java.util.Collection;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.security.GeneralSecurityException;
-import java.security.cert.X509Certificate;
-import java.util.Collection;
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
+import org.gradle.authentication.Authentication;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.verifier.HttpRedirectVerifier;
 
 public class DefaultHttpSettings implements HttpSettings {
     private static final int DEFAULT_MAX_REDIRECTS = 10;
@@ -64,14 +66,14 @@ public class DefaultHttpSettings implements HttpSettings {
         int maxConnTotal,
         int maxConnPerRoute
     ) {
-        Preconditions.checkArgument(maxRedirects >= 0, "maxRedirects must be positive");
-        Preconditions.checkArgument(maxConnTotal > 0, "maxConnTotal must be positive");
-        Preconditions.checkArgument(maxConnPerRoute > 0, "maxConnPerRoute must be positive");
-        Preconditions.checkNotNull(authenticationSettings, "authenticationSettings");
-        Preconditions.checkNotNull(sslContextFactory, "sslContextFactory");
-        Preconditions.checkNotNull(hostnameVerifier, "hostnameVerifier");
-        Preconditions.checkNotNull(redirectVerifier, "redirectVerifier");
-        Preconditions.checkNotNull(redirectMethodHandlingStrategy, "redirectMethodHandlingStrategy");
+        checkArgument(maxRedirects >= 0, "maxRedirects must be positive");
+        checkArgument(maxConnTotal > 0, "maxConnTotal must be positive");
+        checkArgument(maxConnPerRoute > 0, "maxConnPerRoute must be positive");
+        checkNotNull(authenticationSettings, "authenticationSettings");
+        checkNotNull(sslContextFactory, "sslContextFactory");
+        checkNotNull(hostnameVerifier, "hostnameVerifier");
+        checkNotNull(redirectVerifier, "redirectVerifier");
+        checkNotNull(redirectMethodHandlingStrategy, "redirectMethodHandlingStrategy");
 
         this.maxRedirects = maxRedirects;
         this.maxConnTotal = maxConnTotal;
@@ -180,19 +182,19 @@ public class DefaultHttpSettings implements HttpSettings {
         }
 
         public Builder maxRedirects(int maxRedirects) {
-            Preconditions.checkArgument(maxRedirects >= 0);
+            checkArgument(maxRedirects >= 0);
             this.maxRedirects = maxRedirects;
             return this;
         }
 
         public Builder maxConnTotal(int maxConnTotal) {
-            Preconditions.checkArgument(maxConnTotal > 0);
+            checkArgument(maxConnTotal > 0);
             this.maxConnTotal = maxConnTotal;
             return this;
         }
 
         public Builder maxConnPerRoute(int maxConnPerRoute) {
-            Preconditions.checkArgument(maxConnPerRoute > 0);
+            checkArgument(maxConnPerRoute > 0);
             this.maxConnPerRoute = maxConnPerRoute;
             return this;
         }

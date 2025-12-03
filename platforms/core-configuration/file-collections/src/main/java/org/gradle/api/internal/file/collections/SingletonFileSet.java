@@ -16,6 +16,8 @@
 
 package org.gradle.api.internal.file.collections;
 
+import static java.util.Collections.singleton;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.Set;
@@ -32,7 +34,7 @@ public class SingletonFileSet implements MinimalFileSet {
 
     @Override
     public Set<File> getFiles() {
-        return Collections.singleton(file);
+        return singleton(file);
     }
 
     @Override

@@ -16,12 +16,13 @@
 
 package org.gradle.api.internal;
 
-import org.gradle.api.Action;
-import org.gradle.util.internal.ConfigureUtil;
+import static java.util.Collections.emptySet;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import org.gradle.api.Action;
+import org.gradle.util.internal.ConfigureUtil;
 
 public class ConfigureByMapAction<T> implements Action<T> {
 
@@ -29,7 +30,7 @@ public class ConfigureByMapAction<T> implements Action<T> {
     private final Collection<?> mandatoryProperties;
 
     public ConfigureByMapAction(Map<?, ?> properties) {
-        this(properties, Collections.emptySet());
+        this(properties, emptySet());
     }
 
     public ConfigureByMapAction(Map<?, ?> properties, Collection<?> mandatoryProperties) {

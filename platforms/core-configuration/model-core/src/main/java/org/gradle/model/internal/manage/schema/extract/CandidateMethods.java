@@ -16,11 +16,13 @@
 
 package org.gradle.model.internal.manage.schema.extract;
 
+import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
+
 import com.google.common.base.Equivalence;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.*;
-
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
@@ -94,7 +96,7 @@ public class CandidateMethods {
      * matching any of the signature equivalence provided in {@literal excludes} or {@literal null} if none
      */
     public Map<Equivalence.Wrapper<Method>, Collection<Method>> overloadedMethodsNamed(String methodName, Collection<Equivalence.Wrapper<Method>> excludes) {
-        return Maps.filterKeys(overloadedMethodsNamed(methodName), Predicates.not(Predicates.in(excludes)));
+        return Maps.filterKeys(overloadedMethodsNamed(methodName), not(in(excludes)));
     }
 
     /**

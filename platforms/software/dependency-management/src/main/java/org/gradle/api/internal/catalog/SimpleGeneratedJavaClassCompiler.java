@@ -15,15 +15,10 @@
  */
 package org.gradle.api.internal.catalog;
 
-import org.gradle.internal.classpath.ClassPath;
-import org.gradle.internal.logging.text.TreeFormatter;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
-import javax.tools.Diagnostic;
-import javax.tools.DiagnosticCollector;
-import javax.tools.JavaCompiler;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -31,6 +26,14 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticCollector;
+import javax.tools.JavaCompiler;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
+import org.gradle.internal.classpath.ClassPath;
+import org.gradle.internal.logging.text.TreeFormatter;
 
 class SimpleGeneratedJavaClassCompiler {
     /**
@@ -62,7 +65,7 @@ class SimpleGeneratedJavaClassCompiler {
         }
         List<Diagnostic<? extends JavaFileObject>> diagnostics = ds.getDiagnostics().stream()
             .filter(d -> d.getKind() == Diagnostic.Kind.ERROR)
-            .collect(Collectors.toList());
+            .collect(toList());
         if (!diagnostics.isEmpty()) {
             throwCompilationError(diagnostics);
         }
@@ -97,7 +100,7 @@ class SimpleGeneratedJavaClassCompiler {
 
     private static void writeSourceFile(String classCode, File file) throws IOException {
         file.getParentFile().mkdirs();
-        Files.write(file.toPath(), classCode.getBytes(StandardCharsets.UTF_8));
+        Files.write(file.toPath(), classCode.getBytes(UTF_8));
     }
 
     private static File sourceFile(File srcDir, String packageName, String className) {
@@ -111,7 +114,7 @@ class SimpleGeneratedJavaClassCompiler {
         options.add("-target");
         options.add("1.8");
         options.add("-classpath");
-        String cp = classPath.getAsFiles().stream().map(File::getAbsolutePath).collect(Collectors.joining(File.pathSeparator));
+        String cp = classPath.getAsFiles().stream().map(File::getAbsolutePath).collect(joining(File.pathSeparator));
         options.add(cp);
         options.add("-d");
         options.add(dstDir.getAbsolutePath());

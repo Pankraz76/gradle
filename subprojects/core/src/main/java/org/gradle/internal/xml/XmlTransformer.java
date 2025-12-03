@@ -15,32 +15,14 @@
  */
 package org.gradle.internal.xml;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.util.IndentPrinter;
 import groovy.util.Node;
 import groovy.xml.XmlNodePrinter;
 import groovy.xml.XmlParser;
-import org.apache.commons.lang3.StringUtils;
-import org.gradle.api.Action;
-import org.gradle.api.Transformer;
-import org.gradle.api.XmlProvider;
-import org.gradle.api.internal.DomNode;
-import org.gradle.internal.IoActions;
-import org.gradle.internal.SystemProperties;
-import org.gradle.internal.UncheckedException;
-import org.gradle.util.internal.ConfigureUtil;
-import org.gradle.util.internal.GUtil;
-import org.gradle.util.internal.TextUtil;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -55,6 +37,25 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.apache.commons.lang3.StringUtils;
+import org.gradle.api.Action;
+import org.gradle.api.Transformer;
+import org.gradle.api.XmlProvider;
+import org.gradle.api.internal.DomNode;
+import org.gradle.internal.IoActions;
+import org.gradle.internal.SystemProperties;
+import org.gradle.internal.UncheckedException;
+import org.gradle.util.internal.ConfigureUtil;
+import org.gradle.util.internal.GUtil;
+import org.gradle.util.internal.TextUtil;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 public class XmlTransformer implements Transformer<String, String> {
     private final List<Action<? super XmlProvider>> actions = new ArrayList<>();
@@ -210,7 +211,7 @@ public class XmlTransformer implements Transformer<String, String> {
         }
 
         public void writeTo(OutputStream stream) {
-            try(Writer writer = new BufferedWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8))) {
+            try(Writer writer = new BufferedWriter(new OutputStreamWriter(stream, UTF_8))) {
                 doWriteTo(writer, "UTF-8");
                 writer.flush();
             } catch (IOException e) {

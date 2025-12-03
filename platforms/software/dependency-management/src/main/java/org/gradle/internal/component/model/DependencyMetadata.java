@@ -16,13 +16,14 @@
 
 package org.gradle.internal.component.model;
 
+import static java.util.Collections.singletonList;
+
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.artifacts.component.ComponentSelector;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
 import org.gradle.api.internal.attributes.immutable.ImmutableAttributesSchema;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * A dependency that can participate in dependency resolution.
@@ -59,7 +60,7 @@ public interface DependencyMetadata {
         ImmutableAttributesSchema consumerSchema
     ) {
         VariantGraphResolveState selected = variantSelector.selectLegacyVariant(consumerAttributes, targetComponentState, consumerSchema, variantSelector.getFailureHandler());
-        return Collections.singletonList(selected);
+        return singletonList(selected);
     }
 
     /**

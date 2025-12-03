@@ -16,6 +16,19 @@
 
 package org.gradle.api.internal.tasks.testing.results;
 
+import static java.util.Comparator.naturalOrder;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import javax.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.gradle.api.internal.tasks.testing.TestDescriptorInternal;
 import org.gradle.api.internal.tasks.testing.report.generic.GenericHtmlTestReportGenerator;
@@ -27,18 +40,6 @@ import org.gradle.problems.buildtree.ProblemReporter;
 import org.jspecify.annotations.NullMarked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Aggregates test results from multiple test executions and generates a report at the end of the build.
@@ -104,7 +105,7 @@ public class AggregateTestEventReporter implements ProblemReporter, TestExecutio
     private Path generateTestReport(Path reportDirectory) {
         // Generate a consistent ordering by sorting the Paths
         List<Path> sortedResults = new ArrayList<>(results.values());
-        sortedResults.sort(Comparator.naturalOrder());
+        sortedResults.sort(naturalOrder());
         return objectFactory.newInstance(GenericHtmlTestReportGenerator.class, reportDirectory).generate(sortedResults);
     }
 

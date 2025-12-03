@@ -16,6 +16,9 @@
 
 package org.gradle.api.internal.tasks.testing.results.serializable;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.unmodifiableList;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -29,14 +32,14 @@ public class SerializableFailure {
     private final List<String> causes;
 
     public SerializableFailure(String message, String stackTrace, String exceptionType) {
-        this(message, stackTrace, exceptionType, Collections.emptyList());
+        this(message, stackTrace, exceptionType, emptyList());
     }
 
     public SerializableFailure(String message, String stackTrace, String exceptionType, List<String> causes) {
         this.message = message;
         this.stackTrace = stackTrace;
         this.exceptionType = exceptionType;
-        this.causes = Collections.unmodifiableList(causes);
+        this.causes = unmodifiableList(causes);
     }
 
     public String getMessage() {

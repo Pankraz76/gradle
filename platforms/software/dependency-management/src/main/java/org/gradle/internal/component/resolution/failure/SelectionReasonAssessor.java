@@ -16,7 +16,13 @@
 
 package org.gradle.internal.component.resolution.failure;
 
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.artifacts.component.ComponentSelector;
@@ -26,11 +32,6 @@ import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.VersionS
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.builder.ModuleResolveState;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.builder.SelectorState;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.result.ComponentSelectionDescriptorInternal;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * A static utility class used by {@link ResolutionFailureHandler} to assess and classify
@@ -77,7 +78,7 @@ public final class SelectionReasonAssessor {
                 selectionDescriptor.getCause(),
                 describeSelectionReason(selectionDescriptor),
                 selectorState.isFromLock()
-            )).collect(Collectors.toList());
+            )).collect(toList());
     }
 
     private static boolean isStrictRequirement(SelectorState selectorState) {

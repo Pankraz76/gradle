@@ -15,6 +15,15 @@
  */
 package org.gradle.api.internal.tasks;
 
+import static java.util.Collections.unmodifiableMap;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import org.gradle.api.Describable;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.FilePropertyContainer;
@@ -41,14 +50,6 @@ import org.gradle.internal.properties.StaticValue;
 import org.gradle.internal.properties.bean.PropertyWalker;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.function.Consumer;
 
 @NullMarked
 public class DefaultTaskInputs implements TaskInputsInternal {
@@ -165,7 +166,7 @@ public class DefaultTaskInputs implements TaskInputsInternal {
         for (InputPropertySpec inputProperty : visitor.getProperties()) {
             result.put(inputProperty.getPropertyName(), InputParameterUtils.prepareInputParameterValue(inputProperty, task));
         }
-        return Collections.unmodifiableMap(result);
+        return unmodifiableMap(result);
     }
 
     @Override

@@ -15,6 +15,12 @@
  */
 package org.gradle.api.internal.tasks.compile;
 
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singletonList;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.Set;
 import org.gradle.api.internal.ClassPathRegistry;
 import org.gradle.api.internal.tasks.compile.daemon.AbstractDaemonCompiler;
 import org.gradle.api.internal.tasks.compile.daemon.CompilerWorkerExecutor;
@@ -29,10 +35,6 @@ import org.gradle.workers.internal.DaemonForkOptions;
 import org.gradle.workers.internal.DaemonForkOptionsBuilder;
 import org.gradle.workers.internal.FlatClassLoaderStructure;
 import org.gradle.workers.internal.KeepAliveMode;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.Set;
 
 public class DaemonJavaCompiler extends AbstractDaemonCompiler<JavaCompileSpec> {
     private final JavaHomeBasedJavaCompilerFactory javaCompilerFactory;
@@ -55,7 +57,7 @@ public class DaemonJavaCompiler extends AbstractDaemonCompiler<JavaCompileSpec> 
 
     @Override
     protected Set<Class<?>> getAdditionalCompilerServices() {
-        return Collections.emptySet();
+        return emptySet();
     }
 
     @Override
@@ -89,7 +91,7 @@ public class DaemonJavaCompiler extends AbstractDaemonCompiler<JavaCompileSpec> 
             }
 
             compilerClasspath = compilerClasspath.plus(
-                Collections.singletonList(toolsJar)
+                singletonList(toolsJar)
             );
         }
 

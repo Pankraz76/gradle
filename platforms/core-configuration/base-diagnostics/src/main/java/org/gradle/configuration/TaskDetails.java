@@ -16,6 +16,12 @@
 
 package org.gradle.configuration;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
@@ -26,11 +32,6 @@ import org.gradle.api.internal.tasks.options.OptionDescriptor;
 import org.gradle.api.internal.tasks.options.OptionReader;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * A configuration-cache friendly view of a {@link Task} that only projects information
@@ -139,7 +140,7 @@ class TaskDetails {
     public static TaskDetails from(Task task, OptionReader optionReader) {
         String path = task.getPath();
         int projectDepth = StringUtils.countMatches(path, Project.PATH_SEPARATOR);
-        List<OptionDetails> options = TaskOptionsGenerator.generate(task, optionReader).getAll().stream().map(OptionDetails::from).collect(Collectors.toList());
+        List<OptionDetails> options = TaskOptionsGenerator.generate(task, optionReader).getAll().stream().map(OptionDetails::from).collect(toList());
         Class<?> declaredTaskType = getDeclaredTaskType(task);
         String taskType = declaredTaskType.getName();
         String shortTypeName = declaredTaskType.getSimpleName();

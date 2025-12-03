@@ -16,7 +16,12 @@
 
 package org.gradle.internal.execution.history.impl;
 
+import static java.util.Objects.requireNonNull;
+import static org.gradle.internal.snapshot.SnapshotUtil.getRootHashes;
+
 import com.google.common.collect.ImmutableSortedMap;
+import java.util.Map;
+import java.util.Objects;
 import org.gradle.internal.RelativePathSupplier;
 import org.gradle.internal.execution.history.OverlappingOutputDetector;
 import org.gradle.internal.execution.history.OverlappingOutputs;
@@ -31,11 +36,6 @@ import org.gradle.internal.snapshot.SnapshotUtil;
 import org.gradle.internal.snapshot.SnapshotVisitResult;
 import org.jspecify.annotations.Nullable;
 
-import java.util.Map;
-import java.util.Objects;
-
-import static org.gradle.internal.snapshot.SnapshotUtil.getRootHashes;
-
 public class DefaultOverlappingOutputDetector implements OverlappingOutputDetector {
     @Override
     @Nullable
@@ -43,7 +43,7 @@ public class DefaultOverlappingOutputDetector implements OverlappingOutputDetect
         for (Map.Entry<String, FileSystemSnapshot> entry : current.entrySet()) {
             String propertyName = entry.getKey();
             FileSystemSnapshot currentSnapshot = entry.getValue();
-            FileSystemSnapshot previousSnapshot = Objects.requireNonNull(previous.getOrDefault(propertyName, FileSystemSnapshot.EMPTY));
+            FileSystemSnapshot previousSnapshot = requireNonNull(previous.getOrDefault(propertyName, FileSystemSnapshot.EMPTY));
             // If the root hashes are the same there are no overlapping outputs
             if (getRootHashes(previousSnapshot).equals(getRootHashes(currentSnapshot))) {
                 continue;

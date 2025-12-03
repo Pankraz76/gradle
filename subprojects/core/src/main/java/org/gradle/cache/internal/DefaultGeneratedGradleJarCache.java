@@ -16,16 +16,17 @@
 
 package org.gradle.cache.internal;
 
-import org.gradle.api.Action;
-import org.gradle.cache.FileLockManager;
-import org.gradle.cache.GlobalCache;
-import org.gradle.cache.PersistentCache;
-import org.gradle.cache.scopes.GlobalScopedCacheBuilderFactory;
+import static java.util.Collections.singletonList;
 
 import java.io.Closeable;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.api.Action;
+import org.gradle.cache.FileLockManager;
+import org.gradle.cache.GlobalCache;
+import org.gradle.cache.PersistentCache;
+import org.gradle.cache.scopes.GlobalScopedCacheBuilderFactory;
 
 public class DefaultGeneratedGradleJarCache implements GeneratedGradleJarCache, Closeable, GlobalCache {
     private final PersistentCache cache;
@@ -64,6 +65,6 @@ public class DefaultGeneratedGradleJarCache implements GeneratedGradleJarCache, 
 
     @Override
     public List<File> getGlobalCacheRoots() {
-        return Collections.singletonList(cache.getBaseDir());
+        return singletonList(cache.getBaseDir());
     }
 }

@@ -15,14 +15,14 @@
  */
 package org.gradle.api.internal.catalog;
 
-import com.google.common.base.Splitter;
-import org.gradle.api.initialization.ProjectDescriptor;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.joining;
 
+import com.google.common.base.Splitter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.stream.Collectors;
-
-import static java.util.Comparator.comparing;
+import org.gradle.api.initialization.ProjectDescriptor;
 
 public class AbstractProjectAccessorsSourceGenerator extends AbstractSourceGenerator {
     public AbstractProjectAccessorsSourceGenerator(Writer writer) {
@@ -43,7 +43,7 @@ public class AbstractProjectAccessorsSourceGenerator extends AbstractSourceGener
             .splitToList(path)
             .stream()
             .map(AbstractProjectAccessorsSourceGenerator::toJavaName)
-            .collect(Collectors.joining("_"));
+            .collect(joining("_"));
     }
 
     protected void writeHeader(String packageName) throws IOException {

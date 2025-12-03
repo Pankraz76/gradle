@@ -16,10 +16,16 @@
 
 package org.gradle.execution.taskgraph;
 
+import static com.google.common.base.Preconditions.checkState;
+import static java.util.Collections.emptyList;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import groovy.lang.Closure;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.Action;
 import org.gradle.api.Task;
 import org.gradle.api.execution.TaskExecutionAdapter;
@@ -56,10 +62,6 @@ import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 @SuppressWarnings("deprecation")
 @NullMarked
 public class DefaultTaskExecutionGraph implements TaskExecutionGraphInternal {
@@ -76,7 +78,7 @@ public class DefaultTaskExecutionGraph implements TaskExecutionGraphInternal {
     private final BuildOperationRunner buildOperationRunner;
     private final ListenerBuildOperationDecorator listenerBuildOperationDecorator;
     private FinalizedExecutionPlan executionPlan;
-    private List<Task> allTasks = Collections.emptyList();
+    private List<Task> allTasks = emptyList();
     private boolean hasFiredWhenReady;
 
     public DefaultTaskExecutionGraph(
@@ -296,7 +298,7 @@ public class DefaultTaskExecutionGraph implements TaskExecutionGraphInternal {
             result.set(new ScheduledWork(nodes, entryNodes));
         });
         ScheduledWork scheduledWork = result.get();
-        Preconditions.checkState(scheduledWork != null, "No scheduled work found");
+        checkState(scheduledWork != null, "No scheduled work found");
         return scheduledWork;
     }
 
@@ -319,7 +321,7 @@ public class DefaultTaskExecutionGraph implements TaskExecutionGraphInternal {
         taskListeners.removeAll();
         executionPlan.close();
         executionPlan = FinalizedExecutionPlan.EMPTY;
-        allTasks = Collections.emptyList();
+        allTasks = emptyList();
     }
 
     /**

@@ -16,7 +16,11 @@
 
 package org.gradle.api.services.internal;
 
+import static java.util.Collections.emptySet;
+
 import com.google.errorprone.annotations.concurrent.GuardedBy;
+import java.util.Collections;
+import java.util.function.Consumer;
 import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.provider.ProviderInternal;
 import org.gradle.api.services.BuildService;
@@ -31,9 +35,6 @@ import org.gradle.internal.service.ServiceLookup;
 import org.gradle.internal.service.ServiceRegistry;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.function.Consumer;
 
 // TODO:configuration-cache - complain when used at configuration time, except when opted in to this
 public class RegisteredBuildServiceProvider<T extends BuildService<P>, P extends BuildServiceParameters> extends BuildServiceProvider<T, P> {
@@ -173,7 +174,7 @@ public class RegisteredBuildServiceProvider<T extends BuildService<P>, P extends
         return isolationScheme.servicesForImplementation(
             isolatedParameters,
             internalServices,
-            Collections.emptySet()
+            emptySet()
         );
     }
 

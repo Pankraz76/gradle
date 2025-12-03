@@ -15,9 +15,34 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.ivyresolve.verification.writer;
 
+import static com.google.common.io.Files.getFileExtension;
+import static com.google.common.io.Files.getNameWithoutExtension;
+import static java.nio.charset.StandardCharsets.US_ASCII;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.openpgp.PGPPublicKey;
 import org.bouncycastle.openpgp.PGPPublicKeyRing;
@@ -65,29 +90,6 @@ import org.gradle.security.internal.PublicKeyResultBuilder;
 import org.gradle.security.internal.PublicKeyService;
 import org.gradle.security.internal.SecuritySupport;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
-
-import static com.google.common.io.Files.getFileExtension;
-import static com.google.common.io.Files.getNameWithoutExtension;
 
 public class WriteDependencyVerificationFile implements DependencyVerificationOverride, ArtifactVerificationOperation {
     private static final Logger LOGGER = Logging.getLogger(WriteDependencyVerificationFile.class);
@@ -444,7 +446,7 @@ public class WriteDependencyVerificationFile implements DependencyVerificationOv
                 File signature = entry.getSignatureFile().create();
                 if (signature != null) {
                     SignatureVerificationResultBuilder builder = new WriterSignatureVerificationResult(ignoredKeys, entry);
-                    signatureVerificationService.verify(entry.file, signature, Collections.emptySet(), Collections.emptySet(), builder);
+                    signatureVerificationService.verify(entry.file, signature, emptySet(), emptySet(), builder);
                 }
             }
 
@@ -599,11 +601,11 @@ public class WriteDependencyVerificationFile implements DependencyVerificationOv
                     boolean hasUid = false;
                     PGPPublicKey pk = pks.next();
                     String keyType = pk.isMasterKey() ? "pub" : "sub";
-                    out.write((keyType + "    " + SecuritySupport.toLongIdHexString(pk.getKeyID()).toUpperCase(Locale.ROOT) + "\n").getBytes(StandardCharsets.US_ASCII));
+                    out.write((keyType + "    " + SecuritySupport.toLongIdHexString(pk.getKeyID()).toUpperCase(Locale.ROOT) + "\n").getBytes(US_ASCII));
                     List<String> userIDs = PGPUtils.getUserIDs(pk);
                     for(String uid : userIDs) {
                         hasUid = true;
-                        out.write(("uid    " + uid + "\n").getBytes(StandardCharsets.US_ASCII));
+                        out.write(("uid    " + uid + "\n").getBytes(US_ASCII));
                     }
                     if (hasUid) {
                         out.write('\n');
@@ -648,7 +650,7 @@ public class WriteDependencyVerificationFile implements DependencyVerificationOv
     private List<PGPPublicKeyRing> loadExistingKeyRing(BuildTreeDefinedKeys keyrings) throws IOException {
         File effectiveFile = mayBeDryRunFile(keyrings.getEffectiveKeyringsFile());
         if (!effectiveFile.exists()) {
-            return Collections.emptyList();
+            return emptyList();
         }
         List<PGPPublicKeyRing> existingRings = SecuritySupport.loadKeyRingFile(effectiveFile);
         LOGGER.info("Existing keyring file contains {} keyrings", existingRings.size());

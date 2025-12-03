@@ -16,6 +16,16 @@
 
 package org.gradle.jvm.toolchain.internal;
 
+import static java.util.Collections.unmodifiableList;
+import static java.util.stream.Collectors.toCollection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
 import org.gradle.api.InvalidUserCodeException;
@@ -35,14 +45,6 @@ import org.gradle.internal.authentication.DefaultAuthenticationContainer;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.jvm.toolchain.JavaToolchainRepository;
 import org.gradle.jvm.toolchain.JavaToolchainResolver;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class DefaultJavaToolchainRepositoryHandler implements JavaToolchainRepositoryHandlerInternal {
 
@@ -108,8 +110,8 @@ public class DefaultJavaToolchainRepositoryHandler implements JavaToolchainRepos
         ArrayList<JavaToolchainRepository> copy = repositories.stream()
                 .map(it -> (JavaToolchainRepositoryInternal) it)
                 .map(ImmutableJavaToolchainRepository::new)
-                .collect(Collectors.toCollection(ArrayList::new));
-        return Collections.unmodifiableList(copy);
+                .collect(toCollection(ArrayList::new));
+        return unmodifiableList(copy);
     }
 
     @Override

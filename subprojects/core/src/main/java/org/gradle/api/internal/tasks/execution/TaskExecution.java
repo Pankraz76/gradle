@@ -16,7 +16,23 @@
 
 package org.gradle.api.internal.tasks.execution;
 
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toList;
+import static org.gradle.internal.work.AsyncWorkTracker.ProjectLockRetention.RELEASE_AND_REACQUIRE_PROJECT_LOCKS;
+import static org.gradle.internal.work.AsyncWorkTracker.ProjectLockRetention.RELEASE_PROJECT_LOCKS;
+
 import com.google.common.collect.ImmutableSortedMap;
+import java.io.File;
+import java.io.UncheckedIOException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.GeneratedSubclasses;
 import org.gradle.api.internal.TaskInternal;
@@ -85,21 +101,6 @@ import org.gradle.internal.work.AsyncWorkTracker;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.UncheckedIOException;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.work.AsyncWorkTracker.ProjectLockRetention.RELEASE_AND_REACQUIRE_PROJECT_LOCKS;
-import static org.gradle.internal.work.AsyncWorkTracker.ProjectLockRetention.RELEASE_PROJECT_LOCKS;
 
 @SuppressWarnings("deprecation")
 public class TaskExecution implements MutableUnitOfWork {
@@ -482,7 +483,7 @@ public class TaskExecution implements MutableUnitOfWork {
     public void ensureLegacySnapshottingInputsClosed() {
         // If the operation hasn't finished normally (because of a shortcut or an error), we close it without a cache key
         context.removeSnapshotTaskInputsBuildOperationContext()
-            .ifPresent(operation -> operation.setResult(new SnapshotTaskInputsBuildOperationResult(CachingState.NOT_DETERMINED, Collections.emptySet())));
+            .ifPresent(operation -> operation.setResult(new SnapshotTaskInputsBuildOperationResult(CachingState.NOT_DETERMINED, emptySet())));
     }
 
     @Override
@@ -567,7 +568,7 @@ public class TaskExecution implements MutableUnitOfWork {
                 .map(Map::keySet)
                 .flatMap(Collection::stream)
                 .map(File::new)
-                .collect(Collectors.toList());
+                .collect(toList());
             return fileCollectionFactory.fixed(outputs);
         }
 

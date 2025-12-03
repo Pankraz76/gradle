@@ -16,14 +16,15 @@
 
 package org.gradle.internal.jacoco.rules;
 
-import com.google.common.collect.ImmutableList;
-import org.gradle.api.Action;
-import org.gradle.testing.jacoco.tasks.rules.JacocoLimit;
-import org.gradle.testing.jacoco.tasks.rules.JacocoViolationRule;
+import static java.util.Collections.unmodifiableList;
 
+import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.api.Action;
+import org.gradle.testing.jacoco.tasks.rules.JacocoLimit;
+import org.gradle.testing.jacoco.tasks.rules.JacocoViolationRule;
 
 public class JacocoViolationRuleImpl implements JacocoViolationRule {
 
@@ -60,7 +61,7 @@ public class JacocoViolationRuleImpl implements JacocoViolationRule {
 
     @Override
     public List<String> getIncludes() {
-        return Collections.unmodifiableList(includes);
+        return unmodifiableList(includes);
     }
 
     @Override
@@ -70,12 +71,12 @@ public class JacocoViolationRuleImpl implements JacocoViolationRule {
 
     @Override
     public List<String> getExcludes() {
-        return Collections.unmodifiableList(excludes);
+        return unmodifiableList(excludes);
     }
 
     @Override
     public List<JacocoLimit> getLimits() {
-        return Collections.unmodifiableList(limits);
+        return unmodifiableList(limits);
     }
 
     @Override

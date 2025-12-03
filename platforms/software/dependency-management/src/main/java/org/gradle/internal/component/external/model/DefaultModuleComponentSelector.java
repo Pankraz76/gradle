@@ -15,8 +15,12 @@
  */
 package org.gradle.internal.component.external.model;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.artifacts.VersionConstraint;
 import org.gradle.api.artifacts.capability.CapabilitySelector;
@@ -34,9 +38,6 @@ import org.gradle.api.internal.artifacts.component.ComponentSelectorInternal;
 import org.gradle.api.internal.artifacts.dependencies.DefaultImmutableVersionConstraint;
 import org.gradle.api.internal.attributes.AttributeContainerInternal;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
-
-import java.util.List;
-import java.util.Set;
 
 public class DefaultModuleComponentSelector implements ModuleComponentSelector, ComponentSelectorInternal {
 
@@ -122,7 +123,7 @@ public class DefaultModuleComponentSelector implements ModuleComponentSelector, 
                     throw new UnsupportedOperationException("Unsupported capability selector type: " + c.getClass().getName());
                 }
             })
-            .collect(ImmutableList.toImmutableList());
+            .collect(toImmutableList());
     }
 
     @Override

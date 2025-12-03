@@ -16,6 +16,13 @@
 
 package org.gradle.testfixtures.internal;
 
+import static java.util.Collections.emptyList;
+import static org.gradle.internal.concurrent.CompositeStoppable.stoppable;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.Set;
+import java.util.function.Function;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
@@ -84,13 +91,6 @@ import org.gradle.internal.work.WorkerLeaseService;
 import org.gradle.util.GradleVersion;
 import org.gradle.util.Path;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.Set;
-import java.util.function.Function;
-
-import static org.gradle.internal.concurrent.CompositeStoppable.stoppable;
 
 public class ProjectBuilderImpl {
     private static ServiceRegistry globalServices;
@@ -180,7 +180,7 @@ public class ProjectBuilderImpl {
         buildServices.get(ProjectParallelExecutionController.class).startProjectExecution(false);
 
         GradleInternal gradle = build.getMutableModel();
-        gradle.setIncludedBuilds(Collections.emptyList());
+        gradle.setIncludedBuilds(emptyList());
 
         ProjectDescriptorRegistry projectDescriptorRegistry = buildServices.get(ProjectDescriptorRegistry.class);
         // Registers project as a side effect

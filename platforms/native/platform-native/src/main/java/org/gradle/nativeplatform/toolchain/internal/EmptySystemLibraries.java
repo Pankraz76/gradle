@@ -16,6 +16,9 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
@@ -24,16 +27,16 @@ import java.util.Map;
 public class EmptySystemLibraries implements SystemLibraries {
     @Override
     public List<File> getIncludeDirs() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override
     public List<File> getLibDirs() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override
     public Map<String, String> getPreprocessorMacros() {
-        return Collections.emptyMap();
+        return emptyMap();
     }
 }

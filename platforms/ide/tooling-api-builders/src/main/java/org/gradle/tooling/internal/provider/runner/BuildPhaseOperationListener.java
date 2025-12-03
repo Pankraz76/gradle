@@ -16,6 +16,18 @@
 
 package org.gradle.tooling.internal.provider.runner;
 
+import static java.util.Collections.singletonList;
+import static java.util.Collections.unmodifiableSet;
+import static org.gradle.internal.operations.BuildOperationCategory.CONFIGURE_BUILD;
+import static org.gradle.internal.operations.BuildOperationCategory.CONFIGURE_ROOT_BUILD;
+import static org.gradle.internal.operations.BuildOperationCategory.RUN_MAIN_TASKS;
+import static org.gradle.internal.operations.BuildOperationCategory.RUN_WORK;
+
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import org.gradle.internal.build.event.types.AbstractOperationResult;
 import org.gradle.internal.build.event.types.DefaultBuildPhaseDescriptor;
 import org.gradle.internal.build.event.types.DefaultFailure;
@@ -32,20 +44,9 @@ import org.gradle.internal.operations.OperationIdentifier;
 import org.gradle.internal.operations.OperationProgressEvent;
 import org.gradle.internal.operations.OperationStartEvent;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static org.gradle.internal.operations.BuildOperationCategory.CONFIGURE_BUILD;
-import static org.gradle.internal.operations.BuildOperationCategory.CONFIGURE_ROOT_BUILD;
-import static org.gradle.internal.operations.BuildOperationCategory.RUN_MAIN_TASKS;
-import static org.gradle.internal.operations.BuildOperationCategory.RUN_WORK;
-
 public class BuildPhaseOperationListener implements BuildOperationListener {
 
-    private static final Set<BuildOperationCategory> SUPPORTED_CATEGORIES = Collections.unmodifiableSet(EnumSet.of(
+    private static final Set<BuildOperationCategory> SUPPORTED_CATEGORIES = unmodifiableSet(EnumSet.of(
         CONFIGURE_ROOT_BUILD,
         CONFIGURE_BUILD,
         RUN_MAIN_TASKS,
@@ -102,7 +103,7 @@ public class BuildPhaseOperationListener implements BuildOperationListener {
         long startTime = finishEvent.getStartTime();
         long endTime = finishEvent.getEndTime();
         if (finishEvent.getFailure() != null) {
-            return new DefaultFailureResult(startTime, endTime, Collections.singletonList(DefaultFailure.fromThrowable(finishEvent.getFailure())));
+            return new DefaultFailureResult(startTime, endTime, singletonList(DefaultFailure.fromThrowable(finishEvent.getFailure())));
         } else {
             return new DefaultSuccessResult(startTime, endTime);
         }

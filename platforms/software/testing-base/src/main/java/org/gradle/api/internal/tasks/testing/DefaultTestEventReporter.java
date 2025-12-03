@@ -16,7 +16,18 @@
 
 package org.gradle.api.internal.tasks.testing;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
+
 import com.google.common.base.Preconditions;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import org.gradle.api.internal.tasks.testing.results.DefaultTestResult;
 import org.gradle.api.internal.tasks.testing.results.TestListenerInternal;
 import org.gradle.api.tasks.testing.TestFailure;
@@ -25,12 +36,6 @@ import org.gradle.api.tasks.testing.TestOutputEvent;
 import org.gradle.api.tasks.testing.TestResult;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.time.Instant;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 @NullMarked
 class DefaultTestEventReporter implements TestEventReporterInternal {
@@ -71,17 +76,17 @@ class DefaultTestEventReporter implements TestEventReporterInternal {
 
     @Override
     public void metadata(Instant logTime, String key, String value) {
-        Preconditions.checkNotNull(logTime, "logTime can not be null!");
-        Preconditions.checkNotNull(key, "Metadata key can not be null!");
-        Preconditions.checkNotNull(value, "Metadata value can not be null!");
-        listener.metadata(testDescriptor, new DefaultTestKeyValueDataEvent(logTime, Collections.singletonMap(key, value)));
+        checkNotNull(logTime, "logTime can not be null!");
+        checkNotNull(key, "Metadata key can not be null!");
+        checkNotNull(value, "Metadata value can not be null!");
+        listener.metadata(testDescriptor, new DefaultTestKeyValueDataEvent(logTime, singletonMap(key, value)));
     }
 
     @Override
     public void metadata(Instant logTime, Map<String, String> values) {
-        Preconditions.checkNotNull(logTime, "logTime can not be null!");
-        Preconditions.checkNotNull(values, "Metadata can not be null!");
-        Preconditions.checkArgument(!values.isEmpty(), "Metadata can not be empty!");
+        checkNotNull(logTime, "logTime can not be null!");
+        checkNotNull(values, "Metadata can not be null!");
+        checkArgument(!values.isEmpty(), "Metadata can not be empty!");
 
         listener.metadata(testDescriptor, new DefaultTestKeyValueDataEvent(logTime, new LinkedHashMap<>(values)));
     }
@@ -96,7 +101,7 @@ class DefaultTestEventReporter implements TestEventReporterInternal {
         if (!isComposite()) {
             testResultState.incrementSuccessfulCount();
         }
-        listener.completed(testDescriptor, new DefaultTestResult(TestResult.ResultType.SUCCESS, startTime, endTime.toEpochMilli(), testResultState.getTotalCount(), testResultState.getSuccessfulCount(), testResultState.getFailureCount(), Collections.emptyList(), null), new TestCompleteEvent(endTime.toEpochMilli(), TestResult.ResultType.SUCCESS));
+        listener.completed(testDescriptor, new DefaultTestResult(TestResult.ResultType.SUCCESS, startTime, endTime.toEpochMilli(), testResultState.getTotalCount(), testResultState.getSuccessfulCount(), testResultState.getFailureCount(), emptyList(), null), new TestCompleteEvent(endTime.toEpochMilli(), TestResult.ResultType.SUCCESS));
     }
 
     @Override
@@ -106,14 +111,14 @@ class DefaultTestEventReporter implements TestEventReporterInternal {
 
     @Override
     public void skipped(Instant endTime, @Nullable TestFailure assumptionFailure) {
-        listener.completed(testDescriptor, new DefaultTestResult(TestResult.ResultType.SKIPPED, startTime, endTime.toEpochMilli(), testResultState.getTotalCount(), testResultState.getSuccessfulCount(), testResultState.getFailureCount(), Collections.emptyList(), assumptionFailure), new TestCompleteEvent(endTime.toEpochMilli(), TestResult.ResultType.SKIPPED));
+        listener.completed(testDescriptor, new DefaultTestResult(TestResult.ResultType.SKIPPED, startTime, endTime.toEpochMilli(), testResultState.getTotalCount(), testResultState.getSuccessfulCount(), testResultState.getFailureCount(), emptyList(), assumptionFailure), new TestCompleteEvent(endTime.toEpochMilli(), TestResult.ResultType.SKIPPED));
     }
 
     @Override
     public void failed(Instant endTime, String message, String additionalContent) {
         TestFailureDetails failureDetails = new AssertionFailureDetails(message, Throwable.class.getName(), additionalContent, null, null);
-        TestFailure testFailure = new DefaultTestFailure(new Throwable(message), failureDetails, Collections.emptyList());
-        failed(endTime, Collections.singletonList(testFailure));
+        TestFailure testFailure = new DefaultTestFailure(new Throwable(message), failureDetails, emptyList());
+        failed(endTime, singletonList(testFailure));
     }
 
     @Override

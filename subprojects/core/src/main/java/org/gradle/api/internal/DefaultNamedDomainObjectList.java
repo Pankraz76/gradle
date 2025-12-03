@@ -15,7 +15,14 @@
  */
 package org.gradle.api.internal;
 
+import static java.util.Collections.unmodifiableList;
+
 import groovy.lang.Closure;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
 import org.gradle.api.NamedDomainObjectList;
 import org.gradle.api.Namer;
 import org.gradle.api.internal.collections.CollectionFilter;
@@ -26,12 +33,6 @@ import org.gradle.api.internal.collections.ListElementSource;
 import org.gradle.api.specs.Spec;
 import org.gradle.api.specs.Specs;
 import org.gradle.internal.reflect.Instantiator;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
 
 public class DefaultNamedDomainObjectList<T> extends DefaultNamedDomainObjectCollection<T> implements NamedDomainObjectList<T> {
     public DefaultNamedDomainObjectList(DefaultNamedDomainObjectList<? super T> objects, CollectionFilter<T> filter, Instantiator instantiator, Namer<? super T> namer) {
@@ -129,7 +130,7 @@ public class DefaultNamedDomainObjectList<T> extends DefaultNamedDomainObjectCol
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        return Collections.unmodifiableList(getStore().subList(fromIndex, toIndex));
+        return unmodifiableList(getStore().subList(fromIndex, toIndex));
     }
 
     @Override

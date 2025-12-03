@@ -16,7 +16,27 @@
 
 package org.gradle.api.internal.initialization.transform;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.ImmutableSortedSet.toImmutableSortedSet;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
+import static org.gradle.api.internal.initialization.transform.utils.InstrumentationTransformUtils.ANALYSIS_OUTPUT_DIR;
+import static org.gradle.api.internal.initialization.transform.utils.InstrumentationTransformUtils.DEPENDENCY_ANALYSIS_FILE_NAME;
+import static org.gradle.api.internal.initialization.transform.utils.InstrumentationTransformUtils.TYPE_HIERARCHY_ANALYSIS_FILE_NAME;
+import static org.gradle.api.internal.initialization.transform.utils.InstrumentationTransformUtils.createInstrumentationClasspathMarker;
+import static org.gradle.api.internal.initialization.transform.utils.InstrumentationTransformUtils.outputOriginalArtifact;
+import static org.gradle.internal.classpath.transforms.MrJarUtils.isInUnsupportedMrJarVersionedDirectory;
+
 import com.google.common.collect.Ordering;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.stream.Stream;
+import javax.inject.Inject;
 import org.gradle.api.artifacts.transform.InputArtifact;
 import org.gradle.api.artifacts.transform.TransformAction;
 import org.gradle.api.artifacts.transform.TransformOutputs;
@@ -37,25 +57,6 @@ import org.gradle.internal.file.FileException;
 import org.gradle.internal.lazy.Lazy;
 import org.gradle.work.DisableCachingByDefault;
 import org.objectweb.asm.ClassReader;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.stream.Stream;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.ImmutableSortedSet.toImmutableSortedSet;
-import static org.gradle.api.internal.initialization.transform.utils.InstrumentationTransformUtils.ANALYSIS_OUTPUT_DIR;
-import static org.gradle.api.internal.initialization.transform.utils.InstrumentationTransformUtils.DEPENDENCY_ANALYSIS_FILE_NAME;
-import static org.gradle.api.internal.initialization.transform.utils.InstrumentationTransformUtils.TYPE_HIERARCHY_ANALYSIS_FILE_NAME;
-import static org.gradle.api.internal.initialization.transform.utils.InstrumentationTransformUtils.createInstrumentationClasspathMarker;
-import static org.gradle.api.internal.initialization.transform.utils.InstrumentationTransformUtils.outputOriginalArtifact;
-import static org.gradle.internal.classpath.transforms.MrJarUtils.isInUnsupportedMrJarVersionedDirectory;
 
 /**
  * A transform that analyzes an artifact: it discovers all super types for classes in an artifact and all class dependencies.<br><br>
@@ -114,7 +115,7 @@ public abstract class InstrumentationAnalysisTransform implements TransformActio
         } catch (IOException | FileException ignored) {
             // We support badly formatted jars on the build classpath
             // see: https://github.com/gradle/gradle/issues/13816
-            writeOutput(artifact, outputs, Collections.emptyMap(), Collections.emptySet());
+            writeOutput(artifact, outputs, emptyMap(), emptySet());
         }
     }
 
@@ -177,7 +178,7 @@ public abstract class InstrumentationAnalysisTransform implements TransformActio
 
     private static Map<String, Set<String>> toMapWithKeys(Set<String> keys) {
         TreeMap<String, Set<String>> map = new TreeMap<>();
-        keys.forEach(key -> map.put(key, Collections.emptySet()));
+        keys.forEach(key -> map.put(key, emptySet()));
         return map;
     }
 }

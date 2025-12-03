@@ -15,9 +15,16 @@
  */
 package org.gradle.api.internal.attributes.matching;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.attributes.Attribute;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
 import org.gradle.api.internal.attributes.ImmutableAttributesEntry;
@@ -26,11 +33,6 @@ import org.gradle.internal.model.InMemoryCacheFactory;
 import org.gradle.internal.model.InMemoryLoadingCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * An {@link AttributeMatcher}, which optimizes for the case of only comparing 0 or 1 candidates
@@ -137,7 +139,7 @@ public class DefaultAttributeMatcher implements AttributeMatcher {
     @SuppressWarnings({"unchecked", "rawtypes", "MixedMutabilityReturnType"})
     public List<AttributeMatcher.MatchingDescription<?>> describeMatching(ImmutableAttributes candidate, ImmutableAttributes requested) {
         if (requested.isEmpty() || candidate.isEmpty()) {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         CoercingAttributeValuePredicate matches = schema::matchValue;
@@ -176,7 +178,7 @@ public class DefaultAttributeMatcher implements AttributeMatcher {
             ImmutableAttributes candidateAttributes = candidate.getAttributes();
             if (isMatchingCandidate(candidateAttributes, requested)) {
                 explanationBuilder.singleMatch(candidateAttributes, ImmutableList.of(candidateAttributes), requested);
-                return Collections.singletonList(candidate);
+                return singletonList(candidate);
             }
             explanationBuilder.candidateDoesNotMatchAttributes(candidateAttributes, requested);
             return ImmutableList.of();
@@ -231,7 +233,7 @@ public class DefaultAttributeMatcher implements AttributeMatcher {
         @SuppressWarnings("MixedMutabilityReturnType")
         private static <T extends AttributeMatchingCandidate> List<T> getMatchesFromCandidateIndices(int[] indices, List<? extends T> candidates) {
             if (indices.length == 0) {
-                return Collections.emptyList();
+                return emptyList();
             }
 
             List<T> matches = new ArrayList<>(indices.length);

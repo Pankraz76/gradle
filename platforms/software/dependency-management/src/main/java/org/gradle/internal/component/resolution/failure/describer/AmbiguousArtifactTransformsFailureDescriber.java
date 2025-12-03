@@ -16,7 +16,17 @@
 
 package org.gradle.internal.component.resolution.failure.describer;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.Ordering;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 import org.gradle.api.attributes.Attribute;
 import org.gradle.api.attributes.AttributeContainer;
 import org.gradle.internal.component.resolution.failure.exception.ArtifactSelectionException;
@@ -24,12 +34,6 @@ import org.gradle.internal.component.resolution.failure.transform.SourceVariantD
 import org.gradle.internal.component.resolution.failure.transform.TransformationChainData;
 import org.gradle.internal.component.resolution.failure.type.AmbiguousArtifactTransformsFailure;
 import org.gradle.internal.logging.text.TreeFormatter;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 /**
  * A {@link ResolutionFailureDescriber} that describes an {@link AmbiguousArtifactTransformsFailure}.
@@ -60,14 +64,14 @@ public abstract class AmbiguousArtifactTransformsFailureDescriber extends Abstra
         formatter.node("Found the following transformation chains");
 
         Comparator<TransformationChainData> variantDataComparator =
-            Comparator.comparing(TransformationChainData::summarizeTransformations)
+            comparing(TransformationChainData::summarizeTransformations)
                 .thenComparing(x -> x.getFinalAttributes().toString());
 
         Map<SourceVariantData, List<TransformationChainData>> transformationPaths = failure.getPotentialVariants().stream()
-            .collect(Collectors.groupingBy(
+            .collect(groupingBy(
                 TransformationChainData::getInitialVariant,
-                () -> new TreeMap<>(Comparator.comparing(SourceVariantData::getVariantName)),
-                Collectors.collectingAndThen(Collectors.toList(), list -> list.stream().sorted(variantDataComparator).collect(Collectors.toList()))));
+                () -> new TreeMap<>(comparing(SourceVariantData::getVariantName)),
+                collectingAndThen(toList(), list -> list.stream().sorted(variantDataComparator).collect(toList()))));
 
         formatter.startChildren();
         transformationPaths.forEach((root, transformations) -> {

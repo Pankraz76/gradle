@@ -16,13 +16,15 @@
 
 package org.gradle.model.internal.core;
 
+import static com.google.common.base.Predicates.alwaysTrue;
+
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import org.gradle.model.internal.type.ModelType;
 
 public class ModelNodes {
     public static Predicate<MutableModelNode> all() {
-        return Predicates.alwaysTrue();
+        return alwaysTrue();
     }
 
     public static Predicate<MutableModelNode> withType(Class<?> type) {

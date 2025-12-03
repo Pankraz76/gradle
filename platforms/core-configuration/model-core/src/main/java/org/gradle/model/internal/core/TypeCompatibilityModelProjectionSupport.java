@@ -16,14 +16,14 @@
 
 package org.gradle.model.internal.core;
 
+import static java.util.Collections.singleton;
+import static org.gradle.model.internal.manage.schema.extract.PrimitiveTypes.isPrimitiveType;
+
+import java.util.Collections;
+import javax.annotation.concurrent.ThreadSafe;
 import org.gradle.internal.Cast;
 import org.gradle.model.internal.core.rule.describe.ModelRuleDescriptor;
 import org.gradle.model.internal.type.ModelType;
-
-import javax.annotation.concurrent.ThreadSafe;
-import java.util.Collections;
-
-import static org.gradle.model.internal.manage.schema.extract.PrimitiveTypes.isPrimitiveType;
 
 @ThreadSafe
 public abstract class TypeCompatibilityModelProjectionSupport<M> implements ModelProjection {
@@ -70,7 +70,7 @@ public abstract class TypeCompatibilityModelProjectionSupport<M> implements Mode
 
     @Override
     public Iterable<String> getTypeDescriptions(MutableModelNode node) {
-        return Collections.singleton(description(type));
+        return singleton(description(type));
     }
 
     protected String toStringValueDescription(Object instance) {

@@ -17,7 +17,12 @@
 
 package org.gradle.api.plugins.quality.internal;
 
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.ImmutableMap;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
 import org.gradle.api.file.FileCollection;
@@ -29,10 +34,6 @@ import org.gradle.internal.logging.ConsoleRenderer;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 class CodeNarcInvoker implements Action<AntBuilderDelegate> {
 
@@ -99,7 +100,7 @@ class CodeNarcInvoker implements Action<AntBuilderDelegate> {
                 // Find all reports that produced a file
                 List<CodeNarcActionParameters.EnabledReport> reportsWithFiles = reports.stream()
                     .filter(it -> !it.getName().get().equals("console"))
-                    .collect(Collectors.toList());
+                    .collect(toList());
                 // a report file was generated
                 if (!reportsWithFiles.isEmpty()) {
                     CodeNarcActionParameters.EnabledReport humanReadableReport = reportsWithFiles.stream().filter(it -> it.getName().get().equals("html"))

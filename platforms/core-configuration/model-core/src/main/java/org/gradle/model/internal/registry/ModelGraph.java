@@ -16,12 +16,10 @@
 
 package org.gradle.model.internal.registry;
 
+import static java.util.Collections.unmodifiableMap;
+
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
-import org.gradle.model.internal.core.ModelNode;
-import org.gradle.model.internal.core.ModelPath;
-import org.jspecify.annotations.Nullable;
-
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
@@ -31,6 +29,9 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import org.gradle.model.internal.core.ModelNode;
+import org.gradle.model.internal.core.ModelPath;
+import org.jspecify.annotations.Nullable;
 
 class ModelGraph {
     private enum PendingState {
@@ -57,7 +58,7 @@ class ModelGraph {
     }
 
     public Map<ModelPath, ModelNodeInternal> getFlattened() {
-        return Collections.unmodifiableMap(flattened);
+        return unmodifiableMap(flattened);
     }
 
     public void add(ModelNodeInternal node) {

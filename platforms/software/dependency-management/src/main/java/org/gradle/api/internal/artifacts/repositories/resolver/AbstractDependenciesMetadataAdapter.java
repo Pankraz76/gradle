@@ -16,8 +16,14 @@
 
 package org.gradle.api.internal.artifacts.repositories.resolver;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.DependenciesMetadata;
 import org.gradle.api.artifacts.DependencyMetadata;
@@ -30,10 +36,6 @@ import org.gradle.internal.component.external.model.ModuleDependencyMetadata;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.internal.typeconversion.NotationParser;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
 
 public abstract class AbstractDependenciesMetadataAdapter<T extends DependencyMetadata<T>, E extends T> extends ArrayList<T> implements DependenciesMetadata<T> {
     private final Instantiator instantiator;
@@ -94,7 +96,7 @@ public abstract class AbstractDependenciesMetadataAdapter<T extends DependencyMe
     }
 
     public ImmutableList<ModuleDependencyMetadata> getMetadatas() {
-        return this.stream().map(this::maybeAdapt).map(this::getAdapterMetadata).collect(ImmutableList.toImmutableList());
+        return this.stream().map(this::maybeAdapt).map(this::getAdapterMetadata).collect(toImmutableList());
     }
 
     private E maybeAdapt(T details) {
@@ -107,7 +109,7 @@ public abstract class AbstractDependenciesMetadataAdapter<T extends DependencyMe
 
     private E adapt(T details) {
         ModuleComponentSelector selector = DefaultModuleComponentSelector.newSelector(details.getModule(), DefaultImmutableVersionConstraint.of(details.getVersionConstraint()), details.getAttributes(), ImmutableSet.of());
-        GradleDependencyMetadata dependencyMetadata = new GradleDependencyMetadata(selector, Collections.emptyList(), isConstraint(), isEndorsingStrictVersions(details), details.getReason(), false, null);
+        GradleDependencyMetadata dependencyMetadata = new GradleDependencyMetadata(selector, emptyList(), isConstraint(), isEndorsingStrictVersions(details), details.getReason(), false, null);
         return instantiator.newInstance(adapterImplementationType(), attributesFactory, dependencyMetadata);
     }
 }

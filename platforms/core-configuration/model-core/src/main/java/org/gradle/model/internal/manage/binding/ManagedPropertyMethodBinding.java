@@ -16,6 +16,8 @@
 
 package org.gradle.model.internal.manage.binding;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Preconditions;
 import org.gradle.internal.reflect.PropertyAccessorType;
 import org.gradle.model.internal.method.WeaklyTypeReferencingMethod;
@@ -28,7 +30,7 @@ public class ManagedPropertyMethodBinding extends AbstractStructMethodBinding {
     private final String propertyName;
 
     public ManagedPropertyMethodBinding(WeaklyTypeReferencingMethod<?, ?> source, String propertyName, PropertyAccessorType accessorType) {
-        super(source, Preconditions.checkNotNull(accessorType));
+        super(source, checkNotNull(accessorType));
         this.propertyName = propertyName;
     }
 

@@ -17,16 +17,14 @@
 package org.gradle.internal.instrumentation.extensions.property;
 
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Comparator.comparing;
+import static java.util.Map.Entry.comparingByKey;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty.BinaryCompatibility;
-import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
-import org.gradle.internal.instrumentation.model.CallableInfo;
-import org.gradle.internal.instrumentation.model.ParameterInfo;
-import org.gradle.internal.instrumentation.processor.codegen.InstrumentationResourceGenerator;
-import org.objectweb.asm.Type;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -37,8 +35,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.groupingBy;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.instrumentation.api.annotations.ReplacesEagerProperty.BinaryCompatibility;
+import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
+import org.gradle.internal.instrumentation.model.CallableInfo;
+import org.gradle.internal.instrumentation.model.ParameterInfo;
+import org.gradle.internal.instrumentation.processor.codegen.InstrumentationResourceGenerator;
+import org.objectweb.asm.Type;
 
 /**
  * Writes all instrumented properties to a resource file
@@ -51,7 +54,7 @@ public class InstrumentedPropertiesResourceGenerator implements InstrumentationR
     public Collection<CallInterceptionRequest> filterRequestsForResource(Collection<CallInterceptionRequest> interceptionRequests) {
         return interceptionRequests.stream()
             .filter(request -> request.getRequestExtras().getByType(PropertyUpgradeRequestExtra.class).isPresent())
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     @Override
@@ -72,7 +75,7 @@ public class InstrumentedPropertiesResourceGenerator implements InstrumentationR
                 Map<String, List<CallInterceptionRequest>> requests = filteredRequests.stream()
                     .collect(groupingBy(InstrumentedPropertiesResourceGenerator::getFqName));
                 List<UpgradedProperty> entries = toPropertyEntries(requests);
-                try (Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)) {
+                try (Writer writer = new OutputStreamWriter(outputStream, UTF_8)) {
                     writer.write(mapper.writeValueAsString(entries));
                 } catch (IOException e) {
                     throw UncheckedException.throwAsUncheckedException(e);
@@ -90,9 +93,9 @@ public class InstrumentedPropertiesResourceGenerator implements InstrumentationR
 
     private static List<UpgradedProperty> toPropertyEntries(Map<String, List<CallInterceptionRequest>> requests) {
         return requests.entrySet().stream()
-            .sorted(Map.Entry.comparingByKey())
+            .sorted(comparingByKey())
             .map(e -> toPropertyEntry(e.getValue()))
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -113,8 +116,8 @@ public class InstrumentedPropertiesResourceGenerator implements InstrumentationR
                     .toArray(Type[]::new);
                 return new ReplacedAccessor(intercepted.getCallableName(), Type.getMethodDescriptor(returnType, parameterTypes), requestExtra.getBinaryCompatibility());
             })
-            .sorted(Comparator.comparing((ReplacedAccessor o) -> o.name).thenComparing(o -> o.descriptor))
-            .collect(Collectors.toList());
+            .sorted(comparing((ReplacedAccessor o) -> o.name).thenComparing(o -> o.descriptor))
+            .collect(toList());
         return new UpgradedProperty(containingType, propertyName, methodName, methodDescriptor, upgradedAccessors);
     }
 

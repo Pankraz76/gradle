@@ -16,19 +16,20 @@
 
 package org.gradle.api.internal.attributes;
 
+import static java.util.Comparator.comparing;
+
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
 import org.gradle.api.attributes.Attribute;
 import org.gradle.api.internal.provider.Providers;
 import org.gradle.api.provider.Provider;
 import org.gradle.internal.Cast;
 import org.gradle.internal.isolation.Isolatable;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Comparator;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * The default implementation of {@link ImmutableAttributes}.
@@ -244,7 +245,7 @@ public final class DefaultImmutableAttributesContainer extends AbstractAttribute
 
     @Override
     public String toString() {
-        Map<Attribute<?>, Object> sorted = new TreeMap<>(Comparator.comparing(Attribute::getName));
+        Map<Attribute<?>, Object> sorted = new TreeMap<>(comparing(Attribute::getName));
         for (ImmutableAttributesEntry<?> entry : getEntries()) {
             sorted.put(entry.getKey(), entry.getIsolatedValue());
         }

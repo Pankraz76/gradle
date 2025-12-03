@@ -16,7 +16,15 @@
 
 package org.gradle.api.internal.artifacts.configurations;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Supplier;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.DomainObjectSet;
 import org.gradle.api.InvalidUserCodeException;
@@ -39,13 +47,6 @@ import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Provider;
 import org.gradle.internal.DisplayName;
 import org.gradle.internal.typeconversion.NotationParser;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Supplier;
 
 public class DefaultConfigurationPublications implements ConfigurationPublications {
 
@@ -198,7 +199,7 @@ public class DefaultConfigurationPublications implements ConfigurationPublicatio
 
     @Override
     public Collection<? extends Capability> getCapabilities() {
-        return capabilities == null ? Collections.emptyList() : ImmutableList.copyOf(capabilities);
+        return capabilities == null ? emptyList() : ImmutableList.copyOf(capabilities);
     }
 
     public void preventFromFurtherMutation(Supplier<String> observationReason) {

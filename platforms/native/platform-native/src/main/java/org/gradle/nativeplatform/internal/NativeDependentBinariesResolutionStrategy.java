@@ -16,9 +16,27 @@
 
 package org.gradle.nativeplatform.internal;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Ordering;
+import java.io.StringWriter;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.gradle.api.CircularReferenceException;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.api.internal.project.ProjectState;
@@ -41,24 +59,6 @@ import org.gradle.platform.base.internal.dependents.AbstractDependentBinariesRes
 import org.gradle.platform.base.internal.dependents.DefaultDependentBinariesResolvedResult;
 import org.gradle.platform.base.internal.dependents.DependentBinariesResolvedResult;
 import org.jspecify.annotations.Nullable;
-
-import java.io.StringWriter;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class NativeDependentBinariesResolutionStrategy extends AbstractDependentBinariesResolutionStrategy {
 
@@ -155,7 +155,7 @@ public class NativeDependentBinariesResolutionStrategy extends AbstractDependent
     private State buildState() {
         State state = new State();
 
-        List<ProjectInternal> orderedProjects = Ordering.usingToString().sortedCopy(projectRegistry.getAllProjects().stream().map(ProjectState::getMutableModel).collect(Collectors.toList()));
+        List<ProjectInternal> orderedProjects = Ordering.usingToString().sortedCopy(projectRegistry.getAllProjects().stream().map(ProjectState::getMutableModel).collect(toList()));
         for (ProjectInternal project : orderedProjects) {
             if (project.getPlugins().hasPlugin(ComponentModelBasePlugin.class)) {
                 ModelRegistry modelRegistry = projectModelResolver.resolveProjectModel(project.getPath());

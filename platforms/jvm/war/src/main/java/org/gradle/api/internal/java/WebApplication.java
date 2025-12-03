@@ -16,22 +16,23 @@
 
 package org.gradle.api.internal.java;
 
+import static java.util.Collections.singleton;
+
+import java.util.Collections;
+import java.util.Set;
+import javax.inject.Inject;
 import org.gradle.api.artifacts.PublishArtifact;
 import org.gradle.api.attributes.AttributeContainer;
 import org.gradle.api.internal.component.DefaultSoftwareComponentVariant;
 import org.gradle.api.internal.component.SoftwareComponentInternal;
 import org.gradle.api.internal.component.UsageContext;
 
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.Set;
-
 public class WebApplication implements SoftwareComponentInternal {
     private final UsageContext variant;
 
     @Inject
     public WebApplication(PublishArtifact warArtifact, String variantName, AttributeContainer attributes) {
-        this.variant = new DefaultSoftwareComponentVariant(variantName, attributes, Collections.singleton(warArtifact));
+        this.variant = new DefaultSoftwareComponentVariant(variantName, attributes, singleton(warArtifact));
     }
 
     @Override
@@ -41,6 +42,6 @@ public class WebApplication implements SoftwareComponentInternal {
 
     @Override
     public Set<UsageContext> getUsages() {
-        return Collections.singleton(variant);
+        return singleton(variant);
     }
 }

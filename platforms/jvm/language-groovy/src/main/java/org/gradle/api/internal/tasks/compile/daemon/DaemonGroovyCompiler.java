@@ -16,7 +16,15 @@
 
 package org.gradle.api.internal.tasks.compile.daemon;
 
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singletonList;
+
 import com.google.common.collect.Iterables;
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import org.gradle.api.internal.ClassPathRegistry;
 import org.gradle.api.internal.tasks.compile.ApiCompilerResult;
 import org.gradle.api.internal.tasks.compile.BaseForkOptionsConverter;
@@ -45,12 +53,6 @@ import org.gradle.workers.internal.DaemonForkOptions;
 import org.gradle.workers.internal.DaemonForkOptionsBuilder;
 import org.gradle.workers.internal.HierarchicalClassLoaderStructure;
 import org.gradle.workers.internal.KeepAliveMode;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
 
 public class DaemonGroovyCompiler extends AbstractDaemonCompiler<GroovyJavaJointCompileSpec> {
     private final static Iterable<String> SHARED_PACKAGES = Arrays.asList("groovy", "org.codehaus.groovy", "groovyjarjarantlr", "groovyjarjarasm", "groovyjarjarcommonscli", "org.apache.tools.ant", "com.sun.tools.javac");
@@ -86,7 +88,7 @@ public class DaemonGroovyCompiler extends AbstractDaemonCompiler<GroovyJavaJoint
 
     @Override
     protected Set<Class<?>> getAdditionalCompilerServices() {
-        return Collections.emptySet();
+        return emptySet();
     }
 
     @Override
@@ -127,7 +129,7 @@ public class DaemonGroovyCompiler extends AbstractDaemonCompiler<GroovyJavaJoint
                     .severity(Severity.ERROR)
                 );
             } else {
-                languageGroovyClasspath = languageGroovyClasspath.plus(Collections.singletonList(toolsJar));
+                languageGroovyClasspath = languageGroovyClasspath.plus(singletonList(toolsJar));
             }
         }
 

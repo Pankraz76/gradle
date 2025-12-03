@@ -16,6 +16,9 @@
 
 package org.gradle.internal.build;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Objects;
 import org.gradle.api.internal.GradleInternal;
 import org.gradle.api.internal.project.ProjectState;
 import org.gradle.internal.buildtree.ToolingModelRequestContext;
@@ -24,8 +27,6 @@ import org.gradle.tooling.provider.model.internal.ToolingModelBuilderLookup;
 import org.gradle.tooling.provider.model.internal.ToolingModelParameterCarrier;
 import org.gradle.tooling.provider.model.internal.ToolingModelScope;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Objects;
 
 public class DefaultBuildToolingModelController implements BuildToolingModelController {
 
@@ -88,7 +89,7 @@ public class DefaultBuildToolingModelController implements BuildToolingModelCont
             if (parameter == null) {
                 return builder.build(null);
             } else {
-                Class<?> expectedParameterType = Objects.requireNonNull(builder.getParameterType(), "Expected builder with parameter support");
+                Class<?> expectedParameterType = requireNonNull(builder.getParameterType(), "Expected builder with parameter support");
                 Object parameterValue = parameter.getView(expectedParameterType);
                 return builder.build(parameterValue);
             }

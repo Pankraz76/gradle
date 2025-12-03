@@ -16,14 +16,15 @@
 
 package org.gradle.jvm.toolchain.internal;
 
-import org.gradle.api.internal.file.FileResolver;
-import org.jspecify.annotations.Nullable;
+import static java.util.stream.Collectors.toSet;
 
-import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
+import org.gradle.api.internal.file.FileResolver;
+import org.jspecify.annotations.Nullable;
 
 public class EnvironmentVariableListInstallationSupplier implements InstallationSupplier {
 
@@ -49,7 +50,7 @@ public class EnvironmentVariableListInstallationSupplier implements Installation
         return possibleInstallations.stream().map(this::resolveEnvironmentVariable)
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .collect(Collectors.toSet());
+            .collect(toSet());
     }
 
     private Optional<InstallationLocation> resolveEnvironmentVariable(String environmentVariable) {

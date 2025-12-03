@@ -16,8 +16,17 @@
 
 package org.gradle.plugins.ide.internal.tooling;
 
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Streams;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Project;
 import org.gradle.api.internal.project.ProjectInternal;
@@ -42,13 +51,6 @@ import org.gradle.tooling.provider.model.ParameterizedToolingModelBuilder;
 import org.gradle.tooling.provider.model.internal.IntermediateToolingModelProvider;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Builds the {@link org.gradle.tooling.model.idea.IdeaProject} model in Isolated Projects-compatible way.
@@ -149,7 +151,7 @@ public class IsolatedProjectsSafeIdeaModelBuilder implements IdeaModelBuilderInt
             DefaultIdeaModule ideaModuleForProject = ideaModuleBuilder.buildWithoutParent(project, isolatedIdeaModule);
             ideaModuleForProject.setParent(out);
             return ideaModuleForProject;
-        }).collect(Collectors.toList());
+        }).collect(toList());
         out.setChildren(ideaModules);
 
         return out;
@@ -229,7 +231,7 @@ public class IsolatedProjectsSafeIdeaModelBuilder implements IdeaModelBuilderInt
             DefaultIdeaModule model = new DefaultIdeaModule()
                 .setName(isolatedIdeaModule.getName())
                 .setGradleProject(rootGradleProject.findByPath(project.getIdentity().getProjectPath().asString()))
-                .setContentRoots(Collections.singletonList(isolatedIdeaModule.getContentRoot()))
+                .setContentRoots(singletonList(isolatedIdeaModule.getContentRoot()))
                 .setJdkName(isolatedIdeaModule.getJdkName())
                 .setCompilerOutput(isolatedIdeaModule.getCompilerOutput());
 

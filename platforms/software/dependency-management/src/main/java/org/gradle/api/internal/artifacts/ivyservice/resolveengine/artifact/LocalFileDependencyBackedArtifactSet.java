@@ -16,7 +16,13 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact;
 
+import static java.util.Collections.singletonList;
+
 import com.google.common.collect.ImmutableList;
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.component.ComponentArtifactIdentifier;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
@@ -47,11 +53,6 @@ import org.gradle.internal.model.CalculatedValueContainerFactory;
 import org.gradle.internal.operations.BuildOperationQueue;
 import org.gradle.internal.operations.RunnableBuildOperation;
 import org.jspecify.annotations.NonNull;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Abstract file dependency implementation. The two {@code default} and {@code deserialized} subtypes
@@ -241,7 +242,7 @@ public abstract class LocalFileDependencyBackedArtifactSet implements Transforme
 
         @Override
         public List<ResolvedVariant> getCandidates() {
-            return Collections.singletonList(this);
+            return singletonList(this);
         }
 
         @Override

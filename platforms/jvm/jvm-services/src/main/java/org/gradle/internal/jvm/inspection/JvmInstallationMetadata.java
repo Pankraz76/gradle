@@ -16,11 +16,7 @@
 
 package org.gradle.internal.jvm.inspection;
 
-import org.gradle.api.JavaVersion;
-import org.gradle.api.internal.jvm.JavaVersionParser;
-import org.gradle.internal.os.OperatingSystem;
-import org.gradle.internal.serialization.Cached;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptySet;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -28,6 +24,11 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Set;
+import org.gradle.api.JavaVersion;
+import org.gradle.api.internal.jvm.JavaVersionParser;
+import org.gradle.internal.os.OperatingSystem;
+import org.gradle.internal.serialization.Cached;
+import org.jspecify.annotations.Nullable;
 
 public interface JvmInstallationMetadata {
     static DefaultJvmInstallationMetadata from(
@@ -388,7 +389,7 @@ public interface JvmInstallationMetadata {
 
         @Override
         public Set<JavaInstallationCapability> getCapabilities() {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         private UnsupportedOperationException unsupportedOperation() {

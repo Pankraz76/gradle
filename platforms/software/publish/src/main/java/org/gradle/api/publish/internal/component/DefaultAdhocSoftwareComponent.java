@@ -15,7 +15,17 @@
  */
 package org.gradle.api.publish.internal.component;
 
+import static java.util.Collections.singletonList;
+
 import com.google.common.collect.ImmutableSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Supplier;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
 import org.gradle.api.InvalidUserDataException;
@@ -31,15 +41,6 @@ import org.gradle.api.provider.Provider;
 import org.gradle.internal.deprecation.Documentation;
 import org.gradle.internal.exceptions.ResolutionProvider;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Supplier;
 
 public class DefaultAdhocSoftwareComponent implements AdhocComponentWithVariants, SoftwareComponentInternal {
 
@@ -136,7 +137,7 @@ public class DefaultAdhocSoftwareComponent implements AdhocComponentWithVariants
 
         @Override
         public List<String> getResolutions() {
-            return Collections.singletonList(Documentation.upgradeMinorGuide(8, "gmm_modification_after_publication_populated").getConsultDocumentationMessage());
+            return singletonList(Documentation.upgradeMinorGuide(8, "gmm_modification_after_publication_populated").getConsultDocumentationMessage());
         }
     }
 

@@ -15,20 +15,10 @@
  */
 package org.gradle.tooling.internal.adapter;
 
-import com.google.common.base.Optional;
-import org.gradle.internal.Cast;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.reflect.DirectInstantiator;
-import org.gradle.internal.service.scopes.Scope;
-import org.gradle.internal.service.scopes.ServiceScope;
-import org.gradle.internal.time.CountdownTimer;
-import org.gradle.internal.time.Time;
-import org.gradle.tooling.ToolingModelContract;
-import org.gradle.tooling.model.DomainObjectSet;
-import org.gradle.tooling.model.internal.Exceptions;
-import org.gradle.tooling.model.internal.ImmutableDomainObjectSet;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
 
+import com.google.common.base.Optional;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -58,6 +48,18 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.gradle.internal.Cast;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.reflect.DirectInstantiator;
+import org.gradle.internal.service.scopes.Scope;
+import org.gradle.internal.service.scopes.ServiceScope;
+import org.gradle.internal.time.CountdownTimer;
+import org.gradle.internal.time.Time;
+import org.gradle.tooling.ToolingModelContract;
+import org.gradle.tooling.model.DomainObjectSet;
+import org.gradle.tooling.model.internal.Exceptions;
+import org.gradle.tooling.model.internal.ImmutableDomainObjectSet;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Adapts some source object to some target view type.
@@ -218,7 +220,7 @@ public class ProtocolToModelAdapter implements ObjectGraphAdapter {
 
     private static Set<Class<?>> getActualImplementedModelContractSubInterfaces(Object sourceObject, Map<String, Class<?>> potentialModelContractInterfaces) {
         if (potentialModelContractInterfaces.isEmpty()) {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         Set<Class<?>> allImplementedInterfaces = walkTypeHierarchyAndExtractInterfaces(sourceObject.getClass());
@@ -806,8 +808,8 @@ public class ProtocolToModelAdapter implements ObjectGraphAdapter {
     }
 
     private static class PropertyCachingMethodInvoker implements MethodInvoker {
-        private Map<String, Object> properties = Collections.emptyMap();
-        private Set<String> unknown = Collections.emptySet();
+        private Map<String, Object> properties = emptyMap();
+        private Set<String> unknown = emptySet();
         private final MethodInvoker next;
 
         private PropertyCachingMethodInvoker(MethodInvoker next) {

@@ -16,12 +16,14 @@
 
 package org.gradle.internal.rules;
 
-import org.gradle.model.internal.type.ModelType;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.joining;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.gradle.model.internal.type.ModelType;
 
 public class DefaultRuleActionValidator implements RuleActionValidator {
     @SuppressWarnings("InlineFormatString")
@@ -32,7 +34,7 @@ public class DefaultRuleActionValidator implements RuleActionValidator {
     private final List<Class<?>> validInputType;
 
     public DefaultRuleActionValidator() {
-        this.validInputType = Collections.emptyList();
+        this.validInputType = emptyList();
     }
 
     public DefaultRuleActionValidator(Class<?>... validInputTypes) {
@@ -62,7 +64,7 @@ public class DefaultRuleActionValidator implements RuleActionValidator {
     }
 
     private String validTypeNames() {
-        return validInputType.stream().map(ModelType::of).map(ModelType::toString).collect(Collectors.joining(" or "));
+        return validInputType.stream().map(ModelType::of).map(ModelType::toString).collect(joining(" or "));
     }
 
 }

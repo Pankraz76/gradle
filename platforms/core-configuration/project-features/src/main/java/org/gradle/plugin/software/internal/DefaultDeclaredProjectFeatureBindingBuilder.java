@@ -16,20 +16,21 @@
 
 package org.gradle.plugin.software.internal;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Objects;
+import java.util.Optional;
 import org.gradle.api.internal.plugins.BuildModel;
 import org.gradle.api.internal.plugins.DeclaredProjectFeatureBindingBuilder;
 import org.gradle.api.internal.plugins.DeclaredProjectFeatureBindingBuilderInternal;
 import org.gradle.api.internal.plugins.Definition;
-import org.gradle.api.internal.plugins.ProjectFeatureBindingDeclaration;
 import org.gradle.api.internal.plugins.ProjectFeatureApplyAction;
+import org.gradle.api.internal.plugins.ProjectFeatureBindingDeclaration;
 import org.gradle.api.internal.plugins.TargetTypeInformation;
 import org.gradle.internal.Cast;
 import org.gradle.util.Path;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Objects;
-import java.util.Optional;
 
 @NullMarked
 public class DefaultDeclaredProjectFeatureBindingBuilder<T extends Definition<V>, V extends BuildModel> implements DeclaredProjectFeatureBindingBuilderInternal<T, V> {
@@ -98,7 +99,7 @@ public class DefaultDeclaredProjectFeatureBindingBuilder<T extends Definition<V>
 
             @Override
             public String getName() {
-                return Objects.requireNonNull(path.getName());
+                return requireNonNull(path.getName());
             }
         };
     }

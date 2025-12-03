@@ -16,14 +16,15 @@
 
 package org.gradle.api.plugins.internal;
 
+import static java.util.Collections.singletonList;
+
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.configuration.project.BuiltInCommand;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 import org.jspecify.annotations.NonNull;
-
-import java.util.Collections;
-import java.util.List;
 
 @ServiceScope(Scope.Global.class)
 public class HelpBuiltInCommand implements BuiltInCommand {
@@ -35,7 +36,7 @@ public class HelpBuiltInCommand implements BuiltInCommand {
 
     @Override
     public List<String> asDefaultTask() {
-        return Collections.singletonList(ProjectInternal.HELP_TASK);
+        return singletonList(ProjectInternal.HELP_TASK);
     }
 
     @Override

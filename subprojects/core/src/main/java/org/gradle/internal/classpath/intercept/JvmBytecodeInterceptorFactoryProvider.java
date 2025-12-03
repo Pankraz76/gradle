@@ -16,18 +16,19 @@
 
 package org.gradle.internal.classpath.intercept;
 
+import static java.util.stream.Collectors.toMap;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
-import org.gradle.internal.instrumentation.api.jvmbytecode.JvmBytecodeCallInterceptor;
-import org.gradle.internal.lazy.Lazy;
-import org.jspecify.annotations.NullMarked;
-
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.gradle.internal.instrumentation.api.jvmbytecode.JvmBytecodeCallInterceptor;
+import org.gradle.internal.lazy.Lazy;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Provides a set of implementation classes for call interception in JVM bytecode, specified by the full class name as in {@link Class#getName()}.
@@ -89,7 +90,7 @@ public interface JvmBytecodeInterceptorFactoryProvider {
         public List<JvmBytecodeCallInterceptor.Factory> getInterceptorFactories() {
             return ImmutableList.copyOf(Stream.of(first.getInterceptorFactories(), second.getInterceptorFactories())
                 .flatMap(Collection::stream)
-                .collect(Collectors.toMap(interceptor -> interceptor.getClass().getName(), p -> p, (p, q) -> p, LinkedHashMap::new))
+                .collect(toMap(interceptor -> interceptor.getClass().getName(), p -> p, (p, q) -> p, LinkedHashMap::new))
                 .values());
         }
     }

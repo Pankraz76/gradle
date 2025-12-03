@@ -16,19 +16,20 @@
 
 package org.gradle.internal.classpath;
 
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
-import org.gradle.internal.Cast;
-import org.gradle.internal.instrumentation.api.groovybytecode.FilterableCallInterceptor;
-import org.gradle.internal.lazy.Lazy;
-import org.jspecify.annotations.NullMarked;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.gradle.internal.Cast;
+import org.gradle.internal.instrumentation.api.groovybytecode.FilterableCallInterceptor;
+import org.gradle.internal.lazy.Lazy;
+import org.jspecify.annotations.NullMarked;
 
 @NullMarked
 public interface GroovyCallInterceptorsProvider {
@@ -136,7 +137,7 @@ public interface GroovyCallInterceptorsProvider {
 
         @Override
         public List<FilterableCallInterceptor> getCallInterceptors() {
-            return Stream.concat(first.getCallInterceptors().stream(), second.getCallInterceptors().stream()).collect(Collectors.toList());
+            return Stream.concat(first.getCallInterceptors().stream(), second.getCallInterceptors().stream()).collect(toList());
         }
     }
 }

@@ -16,8 +16,33 @@
 
 package org.gradle.api.tasks.diagnostics;
 
+import static java.util.Comparator.comparing;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Description;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Failure;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Header;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Identifier;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Info;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Normal;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.UserInput;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
@@ -64,28 +89,6 @@ import org.gradle.internal.logging.text.StyledTextOutputFactory;
 import org.gradle.internal.typeconversion.NotationParser;
 import org.gradle.work.DisableCachingByDefault;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Description;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Failure;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Header;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Identifier;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Info;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Normal;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.UserInput;
 
 /**
  * Generates a report that attempts to answer questions like:
@@ -351,7 +354,7 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
     private Set<DependencyResult> selectDependencies(ResolvedComponentResult rootComponent) {
         final Set<DependencyResult> selectedDependencies = new LinkedHashSet<>();
         eachDependency(rootComponent, dependencyResult -> {
-            if (Objects.requireNonNull(dependencySpec).isSatisfiedBy(dependencyResult)) {
+            if (requireNonNull(dependencySpec).isSatisfiedBy(dependencyResult)) {
                 selectedDependencies.add(dependencyResult);
             }
         }, new HashSet<>());
@@ -462,7 +465,7 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
             Set<String> selectedVariantNames = dependency.getResolvedVariants()
                 .stream()
                 .map(ResolvedVariantResult::getDisplayName)
-                .collect(Collectors.toSet());
+                .collect(toSet());
             if (task.getShowingAllVariants().get()) {
                 out.style(Header);
                 out.println();
@@ -486,8 +489,8 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
                 out.style(Normal);
 
                 List<ResolvedVariantResult> sortedVariants = dependency.getAllVariants().stream()
-                    .sorted(Comparator.comparing(ResolvedVariantResult::getDisplayName))
-                    .collect(Collectors.toList());
+                    .sorted(comparing(ResolvedVariantResult::getDisplayName))
+                    .collect(toList());
 
                 for (ResolvedVariantResult variant : sortedVariants) {
                     if (selectedVariantNames.contains(variant.getDisplayName())) {
@@ -545,7 +548,7 @@ public abstract class DependencyInsightReportTask extends DefaultTask {
 
         private static final class AttributeBuckets {
             @SuppressWarnings("checkstyle:constantname")
-            private static final Comparator<Attribute<?>> sortedByAttributeName = Comparator.comparing(Attribute::getName);
+            private static final Comparator<Attribute<?>> sortedByAttributeName = comparing(Attribute::getName);
 
             Set<Attribute<?>> providedAttributes = new TreeSet<>(sortedByAttributeName);
             Map<Attribute<?>, AttributeMatchDetails> bothAttributes = new TreeMap<>(sortedByAttributeName);

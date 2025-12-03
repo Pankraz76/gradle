@@ -16,8 +16,14 @@
 
 package org.gradle.api.internal.artifacts.ivyservice;
 
+import static java.util.Collections.emptyList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.artifacts.ResolvedArtifact;
-import org.gradle.internal.component.model.VariantIdentifier;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact.ArtifactVisitor;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact.LocalDependencyFiles;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact.ResolvableArtifact;
@@ -26,12 +32,7 @@ import org.gradle.api.internal.file.FileCollectionInternal;
 import org.gradle.api.internal.file.FileCollectionStructureVisitor;
 import org.gradle.internal.DisplayName;
 import org.gradle.internal.component.external.model.ImmutableCapabilities;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import org.gradle.internal.component.model.VariantIdentifier;
 
 public class ArtifactCollectingVisitor implements ArtifactVisitor {
     private final Set<ResolvedArtifact> artifacts;
@@ -76,6 +77,6 @@ public class ArtifactCollectingVisitor implements ArtifactVisitor {
     }
 
     public List<Throwable> getFailures() {
-        return failures != null ? failures : Collections.emptyList();
+        return failures != null ? failures : emptyList();
     }
 }

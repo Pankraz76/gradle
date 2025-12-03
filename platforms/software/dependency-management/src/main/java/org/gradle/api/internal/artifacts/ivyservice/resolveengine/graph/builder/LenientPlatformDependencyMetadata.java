@@ -15,6 +15,11 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.builder;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.artifacts.VersionConstraint;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.artifacts.component.ComponentSelector;
@@ -31,9 +36,6 @@ import org.gradle.internal.component.model.GraphVariantSelector;
 import org.gradle.internal.component.model.IvyArtifactName;
 import org.gradle.internal.component.model.VariantGraphResolveState;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
 
 class LenientPlatformDependencyMetadata implements ModuleDependencyMetadata, ForcingDependencyMetadata {
     private final ResolveState resolveState;
@@ -84,7 +86,7 @@ class LenientPlatformDependencyMetadata implements ModuleDependencyMetadata, For
         if (targetComponentState instanceof LenientPlatformGraphResolveState) {
             LenientPlatformGraphResolveState lenientPlatform = (LenientPlatformGraphResolveState) targetComponentState;
             VariantGraphResolveState variant = lenientPlatform.getCandidatesForGraphVariantSelection().getVariantForSourceNode(from, platformId);
-            return Collections.singletonList(variant);
+            return singletonList(variant);
         }
 
         return null;
@@ -92,12 +94,12 @@ class LenientPlatformDependencyMetadata implements ModuleDependencyMetadata, For
 
     @Override
     public List<ExcludeMetadata> getExcludes() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override
     public List<IvyArtifactName> getArtifacts() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override

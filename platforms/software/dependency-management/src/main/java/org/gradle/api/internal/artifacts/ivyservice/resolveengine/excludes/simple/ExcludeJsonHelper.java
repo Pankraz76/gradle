@@ -15,6 +15,8 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.excludes.simple;
 
+import static java.util.stream.Collectors.joining;
+
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -22,6 +24,6 @@ class ExcludeJsonHelper {
     static String toJson(Collection<?> objects) {
         return objects.stream()
             .map(o -> "\"" + o + "\"")
-            .collect(Collectors.joining(", "));
+            .collect(joining(", "));
     }
 }

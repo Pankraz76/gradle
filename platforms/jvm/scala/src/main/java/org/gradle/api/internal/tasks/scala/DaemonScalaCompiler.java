@@ -32,6 +32,11 @@ package org.gradle.api.internal.tasks.scala;
  * limitations under the License.
  */
 
+import static java.util.Collections.singleton;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.Set;
 import org.gradle.api.internal.ClassPathRegistry;
 import org.gradle.api.internal.tasks.compile.BaseForkOptionsConverter;
 import org.gradle.api.internal.tasks.compile.MinimalJavaCompilerDaemonForkOptions;
@@ -49,10 +54,6 @@ import org.gradle.workers.internal.DaemonForkOptions;
 import org.gradle.workers.internal.DaemonForkOptionsBuilder;
 import org.gradle.workers.internal.HierarchicalClassLoaderStructure;
 import org.gradle.workers.internal.KeepAliveMode;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.Set;
 
 public class DaemonScalaCompiler<T extends ScalaJavaJointCompileSpec> extends AbstractDaemonCompiler<T> {
 
@@ -80,7 +81,7 @@ public class DaemonScalaCompiler<T extends ScalaJavaJointCompileSpec> extends Ab
 
     @Override
     protected Set<Class<?>> getAdditionalCompilerServices() {
-        return Collections.singleton(GlobalScopedCacheBuilderFactory.class);
+        return singleton(GlobalScopedCacheBuilderFactory.class);
     }
 
     @Override

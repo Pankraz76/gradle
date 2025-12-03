@@ -16,12 +16,10 @@
 
 package org.gradle.model.internal.type;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.reflect.TypeToken;
-import org.gradle.internal.Cast;
-import org.jspecify.annotations.Nullable;
-
-import javax.annotation.concurrent.ThreadSafe;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
@@ -31,6 +29,9 @@ import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.concurrent.ThreadSafe;
+import org.gradle.internal.Cast;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A type token, representing a resolved type.
@@ -142,7 +143,7 @@ public abstract class ModelType<T> {
             }
             return builder.build();
         } else {
-            return Collections.emptyList();
+            return emptyList();
         }
     }
 

@@ -16,14 +16,16 @@
 
 package org.gradle.internal.jacoco;
 
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonMap;
+
 import com.google.common.collect.ImmutableMap;
 import groovy.lang.Closure;
-import org.gradle.api.Action;
-import org.gradle.api.internal.project.antbuilder.AntBuilderDelegate;
-
 import java.io.File;
 import java.util.Collections;
 import java.util.Map;
+import org.gradle.api.Action;
+import org.gradle.api.internal.project.antbuilder.AntBuilderDelegate;
 
 public class AntJacocoReport implements Action<AntBuilderDelegate> {
 
@@ -39,8 +41,8 @@ public class AntJacocoReport implements Action<AntBuilderDelegate> {
             "name", "jacocoReport",
             "classname", "org.jacoco.ant.ReportTask"
         ));
-        final Map<String, Object> emptyArgs = Collections.emptyMap();
-        antBuilder.invokeMethod("jacocoReport", new Object[]{Collections.emptyMap(), new Closure<Object>(this, this) {
+        final Map<String, Object> emptyArgs = emptyMap();
+        antBuilder.invokeMethod("jacocoReport", new Object[]{emptyMap(), new Closure<Object>(this, this) {
             @SuppressWarnings("unused") // Magic Groovy method
             public Object doCall(Object ignore) {
                 antBuilder.invokeMethod("executiondata", new Object[]{emptyArgs, new Closure<Object>(this, this) {
@@ -66,7 +68,7 @@ public class AntJacocoReport implements Action<AntBuilderDelegate> {
                         if (encoding == null) {
                             sourcefilesArgs = emptyArgs;
                         } else {
-                            sourcefilesArgs = Collections.singletonMap("encoding", encoding);
+                            sourcefilesArgs = singletonMap("encoding", encoding);
                         }
                         antBuilder.invokeMethod("sourcefiles", new Object[]{sourcefilesArgs, new Closure<Object>(this, this) {
                             @SuppressWarnings("unused") // Magic Groovy method

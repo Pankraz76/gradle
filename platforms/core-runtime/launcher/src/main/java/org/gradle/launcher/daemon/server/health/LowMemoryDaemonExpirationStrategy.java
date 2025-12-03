@@ -16,7 +16,11 @@
 
 package org.gradle.launcher.daemon.server.health;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.gradle.launcher.daemon.server.expiry.DaemonExpirationStatus.GRACEFUL_EXPIRE;
+
 import com.google.common.base.Preconditions;
+import java.util.concurrent.locks.ReentrantLock;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.gradle.internal.util.NumberUtil;
@@ -26,10 +30,6 @@ import org.gradle.process.internal.health.memory.OsMemoryStatus;
 import org.gradle.process.internal.health.memory.OsMemoryStatusAspect;
 import org.gradle.process.internal.health.memory.OsMemoryStatusListener;
 import org.jspecify.annotations.Nullable;
-
-import java.util.concurrent.locks.ReentrantLock;
-
-import static org.gradle.launcher.daemon.server.expiry.DaemonExpirationStatus.GRACEFUL_EXPIRE;
 
 /**
  * An expiry strategy which only triggers when system memory falls below a threshold.
@@ -47,8 +47,8 @@ public class LowMemoryDaemonExpirationStrategy implements DaemonExpirationStrate
     public static final long MAX_THRESHOLD_BYTES = 1024 * 1024 * 1024;
 
     public LowMemoryDaemonExpirationStrategy(double minFreeMemoryPercentage) {
-        Preconditions.checkArgument(minFreeMemoryPercentage >= 0, "Free memory percentage must be >= 0");
-        Preconditions.checkArgument(minFreeMemoryPercentage <= 1, "Free memory percentage must be <= 1");
+        checkArgument(minFreeMemoryPercentage >= 0, "Free memory percentage must be >= 0");
+        checkArgument(minFreeMemoryPercentage <= 1, "Free memory percentage must be <= 1");
         this.minFreeMemoryPercentage = minFreeMemoryPercentage;
     }
 

@@ -15,7 +15,17 @@
  */
 package org.gradle.api.internal.artifacts.verification.signatures;
 
+import static java.util.Collections.emptyList;
+import static org.gradle.security.internal.SecuritySupport.toLongIdHexString;
+
 import com.google.common.collect.ImmutableList;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.bouncycastle.openpgp.PGPException;
 import org.bouncycastle.openpgp.PGPPublicKey;
 import org.bouncycastle.openpgp.PGPPublicKeyRing;
@@ -41,16 +51,6 @@ import org.gradle.security.internal.PublicKeyResultBuilder;
 import org.gradle.security.internal.PublicKeyService;
 import org.gradle.security.internal.SecuritySupport;
 import org.gradle.util.internal.BuildCommencedTimeProvider;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import static org.gradle.security.internal.SecuritySupport.toLongIdHexString;
 
 @ServiceScope(Scope.Build.class)
 public class DefaultSignatureVerificationServiceFactory implements SignatureVerificationServiceFactory {
@@ -92,7 +92,7 @@ public class DefaultSignatureVerificationServiceFactory implements SignatureVeri
     @Override
     public SignatureVerificationService create(BuildTreeDefinedKeys keyrings, List<URI> keyServers, boolean useKeyServers) {
         boolean refreshKeys = this.refreshKeys || !useKeyServers;
-        ExternalResourceRepository repository = transportFactory.createTransport("https", "https", Collections.emptyList(), redirectLocations -> {}).getRepository();
+        ExternalResourceRepository repository = transportFactory.createTransport("https", "https", emptyList(), redirectLocations -> {}).getRepository();
         PublicKeyService keyService;
         if (useKeyServers) {
             PublicKeyDownloadService keyDownloadService = new PublicKeyDownloadService(ImmutableList.copyOf(keyServers), repository);

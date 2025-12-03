@@ -16,6 +16,8 @@
 
 package org.gradle.internal.resource.transport.gcp.gcs;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.http.HttpBackOffIOExceptionHandler;
 import com.google.api.client.http.HttpBackOffUnsuccessfulResponseHandler;
@@ -28,11 +30,10 @@ import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.client.util.Sleeper;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
-import org.gradle.api.logging.Logger;
-import org.gradle.api.logging.Logging;
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import org.gradle.api.logging.Logger;
+import org.gradle.api.logging.Logging;
 
 /**
  * RetryHttpInitializerWrapper will automatically retry upon RPC failures, preserving the
@@ -54,7 +55,7 @@ final class RetryHttpInitializerWrapper implements HttpRequestInitializer {
     }
 
     RetryHttpInitializerWrapper(Supplier<Credential> credentialSupplier, Sleeper sleeper) {
-        this.credentialSupplier = Preconditions.checkNotNull(credentialSupplier);
+        this.credentialSupplier = checkNotNull(credentialSupplier);
         this.sleeper = sleeper;
     }
 

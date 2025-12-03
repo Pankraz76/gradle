@@ -16,10 +16,16 @@
 
 package org.gradle.api.reporting.model.internal;
 
+import static java.util.stream.Collectors.toList;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.*;
+
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 import org.gradle.api.tasks.diagnostics.internal.text.TextReportBuilder;
 import org.gradle.internal.logging.text.StyledTextOutput;
 import org.gradle.model.internal.core.ModelNode;
@@ -28,12 +34,6 @@ import org.gradle.model.internal.core.rule.describe.ModelRuleDescriptor;
 import org.gradle.model.internal.registry.ModelReferenceNode;
 import org.gradle.model.internal.type.ModelType;
 import org.gradle.reporting.ReportRenderer;
-
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.*;
 
 public class ModelNodeRenderer extends ReportRenderer<ModelNode, TextReportBuilder> {
 
@@ -165,7 +165,7 @@ public class ModelNodeRenderer extends ReportRenderer<ModelNode, TextReportBuild
     }
 
     static Iterable<ModelRuleDescriptor> uniqueExecutedRulesExcludingCreator(final ModelNode model) {
-        Iterable<ModelRuleDescriptor> filtered = model.getExecutedRules().stream().filter(input -> !input.equals(model.getDescriptor())).collect(Collectors.toList());
+        Iterable<ModelRuleDescriptor> filtered = model.getExecutedRules().stream().filter(input -> !input.equals(model.getDescriptor())).collect(toList());
         return ImmutableSet.copyOf(filtered);
     }
 }

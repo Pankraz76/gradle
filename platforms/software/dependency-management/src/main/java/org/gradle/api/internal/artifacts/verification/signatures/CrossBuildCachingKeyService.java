@@ -15,7 +15,19 @@
  */
 package org.gradle.api.internal.artifacts.verification.signatures;
 
+import static java.util.Collections.singletonList;
+import static org.gradle.security.internal.SecuritySupport.toLongIdHexString;
+
 import com.google.common.collect.ImmutableList;
+import java.io.ByteArrayInputStream;
+import java.io.Closeable;
+import java.io.EOFException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.bouncycastle.openpgp.PGPObjectFactory;
 import org.bouncycastle.openpgp.PGPPublicKey;
 import org.bouncycastle.openpgp.PGPPublicKeyRing;
@@ -41,18 +53,6 @@ import org.gradle.security.internal.Fingerprint;
 import org.gradle.security.internal.PublicKeyResultBuilder;
 import org.gradle.security.internal.PublicKeyService;
 import org.gradle.util.internal.BuildCommencedTimeProvider;
-
-import java.io.ByteArrayInputStream;
-import java.io.Closeable;
-import java.io.EOFException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import static org.gradle.security.internal.SecuritySupport.toLongIdHexString;
 
 public class CrossBuildCachingKeyService implements PublicKeyService, Closeable {
     final static long MISSING_KEY_TIMEOUT = TimeUnit.MILLISECONDS.convert(24, TimeUnit.HOURS);
@@ -187,7 +187,7 @@ public class CrossBuildCachingKeyService implements PublicKeyService, Closeable 
         CacheEntry<List<Fingerprint>> fprints = longIdToFingerprint.getIfPresent(keyId);
         long currentTime = timeProvider.getCurrentTime();
         if (fprints == null) {
-            longIdToFingerprint.put(keyId, new CacheEntry<>(currentTime, Collections.singletonList(fingerprint)));
+            longIdToFingerprint.put(keyId, new CacheEntry<>(currentTime, singletonList(fingerprint)));
         } else {
             longIdToFingerprint.remove(keyId);
             ImmutableList.Builder<Fingerprint> list = ImmutableList.builderWithExpectedSize(1 + fprints.value.size());

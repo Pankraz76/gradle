@@ -15,6 +15,10 @@
  */
 package org.gradle.api.internal.catalog;
 
+import static java.util.stream.Collectors.toCollection;
+
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.Transformer;
 import org.gradle.api.artifacts.ExternalModuleDependencyBundle;
 import org.gradle.api.artifacts.MinimalExternalModuleDependency;
@@ -29,9 +33,6 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
 import org.gradle.plugin.use.PluginDependency;
-
-import javax.inject.Inject;
-import java.util.stream.Collectors;
 
 public abstract class AbstractExternalDependencyFactory implements ExternalModuleDependencyFactory {
     protected final DefaultVersionCatalog config;
@@ -157,7 +158,7 @@ public abstract class AbstractExternalDependencyFactory implements ExternalModul
                     })
             ).map(dataList -> dataList.stream()
                     .map(x -> createMinimalDependency(x, attributesFactory, capabilityNotationParser, objects))
-                    .collect(Collectors.toCollection(DefaultExternalModuleDependencyBundle::new))));
+                    .collect(toCollection(DefaultExternalModuleDependencyBundle::new))));
             return property;
         }
     }

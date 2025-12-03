@@ -16,9 +16,18 @@
 
 package org.gradle.normalization.internal;
 
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedMap;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
 import org.gradle.api.internal.changedetection.state.IgnoringResourceEntryFilter;
@@ -28,14 +37,6 @@ import org.gradle.api.internal.changedetection.state.ResourceEntryFilter;
 import org.gradle.api.internal.changedetection.state.ResourceFilter;
 import org.gradle.normalization.MetaInfNormalization;
 import org.gradle.normalization.PropertiesFileNormalization;
-
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class DefaultRuntimeClasspathNormalization implements RuntimeClasspathNormalizationInternal {
     private final MetaInfNormalization metaInfNormalization = new RuntimeMetaInfNormalization();
@@ -202,7 +203,7 @@ public class DefaultRuntimeClasspathNormalization implements RuntimeClasspathNor
         Map<String, Set<String>> getState() {
             // Ensure that configuration is finished to avoid skipping anything from cache.
             getFilters();
-            return propertyFilters.entrySet().stream().collect(ImmutableMap.toImmutableMap(Map.Entry::getKey, e -> e.getValue().getState()));
+            return propertyFilters.entrySet().stream().collect(toImmutableMap(Map.Entry::getKey, e -> e.getValue().getState()));
         }
     }
 

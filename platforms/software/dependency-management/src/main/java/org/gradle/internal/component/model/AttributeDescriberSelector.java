@@ -15,16 +15,17 @@
  */
 package org.gradle.internal.component.model;
 
+import static java.util.Comparator.comparing;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import org.gradle.api.attributes.Attribute;
-import org.gradle.api.internal.attributes.AttributeContainerInternal;
-import org.gradle.api.internal.attributes.AttributeDescriber;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.gradle.api.attributes.Attribute;
+import org.gradle.api.internal.attributes.AttributeContainerInternal;
+import org.gradle.api.internal.attributes.AttributeDescriber;
 
 public class AttributeDescriberSelector {
     public static AttributeDescriber selectDescriber(AttributeContainerInternal consumerAttributes, List<AttributeDescriber> attributeDescribers) {
@@ -89,7 +90,7 @@ public class AttributeDescriberSelector {
         public String describeAttributeSet(Map<Attribute<?>, ?> attributes) {
             StringBuilder sb = new StringBuilder();
             attributes.entrySet().stream()
-                .sorted(Comparator.comparing(e -> e.getKey().getName()))
+                .sorted(comparing(e -> e.getKey().getName()))
                 .forEach(entry -> {
                     Attribute<?> attribute = entry.getKey();
                     if (sb.length() > 0) {

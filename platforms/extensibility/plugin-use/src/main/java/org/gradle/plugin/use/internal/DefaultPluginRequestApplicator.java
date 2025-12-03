@@ -16,6 +16,11 @@
 
 package org.gradle.plugin.use.internal;
 
+import static java.util.Collections.emptyList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.GradleException;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.artifacts.ModuleIdentifier;
@@ -47,10 +52,6 @@ import org.gradle.plugin.use.tracker.internal.PluginVersionTracker;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class DefaultPluginRequestApplicator implements PluginRequestApplicator {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultPluginRequestApplicator.class);
@@ -239,21 +240,21 @@ public class DefaultPluginRequestApplicator implements PluginRequestApplicator {
 
         public List<Dependency> getAdditionalDependencies() {
             if (additionalDependencies == null) {
-                return Collections.emptyList();
+                return emptyList();
             }
             return additionalDependencies;
         }
 
         public List<ModuleReplacement> getReplacements() {
             if (replacements == null) {
-                return Collections.emptyList();
+                return emptyList();
             }
             return replacements;
         }
 
         public List<ClassLoader> getAdditionalClassloaders() {
             if (additionalClassloaders == null) {
-                return Collections.emptyList();
+                return emptyList();
             }
             return additionalClassloaders;
         }

@@ -16,7 +16,20 @@
 
 package org.gradle.api.internal.artifacts.repositories.resolver;
 
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+
 import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.internal.artifacts.repositories.PatternHelper;
 import org.gradle.internal.component.model.IvyArtifactName;
@@ -27,16 +40,6 @@ import org.gradle.internal.resource.ResourceExceptions;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class ResourceVersionLister implements VersionLister {
     private static final Logger LOGGER = LoggerFactory.getLogger(ResourceVersionLister.class);
@@ -55,7 +58,7 @@ public class ResourceVersionLister implements VersionLister {
     public void listVersions(ModuleIdentifier module, IvyArtifactName artifact, List<ResourcePattern> patterns, BuildableModuleVersionListingResolveResult result) {
         List<String> collector = new ArrayList<>();
         List<ResourcePattern> filteredPatterns = filterDuplicates(patterns);
-        Map<ResourcePattern, ExternalResourceName> versionListPatterns = filteredPatterns.stream().collect(Collectors.toMap(pattern -> pattern, pattern -> pattern.toVersionListPattern(module, artifact)));
+        Map<ResourcePattern, ExternalResourceName> versionListPatterns = filteredPatterns.stream().collect(toMap(pattern -> pattern, pattern -> pattern.toVersionListPattern(module, artifact)));
         for (ResourcePattern pattern : filteredPatterns) {
             visit(pattern, versionListPatterns, collector, result);
         }
@@ -108,7 +111,7 @@ public class ResourceVersionLister implements VersionLister {
         String pattern = versionListPattern.getPath();
         if (!pattern.contains(REVISION_TOKEN)) {
             LOGGER.debug("revision token not defined in pattern {}.", pattern);
-            return Collections.emptyList();
+            return emptyList();
         }
         String prefix = pattern.substring(0, pattern.indexOf(REVISION_TOKEN));
         List<String> listedVersions;
@@ -123,7 +126,7 @@ public class ResourceVersionLister implements VersionLister {
             result.attempted(parent);
             List<String> all = listWithCache(parent);
             if (all == null) {
-                return Collections.emptyList();
+                return emptyList();
             }
             LOGGER.debug("found {} urls", all.size());
             Pattern regexPattern = createRegexPattern(pattern, parentFolderSlashIndex);
@@ -146,7 +149,7 @@ public class ResourceVersionLister implements VersionLister {
                 Pattern regexPattern = toControlRegexPattern(patternPath);
                 List<String> matching = listedVersions.stream()
                     .filter(version -> regexPattern.matcher(currentVersionListPattern.getPath().replace(REVISION_TOKEN, version)).matches())
-                    .collect(Collectors.toList());
+                    .collect(toList());
                 if (!matching.isEmpty()) {
                     LOGGER.debug("Filtered out {} from results for overlapping match with {}", matching, otherVersionListPattern);
                     remaining.removeAll(matching);
@@ -206,7 +209,7 @@ public class ResourceVersionLister implements VersionLister {
         result.attempted(parent.toString());
         List<String> paths = listWithCache(parent);
         if (paths == null) {
-            return Collections.emptyList();
+            return emptyList();
         }
         LOGGER.debug("found {} resources", paths.size());
         return paths;

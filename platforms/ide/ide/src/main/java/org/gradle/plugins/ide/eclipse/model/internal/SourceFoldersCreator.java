@@ -16,6 +16,11 @@
 
 package org.gradle.plugins.ide.eclipse.model.internal;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Collections2;
@@ -25,6 +30,15 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.BiFunction;
 import org.gradle.api.file.DirectoryTree;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.tasks.SourceSet;
@@ -36,20 +50,6 @@ import org.gradle.plugins.ide.eclipse.internal.EclipsePluginConstants;
 import org.gradle.plugins.ide.eclipse.model.EclipseClasspath;
 import org.gradle.plugins.ide.eclipse.model.SourceFolder;
 import org.gradle.util.internal.CollectionUtils;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.BiFunction;
-
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
-import static java.util.stream.Collectors.toList;
 
 public class SourceFoldersCreator {
 
@@ -278,11 +278,11 @@ public class SourceFoldersCreator {
     }
 
     private List<SourceSet> sortSourceSetsAsPerUsualConvention(Iterable<SourceSet> sourceSets) {
-        return CollectionUtils.sort(sourceSets, Comparator.comparing(SourceFoldersCreator::toComparable));
+        return CollectionUtils.sort(sourceSets, comparing(SourceFoldersCreator::toComparable));
     }
 
     private List<DirectoryTree> sortSourceDirsAsPerUsualConvention(Iterable<DirectoryTree> sourceDirs) {
-        return CollectionUtils.sort(sourceDirs, Comparator.comparing(SourceFoldersCreator::toComparable));
+        return CollectionUtils.sort(sourceDirs, comparing(SourceFoldersCreator::toComparable));
     }
 
     private static Integer toComparable(SourceSet sourceSet) {

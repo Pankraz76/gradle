@@ -16,11 +16,22 @@
 
 package org.gradle.internal.execution.history.impl;
 
+import static com.google.common.collect.ImmutableSortedMap.copyOfSorted;
+import static com.google.common.collect.Maps.transformEntries;
+import static java.util.Objects.requireNonNull;
+import static org.gradle.internal.snapshot.DirectorySnapshotBuilder.EmptyDirectoryHandlingStrategy.EXCLUDE_EMPTY_DIRS;
+import static org.gradle.internal.snapshot.DirectorySnapshotBuilder.EmptyDirectoryHandlingStrategy.INCLUDE_EMPTY_DIRS;
+import static org.gradle.internal.snapshot.SnapshotUtil.indexByAbsolutePath;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Maps;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.BiPredicate;
 import org.gradle.internal.snapshot.CompositeFileSystemSnapshot;
 import org.gradle.internal.snapshot.DirectorySnapshot;
 import org.gradle.internal.snapshot.DirectorySnapshotBuilder;
@@ -35,17 +46,6 @@ import org.gradle.internal.snapshot.RegularFileSnapshot;
 import org.gradle.internal.snapshot.RootTrackingFileSystemSnapshotHierarchyVisitor;
 import org.gradle.internal.snapshot.SnapshotVisitResult;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.BiPredicate;
-
-import static com.google.common.collect.ImmutableSortedMap.copyOfSorted;
-import static com.google.common.collect.Maps.transformEntries;
-import static org.gradle.internal.snapshot.DirectorySnapshotBuilder.EmptyDirectoryHandlingStrategy.EXCLUDE_EMPTY_DIRS;
-import static org.gradle.internal.snapshot.DirectorySnapshotBuilder.EmptyDirectoryHandlingStrategy.INCLUDE_EMPTY_DIRS;
-import static org.gradle.internal.snapshot.SnapshotUtil.indexByAbsolutePath;
 
 public class OutputSnapshotUtil {
 
@@ -110,7 +110,7 @@ public class OutputSnapshotUtil {
             (propertyName, unfilteredAfterExecution) -> {
                 FileSystemSnapshot previous = previousSnapshots.get(propertyName);
                 FileSystemSnapshot unfilteredBeforeExecution = unfilteredBeforeExecutionSnapshots.get(propertyName);
-                return filterOutputAfterExecution(previous, Objects.requireNonNull(unfilteredBeforeExecution), unfilteredAfterExecution);
+                return filterOutputAfterExecution(previous, requireNonNull(unfilteredBeforeExecution), unfilteredAfterExecution);
             }
         ));
     }
@@ -241,7 +241,7 @@ public class OutputSnapshotUtil {
             if (isRoot) {
                 FileSystemLocationSnapshot result = directorySnapshotBuilder.getResult();
                 if (result != null) {
-                    newRootsBuilder.add(currentRootFiltered ? result : Objects.requireNonNull(currentRoot));
+                    newRootsBuilder.add(currentRootFiltered ? result : requireNonNull(currentRoot));
                 }
                 directorySnapshotBuilder = null;
                 currentRoot = null;

@@ -15,25 +15,26 @@
  */
 package org.gradle.tooling.internal.provider;
 
+import static java.util.Collections.emptyList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import org.gradle.TaskExecutionRequest;
 import org.gradle.api.internal.StartParameterInternal;
 import org.gradle.cli.CommandLineArgumentException;
 import org.gradle.cli.CommandLineParser;
 import org.gradle.cli.ParsedCommandLine;
 import org.gradle.internal.DefaultTaskExecutionRequest;
-import org.gradle.launcher.configuration.AllProperties;
 import org.gradle.launcher.cli.converter.BuildLayoutConverter;
-import org.gradle.launcher.configuration.BuildLayoutResult;
 import org.gradle.launcher.cli.converter.InitialPropertiesConverter;
 import org.gradle.launcher.cli.converter.StartParameterConverter;
+import org.gradle.launcher.configuration.AllProperties;
+import org.gradle.launcher.configuration.BuildLayoutResult;
 import org.gradle.tooling.internal.protocol.InternalLaunchable;
 import org.gradle.tooling.internal.protocol.exceptions.InternalUnsupportedBuildArgumentException;
 import org.gradle.tooling.internal.provider.connection.ProviderOperationParameters;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 class ProviderStartParameterConverter {
 
@@ -75,7 +76,7 @@ class ProviderStartParameterConverter {
         converter.configure(parser);
         ParsedCommandLine parsedCommandLine;
         try {
-            parsedCommandLine = parser.parse(arguments != null ? arguments : Collections.emptyList());
+            parsedCommandLine = parser.parse(arguments != null ? arguments : emptyList());
         } catch (CommandLineArgumentException e) {
             throw new InternalUnsupportedBuildArgumentException(
                 "Problem with provided build arguments: " + arguments + ". "

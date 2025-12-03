@@ -15,7 +15,16 @@
  */
 package org.gradle.api.internal;
 
+import static java.util.Collections.emptyIterator;
+import static java.util.Collections.emptySet;
+
 import com.google.common.collect.Sets;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.Action;
 import org.gradle.api.DomainObjectCollection;
 import org.gradle.api.internal.collections.ElementSource;
@@ -24,13 +33,6 @@ import org.gradle.api.internal.provider.CollectionProviderInternal;
 import org.gradle.api.internal.provider.ProviderInternal;
 import org.gradle.api.specs.Spec;
 import org.gradle.internal.Actions;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * A domain object collection that presents a combined view of one or more collections.
@@ -181,7 +183,7 @@ public class CompositeDomainObjectSet<T> extends DelegatingDomainObjectSet<T> {
         @SuppressWarnings("MixedMutabilityReturnType")
         Set<T> collect() {
             if (store.isEmpty()) {
-                return Collections.emptySet();
+                return emptySet();
             }
             Set<T> tmp = Sets.newLinkedHashSetWithExpectedSize(estimatedSize());
             for (DomainObjectCollection<? extends T> collection : store) {
@@ -219,7 +221,7 @@ public class CompositeDomainObjectSet<T> extends DelegatingDomainObjectSet<T> {
         @SuppressWarnings("unchecked")
         public Iterator<T> iterator() {
             if (store.isEmpty()) {
-                return Collections.emptyIterator();
+                return emptyIterator();
             }
             if (store.size() == 1) {
                 return (Iterator<T>) store.get(0).iterator();

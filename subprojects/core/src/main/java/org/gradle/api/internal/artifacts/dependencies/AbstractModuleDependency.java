@@ -15,9 +15,16 @@
  */
 package org.gradle.api.internal.artifacts.dependencies;
 
+import static java.util.Collections.emptySet;
+import static org.gradle.util.internal.ConfigureUtil.configureUsing;
+
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
 import groovy.lang.Closure;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.api.Action;
 import org.gradle.api.InvalidUserCodeException;
 import org.gradle.api.artifacts.DependencyArtifact;
@@ -37,13 +44,6 @@ import org.gradle.api.model.ObjectFactory;
 import org.gradle.internal.ImmutableActionSet;
 import org.gradle.internal.typeconversion.NotationParser;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-
-import static org.gradle.util.internal.ConfigureUtil.configureUsing;
 
 public abstract class AbstractModuleDependency implements ModuleDependency {
 
@@ -234,7 +234,7 @@ public abstract class AbstractModuleDependency implements ModuleDependency {
     @Override
     public Set<CapabilitySelector> getCapabilitySelectors() {
         if (moduleDependencyCapabilities == null) {
-            return Collections.emptySet();
+            return emptySet();
         }
         return ImmutableSet.copyOf(moduleDependencyCapabilities.getCapabilitySelectors().get());
     }

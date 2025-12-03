@@ -16,12 +16,38 @@
 
 package org.gradle.model.internal.registry;
 
+import static java.util.Collections.reverse;
+import static java.util.Collections.singleton;
+import static org.gradle.model.internal.core.ModelNode.State.Created;
+import static org.gradle.model.internal.core.ModelNode.State.Discovered;
+import static org.gradle.model.internal.core.ModelNode.State.GraphClosed;
+import static org.gradle.model.internal.core.ModelNode.State.Registered;
+import static org.gradle.model.internal.core.ModelNode.State.SelfClosed;
+
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.Formatter;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import javax.annotation.concurrent.NotThreadSafe;
 import org.gradle.model.ConfigurationCycleException;
 import org.gradle.model.InvalidModelRuleDeclarationException;
 import org.gradle.model.RuleSource;
@@ -46,31 +72,6 @@ import org.gradle.model.internal.type.ModelType;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.concurrent.NotThreadSafe;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.Formatter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import static org.gradle.model.internal.core.ModelNode.State.Created;
-import static org.gradle.model.internal.core.ModelNode.State.Discovered;
-import static org.gradle.model.internal.core.ModelNode.State.GraphClosed;
-import static org.gradle.model.internal.core.ModelNode.State.Registered;
-import static org.gradle.model.internal.core.ModelNode.State.SelfClosed;
 
 @NotThreadSafe
 public class DefaultModelRegistry implements ModelRegistryInternal {
@@ -286,7 +287,7 @@ public class DefaultModelRegistry implements ModelRegistryInternal {
 
         List<ModelNodeInternal> nodesToRemove = new ArrayList<>();
         ensureCanRemove(node, nodesToRemove);
-        Collections.reverse(nodesToRemove);
+        reverse(nodesToRemove);
 
         for (ModelNodeInternal nodeToRemove : nodesToRemove) {
             modelGraph.remove(nodeToRemove);
@@ -1180,7 +1181,7 @@ public class DefaultModelRegistry implements ModelRegistryInternal {
             }
             // Must close each input first
             if (!binder.isBound()) {
-                throw unbound(Collections.singleton(binder));
+                throw unbound(singleton(binder));
             }
             for (ModelBinding binding : binder.getInputBindings()) {
                 dependencies.add(graph.nodeAtState(new NodeAtState(binding.getNode().getPath(), binding.getPredicate().getState())));

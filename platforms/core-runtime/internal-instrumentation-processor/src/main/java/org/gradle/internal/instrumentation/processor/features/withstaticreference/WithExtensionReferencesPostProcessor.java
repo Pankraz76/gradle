@@ -16,6 +16,19 @@
 
 package org.gradle.internal.instrumentation.processor.features.withstaticreference;
 
+import static java.util.Collections.singletonList;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
 import org.gradle.internal.instrumentation.model.CallInterceptionRequestImpl;
 import org.gradle.internal.instrumentation.model.CallableInfo;
@@ -29,16 +42,6 @@ import org.gradle.internal.instrumentation.model.RequestExtra;
 import org.gradle.internal.instrumentation.model.RequestExtrasContainer;
 import org.gradle.internal.instrumentation.processor.extensibility.RequestPostProcessorExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 public class WithExtensionReferencesPostProcessor implements RequestPostProcessorExtension {
 
     @Override
@@ -46,7 +49,7 @@ public class WithExtensionReferencesPostProcessor implements RequestPostProcesso
         Optional<WithExtensionReferencesExtra> extra = originalRequest.getRequestExtras().getByType(WithExtensionReferencesExtra.class);
         return extra
             .map(withExtensionReferencesExtra -> Arrays.asList(originalRequest, modifiedRequest(originalRequest, withExtensionReferencesExtra)))
-            .orElseGet(() -> Collections.singletonList(originalRequest));
+            .orElseGet(() -> singletonList(originalRequest));
     }
 
     private static CallInterceptionRequest modifiedRequest(CallInterceptionRequest originalRequest, WithExtensionReferencesExtra extra) {
@@ -77,6 +80,6 @@ public class WithExtensionReferencesPostProcessor implements RequestPostProcesso
         return Stream.of(
             originalExtras.getAll().stream().filter(it -> !(it instanceof WithExtensionReferencesExtra)),
             Stream.<RequestExtra>of(new WithExtensionReferencesExtra.ProducedSynthetically())
-        ).flatMap(Function.identity()).collect(Collectors.toList());
+        ).flatMap(identity()).collect(toList());
     }
 }

@@ -16,10 +16,20 @@
 
 package org.gradle.api.internal.provider;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.gradle.api.internal.provider.AppendOnceList.toAppendOnceList;
+import static org.gradle.internal.Cast.uncheckedCast;
+import static org.gradle.internal.Cast.uncheckedNonnullCast;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.api.Transformer;
 import org.gradle.api.internal.provider.MapCollectors.EntriesFromMap;
 import org.gradle.api.internal.provider.MapCollectors.EntriesFromMapProvider;
@@ -30,15 +40,6 @@ import org.gradle.api.provider.Provider;
 import org.gradle.internal.Cast;
 import org.gradle.internal.evaluation.EvaluationScopeContext;
 import org.jspecify.annotations.Nullable;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static org.gradle.api.internal.provider.AppendOnceList.toAppendOnceList;
-import static org.gradle.internal.Cast.uncheckedCast;
-import static org.gradle.internal.Cast.uncheckedNonnullCast;
 
 /**
  * The implementation for {@link MapProperty}.
@@ -183,15 +184,15 @@ public class DefaultMapProperty<K, V> extends AbstractProperty<Map<K, V>, MapSup
 
     @Override
     public void put(K key, V value) {
-        Preconditions.checkNotNull(key, NULL_KEY_FORBIDDEN_MESSAGE);
-        Preconditions.checkNotNull(value, NULL_VALUE_FORBIDDEN_MESSAGE);
+        checkNotNull(key, NULL_KEY_FORBIDDEN_MESSAGE);
+        checkNotNull(value, NULL_VALUE_FORBIDDEN_MESSAGE);
         addExplicitCollector(new SingleEntry<>(key, value));
     }
 
     @Override
     public void put(K key, Provider<? extends V> providerOfValue) {
-        Preconditions.checkNotNull(key, NULL_KEY_FORBIDDEN_MESSAGE);
-        Preconditions.checkNotNull(providerOfValue, NULL_VALUE_FORBIDDEN_MESSAGE);
+        checkNotNull(key, NULL_KEY_FORBIDDEN_MESSAGE);
+        checkNotNull(providerOfValue, NULL_VALUE_FORBIDDEN_MESSAGE);
         ProviderInternal<? extends V> p = Providers.internal(providerOfValue);
         if (p.getType() != null && !valueType.isAssignableFrom(p.getType())) {
             throw new IllegalArgumentException(String.format("Cannot add an entry to a property of type %s with values of type %s using a provider of type %s.",
@@ -641,7 +642,7 @@ public class DefaultMapProperty<K, V> extends AbstractProperty<Map<K, V>, MapSup
         }
 
         private MapCollector<K, V> toCollector(ExecutionTimeValue<? extends Map<? extends K, ? extends V>> value) {
-            Preconditions.checkArgument(!value.isMissing(), "Cannot get a collector for the missing value");
+            checkArgument(!value.isMissing(), "Cannot get a collector for the missing value");
             if (value.isChangingValue() || value.hasChangingContent() || value.getSideEffect() != null) {
                 return new EntriesFromMapProvider<>(value.toProvider());
             }

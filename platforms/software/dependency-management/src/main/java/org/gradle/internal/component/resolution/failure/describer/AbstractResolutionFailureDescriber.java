@@ -16,6 +16,16 @@
 
 package org.gradle.internal.component.resolution.failure.describer;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static org.gradle.internal.exceptions.StyledException.style;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.attributes.Attribute;
 import org.gradle.api.internal.DocumentationRegistry;
 import org.gradle.api.internal.attributes.AttributeDescriber;
@@ -24,15 +34,6 @@ import org.gradle.internal.component.resolution.failure.ResolutionCandidateAsses
 import org.gradle.internal.component.resolution.failure.interfaces.ResolutionFailure;
 import org.gradle.internal.logging.text.StyledTextOutput;
 import org.gradle.internal.logging.text.TreeFormatter;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.exceptions.StyledException.style;
 
 /**
  * An abstract base class for implementing {@link ResolutionFailureDescriber}s.
@@ -80,13 +81,13 @@ public abstract class AbstractResolutionFailureDescriber<FAILURE extends Resolut
     ) {
         // None of the nullability warnings are relevant here because the attribute values are only retrieved from collections that will contain them
         @SuppressWarnings("DataFlowIssue") Map<Attribute<?>, ?> compatibleAttrs = assessedCandidate.getCompatibleAttributes().stream()
-            .collect(Collectors.toMap(AssessedAttribute::getAttribute, AssessedAttribute::getProvided, (a, b) -> a));
+            .collect(toMap(AssessedAttribute::getAttribute, AssessedAttribute::getProvided, (a, b) -> a));
         @SuppressWarnings("DataFlowIssue") List<String> onlyOnProducer = assessedCandidate.getOnlyOnCandidateAttributes().stream()
             .map(assessedAttribute -> "Provides " + describer.describeExtraAttribute(assessedAttribute.getAttribute(), assessedAttribute.getProvided()) + " but the consumer didn't ask for it")
-            .collect(Collectors.toList());
+            .collect(toList());
         @SuppressWarnings("DataFlowIssue") List<String> onlyOnConsumer = assessedCandidate.getOnlyOnRequestAttributes().stream()
             .map(assessedAttribute -> "Doesn't say anything about " + describer.describeMissingAttribute(assessedAttribute.getAttribute(), assessedAttribute.getRequested()))
-            .collect(Collectors.toList());
+            .collect(toList());
 
         List<String> other = new ArrayList<>(onlyOnProducer.size() + onlyOnConsumer.size());
         other.addAll(onlyOnProducer);
@@ -108,15 +109,15 @@ public abstract class AbstractResolutionFailureDescriber<FAILURE extends Resolut
     ) {
         // None of the nullability warnings are relevant here because the attribute values are only retrieved from collections that will contain them
         @SuppressWarnings("DataFlowIssue") Map<Attribute<?>, ?> compatibleAttrs = assessedCandidate.getCompatibleAttributes().stream()
-            .collect(Collectors.toMap(AssessedAttribute::getAttribute, AssessedAttribute::getProvided, (a, b) -> a));
+            .collect(toMap(AssessedAttribute::getAttribute, AssessedAttribute::getProvided, (a, b) -> a));
         @SuppressWarnings("DataFlowIssue") Map<Attribute<?>, ?> incompatibleAttrs = assessedCandidate.getIncompatibleAttributes().stream()
-            .collect(Collectors.toMap(AssessedAttribute::getAttribute, AssessedAttribute::getProvided, (a, b) -> a));
+            .collect(toMap(AssessedAttribute::getAttribute, AssessedAttribute::getProvided, (a, b) -> a));
         @SuppressWarnings("DataFlowIssue") Map<Attribute<?>, ?> incompatibleConsumerAttrs = assessedCandidate.getIncompatibleAttributes().stream()
-            .collect(Collectors.toMap(AssessedAttribute::getAttribute, AssessedAttribute::getRequested, (a, b) -> a));
+            .collect(toMap(AssessedAttribute::getAttribute, AssessedAttribute::getRequested, (a, b) -> a));
         @SuppressWarnings("DataFlowIssue") List<String> otherValues = assessedCandidate.getOnlyOnRequestAttributes().stream()
             .map(assessedAttribute -> "Doesn't say anything about " + describer.describeMissingAttribute(assessedAttribute.getAttribute(), assessedAttribute.getRequested()))
             .sorted()
-            .collect(Collectors.toList());
+            .collect(toList());
 
         if (!compatibleAttrs.isEmpty()) {
             formatter.append(" declares ").append(style(StyledTextOutput.Style.SuccessHeader, describer.describeAttributeSet(compatibleAttrs)));

@@ -15,18 +15,19 @@
  */
 package org.gradle.internal.resolve;
 
+import static java.util.Comparator.comparing;
+
 import com.google.common.base.Objects;
+import java.util.Comparator;
+import java.util.List;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.internal.attributes.ImmutableAttributesEntry;
 import org.gradle.api.internal.attributes.matching.AttributeMatcher;
 import org.gradle.internal.logging.text.TreeFormatter;
 import org.jspecify.annotations.Nullable;
 
-import java.util.Comparator;
-import java.util.List;
-
 public class RejectedByAttributesVersion extends RejectedVersion {
-    private static final Comparator<AttributeMatcher.MatchingDescription<?>> DESCRIPTION_COMPARATOR = Comparator.comparing(o -> o.getRequested().getKey().getName());
+    private static final Comparator<AttributeMatcher.MatchingDescription<?>> DESCRIPTION_COMPARATOR = comparing(o -> o.getRequested().getKey().getName());
     private final List<AttributeMatcher.MatchingDescription<?>> matchingDescription;
 
     public RejectedByAttributesVersion(ModuleComponentIdentifier id, List<AttributeMatcher.MatchingDescription<?>> matchingDescription) {

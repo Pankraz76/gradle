@@ -16,6 +16,9 @@
 
 package org.gradle.api.internal.provider;
 
+import static java.util.function.Function.identity;
+
+import java.util.function.Function;
 import org.gradle.api.Action;
 import org.gradle.api.Describable;
 import org.gradle.internal.Cast;
@@ -23,8 +26,6 @@ import org.gradle.internal.deprecation.DeprecationLogger;
 import org.gradle.internal.logging.text.TreeFormatter;
 import org.gradle.internal.state.ModelObject;
 import org.jspecify.annotations.Nullable;
-
-import java.util.function.Function;
 
 /**
  * Provides a state pattern implementation for values that are finalizable and support conventions.
@@ -44,7 +45,7 @@ public abstract class ValueState<S> {
      * Creates a new non-finalized state.
      */
     public static <S> ValueState<S> newState(PropertyHost host) {
-        return new ValueState.NonFinalizedValue<>(host, Function.identity());
+        return new ValueState.NonFinalizedValue<>(host, identity());
     }
 
     /**

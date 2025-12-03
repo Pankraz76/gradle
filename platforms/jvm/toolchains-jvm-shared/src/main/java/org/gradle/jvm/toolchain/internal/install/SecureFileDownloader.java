@@ -16,6 +16,18 @@
 
 package org.gradle.jvm.toolchain.internal.install;
 
+import static java.util.Collections.emptyList;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.Collection;
+import java.util.Collections;
 import org.apache.commons.io.IOUtils;
 import org.gradle.api.GradleException;
 import org.gradle.api.resources.MissingResourceException;
@@ -28,17 +40,6 @@ import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.nio.file.AtomicMoveNotSupportedException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.Collection;
-import java.util.Collections;
 
 @ServiceScope({Scope.Build.class})
 public class SecureFileDownloader {
@@ -56,7 +57,7 @@ public class SecureFileDownloader {
     }
 
     public ExternalResource getResourceFor(URI source) {
-        return createExternalResource(source, Collections.emptyList());
+        return createExternalResource(source, emptyList());
     }
 
     public void download(URI source, File destination, ExternalResource resource) {

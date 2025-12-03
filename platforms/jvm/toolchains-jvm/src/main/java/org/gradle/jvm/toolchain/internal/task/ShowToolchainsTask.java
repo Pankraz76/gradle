@@ -16,7 +16,18 @@
 
 package org.gradle.jvm.toolchain.internal.task;
 
+import static java.util.stream.Collectors.toList;
+import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Description;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Identifier;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.Normal;
+
 import com.google.common.base.Strings;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.provider.ProviderFactory;
@@ -28,17 +39,6 @@ import org.gradle.internal.jvm.inspection.JvmToolchainMetadata;
 import org.gradle.internal.logging.text.StyledTextOutput;
 import org.gradle.internal.logging.text.StyledTextOutputFactory;
 import org.gradle.jvm.toolchain.internal.ToolchainConfiguration;
-
-import javax.inject.Inject;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Description;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Identifier;
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.Normal;
 
 @UntrackedTask(because = "Produces only non-cacheable console output")
 public abstract class ShowToolchainsTask extends DefaultTask {
@@ -78,11 +78,11 @@ public abstract class ShowToolchainsTask extends DefaultTask {
     }
 
     private static List<JvmToolchainMetadata> invalidToolchains(List<JvmToolchainMetadata> toolchains) {
-        return toolchains.stream().filter(t -> !isValidToolchain(t)).collect(Collectors.toList());
+        return toolchains.stream().filter(t -> !isValidToolchain(t)).collect(toList());
     }
 
     private static List<JvmToolchainMetadata> validToolchains(Collection<JvmToolchainMetadata> toolchains) {
-        return toolchains.stream().filter(ShowToolchainsTask::isValidToolchain).sorted(TOOLCHAIN_COMPARATOR).collect(Collectors.toList());
+        return toolchains.stream().filter(ShowToolchainsTask::isValidToolchain).sorted(TOOLCHAIN_COMPARATOR).collect(toList());
     }
 
     private static boolean isValidToolchain(JvmToolchainMetadata t) {

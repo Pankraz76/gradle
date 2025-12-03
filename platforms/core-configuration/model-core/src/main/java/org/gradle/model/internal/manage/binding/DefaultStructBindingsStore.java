@@ -16,6 +16,18 @@
 
 package org.gradle.model.internal.manage.binding;
 
+import static java.util.Collections.singleton;
+import static org.gradle.internal.reflect.Methods.DESCRIPTOR_EQUIVALENCE;
+import static org.gradle.internal.reflect.Methods.SIGNATURE_EQUIVALENCE;
+import static org.gradle.internal.reflect.PropertyAccessorType.GET_GETTER;
+import static org.gradle.internal.reflect.PropertyAccessorType.IS_GETTER;
+import static org.gradle.internal.reflect.PropertyAccessorType.SETTER;
+import static org.gradle.internal.reflect.PropertyAccessorType.hasGetter;
+import static org.gradle.internal.reflect.PropertyAccessorType.hasSetter;
+import static org.gradle.internal.reflect.PropertyAccessorType.hasVoidReturnType;
+import static org.gradle.internal.reflect.PropertyAccessorType.takesSingleParameter;
+import static org.gradle.internal.reflect.Types.walkTypeHierarchy;
+
 import com.google.common.base.Equivalence.Wrapper;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -35,6 +47,21 @@ import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import groovy.lang.GroovyObject;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
 import org.gradle.api.Named;
 import org.gradle.internal.Cast;
 import org.gradle.internal.UncheckedException;
@@ -54,33 +81,6 @@ import org.gradle.model.internal.manage.schema.StructSchema;
 import org.gradle.model.internal.method.WeaklyTypeReferencingMethod;
 import org.gradle.model.internal.type.ModelType;
 import org.gradle.model.internal.type.ModelTypes;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.concurrent.ExecutionException;
-
-import static org.gradle.internal.reflect.Methods.DESCRIPTOR_EQUIVALENCE;
-import static org.gradle.internal.reflect.Methods.SIGNATURE_EQUIVALENCE;
-import static org.gradle.internal.reflect.PropertyAccessorType.GET_GETTER;
-import static org.gradle.internal.reflect.PropertyAccessorType.IS_GETTER;
-import static org.gradle.internal.reflect.PropertyAccessorType.SETTER;
-import static org.gradle.internal.reflect.PropertyAccessorType.hasGetter;
-import static org.gradle.internal.reflect.PropertyAccessorType.hasSetter;
-import static org.gradle.internal.reflect.PropertyAccessorType.hasVoidReturnType;
-import static org.gradle.internal.reflect.PropertyAccessorType.takesSingleParameter;
-import static org.gradle.internal.reflect.Types.walkTypeHierarchy;
 
 public class DefaultStructBindingsStore implements StructBindingsStore {
     private final LoadingCache<CacheKey, StructBindings<?>> bindings = CacheBuilder.newBuilder()
@@ -122,7 +122,7 @@ public class DefaultStructBindingsStore implements StructBindingsStore {
 
         Set<ModelType<?>> implementedViews = collectImplementedViews(publicType, internalViewTypes, delegateType);
         StructSchema<T> publicSchema = getStructSchema(publicType);
-        Iterable<StructSchema<?>> declaredViewSchemas = getStructSchemas(Iterables.concat(Collections.singleton(publicType), internalViewTypes));
+        Iterable<StructSchema<?>> declaredViewSchemas = getStructSchemas(Iterables.concat(singleton(publicType), internalViewTypes));
         Iterable<StructSchema<?>> implementedSchemas = getStructSchemas(implementedViews);
         StructSchema<D> delegateSchema = delegateType == null ? null : getStructSchema(delegateType);
 

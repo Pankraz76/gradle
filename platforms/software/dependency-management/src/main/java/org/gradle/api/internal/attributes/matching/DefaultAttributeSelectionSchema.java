@@ -16,18 +16,10 @@
 
 package org.gradle.api.internal.attributes.matching;
 
-import com.google.common.collect.ImmutableList;
-import org.gradle.api.Action;
-import org.gradle.api.attributes.Attribute;
-import org.gradle.api.attributes.CompatibilityCheckDetails;
-import org.gradle.api.attributes.MultipleCandidatesDetails;
-import org.gradle.api.internal.attributes.CompatibilityCheckResult;
-import org.gradle.api.internal.attributes.ImmutableAttributes;
-import org.gradle.api.internal.attributes.immutable.ImmutableAttributesSchema;
-import org.gradle.internal.component.model.DefaultCompatibilityCheckResult;
-import org.gradle.internal.component.model.DefaultMultipleCandidateResult;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.singleton;
+import static java.util.stream.Collectors.toList;
 
+import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,6 +31,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.gradle.api.Action;
+import org.gradle.api.attributes.Attribute;
+import org.gradle.api.attributes.CompatibilityCheckDetails;
+import org.gradle.api.attributes.MultipleCandidatesDetails;
+import org.gradle.api.internal.attributes.CompatibilityCheckResult;
+import org.gradle.api.internal.attributes.ImmutableAttributes;
+import org.gradle.api.internal.attributes.immutable.ImmutableAttributesSchema;
+import org.gradle.internal.component.model.DefaultCompatibilityCheckResult;
+import org.gradle.internal.component.model.DefaultMultipleCandidateResult;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Default implementation of {@link AttributeSelectionSchema}, based off of a backing
@@ -73,7 +75,7 @@ public class DefaultAttributeSelectionSchema implements AttributeSelectionSchema
         }
 
         if (requested != null && candidates.contains(requested)) {
-            return Collections.singleton(requested);
+            return singleton(requested);
         }
 
         return null;
@@ -138,7 +140,7 @@ public class DefaultAttributeSelectionSchema implements AttributeSelectionSchema
     public PrecedenceResult orderByPrecedence(Collection<Attribute<?>> requested) {
         if (schema.getAttributeDisambiguationPrecedence().isEmpty()) {
             // If no attribute precedence has been set anywhere, we can just iterate in order
-            return new PrecedenceResult(IntStream.range(0, requested.size()).boxed().collect(Collectors.toList()));
+            return new PrecedenceResult(IntStream.range(0, requested.size()).boxed().collect(toList()));
         }
 
         // Populate requested attribute -> position in requested attribute list

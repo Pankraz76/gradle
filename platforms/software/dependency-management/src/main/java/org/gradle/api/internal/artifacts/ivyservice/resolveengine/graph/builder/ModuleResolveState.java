@@ -16,7 +16,26 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.builder;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+
 import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
@@ -42,21 +61,6 @@ import org.gradle.internal.resolve.resolver.ComponentMetaDataResolver;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Resolution state for a given module.
@@ -128,7 +132,7 @@ public class ModuleResolveState implements CandidateModule {
     }
 
     public Set<VirtualPlatformState> getPlatformOwners() {
-        return platformOwners == null ? Collections.emptySet() : platformOwners;
+        return platformOwners == null ? emptySet() : platformOwners;
     }
 
     @Override
@@ -145,7 +149,7 @@ public class ModuleResolveState implements CandidateModule {
     @SuppressWarnings("MixedMutabilityReturnType")
     public Collection<ComponentState> getVersions() {
         if (this.versions.isEmpty()) {
-            return Collections.emptyList();
+            return emptyList();
         }
         Collection<ComponentState> values = this.versions.values();
         if (areAllCandidatesForSelection(values)) {
@@ -394,7 +398,7 @@ public class ModuleResolveState implements CandidateModule {
                 Spliterators.spliteratorUnknownSize(selectors.iterator(), Spliterator.ORDERED),
                 false
             ).map(SelectorState::getSelectionReason)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     Set<EdgeState> getIncomingEdges() {
@@ -555,7 +559,7 @@ public class ModuleResolveState implements CandidateModule {
 
     public Map<SelectorState, List<List<String>>> getSegmentedPathsBySelectors() {
         return getAllEdges().stream()
-            .collect(Collectors.toMap(
+            .collect(toMap(
                 EdgeState::getSelector,
                 MessageBuilderHelper::segmentedPathsTo,
                 (a, b) -> {

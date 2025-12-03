@@ -16,8 +16,21 @@
 
 package org.gradle.internal.build;
 
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
+import static org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.Details;
+import static org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.PlannedNode;
+import static org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.PlannedTask;
+import static org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.Result;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import org.gradle.api.Task;
 import org.gradle.api.internal.GradleInternal;
 import org.gradle.execution.plan.ExecutionPlan;
@@ -32,18 +45,6 @@ import org.gradle.internal.operations.trace.CustomOperationTraceSerialization;
 import org.gradle.internal.taskgraph.NodeIdentity;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
-
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.Details;
-import static org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.PlannedNode;
-import static org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.PlannedTask;
-import static org.gradle.internal.taskgraph.CalculateTaskGraphBuildOperationType.Result;
 
 @NullMarked
 public class BuildOperationFiringBuildWorkPreparer implements BuildWorkPreparer {
@@ -156,7 +157,7 @@ public class BuildOperationFiringBuildWorkPreparer implements BuildWorkPreparer 
             @Override
             public List<PlannedNode> getExecutionPlan(Set<NodeIdentity.NodeType> types) {
                 if (types.isEmpty()) {
-                    return Collections.emptyList();
+                    return emptyList();
                 }
 
                 @SuppressWarnings("unchecked")
@@ -175,7 +176,7 @@ public class BuildOperationFiringBuildWorkPreparer implements BuildWorkPreparer 
             }
 
             private static List<String> toUniqueSortedTaskPaths(Set<Task> tasks) {
-                return tasks.stream().map(Task::getPath).distinct().sorted().collect(Collectors.toList());
+                return tasks.stream().map(Task::getPath).distinct().sorted().collect(toList());
             }
         }
     }

@@ -16,6 +16,13 @@
 
 package org.gradle.api.internal.tasks.testing;
 
+import static java.util.Collections.singletonList;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.function.LongFunction;
 import org.gradle.api.internal.exceptions.MarkedVerificationException;
 import org.gradle.api.internal.tasks.testing.results.TestExecutionResultsListener;
 import org.gradle.api.internal.tasks.testing.results.TestListenerInternal;
@@ -26,12 +33,6 @@ import org.gradle.internal.logging.ConsoleRenderer;
 import org.gradle.util.internal.TextUtil;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.time.Instant;
-import java.util.Collections;
-import java.util.function.LongFunction;
 
 @NullMarked
 class DefaultRootTestEventReporter extends DefaultGroupTestEventReporter {
@@ -97,7 +98,7 @@ class DefaultRootTestEventReporter extends DefaultGroupTestEventReporter {
         // Generate HTML report
         Path reportIndexFile = testReportGenerator == null
             ? null
-            : testReportGenerator.generate(Collections.singletonList(binaryResultsDir));
+            : testReportGenerator.generate(singletonList(binaryResultsDir));
 
         // Notify aggregate listener of final results
         boolean hasTestFailures = failureMessage != null;

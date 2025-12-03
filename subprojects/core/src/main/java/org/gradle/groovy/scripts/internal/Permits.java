@@ -15,11 +15,13 @@
  */
 package org.gradle.groovy.scripts.internal;
 
+import static java.util.Collections.emptySet;
+
 import java.util.Collections;
 import java.util.Set;
 
 public class Permits {
-    private static final Permits NONE = new Permits(Collections.emptySet());
+    private static final Permits NONE = new Permits(emptySet());
 
     private final Set<String> allowedExtensions;
 

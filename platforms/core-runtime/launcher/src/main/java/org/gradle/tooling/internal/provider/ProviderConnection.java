@@ -16,8 +16,21 @@
 
 package org.gradle.tooling.internal.provider;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
+import java.io.File;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import org.gradle.api.internal.StartParameterInternal;
 import org.gradle.api.internal.file.FileCollectionFactory;
 import org.gradle.api.internal.tasks.userinput.UserInputReader;
@@ -92,18 +105,6 @@ import org.gradle.util.GradleVersion;
 import org.gradle.util.internal.GUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import static java.util.Collections.emptySet;
 
 @ServiceScope(Scope.Global.class)
 public class ProviderConnection {
@@ -335,7 +336,7 @@ public class ProviderConnection {
         initialPropertiesConverter.configure(commandLineParser);
         buildLayoutConverter.configure(commandLineParser);
 
-        ParsedCommandLine parsedCommandLine = commandLineParser.parse(operationParameters.getArguments() == null ? Collections.emptyList() : operationParameters.getArguments());
+        ParsedCommandLine parsedCommandLine = commandLineParser.parse(operationParameters.getArguments() == null ? emptyList() : operationParameters.getArguments());
 
         InitialProperties initialProperties = initialPropertiesConverter.convert(parsedCommandLine);
         BuildLayoutResult buildLayoutResult = buildLayoutConverter.convert(initialProperties, parsedCommandLine, operationParameters.getProjectDir(), layout -> {
@@ -353,7 +354,7 @@ public class ProviderConnection {
             environmentVariables = new HashMap<>(System.getenv());
         }
 
-        DaemonParameters daemonParams = new DaemonParameters(buildLayoutResult.getGradleUserHomeDir(), fileCollectionFactory, Collections.emptyMap(), environmentVariables);
+        DaemonParameters daemonParams = new DaemonParameters(buildLayoutResult.getGradleUserHomeDir(), fileCollectionFactory, emptyMap(), environmentVariables);
         new DaemonBuildOptions().propertiesConverter().convert(properties.getProperties(), daemonParams);
         if (operationParameters.getDaemonBaseDir() != null) {
             daemonParams.setBaseDir(operationParameters.getDaemonBaseDir());

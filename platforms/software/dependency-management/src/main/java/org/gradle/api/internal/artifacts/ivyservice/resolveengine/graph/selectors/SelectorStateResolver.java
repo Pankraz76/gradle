@@ -15,7 +15,17 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.selectors;
 
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.internal.artifacts.ResolvedVersionConstraint;
 import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.UnionVersionSelector;
@@ -33,14 +43,6 @@ import org.gradle.api.internal.artifacts.ivyservice.resolveengine.result.Compone
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.result.ComponentSelectionReasons;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.resolve.result.ComponentIdResolveResult;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 public class SelectorStateResolver<T extends ComponentResolutionState> {
     private final ModuleConflictResolver<T> conflictResolver;
@@ -81,7 +83,7 @@ public class SelectorStateResolver<T extends ComponentResolutionState> {
             List<T> allowed = candidates
                     .stream()
                     .filter(SelectorStateResolverResults::isVersionAllowedByPlatform)
-                    .collect(Collectors.toList());
+                    .collect(toList());
             if (!allowed.isEmpty()) {
                 if (allowed.size() == 1) {
                     return allowed.get(0);
@@ -115,7 +117,7 @@ public class SelectorStateResolver<T extends ComponentResolutionState> {
         assert selectorState.getVersionConstraint() == null || selectorState.getVersionConstraint().getPreferredSelector() == null;
         ComponentIdResolveResult resolved = selectorState.resolve(allRejects);
         T selected = SelectorStateResolverResults.componentForIdResolveResult(componentFactory, resolved, selectorState);
-        return Collections.singletonList(selected);
+        return singletonList(selected);
     }
 
     /**

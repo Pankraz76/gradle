@@ -16,6 +16,10 @@
 
 package org.gradle.internal.component.external.model.ivy;
 
+import static java.util.Collections.singletonList;
+
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.artifacts.component.ModuleComponentSelector;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
 import org.gradle.api.internal.attributes.immutable.ImmutableAttributesSchema;
@@ -28,9 +32,6 @@ import org.gradle.internal.component.model.GraphVariantSelector;
 import org.gradle.internal.component.model.IvyArtifactName;
 import org.gradle.internal.component.model.VariantGraphResolveState;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Represents a dependency declared in an Ivy descriptor file.
@@ -80,7 +81,7 @@ public class IvyDependencyMetadata extends ExternalModuleDependencyMetadata {
         // We have already verified that the target component does not support attribute matching,
         // so if it is not an ivy component, use the standard legacy selection mechanism.
         VariantGraphResolveState selected = variantSelector.selectLegacyVariant(consumerAttributes, targetComponentState, consumerSchema, variantSelector.getFailureHandler());
-        return Collections.singletonList(selected);
+        return singletonList(selected);
     }
 
     @Override

@@ -16,7 +16,14 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.resolutionstrategy;
 
+import static java.util.Collections.emptySet;
+import static org.gradle.api.internal.artifacts.configurations.MutationValidator.MutationType.STRATEGY;
+
 import groovy.lang.Closure;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.gradle.api.Action;
 import org.gradle.api.InvalidUserCodeException;
 import org.gradle.api.artifacts.ComponentSelection;
@@ -38,13 +45,6 @@ import org.gradle.internal.rules.SpecRuleAction;
 import org.gradle.internal.typeconversion.NotationParser;
 import org.gradle.internal.typeconversion.NotationParserBuilder;
 import org.gradle.internal.typeconversion.UnsupportedNotationException;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import static org.gradle.api.internal.artifacts.configurations.MutationValidator.MutationType.STRATEGY;
 
 public class DefaultComponentSelectionRules implements ComponentSelectionRulesInternal {
     @SuppressWarnings("InlineFormatString")
@@ -82,7 +82,7 @@ public class DefaultComponentSelectionRules implements ComponentSelectionRulesIn
 
     @Override
     public Collection<SpecRuleAction<? super ComponentSelection>> getRules() {
-        return rules != null ? rules : Collections.emptySet();
+        return rules != null ? rules : emptySet();
     }
 
     @Override

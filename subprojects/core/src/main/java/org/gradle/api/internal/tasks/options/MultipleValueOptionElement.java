@@ -16,14 +16,15 @@
 
 package org.gradle.api.internal.tasks.options;
 
-import org.gradle.api.tasks.options.Option;
-import org.gradle.internal.typeconversion.NotationParser;
-import org.gradle.internal.typeconversion.TypeConversionException;
+import static java.util.Collections.emptySet;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import org.gradle.api.tasks.options.Option;
+import org.gradle.internal.typeconversion.NotationParser;
+import org.gradle.internal.typeconversion.TypeConversionException;
 
 /**
  * An option with one or more values.
@@ -40,7 +41,7 @@ public class MultipleValueOptionElement extends AbstractOptionElement {
 
     @Override
     public Set<String> getAvailableValues() {
-        return Collections.emptySet();
+        return emptySet();
     }
 
     @Override

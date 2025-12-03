@@ -16,27 +16,16 @@
 
 package org.gradle.cache.internal;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.apache.commons.io.filefilter.FileFilterUtils.directoryFileFilter;
+import static org.gradle.util.internal.CollectionUtils.single;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.RegexFileFilter;
-import org.apache.commons.lang3.Strings;
-import org.gradle.cache.CleanupProgressMonitor;
-import org.gradle.internal.IoActions;
-import org.gradle.internal.cache.MonitoredCleanupAction;
-import org.gradle.internal.versionedcache.UsedGradleVersions;
-import org.gradle.util.GradleVersion;
-import org.gradle.util.internal.DefaultGradleVersion;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.InputStream;
@@ -53,9 +42,20 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import static org.apache.commons.io.filefilter.FileFilterUtils.directoryFileFilter;
-import static org.gradle.util.internal.CollectionUtils.single;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.apache.commons.lang3.Strings;
+import org.gradle.cache.CleanupProgressMonitor;
+import org.gradle.internal.IoActions;
+import org.gradle.internal.cache.MonitoredCleanupAction;
+import org.gradle.internal.versionedcache.UsedGradleVersions;
+import org.gradle.util.GradleVersion;
+import org.gradle.util.internal.DefaultGradleVersion;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WrapperDistributionCleanupAction implements MonitoredCleanupAction {
 
@@ -171,7 +171,7 @@ public class WrapperDistributionCleanupAction implements MonitoredCleanupAction 
 
     private GradleVersion determineGradleVersionFromBuildReceipt(File checksumDir) throws Exception {
         List<File> subDirs = listDirs(checksumDir);
-        Preconditions.checkArgument(subDirs.size() == 1, "A Gradle distribution must contain exactly one subdirectory: %s", subDirs);
+        checkArgument(subDirs.size() == 1, "A Gradle distribution must contain exactly one subdirectory: %s", subDirs);
         return determineGradleVersionFromDistribution(single(subDirs));
     }
 
@@ -181,7 +181,7 @@ public class WrapperDistributionCleanupAction implements MonitoredCleanupAction 
         for (Map.Entry<String, Pattern> entry : JAR_FILE_PATTERNS_BY_PREFIX.entrySet()) {
             List<File> jarFiles = listFiles(new File(distributionHomeDir, "lib"), new RegexFileFilter(entry.getValue()));
             if (!jarFiles.isEmpty()) {
-                Preconditions.checkArgument(jarFiles.size() == 1, "A Gradle distribution must contain at most one %s-*.jar: %s", entry.getKey(), jarFiles);
+                checkArgument(jarFiles.size() == 1, "A Gradle distribution must contain at most one %s-*.jar: %s", entry.getKey(), jarFiles);
                 File jarFile = single(jarFiles);
                 GradleVersion gradleVersion = readGradleVersionFromJarFile(jarFile);
                 if (gradleVersion != null) {

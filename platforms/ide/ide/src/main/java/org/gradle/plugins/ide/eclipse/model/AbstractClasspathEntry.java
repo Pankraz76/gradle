@@ -16,20 +16,20 @@
 
 package org.gradle.plugins.ide.eclipse.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.stream.Collectors.toMap;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import groovy.util.Node;
 import groovy.util.NodeList;
-import org.gradle.internal.Cast;
-import org.gradle.plugins.ide.eclipse.model.internal.PathUtil;
-
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toMap;
+import org.gradle.internal.Cast;
+import org.gradle.plugins.ide.eclipse.model.internal.PathUtil;
 
 // TODO: consider entryAttributes in equals, hashCode, and toString
 
@@ -51,8 +51,8 @@ public abstract class AbstractClasspathEntry implements ClasspathEntry {
         this.exported = isNodeExported(node);
         accessRules = readAccessRules(node);
         entryAttributes = readEntryAttributes(node);
-        Preconditions.checkNotNull(path);
-        Preconditions.checkNotNull(accessRules);
+        checkNotNull(path);
+        checkNotNull(accessRules);
     }
 
     private boolean isNodeExported(Node node) {
@@ -67,7 +67,7 @@ public abstract class AbstractClasspathEntry implements ClasspathEntry {
     }
 
     public AbstractClasspathEntry(String path) {
-        Preconditions.checkNotNull(path);
+        checkNotNull(path);
         this.path = normalizePath(path);
         this.exported = false;
         this.accessRules = new LinkedHashSet<>();

@@ -16,6 +16,15 @@
 
 package org.gradle.workers.internal;
 
+import static java.util.Collections.emptySet;
+import static org.gradle.internal.work.AsyncWorkTracker.ProjectLockRetention.RETAIN_PROJECT_LOCKS;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.Callable;
+import javax.annotation.concurrent.NotThreadSafe;
 import org.gradle.api.Action;
 import org.gradle.initialization.layout.ProjectCacheDir;
 import org.gradle.internal.Actions;
@@ -48,15 +57,6 @@ import org.gradle.workers.WorkQueue;
 import org.gradle.workers.WorkerExecutionException;
 import org.gradle.workers.WorkerExecutor;
 import org.gradle.workers.WorkerSpec;
-
-import javax.annotation.concurrent.NotThreadSafe;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import static org.gradle.internal.work.AsyncWorkTracker.ProjectLockRetention.RETAIN_PROJECT_LOCKS;
 
 public class DefaultWorkerExecutor implements WorkerExecutor {
     private final ConditionalExecutionQueue<DefaultWorkResult> executionQueue;
@@ -159,7 +159,7 @@ public class DefaultWorkerExecutor implements WorkerExecutor {
         IsolatedParametersActionExecutionSpec<?> spec;
         try {
             // Isolate parameters in this thread prior to starting work in a separate thread
-            spec = actionExecutionSpecFactory.newIsolatedSpec(description, workActionClass, parameters, workerRequirement, Collections.emptySet());
+            spec = actionExecutionSpecFactory.newIsolatedSpec(description, workActionClass, parameters, workerRequirement, emptySet());
         } catch (Throwable t) {
             throw new WorkExecutionException(description, t);
         }

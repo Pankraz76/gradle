@@ -16,6 +16,16 @@
 
 package org.gradle.api.plugins.jvm.internal;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.attributes.java.TargetJvmVersion;
@@ -34,15 +44,6 @@ import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.compile.AbstractCompile;
 import org.gradle.internal.Cast;
 import org.gradle.internal.instantiation.InstanceGenerator;
-
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class DefaultJvmLanguageUtilities implements JvmLanguageUtilities {
 
@@ -108,7 +109,7 @@ public class DefaultJvmLanguageUtilities implements JvmLanguageUtilities {
             } else {
                 return Providers.of(JavaVersionParser.parseMajorVersion(compileTask.getTargetCompatibility()));
             }
-        })).collect(Collectors.toList());
+        })).collect(toList());
 
         return new MergeProvider<>(allTargetJdkVersions).map(Collections::max);
     }

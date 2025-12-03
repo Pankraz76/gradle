@@ -16,21 +16,22 @@
 
 package org.gradle.internal.snapshot;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static java.util.stream.Collectors.toList;
+import static org.gradle.internal.snapshot.ChildMapFactory.childMapFromSorted;
+import static org.gradle.internal.snapshot.SnapshotVisitResult.CONTINUE;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Interner;
-import org.gradle.internal.file.FileMetadata.AccessType;
-import org.gradle.internal.file.FileType;
-import org.gradle.internal.hash.HashCode;
-
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
-
-import static org.gradle.internal.snapshot.ChildMapFactory.childMapFromSorted;
-import static org.gradle.internal.snapshot.SnapshotVisitResult.CONTINUE;
+import org.gradle.internal.file.FileMetadata.AccessType;
+import org.gradle.internal.file.FileType;
+import org.gradle.internal.hash.HashCode;
 
 /**
  * A snapshot of an existing directory hierarchy.
@@ -44,7 +45,7 @@ public class DirectorySnapshot extends AbstractFileSystemLocationSnapshot {
     public DirectorySnapshot(String absolutePath, String name, AccessType accessType, HashCode contentHash, List<FileSystemLocationSnapshot> children) {
         this(absolutePath, name, accessType, contentHash, childMapFromSorted(children.stream()
             .map(it -> new ChildMap.Entry<>(it.getName(), it))
-            .collect(Collectors.toList())));
+            .collect(toList())));
     }
 
     public DirectorySnapshot(String absolutePath, String name, AccessType accessType, HashCode contentHash, ChildMap<FileSystemLocationSnapshot> children) {
@@ -154,7 +155,7 @@ public class DirectorySnapshot extends AbstractFileSystemLocationSnapshot {
     public ImmutableList<FileSystemLocationSnapshot> getChildren() {
         return children.stream()
             .map(ChildMap.Entry::getValue)
-            .collect(ImmutableList.toImmutableList());
+            .collect(toImmutableList());
     }
 
     @Override

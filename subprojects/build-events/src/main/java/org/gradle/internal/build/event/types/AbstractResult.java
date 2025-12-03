@@ -15,11 +15,12 @@
  */
 package org.gradle.internal.build.event.types;
 
-import org.gradle.tooling.internal.protocol.InternalFailure;
+import static java.util.Collections.emptyList;
 
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.tooling.internal.protocol.InternalFailure;
 
 public abstract class AbstractResult implements Serializable {
     private final long startTime;
@@ -45,6 +46,6 @@ public abstract class AbstractResult implements Serializable {
     }
 
     public List<? extends InternalFailure> getFailures() {
-        return Collections.emptyList();
+        return emptyList();
     }
 }

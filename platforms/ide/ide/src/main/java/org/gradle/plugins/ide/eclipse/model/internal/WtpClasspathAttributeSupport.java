@@ -16,7 +16,15 @@
 
 package org.gradle.plugins.ide.eclipse.model.internal;
 
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
+
 import com.google.common.collect.ImmutableMap;
+import java.io.File;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.result.ResolvedArtifactResult;
@@ -37,12 +45,6 @@ import org.gradle.plugins.ide.eclipse.model.ProjectDependency;
 import org.gradle.plugins.ide.internal.resolver.IdeDependencySet;
 import org.gradle.plugins.ide.internal.resolver.IdeDependencyVisitor;
 import org.gradle.plugins.ide.internal.resolver.NullGradleApiSourcesResolver;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
 
 public class WtpClasspathAttributeSupport {
     private final String libDirName;
@@ -65,7 +67,7 @@ public class WtpClasspathAttributeSupport {
     private static Set<File> collectFilesFromConfigs(EclipseClasspath classpath, Set<Configuration> configs, Set<Configuration> minusConfigs) {
         WtpClasspathAttributeDependencyVisitor visitor = new WtpClasspathAttributeDependencyVisitor(classpath);
         new IdeDependencySet(classpath.getProject().getDependencies(), ((ProjectInternal) classpath.getProject()).getServices().get(JavaModuleDetector.class),
-            configs, minusConfigs, false, NullGradleApiSourcesResolver.INSTANCE, classpath.getTestConfigurations().getOrElse(Collections.emptySet())).visit(visitor);
+            configs, minusConfigs, false, NullGradleApiSourcesResolver.INSTANCE, classpath.getTestConfigurations().getOrElse(emptySet())).visit(visitor);
         return visitor.getFiles();
     }
 
@@ -85,7 +87,7 @@ public class WtpClasspathAttributeSupport {
         } else if (entry instanceof ProjectDependency) {
             return ImmutableMap.of(AbstractClasspathEntry.COMPONENT_NON_DEPENDENCY_ATTRIBUTE, "");
         } else {
-            return Collections.emptyMap();
+            return emptyMap();
         }
     }
 

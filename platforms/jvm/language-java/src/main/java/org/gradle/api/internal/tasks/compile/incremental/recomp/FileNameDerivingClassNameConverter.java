@@ -15,11 +15,14 @@
  */
 package org.gradle.api.internal.tasks.compile.incremental.recomp;
 
-import org.apache.commons.lang3.StringUtils;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+import static java.util.stream.Collectors.toSet;
 
 import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A converter which infers the class names from the file name.
@@ -42,11 +45,11 @@ public class FileNameDerivingClassNameConverter implements SourceFileClassNameCo
 
         for (String fileExtension : fileExtensions) {
             if (sourceFileRelativePath.endsWith(fileExtension)) {
-                return Collections.singleton(StringUtils.removeEnd(sourceFileRelativePath.replace('/', '.'), fileExtension));
+                return singleton(StringUtils.removeEnd(sourceFileRelativePath.replace('/', '.'), fileExtension));
             }
         }
 
-        return Collections.emptySet();
+        return emptySet();
     }
 
     @Override
@@ -58,7 +61,7 @@ public class FileNameDerivingClassNameConverter implements SourceFileClassNameCo
 
         Set<String> paths = fileExtensions.stream()
             .map(fileExtension -> classNameToRelativePath(className, fileExtension))
-            .collect(Collectors.toSet());
+            .collect(toSet());
 
         // Classes with $ may be inner classes
         int innerClassIdx = className.indexOf("$");

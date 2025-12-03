@@ -16,6 +16,12 @@
 
 package org.gradle.internal.composite;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.gradle.api.internal.BuildDefinition;
 import org.gradle.api.internal.GradleInternal;
 import org.gradle.initialization.IncludedBuildSpec;
@@ -29,11 +35,6 @@ import org.gradle.internal.build.RootBuildState;
 import org.gradle.internal.buildtree.BuildInclusionCoordinator;
 import org.gradle.internal.reflect.Instantiator;
 import org.jspecify.annotations.NullMarked;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @NullMarked
 public class DefaultBuildIncluder implements BuildIncluder {
@@ -93,7 +94,7 @@ public class DefaultBuildIncluder implements BuildIncluder {
             IncludedBuildState build = buildRegistry.addIncludedBuild(buildDefinition, gradle.getOwner());
             coordinator.prepareForInclusion(build, true);
             return build;
-        }).collect(Collectors.toList());
+        }).collect(toList());
     }
 
     @Override
@@ -101,7 +102,7 @@ public class DefaultBuildIncluder implements BuildIncluder {
         BuildState thisBuild = gradle.getOwner();
         return buildRegistry.getIncludedBuilds().stream().filter(build ->
             build != thisBuild && !build.isImplicitBuild() && !build.isPluginBuild()
-        ).collect(Collectors.toList());
+        ).collect(toList());
     }
 
     @Override

@@ -16,9 +16,11 @@
 
 package org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Collections.emptySet;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -32,7 +34,7 @@ import java.util.Set;
 public abstract class DependentsSet {
 
     public static DependentsSet dependentClasses(Set<String> privateDependentClasses, Set<String> accessibleDependentClasses) {
-        return dependents(privateDependentClasses, accessibleDependentClasses, Collections.emptySet());
+        return dependents(privateDependentClasses, accessibleDependentClasses, emptySet());
     }
 
     public static DependentsSet dependents(Set<String> privateDependentClasses, Set<String> accessibleDependentClasses, Set<GeneratedResource> dependentResources) {
@@ -116,22 +118,22 @@ public abstract class DependentsSet {
 
         @Override
         public Set<String> getPrivateDependentClasses() {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         @Override
         public Set<String> getAccessibleDependentClasses() {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         @Override
         public Set<String> getAllDependentClasses() {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         @Override
         public Set<GeneratedResource> getDependentResources() {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         @Override
@@ -211,7 +213,7 @@ public abstract class DependentsSet {
         private final String reason;
 
         private DependencyToAll(String reason) {
-            this.reason = Preconditions.checkNotNull(reason);
+            this.reason = checkNotNull(reason);
         }
 
         private DependencyToAll() {

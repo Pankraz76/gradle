@@ -16,8 +16,20 @@
 
 package org.gradle.external.javadoc;
 
+import static java.util.Collections.unmodifiableSet;
+import static org.gradle.api.tasks.PathSensitivity.NAME_ONLY;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.api.Incubating;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
@@ -29,18 +41,6 @@ import org.gradle.external.javadoc.internal.JavadocOptionFile;
 import org.gradle.external.javadoc.internal.LinksOfflineJavadocOptionFileOption;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static org.gradle.api.tasks.PathSensitivity.NAME_ONLY;
 
 /**
  * Provides the options for the standard Javadoc doclet.
@@ -169,7 +169,7 @@ public class StandardJavadocDocletOptions extends CoreJavadocOptions implements 
         noTimestamp = addBooleanOption(OPTION_NOTIMESTAMP, true);
         noComment = addBooleanOption(OPTION_NOCOMMENT);
 
-        knownStandardOptionNames = Collections.unmodifiableSet(new HashSet<>(Sets.difference(optionFile.getOptions().keySet(), knownCoreOptionNames)));
+        knownStandardOptionNames = unmodifiableSet(new HashSet<>(Sets.difference(optionFile.getOptions().keySet(), knownCoreOptionNames)));
     }
 
     public StandardJavadocDocletOptions(StandardJavadocDocletOptions original) {

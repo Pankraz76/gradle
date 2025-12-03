@@ -16,13 +16,14 @@
 
 package org.gradle.buildinit.plugins.internal;
 
-import org.gradle.api.plugins.JvmTestSuitePlugin;
-import org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework;
-import org.gradle.buildinit.plugins.internal.modifiers.ModularizationOption;
+import static java.util.Collections.singleton;
 
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
+import org.gradle.api.plugins.JvmTestSuitePlugin;
+import org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework;
+import org.gradle.buildinit.plugins.internal.modifiers.ModularizationOption;
 
 public abstract class LanguageLibraryProjectInitDescriptor implements LanguageSpecificProjectGenerator {
     protected String withPackage(InitSettings settings, String className) {
@@ -35,7 +36,7 @@ public abstract class LanguageLibraryProjectInitDescriptor implements LanguageSp
 
     @Override
     public Set<ModularizationOption> getModularizationOptions() {
-        return Collections.singleton(ModularizationOption.SINGLE_PROJECT);
+        return singleton(ModularizationOption.SINGLE_PROJECT);
     }
 
     @Override

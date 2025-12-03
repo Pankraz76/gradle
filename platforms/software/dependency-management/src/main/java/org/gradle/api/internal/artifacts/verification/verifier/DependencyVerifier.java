@@ -15,9 +15,25 @@
  */
 package org.gradle.api.internal.artifacts.verification.verifier;
 
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+import static java.util.stream.Collectors.toSet;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.bouncycastle.openpgp.PGPPublicKey;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.verification.ArtifactVerificationOperation;
@@ -34,20 +50,6 @@ import org.gradle.internal.hash.HashCode;
 import org.gradle.security.internal.Fingerprint;
 import org.gradle.security.internal.PublicKeyService;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static com.google.common.collect.ImmutableMap.toImmutableMap;
 
 public class DependencyVerifier {
     private final Map<String, ComponentVerificationMetadata> verificationMetadata;
@@ -139,7 +141,7 @@ public class DependencyVerifier {
         if (signature != null) {
             // it's possible that the artifact is not listed explicitly but we can still verify signatures
             DefaultSignatureVerificationResultBuilder result = new DefaultSignatureVerificationResultBuilder(file, signature);
-            verifySignature(signatureVerificationService, file, signature, allTrustedKeys(foundArtifact, Collections.emptySet()), allIgnoredKeys(Collections.emptySet()), result);
+            verifySignature(signatureVerificationService, file, signature, allTrustedKeys(foundArtifact, emptySet()), allIgnoredKeys(emptySet()), result);
             if (result.hasError()) {
                 VerificationFailure error = result.asError(publicKeyService);
                 builder.failWith(error);
@@ -172,10 +174,10 @@ public class DependencyVerifier {
 
     private Set<String> allIgnoredKeys(Set<IgnoredKey> artifactSpecificKeys) {
         if (config.getIgnoredKeys().isEmpty()) {
-            return artifactSpecificKeys.stream().map(IgnoredKey::getKeyId).collect(Collectors.toSet());
+            return artifactSpecificKeys.stream().map(IgnoredKey::getKeyId).collect(toSet());
         } else {
             if (artifactSpecificKeys.isEmpty()) {
-                return config.getIgnoredKeys().stream().map(IgnoredKey::getKeyId).collect(Collectors.toSet());
+                return config.getIgnoredKeys().stream().map(IgnoredKey::getKeyId).collect(toSet());
             }
             Set<String> allKeys = new HashSet<>();
             artifactSpecificKeys.stream()
@@ -254,7 +256,7 @@ public class DependencyVerifier {
         getVerificationMetadata().forEach(md -> md.getArtifactVerifications().forEach(av -> {
             av.getChecksums().forEach(checksum -> writeFlags.add(checksum.getKind().name()));
         }));
-        if (Collections.singleton("pgp").equals(writeFlags)) {
+        if (singleton("pgp").equals(writeFlags)) {
             // need to suggest at least one checksum so we use the most secure
             writeFlags.add("sha512");
         }

@@ -16,6 +16,11 @@
 
 package org.gradle.nativeplatform.test.plugins;
 
+import static java.util.Collections.emptyList;
+
+import java.util.Collections;
+import java.util.concurrent.Callable;
+import javax.inject.Inject;
 import org.gradle.api.Incubating;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -30,10 +35,6 @@ import org.gradle.nativeplatform.TargetMachineFactory;
 import org.gradle.nativeplatform.internal.DefaultTargetMachineFactory;
 import org.gradle.nativeplatform.test.TestSuiteComponent;
 import org.gradle.testing.base.plugins.TestingBasePlugin;
-
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.concurrent.Callable;
 
 /**
  * Common base plugin for all native testing plugins.
@@ -88,7 +89,7 @@ public abstract class NativeTestingBasePlugin implements Plugin<Project> {
                         if (!targetsCurrentMachine) {
                             task.getLogger().warn("'" + testSuiteComponent.getName() + "' component in project '" + project.getPath() + "' does not target this operating system.");
                         }
-                        return Collections.emptyList();
+                        return emptyList();
                     }));
                 }
             }

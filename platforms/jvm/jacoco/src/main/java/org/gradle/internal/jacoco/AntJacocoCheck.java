@@ -16,10 +16,19 @@
 
 package org.gradle.internal.jacoco;
 
+import static com.google.common.collect.Sets.filter;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonMap;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
 import groovy.lang.Closure;
+import java.io.File;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
 import org.gradle.api.internal.project.antbuilder.AntBuilderDelegate;
@@ -28,14 +37,6 @@ import org.gradle.testing.jacoco.tasks.rules.JacocoLimit;
 import org.gradle.testing.jacoco.tasks.rules.JacocoViolationRule;
 import org.gradle.util.internal.GFileUtils;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import static com.google.common.collect.Sets.filter;
 
 public class AntJacocoCheck implements Action<AntBuilderDelegate> {
     private static final String VIOLATIONS_ANT_PROPERTY = "jacocoViolations";
@@ -58,9 +59,9 @@ public class AntJacocoCheck implements Action<AntBuilderDelegate> {
             "name", "jacocoReport",
             "classname", "org.jacoco.ant.ReportTask"
         ));
-        final Map<String, Object> emptyArgs = Collections.emptyMap();
+        final Map<String, Object> emptyArgs = emptyMap();
         try {
-            antBuilder.invokeMethod("jacocoReport", new Object[]{Collections.emptyMap(), new Closure<Object>(this, this) {
+            antBuilder.invokeMethod("jacocoReport", new Object[]{emptyMap(), new Closure<Object>(this, this) {
                 @SuppressWarnings("unused") // Magic Groovy method
                 public Object doCall(Object ignore) {
                     antBuilder.invokeMethod("executiondata", new Object[]{emptyArgs, new Closure<Object>(this, this) {
@@ -86,7 +87,7 @@ public class AntJacocoCheck implements Action<AntBuilderDelegate> {
                             if (encoding == null) {
                                 sourcefilesArgs = emptyArgs;
                             } else {
-                                sourcefilesArgs = Collections.singletonMap("encoding", encoding);
+                                sourcefilesArgs = singletonMap("encoding", encoding);
                             }
                             antBuilder.invokeMethod("sourcefiles", new Object[]{sourcefilesArgs, new Closure<Object>(this, this) {
                                 @SuppressWarnings("unused") // Magic Groovy method

@@ -15,7 +15,11 @@
  */
 package org.gradle.api.plugins.quality;
 
+import static java.util.stream.Collectors.toList;
+
 import groovy.lang.Closure;
+import java.io.File;
+import java.util.stream.Collectors;
 import org.gradle.api.Action;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
@@ -36,9 +40,6 @@ import org.gradle.internal.Describables;
 import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
 import org.gradle.util.internal.ClosureBackedAction;
 import org.gradle.workers.WorkQueue;
-
-import java.io.File;
-import java.util.stream.Collectors;
 
 /**
  * Runs CodeNarc against some source files.
@@ -112,7 +113,7 @@ public abstract class CodeNarc extends AbstractCodeQualityTask implements Report
             newReport.getName().set(report.getName());
             newReport.getOutputLocation().set(report.getOutputLocation());
             return newReport;
-        }).collect(Collectors.toList()));
+        }).collect(toList()));
         parameters.getIgnoreFailures().set(getIgnoreFailures());
         parameters.getSource().setFrom(getSource());
     }

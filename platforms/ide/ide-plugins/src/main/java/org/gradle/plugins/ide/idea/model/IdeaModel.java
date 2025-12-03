@@ -15,17 +15,17 @@
  */
 package org.gradle.plugins.ide.idea.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.gradle.util.internal.ConfigureUtil.configure;
+
 import com.google.common.base.Preconditions;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.transform.stc.ClosureParams;
 import groovy.transform.stc.SimpleType;
-import org.gradle.api.Action;
-
 import java.io.File;
 import java.util.Map;
-
-import static org.gradle.util.internal.ConfigureUtil.configure;
+import org.gradle.api.Action;
 
 /**
  * DSL-friendly model of the IDEA project information.
@@ -139,7 +139,7 @@ public abstract class IdeaModel {
      * @param pathVariables A map with String-&gt;File pairs.
      */
     public void pathVariables(Map<String, File> pathVariables) {
-        Preconditions.checkNotNull(pathVariables);
+        checkNotNull(pathVariables);
         module.getPathVariables().putAll(pathVariables);
     }
 }

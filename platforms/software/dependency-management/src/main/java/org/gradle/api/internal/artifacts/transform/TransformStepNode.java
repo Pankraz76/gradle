@@ -16,6 +16,15 @@
 
 package org.gradle.api.internal.artifacts.transform;
 
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import org.gradle.api.Describable;
 import org.gradle.api.attributes.AttributeContainer;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact.ResolvableArtifact;
@@ -44,13 +53,6 @@ import org.gradle.operations.dependencies.transforms.PlannedTransformStepIdentit
 import org.gradle.operations.dependencies.variants.Capability;
 import org.gradle.operations.dependencies.variants.ComponentIdentifier;
 import org.jspecify.annotations.Nullable;
-
-import javax.annotation.OverridingMethodsMustInvokeSuper;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public abstract class TransformStepNode extends CreationOrderedNode implements SelfExecutingNode {
 
@@ -107,7 +109,7 @@ public abstract class TransformStepNode extends CreationOrderedNode implements S
         Map<String, String> targetAttributes = AttributesToMapConverter.convertToMap(targetComponentVariant.getAttributes());
         List<Capability> capabilities = targetComponentVariant.getCapabilities().asSet().stream()
             .map(TransformStepNode::convertCapability)
-            .collect(Collectors.toList());
+            .collect(toList());
 
         return new DefaultPlannedTransformStepIdentity(
             consumerBuildPath,
@@ -305,7 +307,7 @@ public abstract class TransformStepNode extends CreationOrderedNode implements S
             @Override
             public void visitDependencies(TaskDependencyResolveContext context) {
                 super.visitDependencies(context);
-                context.add(new DefaultTransformNodeDependency(Collections.singletonList(previousTransformStepNode)));
+                context.add(new DefaultTransformNodeDependency(singletonList(previousTransformStepNode)));
             }
 
             @Override

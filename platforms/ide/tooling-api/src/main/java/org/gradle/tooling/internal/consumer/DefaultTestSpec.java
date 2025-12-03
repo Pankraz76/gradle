@@ -16,8 +16,7 @@
 
 package org.gradle.tooling.internal.consumer;
 
-import org.gradle.tooling.TestSpec;
-import org.gradle.tooling.internal.protocol.test.InternalTestSpec;
+import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,6 +24,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.gradle.tooling.TestSpec;
+import org.gradle.tooling.internal.protocol.test.InternalTestSpec;
 
 public class DefaultTestSpec extends DefaultTaskSpec implements TestSpec, InternalTestSpec {
     private final List<String> classes;
@@ -46,7 +47,7 @@ public class DefaultTestSpec extends DefaultTaskSpec implements TestSpec, Intern
 
     @Override
     public TestSpec includePackage(String pkg) {
-        return includePackages(Collections.singletonList(pkg));
+        return includePackages(singletonList(pkg));
     }
 
     @Override
@@ -57,7 +58,7 @@ public class DefaultTestSpec extends DefaultTaskSpec implements TestSpec, Intern
 
     @Override
     public TestSpec includeClass(String cls) {
-        return includeClasses(Collections.singletonList(cls));
+        return includeClasses(singletonList(cls));
     }
 
     @Override
@@ -68,7 +69,7 @@ public class DefaultTestSpec extends DefaultTaskSpec implements TestSpec, Intern
 
     @Override
     public TestSpec includeMethod(String cls, String method) {
-        return includeMethods(cls, Collections.singletonList(method));
+        return includeMethods(cls, singletonList(method));
     }
 
     @Override
@@ -84,7 +85,7 @@ public class DefaultTestSpec extends DefaultTaskSpec implements TestSpec, Intern
 
     @Override
     public TestSpec includePattern(String pattern) {
-        return includePatterns(Collections.singletonList(pattern));
+        return includePatterns(singletonList(pattern));
     }
 
     @Override

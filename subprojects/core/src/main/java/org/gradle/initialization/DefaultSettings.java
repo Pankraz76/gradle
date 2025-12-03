@@ -15,6 +15,17 @@
  */
 package org.gradle.initialization;
 
+import static java.time.Instant.now;
+import static java.util.stream.Collectors.toSet;
+import static org.apache.commons.lang3.ArrayUtils.contains;
+import static org.gradle.internal.hash.Hashing.sha512;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.StartParameter;
 import org.gradle.api.Action;
 import org.gradle.api.InvalidUserDataException;
@@ -56,17 +67,6 @@ import org.gradle.plugin.management.PluginManagementSpec;
 import org.gradle.plugin.management.internal.PluginManagementSpecInternal;
 import org.gradle.vcs.SourceControl;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static java.time.Instant.now;
-import static org.apache.commons.lang3.ArrayUtils.contains;
-import static org.gradle.internal.hash.Hashing.sha512;
 
 public abstract class DefaultSettings extends AbstractPluginAware implements SettingsInternal {
     private ScriptSource settingsScript;
@@ -162,7 +162,7 @@ public abstract class DefaultSettings extends AbstractPluginAware implements Set
     public @Nullable ProjectDescriptorInternal findProject(File projectDir) {
         Set<ProjectDescriptorInternal> matches = getProjectDescriptorRegistry().getAllProjects().stream()
             .filter(project -> project.getProjectDir().equals(projectDir))
-            .collect(Collectors.toSet());
+            .collect(toSet());
 
         if (matches.size() > 1) {
             throw new InvalidUserDataException(String.format("Found multiple projects with project directory '%s': %s", projectDir, matches));

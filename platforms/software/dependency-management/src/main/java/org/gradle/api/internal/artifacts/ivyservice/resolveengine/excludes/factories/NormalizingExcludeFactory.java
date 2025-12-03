@@ -15,9 +15,25 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.excludes.factories;
 
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toSet;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.excludes.specs.CompositeExclude;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.excludes.specs.ExcludeAllOf;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.excludes.specs.ExcludeAnyOf;
@@ -31,20 +47,6 @@ import org.gradle.api.internal.artifacts.ivyservice.resolveengine.excludes.specs
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.excludes.specs.ModuleIdSetExclude;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.excludes.specs.ModuleSetExclude;
 import org.gradle.internal.Cast;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toSet;
 
 /**
  * This factory performs normalization of exclude rules. This is the smartest
@@ -137,7 +139,7 @@ public class NormalizingExcludeFactory extends DelegatingExcludeFactory {
         if (flattened.result.isEmpty()) {
             return nothing();
         }
-        Map<UnionOf, List<ExcludeSpec>> byType = flattened.result.stream().collect(Collectors.groupingBy(UnionOf::typeOf));
+        Map<UnionOf, List<ExcludeSpec>> byType = flattened.result.stream().collect(groupingBy(UnionOf::typeOf));
         List<ModuleIdExclude> moduleIdExcludes = UnionOf.MODULEID.fromMap(byType);
         List<ModuleIdSetExclude> moduleIdSetsExcludes = UnionOf.MODULEID_SET.fromMap(byType);
         List<GroupExclude> groupExcludes = UnionOf.GROUP.fromMap(byType);
@@ -154,7 +156,7 @@ public class NormalizingExcludeFactory extends DelegatingExcludeFactory {
                 } else {
                     moduleIdSetsExcludes.add(excludeSpec);
                 }
-                moduleIdExcludes = Collections.emptyList();
+                moduleIdExcludes = emptyList();
             }
         }
         if (!groupExcludes.isEmpty()) {
@@ -166,7 +168,7 @@ public class NormalizingExcludeFactory extends DelegatingExcludeFactory {
                 } else {
                     groupSetExcludes.add(excludeSpec);
                 }
-                groupExcludes = Collections.emptyList();
+                groupExcludes = emptyList();
             }
         }
         if (!moduleExcludes.isEmpty()) {
@@ -178,7 +180,7 @@ public class NormalizingExcludeFactory extends DelegatingExcludeFactory {
                 } else {
                     moduleSetExcludes.add(excludeSpec);
                 }
-                moduleExcludes = Collections.emptyList();
+                moduleExcludes = emptyList();
             }
         }
         if (moduleIdSetsExcludes.size() > 1) {
@@ -312,7 +314,7 @@ public class NormalizingExcludeFactory extends DelegatingExcludeFactory {
                 }
                 return Stream.of(e);
             })
-            .collect(Collectors.toCollection(() -> Sets.newHashSetWithExpectedSize(size)))
+            .collect(toCollection(() -> Sets.newHashSetWithExpectedSize(size)))
         );
     }
 
@@ -373,7 +375,7 @@ public class NormalizingExcludeFactory extends DelegatingExcludeFactory {
         }
 
         public <T extends ExcludeSpec> List<T> fromMap(Map<UnionOf, List<ExcludeSpec>> from) {
-            return Cast.uncheckedCast(from.getOrDefault(this, Collections.emptyList()));
+            return Cast.uncheckedCast(from.getOrDefault(this, emptyList()));
         }
 
         public static UnionOf typeOf(ExcludeSpec spec) {

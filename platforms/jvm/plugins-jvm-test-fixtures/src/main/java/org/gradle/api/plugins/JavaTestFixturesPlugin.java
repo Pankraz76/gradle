@@ -15,6 +15,11 @@
  */
 package org.gradle.api.plugins;
 
+import static java.util.Collections.singleton;
+import static org.gradle.internal.component.external.model.TestFixturesSupport.TEST_FIXTURES_FEATURE_NAME;
+
+import java.util.Collections;
+import javax.inject.Inject;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
@@ -28,11 +33,6 @@ import org.gradle.api.plugins.jvm.internal.JvmFeatureInternal;
 import org.gradle.api.tasks.SourceSet;
 import org.gradle.internal.component.external.model.ProjectDerivedCapability;
 import org.gradle.jvm.component.internal.DefaultJvmSoftwareComponent;
-
-import javax.inject.Inject;
-import java.util.Collections;
-
-import static org.gradle.internal.component.external.model.TestFixturesSupport.TEST_FIXTURES_FEATURE_NAME;
 
 /**
  * Adds support for producing test fixtures. This plugin will automatically
@@ -65,7 +65,7 @@ public abstract class JavaTestFixturesPlugin implements Plugin<Project> {
         JvmFeatureInternal feature = new DefaultJvmFeature(
             TEST_FIXTURES_FEATURE_NAME,
             testFixturesSourceSet,
-            Collections.singleton(new ProjectDerivedCapability((ProjectInternal) project, TEST_FIXTURES_FEATURE_NAME)),
+            singleton(new ProjectDerivedCapability((ProjectInternal) project, TEST_FIXTURES_FEATURE_NAME)),
             (ProjectInternal) project,
             false
         );

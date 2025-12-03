@@ -15,13 +15,14 @@
  */
 package org.gradle.configuration;
 
-import com.google.common.collect.Sets;
-import org.apache.commons.lang3.StringUtils;
-import org.gradle.internal.logging.text.LinePrefixingStyledTextOutput;
-import org.gradle.internal.logging.text.StyledTextOutput;
-import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static org.gradle.internal.logging.text.StyledTextOutput.Style.UserInput;
+import static org.gradle.util.internal.CollectionUtils.collect;
+import static org.gradle.util.internal.CollectionUtils.sort;
+import static org.gradle.util.internal.TextUtil.getPluralEnding;
 
+import com.google.common.collect.Sets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,11 +35,11 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static org.gradle.internal.logging.text.StyledTextOutput.Style.UserInput;
-import static org.gradle.util.internal.CollectionUtils.collect;
-import static org.gradle.util.internal.CollectionUtils.sort;
-import static org.gradle.util.internal.TextUtil.getPluralEnding;
+import org.apache.commons.lang3.StringUtils;
+import org.gradle.internal.logging.text.LinePrefixingStyledTextOutput;
+import org.gradle.internal.logging.text.StyledTextOutput;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 @NullMarked
 public class TaskDetailPrinter {
@@ -91,7 +92,7 @@ public class TaskDetailPrinter {
     }
 
     private Map<String, List<TaskDetails>> groupTasksByType(Collection<TaskDetails> tasks) {
-        return tasks.stream().collect(Collectors.groupingBy(TaskDetails::getTaskType, LinkedHashMap::new, Collectors.toList()));
+        return tasks.stream().collect(groupingBy(TaskDetails::getTaskType, LinkedHashMap::new, toList()));
     }
 
     private void printTaskDescription(StyledTextOutput output, List<TaskDetails> tasks) {

@@ -16,6 +16,13 @@
 
 package org.gradle.internal.classpath;
 
+import static java.util.Comparator.comparing;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.Comparator;
 import org.gradle.api.file.RelativePath;
 import org.gradle.api.internal.file.archive.ZipEntry;
 import org.gradle.api.internal.file.archive.ZipInput;
@@ -26,12 +33,6 @@ import org.gradle.internal.file.FileType;
 import org.gradle.internal.file.Stat;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.Comparator;
 
 /**
  * Allows the classes and resources of a classpath element such as a jar or directory to be visited.
@@ -66,7 +67,7 @@ public class ClasspathWalker {
         File[] files = dir.listFiles();
 
         // Apply a consistent order, regardless of file system ordering
-        Arrays.sort(files, Comparator.comparing(File::getName));
+        Arrays.sort(files, comparing(File::getName));
 
         for (File file : files) {
             FileMetadata fileMetadata = stat.stat(file);

@@ -16,11 +16,12 @@
 
 package org.gradle.buildinit.specs;
 
-import org.gradle.api.Describable;
-import org.gradle.api.Incubating;
+import static java.util.Collections.emptyList;
 
 import java.util.Collections;
 import java.util.List;
+import org.gradle.api.Describable;
+import org.gradle.api.Incubating;
 
 /**
  * Represents a specification for a new type of project that the {@code init} task can generate.
@@ -69,6 +70,6 @@ public interface BuildInitSpec extends Describable {
      * @since 8.12
      */
     default List<BuildInitParameter<?>> getParameters() {
-        return Collections.emptyList();
+        return emptyList();
     }
 }

@@ -15,6 +15,14 @@
  */
 package org.gradle.internal.resource.transport.http;
 
+import static java.util.Collections.singleton;
+
+import java.net.ProxySelector;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.concurrent.TimeUnit;
+import javax.net.ssl.HostnameVerifier;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -72,13 +80,6 @@ import org.gradle.internal.resource.transport.http.ntlm.NTLMSchemeFactory;
 import org.gradle.util.internal.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.net.ssl.HostnameVerifier;
-import java.net.ProxySelector;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.concurrent.TimeUnit;
 
 public class HttpClientConfigurer {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientConfigurer.class);
@@ -192,7 +193,7 @@ public class HttpClientConfigurer {
         if (httpsProxy != null && httpsProxy.credentials != null) {
             AllSchemesAuthentication authentication1 = new AllSchemesAuthentication(httpsProxy.credentials);
             authentication1.addHost(httpsProxy.host, httpsProxy.port);
-            useCredentials(credentialsProvider, Collections.singleton(authentication1));
+            useCredentials(credentialsProvider, singleton(authentication1));
         }
     }
 

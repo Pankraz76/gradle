@@ -16,12 +16,14 @@
 
 package org.gradle.api.internal.tasks.compile.incremental.recomp;
 
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource;
+import static java.util.Collections.unmodifiableCollection;
+import static java.util.Collections.unmodifiableSet;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource;
 
 public class RecompilationSpec {
     private final Set<String> classesToCompile = new LinkedHashSet<>();
@@ -52,7 +54,7 @@ public class RecompilationSpec {
     }
 
     public Set<String> getClassesToCompile() {
-        return Collections.unmodifiableSet(classesToCompile);
+        return unmodifiableSet(classesToCompile);
     }
 
     public void addClassToReprocess(String classToReprocess) {
@@ -60,7 +62,7 @@ public class RecompilationSpec {
     }
 
     public Collection<String> getClassesToProcess() {
-        return Collections.unmodifiableCollection(classesToProcess);
+        return unmodifiableCollection(classesToProcess);
     }
 
     public void addResourcesToGenerate(Collection<GeneratedResource> resources) {
@@ -68,7 +70,7 @@ public class RecompilationSpec {
     }
 
     public Collection<GeneratedResource> getResourcesToGenerate() {
-        return Collections.unmodifiableCollection(resourcesToGenerate);
+        return unmodifiableCollection(resourcesToGenerate);
     }
 
     public void addSourcePath(String sourcePath) {
@@ -80,7 +82,7 @@ public class RecompilationSpec {
     }
 
     public Collection<String> getSourcePaths() {
-        return Collections.unmodifiableCollection(sourcePaths);
+        return unmodifiableCollection(sourcePaths);
     }
 
     public boolean isBuildNeeded() {

@@ -16,6 +16,12 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.ivyresolve;
 
+import static java.util.Collections.emptyList;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.InvalidUserCodeException;
 import org.gradle.api.artifacts.ComponentMetadata;
 import org.gradle.api.artifacts.ComponentSelection;
@@ -26,11 +32,6 @@ import org.gradle.api.specs.Specs;
 import org.gradle.internal.rules.SpecRuleAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class ComponentSelectionRulesProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComponentSelectionRulesProcessor.class);
@@ -85,7 +86,7 @@ public class ComponentSelectionRulesProcessor {
     @SuppressWarnings("MixedMutabilityReturnType")
     private List<Object> getInputValues(List<Class<?>> inputTypes, MetadataProvider metadataProvider) {
         if (inputTypes.size() == 0) {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         if (!metadataProvider.isUsable()) {

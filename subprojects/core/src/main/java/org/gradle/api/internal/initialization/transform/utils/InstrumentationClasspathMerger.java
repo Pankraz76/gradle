@@ -16,21 +16,22 @@
 
 package org.gradle.api.internal.initialization.transform.utils;
 
-import com.google.common.collect.Ordering;
-import org.gradle.api.artifacts.ArtifactCollection;
-import org.gradle.api.artifacts.component.ComponentIdentifier;
-import org.gradle.api.artifacts.result.ResolvedArtifactResult;
-import org.gradle.internal.component.local.model.TransformedComponentFileArtifactIdentifier;
+import static com.google.common.base.Preconditions.checkArgument;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static org.gradle.internal.instrumentation.reporting.MethodInterceptionReportCollector.INTERCEPTED_METHODS_REPORT_FILE;
 
+import com.google.common.collect.Ordering;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static org.gradle.internal.instrumentation.reporting.MethodInterceptionReportCollector.INTERCEPTED_METHODS_REPORT_FILE;
+import org.gradle.api.artifacts.ArtifactCollection;
+import org.gradle.api.artifacts.component.ComponentIdentifier;
+import org.gradle.api.artifacts.result.ResolvedArtifactResult;
+import org.gradle.internal.component.local.model.TransformedComponentFileArtifactIdentifier;
 
 public class InstrumentationClasspathMerger {
 
@@ -54,7 +55,7 @@ public class InstrumentationClasspathMerger {
             // In some cases we end up with the same artifact multiple times in different locations,
             // additional user's artifact transform can be injected in between and could produce multiple artifacts from one original artifact.
             .distinct()
-            .collect(Collectors.toList());
+            .collect(toList());
 
         Ordering<OriginalArtifactIdentifier> ordering = Ordering.explicit(identifiers);
         return Stream.concat(externalDependencies.getArtifacts().stream(), projectDependencies.getArtifacts().stream())
@@ -63,7 +64,7 @@ public class InstrumentationClasspathMerger {
             // we also rely on the fact that for ordered streams `sorted()` method has stable sort.
             .sorted((first, second) -> ordering.compare(first.originalIdentifier, second.originalIdentifier))
             .map(artifact -> artifact.file)
-            .collect(Collectors.groupingBy(InstrumentationClasspathMerger::getFileType));
+            .collect(groupingBy(InstrumentationClasspathMerger::getFileType));
     }
 
     private static FileType getFileType(File file) {

@@ -15,8 +15,11 @@
  */
 package org.gradle.api.internal.artifacts.dependencies;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.gradle.api.Action;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.artifacts.ExternalModuleDependency;
@@ -32,8 +35,6 @@ import org.gradle.api.internal.artifacts.capability.FeatureCapabilitySelector;
 import org.gradle.api.internal.artifacts.capability.SpecificCapabilitySelector;
 import org.gradle.internal.component.external.model.DefaultImmutableCapability;
 import org.jspecify.annotations.Nullable;
-
-import java.util.List;
 
 public abstract class AbstractExternalModuleDependency extends AbstractModuleDependency implements ExternalModuleDependency {
 
@@ -141,7 +142,7 @@ public abstract class AbstractExternalModuleDependency extends AbstractModuleDep
                     throw new UnsupportedOperationException("Unsupported capability selector type: " + c.getClass().getName());
                 }
             })
-            .collect(ImmutableList.toImmutableList());
+            .collect(toImmutableList());
     }
 
     @Override

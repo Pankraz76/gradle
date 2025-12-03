@@ -15,6 +15,14 @@
  */
 package org.gradle.internal.build.event.types;
 
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
+
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Stream;
 import org.gradle.api.problems.internal.InternalProblem;
 import org.gradle.internal.exceptions.MultiCauseException;
 import org.gradle.internal.problems.failure.DefaultFailureFactory;
@@ -22,14 +30,6 @@ import org.gradle.internal.problems.failure.Failure;
 import org.gradle.internal.problems.failure.FailurePrinter;
 import org.gradle.tooling.internal.protocol.InternalBasicProblemDetailsVersion3;
 import org.gradle.tooling.internal.protocol.InternalFailure;
-
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 public class DefaultFailure implements Serializable, InternalFailure {
 
@@ -39,7 +39,7 @@ public class DefaultFailure implements Serializable, InternalFailure {
     private final List<InternalBasicProblemDetailsVersion3> problems;
 
     DefaultFailure(String message, String description, List<? extends InternalFailure> causes) {
-        this(message, description, causes, Collections.emptyList());
+        this(message, description, causes, emptyList());
     }
 
     DefaultFailure(String message, String description, List<? extends InternalFailure> causes, List<InternalBasicProblemDetailsVersion3> problems) {

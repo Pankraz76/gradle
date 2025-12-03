@@ -16,6 +16,28 @@
 
 package org.gradle.internal.classpath;
 
+import static java.util.stream.Collectors.joining;
+import static org.gradle.internal.classpath.MethodHandleUtils.findStaticOrThrowError;
+import static org.gradle.internal.classpath.MethodHandleUtils.lazyKotlinStaticDefaultHandle;
+import static org.gradle.internal.classpath.intercept.CallInterceptorRegistry.getGroovyCallDecorator;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.stream.Collectors;
 import kotlin.io.FilesKt;
 import org.codehaus.groovy.runtime.ProcessGroovyMethods;
 import org.codehaus.groovy.runtime.ResourceGroovyMethods;
@@ -36,28 +58,6 @@ import org.gradle.internal.instrumentation.api.types.BytecodeInterceptorFilter;
 import org.gradle.internal.instrumentation.api.types.FilterableBytecodeInterceptor.InstrumentationInterceptor;
 import org.gradle.internal.lazy.Lazy;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.classpath.MethodHandleUtils.findStaticOrThrowError;
-import static org.gradle.internal.classpath.MethodHandleUtils.lazyKotlinStaticDefaultHandle;
-import static org.gradle.internal.classpath.intercept.CallInterceptorRegistry.getGroovyCallDecorator;
 
 public class Instrumented {
     @SuppressWarnings("deprecation")
@@ -472,7 +472,7 @@ public class Instrumented {
     }
 
     private static String joinCommand(List<?> command) {
-        return command.stream().map(String::valueOf).collect(Collectors.joining(" "));
+        return command.stream().map(String::valueOf).collect(joining(" "));
     }
 
     /**

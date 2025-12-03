@@ -16,6 +16,12 @@
 
 package org.gradle.tooling.internal.provider.runner;
 
+import static java.util.Collections.singletonList;
+import static org.gradle.tooling.internal.provider.runner.ProblemsProgressEventUtils.createProblemEvent;
+import static org.gradle.tooling.internal.provider.runner.ProblemsProgressEventUtils.createProblemSummaryEvent;
+
+import java.util.Collections;
+import java.util.function.Supplier;
 import org.gradle.api.problems.internal.DefaultProblemProgressDetails;
 import org.gradle.api.problems.internal.DefaultProblemsSummaryProgressDetails;
 import org.gradle.internal.build.event.BuildEventSubscriptions;
@@ -39,12 +45,6 @@ import org.gradle.tooling.events.OperationType;
 import org.gradle.tooling.internal.protocol.InternalFailure;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.function.Supplier;
-
-import static org.gradle.tooling.internal.provider.runner.ProblemsProgressEventUtils.createProblemEvent;
-import static org.gradle.tooling.internal.provider.runner.ProblemsProgressEventUtils.createProblemSummaryEvent;
 
 /**
  * Build listener that forwards all receiving events to the client via the provided {@code ProgressEventConsumer} instance.
@@ -138,9 +138,9 @@ class ClientForwardingBuildOperationListener implements BuildOperationListener {
         if (failure != null) {
             if (buildFailure != null) {
                 InternalFailure rootFailure = DefaultFailure.fromFailure(buildFailure, ProblemsProgressEventUtils::createDefaultProblemDetails);
-                return new DefaultFailureResult(startTime, endTime, Collections.singletonList(rootFailure));
+                return new DefaultFailureResult(startTime, endTime, singletonList(rootFailure));
             } else {
-                return new DefaultFailureResult(startTime, endTime, Collections.singletonList(DefaultFailure.fromThrowable(failure)));
+                return new DefaultFailureResult(startTime, endTime, singletonList(DefaultFailure.fromThrowable(failure)));
             }
         }
         return new DefaultSuccessResult(startTime, endTime);

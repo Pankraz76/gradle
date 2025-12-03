@@ -16,7 +16,15 @@
 
 package org.gradle.api.internal.tasks;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
+import static java.lang.String.format;
+
 import com.google.common.base.Preconditions;
+import java.util.ArrayDeque;
+import java.util.Collection;
+import java.util.Deque;
+import java.util.Set;
 import org.gradle.api.Buildable;
 import org.gradle.api.Task;
 import org.gradle.internal.UncheckedException;
@@ -24,13 +32,6 @@ import org.gradle.internal.graph.CachingDirectedGraphWalker;
 import org.gradle.internal.graph.DirectedGraph;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.Set;
-
-import static java.lang.String.format;
 
 /**
  * <p>A {@link TaskDependencyResolveContext} which caches the dependencies for each {@link
@@ -60,7 +61,7 @@ public class CachingTaskDependencyResolveContext<T> extends AbstractTaskDependen
     }
 
     public Set<T> getDependencies(@Nullable Task task, Object dependencies) {
-        Preconditions.checkState(this.task == null);
+        checkState(this.task == null);
         this.task = task;
         try {
             walker.add(dependencies);
@@ -85,7 +86,7 @@ public class CachingTaskDependencyResolveContext<T> extends AbstractTaskDependen
 
     @Override
     public void add(Object dependency) {
-        Preconditions.checkNotNull(dependency);
+        checkNotNull(dependency);
         if (dependency == TaskDependencyContainer.EMPTY) {
             // Ignore things we know are empty
             return;

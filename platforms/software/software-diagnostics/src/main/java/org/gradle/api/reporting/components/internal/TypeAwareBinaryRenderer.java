@@ -16,6 +16,12 @@
 
 package org.gradle.api.reporting.components.internal;
 
+import static java.util.Comparator.comparing;
+
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import org.gradle.api.tasks.diagnostics.internal.text.TextReportBuilder;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
@@ -23,14 +29,9 @@ import org.gradle.model.ModelElement;
 import org.gradle.platform.base.BinarySpec;
 import org.gradle.reporting.ReportRenderer;
 
-import java.io.IOException;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-
 @ServiceScope(Scope.Global.class)
 public class TypeAwareBinaryRenderer extends ReportRenderer<BinarySpec, TextReportBuilder> {
-    static final Comparator<BinarySpec> SORT_ORDER = Comparator.comparing(ModelElement::getName);
+    static final Comparator<BinarySpec> SORT_ORDER = comparing(ModelElement::getName);
     private final Map<Class<?>, ReportRenderer<BinarySpec, TextReportBuilder>> renderers = new HashMap<>();
 
     public void register(AbstractBinaryRenderer<?> renderer) {

@@ -16,23 +16,17 @@
 
 package org.gradle.api.internal.tasks.compile.incremental.transaction;
 
+import static com.google.common.collect.ImmutableSet.toImmutableSet;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+import static org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource.Location.CLASS_OUTPUT;
+import static org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource.Location.NATIVE_HEADER_OUTPUT;
+import static org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource.Location.SOURCE_OUTPUT;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableSet;
-import org.gradle.api.internal.file.FileOperations;
-import org.gradle.api.internal.tasks.compile.ApiCompilerResult;
-import org.gradle.api.internal.tasks.compile.CompilationFailedException;
-import org.gradle.api.internal.tasks.compile.JavaCompileSpec;
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource;
-import org.gradle.api.tasks.WorkResult;
-import org.gradle.api.tasks.WorkResults;
-import org.gradle.api.tasks.util.PatternSet;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.file.Deleter;
-import org.gradle.language.base.internal.tasks.StaleOutputCleaner;
-import org.jspecify.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -49,11 +43,20 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource.Location.CLASS_OUTPUT;
-import static org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource.Location.NATIVE_HEADER_OUTPUT;
-import static org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource.Location.SOURCE_OUTPUT;
+import org.gradle.api.internal.file.FileOperations;
+import org.gradle.api.internal.tasks.compile.ApiCompilerResult;
+import org.gradle.api.internal.tasks.compile.CompilationFailedException;
+import org.gradle.api.internal.tasks.compile.JavaCompileSpec;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.GeneratedResource;
+import org.gradle.api.tasks.WorkResult;
+import org.gradle.api.tasks.WorkResults;
+import org.gradle.api.tasks.util.PatternSet;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.file.Deleter;
+import org.gradle.language.base.internal.tasks.StaleOutputCleaner;
+import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A helper class to handle incremental compilation after a failure: it makes moving files around easier and reverting state easier.
@@ -166,7 +169,7 @@ public class CompileTransaction {
         ImmutableSet<File> outputDirectories = getOutputDirectories();
         Set<File> potentiallyEmptyFolders = stashedFiles.stream()
             .map(file -> file.sourceFile.getParentFile())
-            .collect(Collectors.toSet());
+            .collect(toSet());
         StaleOutputCleaner.cleanEmptyOutputDirectories(deleter, potentiallyEmptyFolders, outputDirectories);
     }
 
@@ -185,7 +188,7 @@ public class CompileTransaction {
         Set<File> filesToDelete = collectFilesToDelete(classesToDelete, resourcesToDelete);
         StaleOutputCleaner.cleanOutputs(deleter, filesToDelete, getOutputDirectories());
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Deleting generated files: {}", filesToDelete.stream().sorted().collect(Collectors.toList()));
+            LOG.debug("Deleting generated files: {}", filesToDelete.stream().sorted().collect(toList()));
         }
     }
 
@@ -241,26 +244,26 @@ public class CompileTransaction {
         if (patternSet != null && !patternSet.isEmpty() && sourceDirectory != null && sourceDirectory.exists()) {
             return fileOperations.fileTree(sourceDirectory).matching(patternSet).getFiles();
         }
-        return Collections.emptySet();
+        return emptySet();
     }
 
     private ImmutableSet<File> getOutputDirectories() {
         return Stream.of(spec.getDestinationDir(), spec.getCompileOptions().getAnnotationProcessorGeneratedSourcesDirectory(), spec.getCompileOptions().getHeaderOutputDirectory())
             .filter(Objects::nonNull)
-            .collect(ImmutableSet.toImmutableSet());
+            .collect(toImmutableSet());
     }
 
     private static void rollbackOverwrittenFiles(ApiCompilerResult result) {
         result.getBackupClassFiles().forEach((original, backup) -> moveFile(new File(backup), new File(original)));
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Restoring overwritten files: {}", result.getBackupClassFiles().keySet().stream().sorted().collect(Collectors.toList()));
+            LOG.debug("Restoring overwritten files: {}", result.getBackupClassFiles().keySet().stream().sorted().collect(toList()));
         }
     }
 
     private static void rollbackStashedFiles(List<StashedFile> stashedFiles) {
         stashedFiles.forEach(StashedFile::unstash);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Restoring stashed files: {}", stashedFiles.stream().map(f -> f.sourceFile.getAbsolutePath()).sorted().collect(Collectors.toList()));
+            LOG.debug("Restoring stashed files: {}", stashedFiles.stream().map(f -> f.sourceFile.getAbsolutePath()).sorted().collect(toList()));
         }
     }
 

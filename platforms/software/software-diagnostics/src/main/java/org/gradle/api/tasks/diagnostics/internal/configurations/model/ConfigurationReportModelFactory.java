@@ -16,6 +16,22 @@
 
 package org.gradle.api.tasks.diagnostics.internal.configurations.model;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.unmodifiableList;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.gradle.api.GradleException;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ConfigurationVariant;
@@ -31,17 +47,6 @@ import org.gradle.api.internal.artifacts.configurations.VariantIdentityUniquenes
 import org.gradle.api.internal.attributes.DefaultCompatibilityRuleChain;
 import org.gradle.api.internal.attributes.DefaultDisambiguationRuleChain;
 import org.gradle.api.internal.file.FileResolver;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Factory for creating {@link ConfigurationReportModel} instances which represent the configurations present in a project.
@@ -67,7 +72,7 @@ public final class ConfigurationReportModelFactory {
             .forEach(configuration -> getOrConvert(configuration, uniquenessReport, project, convertedConfigurations));
 
         return new ConfigurationReportModel(project.getName(),
-            convertedConfigurations.values().stream().sorted(Comparator.comparing(ReportConfiguration::getName)).collect(Collectors.toList()),
+            convertedConfigurations.values().stream().sorted(comparing(ReportConfiguration::getName)).collect(toList()),
             attributesWithCompatibilityRules, attributesWithDisambiguationRules);
     }
 
@@ -84,33 +89,33 @@ public final class ConfigurationReportModelFactory {
 
     private ReportConfiguration convertConfiguration(ConfigurationInternal configuration, VariantIdentityUniquenessVerifier.VerificationReport uniquenessReport, Project project, FileResolver fileResolver, List<ReportConfiguration> extendedConfigurations) {
         GradleException duplicateFailure = uniquenessReport.failureFor(configuration, false);
-        List<? extends GradleException> lenientErrors = duplicateFailure != null ? Collections.singletonList(duplicateFailure) : Collections.emptyList();
+        List<? extends GradleException> lenientErrors = duplicateFailure != null ? singletonList(duplicateFailure) : emptyList();
 
         final List<ReportAttribute> attributes = configuration.getAttributes().keySet().stream()
             .map(a -> convertAttributeInContainer(a, configuration.getAttributes(), project.getDependencies().getAttributesSchema()))
-            .sorted(Comparator.comparing(ReportAttribute::getName))
-            .collect(Collectors.toList());
+            .sorted(comparing(ReportAttribute::getName))
+            .collect(toList());
 
         final List<ReportCapability> explicitCapabilities = configuration.getOutgoing().getCapabilities().stream()
             .map(this::convertCapability)
-            .sorted(Comparator.comparing(ReportCapability::toGAV))
-            .collect(Collectors.toList());
+            .sorted(comparing(ReportCapability::toGAV))
+            .collect(toList());
         final List<ReportCapability> capabilities;
         if (explicitCapabilities.isEmpty()) {
-            capabilities = Collections.singletonList(convertDefaultCapability(project));
+            capabilities = singletonList(convertDefaultCapability(project));
         } else {
             capabilities = explicitCapabilities;
         }
 
         final List<ReportArtifact> artifacts = configuration.getAllArtifacts().stream()
             .map(a -> convertPublishArtifact(a, fileResolver))
-            .sorted(Comparator.comparing(ReportArtifact::getDisplayName))
-            .collect(Collectors.toList());
+            .sorted(comparing(ReportArtifact::getDisplayName))
+            .collect(toList());
 
         final List<ReportSecondaryVariant> variants = configuration.getOutgoing().getVariants().stream()
             .map(v -> convertConfigurationVariant(v, fileResolver, project.getDependencies().getAttributesSchema()))
-            .sorted(Comparator.comparing(ReportSecondaryVariant::getName))
-            .collect(Collectors.toList());
+            .sorted(comparing(ReportSecondaryVariant::getName))
+            .collect(toList());
 
         final ReportConfiguration.Type type;
         if (configuration.isCanBeConsumed() && configuration.isCanBeResolved()) {
@@ -132,14 +137,14 @@ public final class ConfigurationReportModelFactory {
     }
 
     private ReportSecondaryVariant convertConfigurationVariant(ConfigurationVariant variant, FileResolver fileResolver, AttributesSchema attributesSchema) {
-        final List<ReportAttribute> attributes = Collections.unmodifiableList(variant.getAttributes().keySet().stream()
+        final List<ReportAttribute> attributes = unmodifiableList(variant.getAttributes().keySet().stream()
             .map(a -> convertAttributeInContainer(a, variant.getAttributes(), attributesSchema))
-            .sorted(Comparator.comparing(ReportAttribute::getName))
-            .collect(Collectors.toList()));
-        final List<ReportArtifact> artifacts = Collections.unmodifiableList(variant.getArtifacts().stream()
+            .sorted(comparing(ReportAttribute::getName))
+            .collect(toList()));
+        final List<ReportArtifact> artifacts = unmodifiableList(variant.getArtifacts().stream()
             .map(publishArtifact -> convertPublishArtifact(publishArtifact, fileResolver))
-            .sorted(Comparator.comparing(ReportArtifact::getName))
-            .collect(Collectors.toList()));
+            .sorted(comparing(ReportArtifact::getName))
+            .collect(toList()));
 
         return new ReportSecondaryVariant(variant.getName(), variant.getDescription().getOrNull(), attributes, artifacts);
     }
@@ -183,16 +188,16 @@ public final class ConfigurationReportModelFactory {
             return attributesSchema.getAttributes().stream()
                 .filter(this::hasCompatibilityRules)
                 .map(a -> convertUncontainedAttribute(a, attributesSchema))
-                .sorted(Comparator.comparing(ReportAttribute::getName))
-                .collect(Collectors.toList());
+                .sorted(comparing(ReportAttribute::getName))
+                .collect(toList());
         }
 
         public List<ReportAttribute> getAttributesWithDisambiguationRules() {
             return attributesSchema.getAttributes().stream()
                 .filter(this::hasDisambiguationRules)
                 .map(a -> convertUncontainedAttribute(a, attributesSchema))
-                .sorted(Comparator.comparing(ReportAttribute::getName))
-                .collect(Collectors.toList());
+                .sorted(comparing(ReportAttribute::getName))
+                .collect(toList());
         }
 
         private boolean hasCompatibilityRules(Attribute<?> attribute) {

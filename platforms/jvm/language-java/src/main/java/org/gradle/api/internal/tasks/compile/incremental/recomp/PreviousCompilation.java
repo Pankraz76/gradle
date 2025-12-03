@@ -16,13 +16,15 @@
 
 package org.gradle.api.internal.tasks.compile.incremental.recomp;
 
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
-import org.gradle.api.internal.tasks.compile.incremental.deps.ClassSetAnalysis;
-import org.jspecify.annotations.Nullable;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
+import org.gradle.api.internal.tasks.compile.incremental.deps.ClassSetAnalysis;
+import org.jspecify.annotations.Nullable;
 
 public class PreviousCompilation {
     private final PreviousCompilationData data;
@@ -46,7 +48,7 @@ public class PreviousCompilation {
     }
 
     public DependentsSet findDependentsOfSourceChanges(Set<String> classNames) {
-        return classAnalysis.findTransitiveDependents(classNames, classNames.stream().collect(Collectors.toMap(Function.identity(), classAnalysis::getConstants)));
+        return classAnalysis.findTransitiveDependents(classNames, classNames.stream().collect(toMap(identity(), classAnalysis::getConstants)));
     }
 
     public DependentsSet getAnnotationProcessingDependentsSet(String className) {

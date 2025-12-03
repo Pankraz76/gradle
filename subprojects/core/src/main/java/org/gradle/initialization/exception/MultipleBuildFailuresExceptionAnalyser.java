@@ -16,13 +16,14 @@
 
 package org.gradle.initialization.exception;
 
-import org.gradle.execution.MultipleBuildFailures;
-import org.gradle.internal.exception.ExceptionAnalyser;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.execution.MultipleBuildFailures;
+import org.gradle.internal.exception.ExceptionAnalyser;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An exception analyser that deals specifically with MultipleBuildFailures and transforms each component failure.
@@ -36,7 +37,7 @@ public class MultipleBuildFailuresExceptionAnalyser implements ExceptionAnalyser
 
     @Override
     public RuntimeException transform(Throwable failure) {
-        return transform(Collections.singletonList(failure));
+        return transform(singletonList(failure));
     }
 
     @Nullable

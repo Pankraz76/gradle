@@ -16,6 +16,12 @@
 
 package org.gradle.initialization;
 
+import static java.util.Collections.unmodifiableList;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.Transformer;
 import org.gradle.api.internal.file.BasicFileResolver;
 import org.gradle.internal.buildoption.BuildOption;
@@ -23,11 +29,6 @@ import org.gradle.internal.buildoption.BuildOptionSet;
 import org.gradle.internal.buildoption.CommandLineOptionConfiguration;
 import org.gradle.internal.buildoption.Origin;
 import org.gradle.internal.buildoption.StringBuildOption;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class BuildLayoutParametersBuildOptions extends BuildOptionSet<BuildLayoutParameters> {
 
@@ -37,7 +38,7 @@ public class BuildLayoutParametersBuildOptions extends BuildOptionSet<BuildLayou
         List<BuildOption<BuildLayoutParameters>> options = new ArrayList<BuildOption<BuildLayoutParameters>>();
         options.add(new GradleUserHomeOption());
         options.add(new ProjectDirOption());
-        BuildLayoutParametersBuildOptions.options = Collections.unmodifiableList(options);
+        BuildLayoutParametersBuildOptions.options = unmodifiableList(options);
     }
 
     @Override

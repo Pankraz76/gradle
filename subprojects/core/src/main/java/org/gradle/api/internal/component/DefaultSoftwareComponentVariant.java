@@ -16,6 +16,10 @@
 
 package org.gradle.api.internal.component;
 
+import static java.util.Collections.emptySet;
+
+import java.util.Collections;
+import java.util.Set;
 import org.gradle.api.artifacts.DependencyConstraint;
 import org.gradle.api.artifacts.ExcludeRule;
 import org.gradle.api.artifacts.ModuleDependency;
@@ -23,9 +27,6 @@ import org.gradle.api.artifacts.PublishArtifact;
 import org.gradle.api.attributes.AttributeContainer;
 import org.gradle.api.capabilities.Capability;
 import org.gradle.api.internal.attributes.AttributeContainerInternal;
-
-import java.util.Collections;
-import java.util.Set;
 
 /**
  * Default implementation of {@link org.gradle.api.component.SoftwareComponentVariant}.
@@ -38,11 +39,11 @@ public class DefaultSoftwareComponentVariant extends AbstractSoftwareComponentVa
     private final Set<ExcludeRule> globalExcludes;
 
     public DefaultSoftwareComponentVariant(String name, AttributeContainer attributes) {
-        this(name, attributes, Collections.emptySet());
+        this(name, attributes, emptySet());
     }
 
     public DefaultSoftwareComponentVariant(String name, AttributeContainer attributes, Set<? extends PublishArtifact> artifacts) {
-        this(name, attributes, artifacts, Collections.emptySet(), Collections.emptySet(), Collections.emptySet(), Collections.emptySet());
+        this(name, attributes, artifacts, emptySet(), emptySet(), emptySet(), emptySet());
     }
 
     public DefaultSoftwareComponentVariant(

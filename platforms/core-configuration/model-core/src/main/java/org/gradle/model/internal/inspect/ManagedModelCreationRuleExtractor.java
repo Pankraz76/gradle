@@ -16,6 +16,12 @@
 
 package org.gradle.model.internal.inspect;
 
+import static java.util.Collections.singletonList;
+import static org.gradle.model.internal.core.NodeInitializerContext.forType;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import org.gradle.internal.BiAction;
 import org.gradle.model.InvalidModelRuleDeclarationException;
 import org.gradle.model.internal.core.*;
@@ -26,12 +32,6 @@ import org.gradle.model.internal.manage.schema.SpecializedMapSchema;
 import org.gradle.model.internal.manage.schema.extract.InvalidManagedModelElementTypeException;
 import org.gradle.model.internal.manage.schema.extract.SpecializedMapNodeInitializer;
 import org.gradle.model.internal.type.ModelType;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import static org.gradle.model.internal.core.NodeInitializerContext.forType;
 
 public class ManagedModelCreationRuleExtractor extends AbstractModelCreationRuleExtractor {
     private static final ModelType<NodeInitializerRegistry> NODE_INITIALIZER_REGISTRY = ModelType.of(NodeInitializerRegistry.class);
@@ -100,7 +100,7 @@ public class ManagedModelCreationRuleExtractor extends AbstractModelCreationRule
             if (modelSchema instanceof SpecializedMapSchema) {
                 registration.actions(SpecializedMapNodeInitializer.getActions(ModelReference.of(modelPath), descriptor, (SpecializedMapSchema<S, ?>) modelSchema));
             } else {
-                registration.action(ModelActionRole.Discover, Collections.singletonList(ModelReference.of(NODE_INITIALIZER_REGISTRY)), new BiAction<MutableModelNode, List<ModelView<?>>>() {
+                registration.action(ModelActionRole.Discover, singletonList(ModelReference.of(NODE_INITIALIZER_REGISTRY)), new BiAction<MutableModelNode, List<ModelView<?>>>() {
                     @Override
                     public void execute(MutableModelNode node, List<ModelView<?>> modelViews) {
                         NodeInitializerRegistry nodeInitializerRegistry = (NodeInitializerRegistry) modelViews.get(0).getInstance();

@@ -15,6 +15,8 @@
  */
 package org.gradle.internal.io;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -45,7 +47,7 @@ public class LineBufferingOutputStream extends OutputStream {
         buffer = new StreamByteBuffer(bufferLength);
         this.lineMaxLength = lineMaxLength;
         output = buffer.getOutputStream();
-        byte[] lineSeparatorBytes = lineSeparator.getBytes(StandardCharsets.UTF_8);
+        byte[] lineSeparatorBytes = lineSeparator.getBytes(UTF_8);
         lastLineSeparatorByte = lineSeparatorBytes[lineSeparatorBytes.length - 1];
     }
 

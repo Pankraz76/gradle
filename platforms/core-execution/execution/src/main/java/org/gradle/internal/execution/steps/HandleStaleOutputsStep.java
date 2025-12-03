@@ -16,8 +16,16 @@
 
 package org.gradle.internal.execution.steps;
 
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Streams;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.internal.execution.BuildOutputCleanupRegistry;
 import org.gradle.internal.execution.MutableUnitOfWork;
 import org.gradle.internal.execution.OutputChangeListener;
@@ -32,13 +40,6 @@ import org.gradle.internal.operations.BuildOperationRunner;
 import org.gradle.internal.operations.RunnableBuildOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class HandleStaleOutputsStep<C extends WorkspaceContext, R extends AfterExecutionResult> extends MutableStep<C, R> {
     @VisibleForTesting
@@ -96,7 +97,7 @@ public class HandleStaleOutputsStep<C extends WorkspaceContext, R extends AfterE
             outputChangeListener.invalidateCachesFor(
                 filesToDelete.stream()
                     .map(File::getAbsolutePath)
-                    .collect(Collectors.toList())
+                    .collect(toList())
             );
             buildOperationRunner.run(new RunnableBuildOperation() {
                 @Override

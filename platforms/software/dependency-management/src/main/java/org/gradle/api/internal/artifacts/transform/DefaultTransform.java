@@ -16,9 +16,22 @@
 
 package org.gradle.api.internal.artifacts.transform;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static java.util.Collections.emptySet;
+import static org.gradle.api.internal.tasks.properties.AbstractValidatingProperty.reportValueNotSet;
+import static org.gradle.api.problems.Severity.ERROR;
+import static org.gradle.internal.deprecation.Documentation.userManual;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.reflect.TypeToken;
+import java.io.File;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.Supplier;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.artifacts.transform.InputArtifact;
 import org.gradle.api.artifacts.transform.InputArtifactDependencies;
@@ -87,19 +100,6 @@ import org.gradle.model.internal.type.ModelType;
 import org.gradle.util.internal.TextUtil;
 import org.gradle.work.InputChanges;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Map;
-import java.util.function.Supplier;
-
-import static com.google.common.collect.ImmutableList.toImmutableList;
-import static org.gradle.api.internal.tasks.properties.AbstractValidatingProperty.reportValueNotSet;
-import static org.gradle.api.problems.Severity.ERROR;
-import static org.gradle.internal.deprecation.Documentation.userManual;
 
 public class DefaultTransform implements Transform {
 
@@ -416,7 +416,7 @@ public class DefaultTransform implements Transform {
 
     private TransformAction<?> newTransformAction(Provider<FileSystemLocation> inputArtifactProvider, TransformDependencies transformDependencies, @Nullable InputChanges inputChanges) {
         TransformParameters parameters = isolatedParameters.get().getIsolatedParameterObject().isolate();
-        ServiceLookup services = new IsolationScheme<>(TransformAction.class, TransformParameters.class, TransformParameters.None.class).servicesForImplementation(parameters, internalServices, Collections.emptySet());
+        ServiceLookup services = new IsolationScheme<>(TransformAction.class, TransformParameters.class, TransformParameters.None.class).servicesForImplementation(parameters, internalServices, emptySet());
         services = new TransformServiceLookup(inputArtifactProvider, requiresDependencies ? transformDependencies : null, inputChanges, services);
         return instanceFactory.newInstance(services);
     }

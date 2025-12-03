@@ -16,10 +16,12 @@
 
 package org.gradle.plugins.ide.eclipse.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import groovy.util.Node;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -53,12 +55,12 @@ public class Facet {
     }
 
     public Facet(FacetType type, String name, String version) {
-        Preconditions.checkNotNull(type);
-        Preconditions.checkNotNull(name);
+        checkNotNull(type);
+        checkNotNull(name);
         if (type == FacetType.installed) {
-            Preconditions.checkNotNull(version);
+            checkNotNull(version);
         } else {
-            Preconditions.checkArgument(version == null);
+            checkArgument(version == null);
         }
         this.type = type;
         this.name = name;

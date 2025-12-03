@@ -16,11 +16,12 @@
 
 package org.gradle.tooling.internal.consumer.parameters;
 
+import static java.util.Collections.singletonList;
+
+import java.util.Collections;
 import org.gradle.internal.event.ListenerNotificationException;
 import org.gradle.tooling.StreamedValueListener;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
 
 public class FailsafeStreamedValueListener implements StreamedValueListener {
     @Nullable
@@ -42,7 +43,7 @@ public class FailsafeStreamedValueListener implements StreamedValueListener {
             try {
                 delegate.onValue(value);
             } catch (Throwable e) {
-                failure = new ListenerNotificationException(null, "Streaming model listener failed with an exception.", Collections.singletonList(e));
+                failure = new ListenerNotificationException(null, "Streaming model listener failed with an exception.", singletonList(e));
             }
         } else {
             failure = new IllegalStateException("No streaming model listener registered.");

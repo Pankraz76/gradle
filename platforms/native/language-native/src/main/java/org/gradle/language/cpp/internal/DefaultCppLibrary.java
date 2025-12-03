@@ -16,6 +16,10 @@
 
 package org.gradle.language.cpp.internal;
 
+import static java.util.Collections.singleton;
+
+import java.util.Collections;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.NamedDomainObjectProvider;
 import org.gradle.api.artifacts.Configuration;
@@ -42,9 +46,6 @@ import org.gradle.nativeplatform.Linkage;
 import org.gradle.nativeplatform.toolchain.internal.NativeToolChainInternal;
 import org.gradle.nativeplatform.toolchain.internal.PlatformToolProvider;
 
-import javax.inject.Inject;
-import java.util.Collections;
-
 public abstract class DefaultCppLibrary extends DefaultCppComponent implements CppLibrary, PublicationAwareComponent {
     private final FileCollection publicHeadersWithConvention;
     private final NamedDomainObjectProvider<ConsumableConfiguration> apiElements;
@@ -56,7 +57,7 @@ public abstract class DefaultCppLibrary extends DefaultCppComponent implements C
         super(name);
         publicHeadersWithConvention = createDirView(getPublicHeaders(), "src/" + name + "/public");
 
-        getLinkage().convention(Collections.singleton(Linkage.SHARED));
+        getLinkage().convention(singleton(Linkage.SHARED));
 
         dependencies = getObjectFactory().newInstance(DefaultLibraryDependencies.class, getNames().withSuffix("implementation"), getNames().withSuffix("api"));
 

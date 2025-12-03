@@ -16,20 +16,21 @@
 
 package org.gradle.configuration;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.LineProcessor;
 import com.google.common.io.Resources;
-import org.apache.commons.lang3.StringUtils;
-import org.gradle.api.internal.classpath.RuntimeApiInfo;
-import org.gradle.internal.UncheckedException;
-
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
+import org.gradle.api.internal.classpath.RuntimeApiInfo;
+import org.gradle.internal.UncheckedException;
 
 public class DefaultImportsReader implements ImportsReader {
 
@@ -60,7 +61,7 @@ public class DefaultImportsReader implements ImportsReader {
      * Please keep this code in sync.
      */
     private static String[] generateImportPackages(URL url) throws IOException {
-        return Resources.asCharSource(url, StandardCharsets.UTF_8).readLines(new LineProcessor<String[]>() {
+        return Resources.asCharSource(url, UTF_8).readLines(new LineProcessor<String[]>() {
             private final List<String> packages = new LinkedList<>();
 
             @Override
@@ -77,7 +78,7 @@ public class DefaultImportsReader implements ImportsReader {
     }
 
     private static Map<String, List<String>> generateSimpleNameToFQCN(URL url) throws IOException {
-        return Resources.asCharSource(url, StandardCharsets.UTF_8).readLines(new LineProcessor<Map<String, List<String>>>() {
+        return Resources.asCharSource(url, UTF_8).readLines(new LineProcessor<Map<String, List<String>>>() {
             private final ImmutableMap.Builder<String, List<String>> builder = ImmutableMap.builder();
 
             @Override

@@ -16,6 +16,13 @@
 
 package org.gradle.tooling.internal.provider.runner;
 
+import static java.util.Collections.emptySet;
+import static org.gradle.tooling.internal.provider.runner.ClientForwardingBuildOperationListener.toOperationResult;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import org.gradle.api.internal.artifacts.transform.ExecutePlannedTransformStepBuildOperationDetails;
 import org.gradle.api.internal.artifacts.transform.TransformStepNode;
 import org.gradle.execution.plan.Node;
@@ -32,13 +39,6 @@ import org.gradle.tooling.internal.protocol.events.InternalOperationDescriptor;
 import org.gradle.tooling.internal.protocol.events.InternalOperationFinishedProgressEvent;
 import org.gradle.tooling.internal.protocol.events.InternalOperationStartedProgressEvent;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static org.gradle.tooling.internal.provider.runner.ClientForwardingBuildOperationListener.toOperationResult;
 
 /**
  * Transform listener that forwards all receiving events to the client via the provided {@code ProgressEventConsumer} instance.
@@ -79,7 +79,7 @@ class TransformOperationMapper implements BuildOperationMapper<ExecutePlannedTra
         String subjectName = details.getSubjectName();
         Set<InternalOperationDescriptor> dependencies = operationDependenciesResolver.resolveDependencies(details.getTransformStepNode());
         DefaultTransformDescriptor descriptor = new DefaultTransformDescriptor(id, displayName, parent, transformerName, subjectName, dependencies);
-        DefaultTransformDescriptor descriptorWithoutDependencies = new DefaultTransformDescriptor(id, displayName, parent, transformerName, subjectName, Collections.emptySet());
+        DefaultTransformDescriptor descriptorWithoutDependencies = new DefaultTransformDescriptor(id, displayName, parent, transformerName, subjectName, emptySet());
         descriptors.put(details.getTransformStepNode(), descriptorWithoutDependencies);
         return descriptor;
     }

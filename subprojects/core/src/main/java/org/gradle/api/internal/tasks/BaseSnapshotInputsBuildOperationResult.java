@@ -16,11 +16,27 @@
 
 package org.gradle.api.internal.tasks;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Maps;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Deque;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import org.gradle.caching.BuildCacheKey;
 import org.gradle.internal.execution.caching.CachingState;
 import org.gradle.internal.execution.history.BeforeExecutionState;
@@ -37,20 +53,6 @@ import org.gradle.internal.snapshot.impl.ImplementationSnapshot;
 import org.gradle.operations.execution.FilePropertyVisitor;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.function.Function;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @NullMarked
 public abstract class BaseSnapshotInputsBuildOperationResult implements CustomOperationTraceSerialization {
@@ -96,7 +98,7 @@ public abstract class BaseSnapshotInputsBuildOperationResult implements CustomOp
             .filter(additionalImplementation -> !additionalImplementation.isEmpty())
             .map(additionalImplementations -> additionalImplementations.stream()
                 .map(BaseSnapshotInputsBuildOperationResult::getClassLoaderHashBytesOrNull) // preserve nulls
-                .collect(Collectors.toList()))
+                .collect(toList()))
             .orElse(null);
     }
 
@@ -113,7 +115,7 @@ public abstract class BaseSnapshotInputsBuildOperationResult implements CustomOp
             .filter(additionalImplementations -> !additionalImplementations.isEmpty())
             .map(additionalImplementations -> additionalImplementations.stream()
                 .map(ImplementationSnapshot::getClassIdentifier)
-                .collect(Collectors.toList())
+                .collect(toList())
             )
             .orElse(null);
     }
@@ -142,7 +144,7 @@ public abstract class BaseSnapshotInputsBuildOperationResult implements CustomOp
         if (actionClassLoaderHashesBytes != null) {
             List<String> actionClassloaderHashes = getActionClassLoaderHashesBytes().stream()
                 .map(hash -> hash == null ? null : HashCode.fromBytes(hash).toString())
-                .collect(Collectors.toList());
+                .collect(toList());
             model.put("actionClassLoaderHashes", actionClassloaderHashes);
         } else {
             model.put("actionClassLoaderHashes", null);
@@ -183,7 +185,7 @@ public abstract class BaseSnapshotInputsBuildOperationResult implements CustomOp
 
     @SuppressWarnings("NonApiType") //TODO: evaluate errorprone suppression (https://github.com/gradle/gradle/issues/35864)
     private static <K, V, U> Collector<Map.Entry<K, V>, ?, LinkedHashMap<K, U>> toLinkedHashMap(Function<? super V, ? extends U> valueMapper) {
-        return Collectors.toMap(
+        return toMap(
             Map.Entry::getKey,
             entry -> valueMapper.apply(entry.getValue()),
             (a, b) -> b,

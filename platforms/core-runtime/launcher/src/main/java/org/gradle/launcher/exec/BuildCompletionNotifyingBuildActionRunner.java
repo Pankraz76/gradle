@@ -16,6 +16,10 @@
 
 package org.gradle.launcher.exec;
 
+import static java.util.Collections.singletonList;
+
+import java.util.Collections;
+import java.util.List;
 import org.gradle.execution.MultipleBuildFailures;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.buildtree.BuildActionRunner;
@@ -25,9 +29,6 @@ import org.gradle.internal.invocation.BuildAction;
 import org.gradle.internal.problems.failure.Failure;
 import org.gradle.internal.problems.failure.FailureFactory;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * An {@link BuildActionRunner} that notifies the GE plugin manager that the build has completed.
@@ -79,6 +80,6 @@ public class BuildCompletionNotifyingBuildActionRunner implements BuildActionRun
         }
         return richBuildFailure.getOriginal() instanceof MultipleBuildFailures
             ? richBuildFailure.getCauses()
-            : Collections.singletonList(richBuildFailure);
+            : singletonList(richBuildFailure);
     }
 }

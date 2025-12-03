@@ -16,11 +16,23 @@
 
 package org.gradle.api.internal.tasks.testing.report.generic;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.inject.Inject;
 import org.apache.commons.io.file.PathUtils;
 import org.gradle.api.GradleException;
 import org.gradle.api.internal.tasks.testing.TestReportGenerator;
@@ -47,16 +59,6 @@ import org.gradle.internal.time.Timer;
 import org.gradle.reporting.HtmlReportBuilder;
 import org.gradle.reporting.HtmlReportRenderer;
 import org.gradle.reporting.ReportRenderer;
-
-import javax.inject.Inject;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Generates an HTML report based on test results based on binary results from {@link SerializableTestResultStore}.
@@ -114,7 +116,7 @@ public abstract class GenericHtmlTestReportGenerator implements TestReportGenera
             .distinct()
             .map(SerializableTestResultStore::new)
             .filter(SerializableTestResultStore::hasResults)
-            .collect(Collectors.toList());
+            .collect(toList());
 
         try {
             Files.createDirectories(reportsDirectory);
@@ -238,7 +240,7 @@ public abstract class GenericHtmlTestReportGenerator implements TestReportGenera
             return BuildOperationDescriptor.displayName(
                 "Generate generic HTML test report for " + requests.stream()
                     .map(r -> r.getPath().toString())
-                    .collect(Collectors.joining(", "))
+                    .collect(joining(", "))
             );
         }
 
@@ -270,7 +272,7 @@ public abstract class GenericHtmlTestReportGenerator implements TestReportGenera
             // Delete all directories, but not files, in the reports directory
             // This avoids deleting files from other report types that may be in the same directory
             try (Stream<Path> children = Files.list(reportsDirectory)) {
-                for (Path dir : children.filter(Files::isDirectory).collect(Collectors.toList())) {
+                for (Path dir : children.filter(Files::isDirectory).collect(toList())) {
                     PathUtils.deleteDirectory(dir);
                 }
             } catch (IOException e) {

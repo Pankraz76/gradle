@@ -16,6 +16,15 @@
 
 package org.gradle.execution.selection;
 
+import static java.util.Objects.requireNonNull;
+
+import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.regex.Pattern;
+import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.Task;
 import org.gradle.api.internal.project.ProjectState;
@@ -42,14 +51,6 @@ import org.gradle.util.internal.NameMatcher;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.regex.Pattern;
 
 public class DefaultBuildTaskSelector implements BuildTaskSelector {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultBuildTaskSelector.class);
@@ -184,7 +185,7 @@ public class DefaultBuildTaskSelector implements BuildTaskSelector {
     private static void configureProblem(ProblemSpec spec, String message, String requestedPath) {
         spec.contextualLabel(message);
         spec.severity(Severity.ERROR);
-        ((InternalProblemSpec) spec).additionalDataInternal(GeneralDataSpec.class, data -> data.put("requestedPath", Objects.requireNonNull(requestedPath)));
+        ((InternalProblemSpec) spec).additionalDataInternal(GeneralDataSpec.class, data -> data.put("requestedPath", requireNonNull(requestedPath)));
     }
 
     private TaskSelector.SelectionContext sanityCheckPath(String name, String type) {

@@ -15,7 +15,16 @@
  */
 package org.gradle.launcher.daemon.client;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.Thread.sleep;
+import static org.gradle.launcher.daemon.server.api.DaemonState.Canceled;
+import static org.gradle.launcher.daemon.server.api.DaemonState.Idle;
+
 import com.google.common.base.Preconditions;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import org.gradle.api.internal.specs.ExplainingSpec;
 import org.gradle.api.internal.specs.ExplainingSpecs;
 import org.gradle.api.logging.Logger;
@@ -44,15 +53,6 @@ import org.gradle.launcher.daemon.registry.DaemonStopEvents;
 import org.gradle.launcher.daemon.server.api.DaemonState;
 import org.gradle.util.internal.CollectionUtils;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
-import static java.lang.Thread.sleep;
-import static org.gradle.launcher.daemon.server.api.DaemonState.Canceled;
-import static org.gradle.launcher.daemon.server.api.DaemonState.Idle;
-
 /**
  * Provides the mechanics of connecting to a daemon, starting one via a given runnable if no suitable daemons are already available.
  */
@@ -72,11 +72,11 @@ public class DefaultDaemonConnector implements DaemonConnector {
     public DefaultDaemonConnector(DaemonDir daemonDir, DaemonRegistry daemonRegistry, OutgoingConnector connector, DaemonStarter daemonStarter, DaemonStartListener startListener, ProgressLoggerFactory progressLoggerFactory, Serializer<Message> serializer) {
         this.daemonDir = daemonDir;
         this.serializer = serializer;
-        Preconditions.checkNotNull(daemonRegistry);
-        Preconditions.checkNotNull(connector);
-        Preconditions.checkNotNull(daemonStarter);
-        Preconditions.checkNotNull(startListener);
-        Preconditions.checkNotNull(progressLoggerFactory);
+        checkNotNull(daemonRegistry);
+        checkNotNull(connector);
+        checkNotNull(daemonStarter);
+        checkNotNull(startListener);
+        checkNotNull(progressLoggerFactory);
 
         this.daemonRegistry = daemonRegistry;
         this.connector = connector;

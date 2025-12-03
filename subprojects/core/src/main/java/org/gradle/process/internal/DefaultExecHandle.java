@@ -16,7 +16,23 @@
 
 package org.gradle.process.internal;
 
+import static java.lang.String.format;
+import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.unmodifiableMap;
+import static org.gradle.process.internal.util.LongCommandLineDetectionUtil.hasCommandLineExceedMaxLength;
+import static org.gradle.process.internal.util.LongCommandLineDetectionUtil.hasCommandLineExceedMaxLengthException;
+
 import com.google.common.base.Joiner;
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Stream;
 import jnr.constants.platform.Signal;
 import net.rubygrapefruit.platform.ProcessLauncher;
 import org.gradle.api.logging.Logger;
@@ -31,21 +47,6 @@ import org.gradle.process.ExecResult;
 import org.gradle.process.ProcessExecutionException;
 import org.gradle.process.internal.shutdown.ShutdownHooks;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Executor;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Stream;
-
-import static java.lang.String.format;
-import static org.gradle.process.internal.util.LongCommandLineDetectionUtil.hasCommandLineExceedMaxLength;
-import static org.gradle.process.internal.util.LongCommandLineDetectionUtil.hasCommandLineExceedMaxLengthException;
 
 /**
  * Default implementation for the ExecHandle interface.
@@ -170,12 +171,12 @@ public class DefaultExecHandle implements ExecHandle, ProcessSettings {
 
     @Override
     public List<String> getArguments() {
-        return Collections.unmodifiableList(arguments);
+        return unmodifiableList(arguments);
     }
 
     @Override
     public Map<String, String> getEnvironment() {
-        return Collections.unmodifiableMap(environment);
+        return unmodifiableMap(environment);
     }
 
     @Override

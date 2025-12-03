@@ -16,6 +16,10 @@
 
 package org.gradle.internal.instantiation.generator;
 
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.joining;
+import static org.gradle.api.internal.GeneratedSubclasses.unpack;
+
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
@@ -30,6 +34,23 @@ import groovy.lang.Closure;
 import groovy.lang.GroovyObject;
 import groovy.lang.MetaClass;
 import groovy.transform.Generated;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.Describable;
 import org.gradle.api.IsolatedAction;
@@ -66,27 +87,6 @@ import org.gradle.internal.service.ServiceLookup;
 import org.gradle.internal.service.ServiceRegistry;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import static java.util.Optional.ofNullable;
-import static org.gradle.api.internal.GeneratedSubclasses.unpack;
 
 /**
  * Generates a subclass of the target class to mix-in some DSL behaviour.
@@ -1314,7 +1314,7 @@ abstract class AbstractClassGenerator implements ClassGenerator {
                 formatter.append(allowedTypes.stream()
                     .map(TypeToken::toString)
                     .sorted()
-                    .collect(Collectors.joining(", "))
+                    .collect(joining(", "))
                 );
                 formatter.append(".");
                 throw new IllegalArgumentException(formatter.toString());

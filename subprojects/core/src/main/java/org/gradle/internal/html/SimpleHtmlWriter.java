@@ -16,7 +16,7 @@
 
 package org.gradle.internal.html;
 
-import org.gradle.internal.xml.SimpleMarkupWriter;
+import static java.util.Collections.unmodifiableSet;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import org.gradle.internal.xml.SimpleMarkupWriter;
 
 /**
  * <p>A streaming HTML writer.</p>
@@ -70,7 +71,7 @@ public class SimpleHtmlWriter extends SimpleMarkupWriter {
 
     // All valid tags should be in lowercase
     // Add more tags as necessary
-    private final static Set<String> VALID_HTML_TAGS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+    private final static Set<String> VALID_HTML_TAGS = unmodifiableSet(new HashSet<>(Arrays.asList(
         "html",
         "head",
         "meta", "title", "link", "script",

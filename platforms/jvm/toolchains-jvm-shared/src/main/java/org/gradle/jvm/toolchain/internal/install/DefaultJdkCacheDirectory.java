@@ -16,8 +16,23 @@
 
 package org.gradle.jvm.toolchain.internal.install;
 
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toSet;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.Files;
+import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URI;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.commons.io.FilenameUtils;
 import org.gradle.api.GradleException;
 import org.gradle.api.file.DuplicatesStrategy;
@@ -38,19 +53,6 @@ import org.gradle.jvm.toolchain.internal.InstallationLocation;
 import org.gradle.jvm.toolchain.internal.JdkCacheDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.net.URI;
-import java.nio.file.AtomicMoveNotSupportedException;
-import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class DefaultJdkCacheDirectory implements JdkCacheDirectory {
 
@@ -114,9 +116,9 @@ public class DefaultJdkCacheDirectory implements JdkCacheDirectory {
             return Arrays.stream(candidates)
                     .filter(this::isMarkedLocation)
                     .map(this::getJavaHome)
-                    .collect(Collectors.toSet());
+                    .collect(toSet());
         }
-        return Collections.emptySet();
+        return emptySet();
     }
 
     private boolean isMarkedLocation(File candidate) {

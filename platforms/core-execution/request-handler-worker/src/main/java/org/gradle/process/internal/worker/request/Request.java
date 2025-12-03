@@ -16,6 +16,8 @@
 
 package org.gradle.process.internal.worker.request;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Preconditions;
 import org.gradle.internal.operations.BuildOperationRef;
 
@@ -24,7 +26,7 @@ public class Request {
     private final BuildOperationRef buildOperation;
 
     public Request(Object arg, BuildOperationRef buildOperation) {
-        Preconditions.checkNotNull(buildOperation);
+        checkNotNull(buildOperation);
         this.arg = arg;
         this.buildOperation = buildOperation;
     }

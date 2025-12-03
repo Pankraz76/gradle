@@ -16,9 +16,8 @@
 
 package org.gradle.api.internal.tasks.compile;
 
-import org.gradle.api.internal.tasks.compile.processing.AnnotationProcessorDeclaration;
-import org.gradle.api.tasks.compile.CompileOptions;
-import org.jspecify.annotations.Nullable;
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static java.util.Collections.emptySet;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,8 +25,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import static com.google.common.collect.ImmutableList.toImmutableList;
+import org.gradle.api.internal.tasks.compile.processing.AnnotationProcessorDeclaration;
+import org.gradle.api.tasks.compile.CompileOptions;
+import org.jspecify.annotations.Nullable;
 
 public class DefaultJavaCompileSpec extends DefaultJvmLanguageCompileSpec implements JavaCompileSpec {
     private MinimalJavaCompileOptions compileOptions;
@@ -36,7 +36,7 @@ public class DefaultJavaCompileSpec extends DefaultJvmLanguageCompileSpec implem
     private Set<String> classesToProcess;
     private List<File> modulePath;
     private List<File> sourceRoots;
-    private Set<String> classesToCompile = Collections.emptySet();
+    private Set<String> classesToCompile = emptySet();
     private File backupDestinationDir;
 
     @Override

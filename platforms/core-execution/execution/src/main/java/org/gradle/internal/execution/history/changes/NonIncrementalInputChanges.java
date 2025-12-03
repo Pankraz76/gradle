@@ -16,7 +16,12 @@
 
 package org.gradle.internal.execution.history.changes;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.ImmutableSortedMap;
+import java.io.File;
+import java.util.Objects;
+import java.util.stream.Stream;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileSystemLocation;
 import org.gradle.api.provider.Provider;
@@ -26,10 +31,6 @@ import org.gradle.internal.file.FileType;
 import org.gradle.internal.fingerprint.CurrentFileCollectionFingerprint;
 import org.gradle.work.ChangeType;
 import org.gradle.work.FileChange;
-
-import java.io.File;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 public class NonIncrementalInputChanges implements InputChangesInternal {
     private final ImmutableSortedMap<String, CurrentFileCollectionFingerprint> currentInputs;
@@ -57,7 +58,7 @@ public class NonIncrementalInputChanges implements InputChangesInternal {
 
     public Iterable<FileChange> getObjectFileChanges(Object parameter) {
         CurrentFileCollectionFingerprint currentFileCollectionFingerprint = currentInputs.get(incrementalInputProperties.getPropertyNameFor(parameter));
-        Objects.requireNonNull(currentFileCollectionFingerprint);
+        requireNonNull(currentFileCollectionFingerprint);
         return () -> getAllFileChanges(currentFileCollectionFingerprint).iterator();
     }
 

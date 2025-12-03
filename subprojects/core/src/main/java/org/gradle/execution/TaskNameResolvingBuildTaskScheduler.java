@@ -15,6 +15,13 @@
  */
 package org.gradle.execution;
 
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.gradle.TaskExecutionRequest;
 import org.gradle.api.GradleException;
 import org.gradle.api.Task;
@@ -32,11 +39,6 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * A {@link BuildTaskScheduler} which selects tasks which match the provided names. For each name, selects all tasks in all
@@ -80,7 +82,7 @@ public class TaskNameResolvingBuildTaskScheduler implements BuildTaskScheduler {
     private void validateCompatibleTasksRequested(ExecutionPlan plan) {
         //noinspection ConstantValue support mocking in tests
         if (null != plan.getContents()) {
-            List<String> requestedTaskNames = plan.getContents().getRequestedTasks().stream().map(Task::getName).collect(Collectors.toList());
+            List<String> requestedTaskNames = plan.getContents().getRequestedTasks().stream().map(Task::getName).collect(toList());
             if (requestedTaskNames.size() > 1) {
                 Optional<BuiltInCommand> exclusiveTaskInvoked = builtInCommands.stream()
                     .filter(BuiltInCommand::isExclusive)
@@ -127,7 +129,7 @@ public class TaskNameResolvingBuildTaskScheduler implements BuildTaskScheduler {
 
         @Override
         public List<String> getResolutions() {
-            return Collections.singletonList("Remove all other tasks from the command line when running init.");
+            return singletonList("Remove all other tasks from the command line when running init.");
         }
     }
 }

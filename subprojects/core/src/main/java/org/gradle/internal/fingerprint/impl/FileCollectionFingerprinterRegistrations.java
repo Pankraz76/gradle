@@ -16,7 +16,19 @@
 
 package org.gradle.internal.fingerprint.impl;
 
+import static com.google.common.collect.ImmutableSet.toImmutableSet;
+import static java.util.Arrays.stream;
+import static java.util.Collections.singletonList;
+import static org.gradle.internal.execution.impl.FingerprinterRegistration.registration;
+
 import com.google.common.collect.ImmutableList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Stream;
 import org.gradle.api.internal.cache.StringInterner;
 import org.gradle.api.internal.changedetection.state.CachingFileSystemLocationSnapshotHasher;
 import org.gradle.api.internal.changedetection.state.LineEndingNormalizingFileSystemLocationSnapshotHasher;
@@ -32,18 +44,6 @@ import org.gradle.internal.fingerprint.classpath.impl.DefaultCompileClasspathFin
 import org.gradle.internal.fingerprint.hashing.FileSystemLocationSnapshotHasher;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Stream;
-
-import static com.google.common.collect.ImmutableSet.toImmutableSet;
-import static java.util.Arrays.stream;
-import static org.gradle.internal.execution.impl.FingerprinterRegistration.registration;
 
 @ServiceScope(Scope.BuildSession.class)
 public class FileCollectionFingerprinterRegistrations {
@@ -134,7 +134,7 @@ public class FileCollectionFingerprinterRegistrations {
      * These fingerprinters do not care about line ending or directory sensitivity at all
      */
     private static List<? extends FileCollectionFingerprinter> insensitiveFingerprinters(ResourceSnapshotterCacheService resourceSnapshotterCacheService, StringInterner stringInterner) {
-        return Collections.singletonList(
+        return singletonList(
             new DefaultCompileClasspathFingerprinter(resourceSnapshotterCacheService, stringInterner)
         );
     }

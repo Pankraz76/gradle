@@ -15,11 +15,13 @@
  */
 package org.gradle.internal.build.event.types;
 
-import org.gradle.tooling.internal.protocol.InternalFailure;
-import org.gradle.tooling.internal.protocol.InternalTestAssertionFailure;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 import java.util.Collections;
 import java.util.List;
+import org.gradle.tooling.internal.protocol.InternalFailure;
+import org.gradle.tooling.internal.protocol.InternalTestAssertionFailure;
 
 public class DefaultTestAssertionFailure extends AbstractTestFailure implements InternalTestAssertionFailure {
 
@@ -46,7 +48,7 @@ public class DefaultTestAssertionFailure extends AbstractTestFailure implements 
         List<InternalFailure> causeFailure;
         if (causes.isEmpty()) {
             Throwable cause = t.getCause();
-            causeFailure = cause != null && cause != t ? Collections.singletonList(DefaultFailure.fromThrowable(cause)) : Collections.emptyList();
+            causeFailure = cause != null && cause != t ? singletonList(DefaultFailure.fromThrowable(cause)) : emptyList();
         } else {
             causeFailure = causes;
         }

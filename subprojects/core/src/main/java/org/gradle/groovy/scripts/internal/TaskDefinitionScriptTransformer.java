@@ -16,15 +16,16 @@
 
 package org.gradle.groovy.scripts.internal;
 
+import static java.util.Collections.emptyList;
+
+import java.util.Collections;
+import java.util.List;
 import org.codehaus.groovy.ast.CodeVisitorSupport;
 import org.codehaus.groovy.ast.DynamicVariable;
 import org.codehaus.groovy.ast.expr.*;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.Phases;
 import org.codehaus.groovy.control.SourceUnit;
-
-import java.util.Collections;
-import java.util.List;
 
 public class TaskDefinitionScriptTransformer extends AbstractScriptTransformer {
     @Override
@@ -136,7 +137,7 @@ public class TaskDefinitionScriptTransformer extends AbstractScriptTransformer {
 
             Expression taskName = nestedMethod.getMethod();
             Expression mapArg = null;
-            List<Expression> extraArgs = Collections.emptyList();
+            List<Expression> extraArgs = emptyList();
 
             if (nestedMethod.getArguments() instanceof TupleExpression) {
                 TupleExpression nestedArgs = (TupleExpression) nestedMethod.getArguments();

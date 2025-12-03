@@ -16,6 +16,16 @@
 
 package org.gradle.vcs.internal.resolver;
 
+import static java.util.Collections.singleton;
+import static java.util.stream.Collectors.toList;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.artifacts.component.ComponentSelector;
@@ -58,14 +68,6 @@ import org.gradle.vcs.internal.VersionControlRepositoryConnection;
 import org.gradle.vcs.internal.VersionControlRepositoryConnectionFactory;
 import org.gradle.vcs.internal.spec.AbstractVersionControlSpec;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 public class VcsDependencyResolver implements DependencyToComponentIdResolver, ComponentResolvers, ComponentMetaDataResolver, ArtifactResolver {
     private final LocalComponentRegistry localComponentRegistry;
     private final VcsResolver vcsResolver;
@@ -102,7 +104,7 @@ public class VcsDependencyResolver implements DependencyToComponentIdResolver, C
                     return;
                 }
                 if (dependencyWorkingDir == null) {
-                    result.failed(new ModuleVersionNotFoundException(depSelector, Collections.singleton(spec.getDisplayName())));
+                    result.failed(new ModuleVersionNotFoundException(depSelector, singleton(spec.getDisplayName())));
                     return;
                 }
 
@@ -147,7 +149,7 @@ public class VcsDependencyResolver implements DependencyToComponentIdResolver, C
         return PluginRequests.of(
             requests.stream()
                 .map(original -> new DefaultPluginRequest(DefaultPluginId.of(original.getId()), true, PluginRequestInternal.Origin.AUTO_APPLIED, null, null, null, null, null, null))
-                .collect(Collectors.toList())
+                .collect(toList())
         );
     }
 

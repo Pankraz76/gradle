@@ -16,14 +16,16 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import org.gradle.nativeplatform.platform.internal.NativePlatformInternal;
-import org.gradle.nativeplatform.toolchain.internal.SystemLibraries;
-import org.gradle.util.internal.VersionNumber;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
 
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.gradle.nativeplatform.platform.internal.NativePlatformInternal;
+import org.gradle.nativeplatform.toolchain.internal.SystemLibraries;
+import org.gradle.util.internal.VersionNumber;
 
 public class UcrtInstall extends WindowsKitInstall {
 
@@ -59,17 +61,17 @@ public class UcrtInstall extends WindowsKitInstall {
 
         @Override
         public List<File> getIncludeDirs() {
-            return Collections.singletonList(new File(getBaseDir(), "Include/" + getVersion() + "/ucrt"));
+            return singletonList(new File(getBaseDir(), "Include/" + getVersion() + "/ucrt"));
         }
 
         @Override
         public List<File> getLibDirs() {
-            return Collections.singletonList(new File(getBaseDir(), "Lib/" + getVersion() + "/ucrt/" + platformDirName));
+            return singletonList(new File(getBaseDir(), "Lib/" + getVersion() + "/ucrt/" + platformDirName));
         }
 
         @Override
         public Map<String, String> getPreprocessorMacros() {
-            return Collections.emptyMap();
+            return emptyMap();
         }
     }
 }

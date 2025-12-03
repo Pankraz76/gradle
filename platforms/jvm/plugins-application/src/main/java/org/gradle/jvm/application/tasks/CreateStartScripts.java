@@ -16,7 +16,15 @@
 
 package org.gradle.jvm.application.tasks;
 
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toCollection;
+
 import com.google.common.collect.Lists;
+import java.io.File;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.ConventionTask;
@@ -46,12 +54,6 @@ import org.gradle.jvm.application.scripts.TemplateBasedScriptGenerator;
 import org.gradle.util.internal.GUtil;
 import org.gradle.work.DisableCachingByDefault;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.stream.Collectors;
 
 /**
  * Creates start scripts for launching JVM applications.
@@ -386,13 +388,13 @@ public abstract class CreateStartScripts extends ConventionTask {
         //serializing Iterators directly
         final FileCollection classpathNullable = getClasspath();
         if (classpathNullable == null) {
-            return Collections.emptyList();
+            return emptyList();
         }
         return getRelativePath(classpathNullable);
     }
 
     private Iterable<String> getRelativePath(FileCollection path) {
-        return path.getFiles().stream().map(input -> "lib/" + input.getName()).collect(Collectors.toCollection(Lists::newArrayList));
+        return path.getFiles().stream().map(input -> "lib/" + input.getName()).collect(toCollection(Lists::newArrayList));
     }
 
 }

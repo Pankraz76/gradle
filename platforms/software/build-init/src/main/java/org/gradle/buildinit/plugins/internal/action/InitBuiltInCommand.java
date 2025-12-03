@@ -16,13 +16,14 @@
 
 package org.gradle.buildinit.plugins.internal.action;
 
+import static java.util.Collections.emptyList;
+
+import java.util.Collections;
+import java.util.List;
 import org.gradle.configuration.project.BuiltInCommand;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 import org.jspecify.annotations.NonNull;
-
-import java.util.Collections;
-import java.util.List;
 
 // TODO: Consider moving the InitBuiltInCommand (and help) to core, as they are not Software Platform-specific
 @ServiceScope(Scope.Global.class)
@@ -37,7 +38,7 @@ public class InitBuiltInCommand implements BuiltInCommand {
 
     @Override
     public List<String> asDefaultTask() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override

@@ -16,9 +16,19 @@
 
 package org.gradle.api.publish.internal.metadata;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
 import com.google.common.base.Objects;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import javax.annotation.concurrent.NotThreadSafe;
 import org.gradle.api.InvalidUserCodeException;
 import org.gradle.api.attributes.AttributeContainer;
 import org.gradle.api.capabilities.Capability;
@@ -28,14 +38,6 @@ import org.gradle.api.internal.component.SoftwareComponentInternal;
 import org.gradle.api.publish.internal.validation.PublicationErrorChecker;
 import org.gradle.internal.logging.text.TreeFormatter;
 import org.jspecify.annotations.Nullable;
-
-import javax.annotation.concurrent.NotThreadSafe;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @NotThreadSafe
 public class InvalidPublicationChecker {
@@ -123,9 +125,9 @@ public class InvalidPublicationChecker {
         // Currently limited to a single validator
         EnforcedPlatformPublicationValidator validator = new EnforcedPlatformPublicationValidator();
         if (suppressedValidationErrors.contains(validator.getSuppressor())) {
-            return Collections.emptyList();
+            return emptyList();
         }
-        return Collections.singletonList(validator);
+        return singletonList(validator);
     }
 
     private void failWith(String message) {

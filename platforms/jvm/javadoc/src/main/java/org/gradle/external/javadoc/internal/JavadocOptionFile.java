@@ -16,9 +16,8 @@
 
 package org.gradle.external.javadoc.internal;
 
-import org.gradle.external.javadoc.JavadocOptionFileOption;
-import org.gradle.external.javadoc.OptionLessJavadocOptionFileOption;
-import org.gradle.internal.Cast;
+import static java.util.Collections.unmodifiableMap;
+import static java.util.stream.Collectors.toMap;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.gradle.external.javadoc.JavadocOptionFileOption;
+import org.gradle.external.javadoc.OptionLessJavadocOptionFileOption;
+import org.gradle.internal.Cast;
 
 public class JavadocOptionFile {
     private final Map<String, JavadocOptionFileOptionInternal<?>> options;
@@ -61,7 +63,7 @@ public class JavadocOptionFile {
     }
 
     public Map<String, JavadocOptionFileOptionInternal<?>> getOptions() {
-        return Collections.unmodifiableMap(options);
+        return unmodifiableMap(options);
     }
 
     public <T> JavadocOptionFileOption<T> addOption(JavadocOptionFileOptionInternal<T> option) {
@@ -151,7 +153,7 @@ public class JavadocOptionFile {
     public Map<String, String> stringifyExtraOptionsToMap(Set<String> optionsToExclude) {
         return options.entrySet().stream()
                 .filter(entry -> !optionsToExclude.contains(entry.getKey()))
-                .collect(Collectors.toMap(
+                .collect(toMap(
                     Map.Entry::getKey,
                     entry -> String.valueOf(entry.getValue().getValue()),
                     (a, b) -> {

@@ -16,10 +16,26 @@
 
 package org.gradle.internal.properties.annotations;
 
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
+import static org.gradle.api.problems.Severity.ERROR;
+import static org.gradle.internal.deprecation.Documentation.userManual;
+import static org.gradle.internal.reflect.annotations.AnnotationCategory.TYPE;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import org.gradle.api.internal.GeneratedSubclasses;
 import org.gradle.api.problems.internal.GradleCoreProblemGroup;
 import org.gradle.cache.Cache;
@@ -34,21 +50,6 @@ import org.gradle.internal.reflect.validation.TypeValidationContext;
 import org.gradle.util.internal.TextUtil;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
-import static org.gradle.api.problems.Severity.ERROR;
-import static org.gradle.internal.deprecation.Documentation.userManual;
-import static org.gradle.internal.reflect.annotations.AnnotationCategory.TYPE;
 
 public class DefaultTypeMetadataStore implements TypeMetadataStore {
     private final Collection<? extends TypeAnnotationHandler> typeAnnotationHandlers;
@@ -456,7 +457,7 @@ public class DefaultTypeMetadataStore implements TypeMetadataStore {
     }
 
     private static Collector<? super String, ?, String> forDisplay() {
-        return Collectors.collectingAndThen(Collectors.toList(), stringList -> {
+        return collectingAndThen(toList(), stringList -> {
             if (stringList.isEmpty()) {
                 return "";
             }

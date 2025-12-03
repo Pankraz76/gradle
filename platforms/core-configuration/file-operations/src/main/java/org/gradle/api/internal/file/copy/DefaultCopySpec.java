@@ -15,10 +15,24 @@
  */
 package org.gradle.api.internal.file.copy;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import groovy.lang.Closure;
+import java.io.File;
+import java.io.FilterReader;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.regex.Pattern;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.NonExtensible;
@@ -54,19 +68,6 @@ import org.gradle.internal.typeconversion.NotationParser;
 import org.gradle.util.internal.ClosureBackedAction;
 import org.gradle.util.internal.ConfigureUtil;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.io.FilterReader;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.regex.Pattern;
 
 @NonExtensible
 public class DefaultCopySpec implements CopySpecInternal {
@@ -162,7 +163,7 @@ public class DefaultCopySpec implements CopySpecInternal {
 
     @Override
     public CopySpec from(Object sourcePath, Action<? super CopySpec> configureAction) {
-        Preconditions.checkNotNull(configureAction, "Gradle does not allow passing null for the configuration action for CopySpec.from().");
+        checkNotNull(configureAction, "Gradle does not allow passing null for the configuration action for CopySpec.from().");
         CopySpecInternal child = addChild();
         child.from(sourcePath);
         CopySpecWrapper wrapper = instantiator.newInstance(CopySpecWrapper.class, child);
@@ -270,7 +271,7 @@ public class DefaultCopySpec implements CopySpecInternal {
 
     @Override
     public CopySpec into(Object destPath, Action<? super CopySpec> copySpec) {
-        Preconditions.checkNotNull(copySpec, "Gradle does not allow passing null for the configuration action for CopySpec.into().");
+        checkNotNull(copySpec, "Gradle does not allow passing null for the configuration action for CopySpec.into().");
         CopySpecInternal child = addChild();
         child.into(destPath);
         CopySpecWrapper wrapper = instantiator.newInstance(CopySpecWrapper.class, child);
@@ -564,7 +565,7 @@ public class DefaultCopySpec implements CopySpecInternal {
 
     @Override
     public void setFilteringCharset(String charset) {
-        Preconditions.checkNotNull(charset, "filteringCharset must not be null");
+        checkNotNull(charset, "filteringCharset must not be null");
         if (!Charset.isSupported(charset)) {
             throw new InvalidUserDataException(String.format("filteringCharset %s is not supported by your JVM", charset));
         }

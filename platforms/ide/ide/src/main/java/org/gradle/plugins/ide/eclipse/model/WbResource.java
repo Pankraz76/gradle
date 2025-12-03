@@ -16,13 +16,14 @@
 
 package org.gradle.plugins.ide.eclipse.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import groovy.util.Node;
-import org.gradle.plugins.ide.eclipse.model.internal.PathUtil;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.gradle.plugins.ide.eclipse.model.internal.PathUtil;
 
 /**
  * A wtp descriptor resource entry.
@@ -36,8 +37,8 @@ public class WbResource implements WbModuleEntry {
     }
 
     public WbResource(String deployPath, String sourcePath) {
-        Preconditions.checkNotNull(deployPath);
-        Preconditions.checkNotNull(sourcePath);
+        checkNotNull(deployPath);
+        checkNotNull(sourcePath);
         this.deployPath = PathUtil.normalizePath(deployPath);
         this.sourcePath = PathUtil.normalizePath(sourcePath);
     }

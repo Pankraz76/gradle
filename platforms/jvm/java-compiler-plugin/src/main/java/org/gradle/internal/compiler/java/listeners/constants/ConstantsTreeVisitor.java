@@ -16,6 +16,8 @@
 
 package org.gradle.internal.compiler.java.listeners.constants;
 
+import static java.util.Objects.requireNonNull;
+
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.IdentifierTree;
@@ -25,15 +27,14 @@ import com.sun.source.tree.ModuleTree;
 import com.sun.source.tree.VariableTree;
 import com.sun.source.util.TreePathScanner;
 import com.sun.source.util.Trees;
-
+import java.util.Objects;
+import java.util.Set;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
-import java.util.Objects;
-import java.util.Set;
 
 public class ConstantsTreeVisitor extends TreePathScanner<ConstantsVisitorContext, ConstantsVisitorContext> {
 
@@ -102,7 +103,7 @@ public class ConstantsTreeVisitor extends TreePathScanner<ConstantsVisitorContex
     public ConstantsVisitorContext visitMemberSelect(MemberSelectTree node, ConstantsVisitorContext context) {
         Element element = trees.getElement(getCurrentPath());
         if (isPrimitiveConstantVariable(element)) {
-            context.addConstantOrigin(getBinaryClassName(Objects.requireNonNull((TypeElement) element.getEnclosingElement())));
+            context.addConstantOrigin(getBinaryClassName(requireNonNull((TypeElement) element.getEnclosingElement())));
         }
         return super.visitMemberSelect(node, context);
     }
@@ -112,7 +113,7 @@ public class ConstantsTreeVisitor extends TreePathScanner<ConstantsVisitorContex
         Element element = trees.getElement(getCurrentPath());
 
         if (isPrimitiveConstantVariable(element)) {
-            context.addConstantOrigin(getBinaryClassName(Objects.requireNonNull((TypeElement) element.getEnclosingElement())));
+            context.addConstantOrigin(getBinaryClassName(requireNonNull((TypeElement) element.getEnclosingElement())));
         }
         return super.visitIdentifier(node, context);
     }

@@ -16,6 +16,10 @@
 
 package org.gradle.api.internal.artifacts.repositories;
 
+import static java.util.Collections.singleton;
+
+import java.util.Collection;
+import java.util.Collections;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.repositories.AuthenticationContainer;
 import org.gradle.api.artifacts.repositories.PasswordCredentials;
@@ -34,9 +38,6 @@ import org.gradle.internal.credentials.DefaultAwsCredentials;
 import org.gradle.internal.credentials.DefaultHttpHeaderCredentials;
 import org.gradle.internal.credentials.DefaultPasswordCredentials;
 import org.gradle.internal.reflect.Instantiator;
-
-import java.util.Collection;
-import java.util.Collections;
 
 public class AuthenticationSupporter {
     private final Instantiator instantiator;
@@ -120,7 +121,7 @@ public class AuthenticationSupporter {
     public Collection<Authentication> getConfiguredAuthentication() {
         populateAuthenticationCredentials();
         if (usesCredentials() && authenticationContainer.size() == 0) {
-            return Collections.singleton(new AllSchemesAuthentication(credentials.get()));
+            return singleton(new AllSchemesAuthentication(credentials.get()));
         } else {
             return getAuthentication();
         }

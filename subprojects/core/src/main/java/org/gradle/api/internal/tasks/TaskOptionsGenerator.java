@@ -16,7 +16,17 @@
 
 package org.gradle.api.internal.tasks;
 
+import static java.util.Collections.singletonList;
+import static java.util.Collections.unmodifiableList;
+
 import com.google.common.annotations.VisibleForTesting;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import org.gradle.api.Task;
 import org.gradle.api.internal.tasks.options.BooleanOptionElement;
 import org.gradle.api.internal.tasks.options.BuiltInOptionElement;
@@ -31,14 +41,6 @@ import org.gradle.util.internal.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * This class is responsible for generating the built-in options and
  * the {@link BooleanOptionElement mutually exclusive options} of a task,
@@ -48,7 +50,7 @@ public class TaskOptionsGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskOptionsGenerator.class);
 
     @VisibleForTesting
-    static final List<BuiltInOptionElement> BUILT_IN_OPTIONS = Collections.singletonList(
+    static final List<BuiltInOptionElement> BUILT_IN_OPTIONS = singletonList(
         new BuiltInOptionElement(
             "Causes the task to be re-run even if up-to-date.",
             "rerun",
@@ -96,7 +98,7 @@ public class TaskOptionsGenerator {
                 }
             }
         }
-        taskOptions.mutuallyExclusiveOptions = Collections.unmodifiableList(mutuallyExclusiveOptions);
+        taskOptions.mutuallyExclusiveOptions = unmodifiableList(mutuallyExclusiveOptions);
         return oppositeOptions;
     }
 
@@ -113,7 +115,7 @@ public class TaskOptionsGenerator {
         options.putAll(generateOppositeOptions(task, options, taskOptions));
         List<OptionDescriptor> sortedOptions = CollectionUtils.sort(options.values(), BooleanOptionElement.groupOppositeOptions());
         sortedOptions.addAll(generateBuiltInOptions(task, options.keySet()));
-        taskOptions.allTaskOptions = Collections.unmodifiableList(sortedOptions);
+        taskOptions.allTaskOptions = unmodifiableList(sortedOptions);
         return taskOptions;
     }
 

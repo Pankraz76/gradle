@@ -16,6 +16,15 @@
 
 package org.gradle.launcher.daemon.protocol;
 
+import static java.util.Collections.emptyList;
+import static org.gradle.internal.serialize.BaseSerializerFactory.FILE_SERIALIZER;
+import static org.gradle.internal.serialize.BaseSerializerFactory.NO_NULL_STRING_MAP_SERIALIZER;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.gradle.api.logging.LogLevel;
 import org.gradle.configuration.GradleLauncherMetaData;
 import org.gradle.internal.classpath.ClassPath;
@@ -65,15 +74,6 @@ import org.gradle.launcher.exec.BuildActionResult;
 import org.gradle.launcher.exec.DefaultBuildActionParameters;
 import org.gradle.tooling.internal.provider.serialization.SerializedPayload;
 import org.gradle.tooling.internal.provider.serialization.SerializedPayloadSerializer;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import static org.gradle.internal.serialize.BaseSerializerFactory.FILE_SERIALIZER;
-import static org.gradle.internal.serialize.BaseSerializerFactory.NO_NULL_STRING_MAP_SERIALIZER;
 
 public class DaemonMessageSerializer {
     public static Serializer<Message> create(Serializer<BuildAction> buildActionSerializer) {
@@ -167,7 +167,7 @@ public class DaemonMessageSerializer {
                 case 0:
                     return new Success(null);
                 case 1:
-                    return new Success(BuildActionResult.of(new SerializedPayload(null, Collections.emptyList())));
+                    return new Success(BuildActionResult.of(new SerializedPayload(null, emptyList())));
                 case 2:
                     SerializedPayload result = payloadSerializer.read(decoder);
                     return new Success(BuildActionResult.of(result));

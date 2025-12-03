@@ -15,6 +15,8 @@
  */
 package org.gradle.api.internal.project.antbuilder;
 
+import static java.util.Collections.singleton;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import groovy.lang.Closure;
@@ -22,17 +24,16 @@ import groovy.util.BuilderSupport;
 import groovy.util.Node;
 import groovy.util.NodeList;
 import groovy.xml.XmlParser;
-import org.gradle.internal.Cast;
-import org.gradle.internal.IoActions;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.metaobject.DynamicObject;
-import org.gradle.internal.metaobject.DynamicObjectUtil;
-
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import org.gradle.internal.Cast;
+import org.gradle.internal.IoActions;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.metaobject.DynamicObject;
+import org.gradle.internal.metaobject.DynamicObjectUtil;
 
 public class AntBuilderDelegate extends BuilderSupport {
 
@@ -60,7 +61,7 @@ public class AntBuilderDelegate extends BuilderSupport {
             } catch (ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
-        } else if (argNames.equals(Collections.singleton("resource"))) {
+        } else if (argNames.equals(singleton("resource"))) {
             InputStream instr = antlibClassLoader.getResourceAsStream(args.get("resource"));
             try {
                 Node xml = new XmlParser().parse(instr);

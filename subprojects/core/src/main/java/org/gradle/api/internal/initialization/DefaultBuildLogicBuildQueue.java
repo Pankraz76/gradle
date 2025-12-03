@@ -16,6 +16,14 @@
 
 package org.gradle.api.internal.initialization;
 
+import static java.util.stream.Collectors.toList;
+import static org.gradle.cache.internal.filelock.DefaultLockOptions.mode;
+
+import java.io.File;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import org.gradle.cache.FileLock;
 import org.gradle.cache.FileLockManager;
 import org.gradle.composite.internal.BuildTreeWorkGraphController;
@@ -30,14 +38,6 @@ import org.gradle.internal.operations.BuildOperationRunner;
 import org.gradle.internal.operations.CallableBuildOperation;
 import org.gradle.internal.work.Synchronizer;
 import org.gradle.internal.work.WorkerLeaseService;
-
-import java.io.File;
-import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import static org.gradle.cache.internal.filelock.DefaultLockOptions.mode;
 
 public class DefaultBuildLogicBuildQueue implements BuildLogicBuildQueue {
 
@@ -137,7 +137,7 @@ public class DefaultBuildLogicBuildQueue implements BuildLogicBuildQueue {
     private static List<TaskIdentifier.TaskBasedTaskIdentifier> removeExecuted(List<TaskIdentifier.TaskBasedTaskIdentifier> tasks) {
         return tasks.stream()
             .filter(identifier -> !identifier.getTask().getState().getExecuted())
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private static String nameOf(BuildState build) {

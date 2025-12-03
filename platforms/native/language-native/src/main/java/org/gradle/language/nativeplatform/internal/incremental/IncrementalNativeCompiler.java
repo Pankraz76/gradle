@@ -15,7 +15,13 @@
  */
 package org.gradle.language.nativeplatform.internal.incremental;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableList;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.internal.TaskOutputsInternal;
 import org.gradle.api.tasks.WorkResult;
 import org.gradle.api.tasks.WorkResults;
@@ -28,11 +34,6 @@ import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 import org.jspecify.annotations.NullMarked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @NullMarked
 public class IncrementalNativeCompiler<T extends NativeCompileSpec> implements Compiler<T> {
@@ -102,7 +103,7 @@ public class IncrementalNativeCompiler<T extends NativeCompileSpec> implements C
             return sourceFiles.build();
         }
 
-        return Collections.emptyList();
+        return emptyList();
     }
 
     private static String getCantUsePCHMessage(String pchHeader, File sourceFile) {

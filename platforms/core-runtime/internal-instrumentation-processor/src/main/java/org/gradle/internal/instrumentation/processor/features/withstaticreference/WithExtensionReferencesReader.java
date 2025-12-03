@@ -16,6 +16,13 @@
 
 package org.gradle.internal.instrumentation.processor.features.withstaticreference;
 
+import static java.util.Collections.singletonList;
+
+import java.util.Collection;
+import java.util.Collections;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.type.TypeMirror;
 import org.gradle.internal.instrumentation.api.annotations.features.withstaticreference.WithExtensionReferences;
 import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
 import org.gradle.internal.instrumentation.model.CallableKindInfo;
@@ -25,12 +32,6 @@ import org.gradle.internal.instrumentation.processor.modelreader.impl.Annotation
 import org.gradle.internal.instrumentation.processor.modelreader.impl.TypeUtils;
 import org.gradle.internal.instrumentation.util.NameUtil;
 import org.objectweb.asm.Type;
-
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.type.TypeMirror;
-import java.util.Collection;
-import java.util.Collections;
 
 public class WithExtensionReferencesReader implements RequestPostProcessorExtension {
     @Override
@@ -47,7 +48,7 @@ public class WithExtensionReferencesReader implements RequestPostProcessorExtens
                     }));
             });
         }
-        return Collections.singletonList(originalRequest);
+        return singletonList(originalRequest);
     }
 
     private static String extractMethodName(CallInterceptionRequest originalRequest, AnnotationMirror annotation) {

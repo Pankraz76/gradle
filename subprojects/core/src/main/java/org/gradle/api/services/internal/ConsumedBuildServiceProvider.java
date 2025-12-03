@@ -16,6 +16,10 @@
 
 package org.gradle.api.services.internal;
 
+import static java.util.stream.Collectors.joining;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.internal.provider.ProviderInternal;
 import org.gradle.api.services.BuildService;
@@ -26,9 +30,6 @@ import org.gradle.internal.Cast;
 import org.gradle.internal.service.ServiceRegistry;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * A build service that is consumed.
@@ -81,7 +82,7 @@ public class ConsumedBuildServiceProvider<T extends BuildService<BuildServicePar
                 }
                 String names = results.stream()
                     .map(it -> it.getName() + ": " + getProvidedType(it.getService()).getTypeName())
-                    .collect(Collectors.joining(", "));
+                    .collect(joining(", "));
                 throw new IllegalArgumentException(String.format("Cannot resolve service by type for type '%s' when there are two or more instances. Please also provide a service name. Instances found: %s.", getType().getTypeName(), names));
             }
             // resolved, so remember it

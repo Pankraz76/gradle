@@ -15,8 +15,13 @@
  */
 package org.gradle.api.plugins.quality;
 
+import static java.util.stream.Collectors.toList;
+
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
+import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.gradle.api.Action;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.file.FileCollection;
@@ -47,10 +52,6 @@ import org.gradle.internal.nativeintegration.services.NativeServices;
 import org.gradle.util.internal.ClosureBackedAction;
 import org.gradle.workers.WorkQueue;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Runs a set of static code analysis rules on Java source code files and generates a report of problems found.
@@ -119,7 +120,7 @@ public abstract class Pmd extends AbstractCodeQualityTask implements Reporting<P
             newReport.getName().set(report.getName());
             newReport.getOutputLocation().set(report.getOutputLocation());
             return newReport;
-        }).collect(Collectors.toList()));
+        }).collect(toList()));
     }
 
     public boolean stdOutIsAttachedToTerminal() {

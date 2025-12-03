@@ -16,16 +16,8 @@
 
 package org.gradle.external.javadoc;
 
-import org.gradle.api.Incubating;
-import org.gradle.api.tasks.Input;
-import org.gradle.external.javadoc.internal.JavadocOptionFile;
-import org.gradle.external.javadoc.internal.JavadocOptionFileOptionInternal;
-import org.gradle.external.javadoc.internal.JavadocOptionFileOptionInternalAdapter;
-import org.gradle.internal.Cast;
-import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
-import org.gradle.process.ExecSpec;
-import org.gradle.util.internal.GFileUtils;
-import org.gradle.util.internal.GUtil;
+import static java.util.Collections.unmodifiableSet;
+import static java.util.stream.Collectors.joining;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +28,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.gradle.api.Incubating;
+import org.gradle.api.tasks.Input;
+import org.gradle.external.javadoc.internal.JavadocOptionFile;
+import org.gradle.external.javadoc.internal.JavadocOptionFileOptionInternal;
+import org.gradle.external.javadoc.internal.JavadocOptionFileOptionInternalAdapter;
+import org.gradle.internal.Cast;
+import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
+import org.gradle.process.ExecSpec;
+import org.gradle.util.internal.GFileUtils;
+import org.gradle.util.internal.GUtil;
 
 /**
  * Provides the core Javadoc Options. That is, provides the options which are not doclet specific.
@@ -105,7 +107,7 @@ public abstract class CoreJavadocOptions implements MinimalJavadocOptions {
 
         sourceNames = optionFile.getSourceNames();
 
-        knownCoreOptionNames = Collections.unmodifiableSet(new HashSet<>(optionFile.getOptions().keySet()));
+        knownCoreOptionNames = unmodifiableSet(new HashSet<>(optionFile.getOptions().keySet()));
     }
 
     protected CoreJavadocOptions(CoreJavadocOptions original, JavadocOptionFile optionFile) {
@@ -1011,6 +1013,6 @@ public abstract class CoreJavadocOptions implements MinimalJavadocOptions {
     protected String getExtraOptions() {
         return optionFile.stringifyExtraOptionsToMap(knownOptionNames()).entrySet().stream()
                 .map(e -> e.getKey() + ":" + e.getValue())
-                .collect(Collectors.joining(", "));
+                .collect(joining(", "));
     }
 }

@@ -15,6 +15,13 @@
  */
 package org.gradle.api.plugins;
 
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import javax.inject.Inject;
 import org.gradle.api.InvalidUserCodeException;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -41,11 +48,6 @@ import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.api.publish.plugins.PublishingPlugin;
 import org.gradle.internal.component.external.model.ProjectDerivedCapability;
 import org.gradle.internal.component.external.model.ShadowedImmutableCapability;
-
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * The Java platform plugin allows building platform components
@@ -106,16 +108,16 @@ public abstract class JavaPlatformPlugin implements Plugin<Project> {
         // API
         Configuration api = configurations.dependencyScopeLocked(API_CONFIGURATION_NAME);
 
-        Provider<ConsumableConfiguration> apiElements = createConsumableApi(project, api, API_ELEMENTS_CONFIGURATION_NAME, Category.REGULAR_PLATFORM, Collections.emptySet());
-        createConsumableApi(project, api, ENFORCED_API_ELEMENTS_CONFIGURATION_NAME, Category.ENFORCED_PLATFORM, Collections.singleton(enforcedCapability));
+        Provider<ConsumableConfiguration> apiElements = createConsumableApi(project, api, API_ELEMENTS_CONFIGURATION_NAME, Category.REGULAR_PLATFORM, emptySet());
+        createConsumableApi(project, api, ENFORCED_API_ELEMENTS_CONFIGURATION_NAME, Category.ENFORCED_PLATFORM, singleton(enforcedCapability));
 
         // Runtime
         Configuration runtime = project.getConfigurations().dependencyScopeLocked(RUNTIME_CONFIGURATION_NAME, conf -> {
             conf.extendsFrom(api);
         });
 
-        Provider<ConsumableConfiguration> runtimeElements = createConsumableRuntime(project, runtime, RUNTIME_ELEMENTS_CONFIGURATION_NAME, Category.REGULAR_PLATFORM, Collections.emptySet());
-        createConsumableRuntime(project, runtime, ENFORCED_RUNTIME_ELEMENTS_CONFIGURATION_NAME, Category.ENFORCED_PLATFORM, Collections.singleton(enforcedCapability));
+        Provider<ConsumableConfiguration> runtimeElements = createConsumableRuntime(project, runtime, RUNTIME_ELEMENTS_CONFIGURATION_NAME, Category.REGULAR_PLATFORM, emptySet());
+        createConsumableRuntime(project, runtime, ENFORCED_RUNTIME_ELEMENTS_CONFIGURATION_NAME, Category.ENFORCED_PLATFORM, singleton(enforcedCapability));
 
         // Resolvable configuration used for publishing resolved versions.
         configurations.resolvableLocked(CLASSPATH_CONFIGURATION_NAME, conf -> {

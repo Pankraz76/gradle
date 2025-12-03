@@ -16,10 +16,21 @@
 
 package org.gradle.api.internal.initialization.transform.services;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.stream.Collectors.toMap;
+
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import java.io.File;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.initialization.transform.InstrumentationArtifactMetadata;
@@ -38,17 +49,6 @@ import org.gradle.internal.hash.Hashing;
 import org.gradle.internal.lazy.Lazy;
 import org.gradle.internal.snapshot.FileSystemLocationSnapshot;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class CacheInstrumentationDataBuildService implements BuildService<BuildServiceParameters.None> {
 
@@ -183,7 +183,7 @@ public abstract class CacheInstrumentationDataBuildService implements BuildServi
         private Map<String, Set<String>> mergeTypeHierarchyAnalysis(Set<File> typeHierarchyAnalysis) {
             return typeHierarchyAnalysis.stream()
                 .flatMap(file -> serializer.readTypeHierarchyAnalysis(file).entrySet().stream())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, Sets::union));
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, Sets::union));
         }
 
         abstract ConfigurableFileCollection getTypeHierarchyAnalysisResult();

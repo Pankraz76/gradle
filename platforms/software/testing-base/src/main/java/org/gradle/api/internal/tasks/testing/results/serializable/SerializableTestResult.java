@@ -16,18 +16,19 @@
 
 package org.gradle.api.internal.tasks.testing.results.serializable;
 
+import static java.util.stream.Collectors.joining;
+
 import com.google.common.collect.ImmutableList;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.gradle.api.internal.tasks.testing.TestMetadataEvent;
 import org.gradle.api.internal.tasks.testing.worker.TestEventSerializer;
 import org.gradle.api.tasks.testing.TestResult;
 import org.gradle.internal.serialize.Decoder;
 import org.gradle.internal.serialize.Encoder;
 import org.jspecify.annotations.Nullable;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Represents a test result that can be stored for a long time (potentially across process invocations).
@@ -42,7 +43,7 @@ public final class SerializableTestResult {
         return testResults.stream()
             .map(SerializableTestResult::getDisplayName)
             .distinct()
-            .collect(Collectors.joining(" / "));
+            .collect(joining(" / "));
     }
 
     public static Builder builder() {

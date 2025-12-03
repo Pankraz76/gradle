@@ -16,7 +16,13 @@
 
 package org.gradle.plugin.internal;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+
 import com.google.common.collect.ImmutableSet;
+import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.internal.BuildDefinition;
 import org.gradle.api.internal.artifacts.DependencyManagementServices;
 import org.gradle.api.internal.artifacts.DependencyResolutionServices;
@@ -68,10 +74,6 @@ import org.gradle.plugin.use.resolve.service.internal.DefaultInjectedClasspathPl
 import org.gradle.plugin.use.resolve.service.internal.InjectedClasspathInstrumentationStrategy;
 import org.gradle.plugin.use.tracker.internal.PluginVersionTracker;
 import org.jspecify.annotations.NullMarked;
-
-import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.List;
 
 public class PluginUseServices extends AbstractGradleModuleServices {
 
@@ -133,8 +135,8 @@ public class PluginUseServices extends AbstractGradleModuleServices {
             ImmutableSet.Builder<Class<? extends Annotation>> allPropertyTypes = ImmutableSet.builder();
             InspectionScheme inspectionScheme = inspectionSchemeFactory.inspectionScheme(
                 allPropertyTypes.build(),
-                Collections.emptySet(),
-                Collections.emptyList(),
+                emptySet(),
+                emptyList(),
                 instantiationScheme,
                 MissingPropertyAnnotationHandler.DO_NOTHING
             );

@@ -16,17 +16,11 @@
 
 package org.gradle.api.tasks.wrapper.internal;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.gradle.api.GradleException;
-import org.gradle.api.resources.MissingResourceException;
-import org.gradle.api.resources.TextResourceFactory;
-import org.gradle.internal.exceptions.ResolutionProvider;
-import org.gradle.util.GradleVersion;
-import org.gradle.util.internal.DistributionLocator;
-import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
-
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +30,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.gradle.api.GradleException;
+import org.gradle.api.resources.MissingResourceException;
+import org.gradle.api.resources.TextResourceFactory;
+import org.gradle.internal.exceptions.ResolutionProvider;
+import org.gradle.util.GradleVersion;
+import org.gradle.util.internal.DistributionLocator;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 
 public class GradleVersionResolver {
@@ -153,7 +155,7 @@ public class GradleVersionResolver {
         return map.stream()
             .map(m -> m.get("version"))
             .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private static GradleVersion parseVersionString(String gradleVersionString) {
@@ -186,7 +188,7 @@ public class GradleVersionResolver {
             String validStrings = Arrays.stream(DynamicVersion.values())
                 .map(dv -> dv.name)
                 .map(s -> String.format("'%s'", s))
-                .collect(Collectors.joining(", "));
+                .collect(joining(", "));
             return String.format("Use one of the following dynamic version specifications: %s.", validStrings);
         }
     }

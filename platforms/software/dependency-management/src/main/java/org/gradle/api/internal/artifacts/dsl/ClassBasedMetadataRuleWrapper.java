@@ -16,16 +16,17 @@
 
 package org.gradle.api.internal.artifacts.dsl;
 
-import org.gradle.api.artifacts.ComponentMetadataDetails;
-import org.gradle.internal.Describables;
-import org.gradle.internal.DisplayName;
-import org.gradle.internal.action.ConfigurableRule;
-import org.gradle.internal.rules.SpecRuleAction;
+import static java.util.stream.Collectors.joining;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.gradle.api.artifacts.ComponentMetadataDetails;
+import org.gradle.internal.Describables;
+import org.gradle.internal.DisplayName;
+import org.gradle.internal.action.ConfigurableRule;
+import org.gradle.internal.rules.SpecRuleAction;
 
 class ClassBasedMetadataRuleWrapper implements MetadataRuleWrapper {
     private final List<SpecConfigurableRule> classRules = new ArrayList<>(5);
@@ -60,6 +61,6 @@ class ClassBasedMetadataRuleWrapper implements MetadataRuleWrapper {
             .map(SpecConfigurableRule::getConfigurableRule)
             .map(ConfigurableRule::getRuleClass)
             .map(Class::getName)
-            .collect(Collectors.joining(",")));
+            .collect(joining(",")));
     }
 }

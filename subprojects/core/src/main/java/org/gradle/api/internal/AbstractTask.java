@@ -16,11 +16,27 @@
 
 package org.gradle.api.internal;
 
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toList;
+import static org.gradle.internal.UncheckedException.uncheckedCall;
+
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import groovy.lang.Closure;
 import groovy.lang.MissingPropertyException;
 import groovy.util.ObservableList;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 import org.codehaus.groovy.runtime.InvokerInvocationException;
 import org.gradle.api.Action;
 import org.gradle.api.AntBuilder;
@@ -87,21 +103,6 @@ import org.gradle.util.Path;
 import org.gradle.util.internal.ConfigureUtil;
 import org.gradle.work.DisableCachingByDefault;
 import org.jspecify.annotations.Nullable;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.UncheckedException.uncheckedCall;
 
 /**
  * @deprecated This class will be removed in Gradle 10. Please use {@link org.gradle.api.DefaultTask} instead.
@@ -419,7 +420,7 @@ public abstract class AbstractTask implements TaskInternal, DynamicObjectAware {
 
     @Override
     public Set<String> getReasonsNotToTrackState() {
-        return reasonsNotToTrackState.getOrElse(Collections.emptySet());
+        return reasonsNotToTrackState.getOrElse(emptySet());
     }
 
     @Override
@@ -1068,7 +1069,7 @@ public abstract class AbstractTask implements TaskInternal, DynamicObjectAware {
             BuildServiceRegistryInternal buildServiceRegistry = getBuildServiceRegistry();
             List<? extends BuildServiceProvider<?, ?>> asConsumedServices = serviceReferences.stream()
                 .map(it -> buildServiceRegistry.consume(it.getBuildServiceName(), it.getBuildServiceType()))
-                .collect(Collectors.toList());
+                .collect(toList());
             taskRequiredServices.acceptServiceReferences(asConsumedServices);
         }
     }

@@ -16,20 +16,22 @@
 
 package org.gradle.api.internal.tasks.testing.report.generic;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
-import org.gradle.api.internal.tasks.testing.TestMetadataEvent;
-import org.gradle.api.internal.tasks.testing.results.serializable.OutputEntry;
-import org.gradle.api.internal.tasks.testing.results.serializable.OutputRanges;
-import org.gradle.api.internal.tasks.testing.results.serializable.SerializableTestResult;
-import org.gradle.api.tasks.testing.TestResult;
-
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import org.gradle.api.internal.tasks.testing.TestMetadataEvent;
+import org.gradle.api.internal.tasks.testing.results.serializable.OutputEntry;
+import org.gradle.api.internal.tasks.testing.results.serializable.OutputRanges;
+import org.gradle.api.internal.tasks.testing.results.serializable.SerializableTestResult;
+import org.gradle.api.tasks.testing.TestResult;
 
 public abstract class PerRootInfo {
     public static final class Builder {
@@ -53,8 +55,8 @@ public abstract class PerRootInfo {
             int skippedLeafCount
         ) {
             this.id = id;
-            this.results = new ArrayList<>(Collections.singletonList(result));
-            this.outputEntries = new ArrayList<>(Collections.singletonList(new OutputEntry(id, ranges)));
+            this.results = new ArrayList<>(singletonList(result));
+            this.outputEntries = new ArrayList<>(singletonList(new OutputEntry(id, ranges)));
             this.children = new ArrayList<>(childNames);
             this.childIsLeaf = childIsLeaf;
             this.totalLeafCount = totalLeafCount;
@@ -179,17 +181,17 @@ public abstract class PerRootInfo {
 
         @Override
         public List<SerializableTestResult> getResults() {
-            return Collections.singletonList(result);
+            return singletonList(result);
         }
 
         @Override
         public List<OutputEntry> getOutputEntries() {
-            return Collections.singletonList(new OutputEntry(getId(), outputRanges));
+            return singletonList(new OutputEntry(getId(), outputRanges));
         }
 
         @Override
         public List<String> getChildren() {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         @Override
@@ -242,12 +244,12 @@ public abstract class PerRootInfo {
 
         @Override
         public List<SerializableTestResult> getResults() {
-            return Collections.singletonList(result);
+            return singletonList(result);
         }
 
         @Override
         public List<OutputEntry> getOutputEntries() {
-            return Collections.singletonList(new OutputEntry(getId(), outputRanges));
+            return singletonList(new OutputEntry(getId(), outputRanges));
         }
 
         @Override

@@ -15,6 +15,13 @@
  */
 package org.gradle.internal.resolve;
 
+import static java.util.Collections.singletonList;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Formatter;
+import java.util.List;
 import org.gradle.api.Describable;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
 import org.gradle.api.artifacts.component.ComponentSelector;
@@ -26,12 +33,6 @@ import org.gradle.internal.UncheckedException;
 import org.gradle.internal.component.external.model.DefaultModuleComponentSelector;
 import org.gradle.internal.exceptions.Contextual;
 import org.gradle.internal.exceptions.DefaultMultiCauseExceptionNoStackTrace;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Formatter;
-import java.util.List;
 
 @Contextual
 public class ModuleVersionResolveException extends DefaultMultiCauseExceptionNoStackTrace {
@@ -71,7 +72,7 @@ public class ModuleVersionResolveException extends DefaultMultiCauseExceptionNoS
     }
 
     public ModuleVersionResolveException(ModuleComponentIdentifier id, Throwable cause) {
-        this(DefaultModuleComponentSelector.newSelector(DefaultModuleIdentifier.newId(id.getGroup(), id.getModule()), DefaultImmutableVersionConstraint.of(id.getVersion())), Collections.singletonList(cause));
+        this(DefaultModuleComponentSelector.newSelector(DefaultModuleIdentifier.newId(id.getGroup(), id.getModule()), DefaultImmutableVersionConstraint.of(id.getVersion())), singletonList(cause));
     }
 
     public ModuleVersionResolveException(ModuleComponentIdentifier id, Iterable<? extends Throwable> causes) {

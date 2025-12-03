@@ -16,9 +16,15 @@
 
 package org.gradle.plugins.ide.eclipse.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.gradle.util.internal.ConfigureUtil.configure;
+
 import com.google.common.base.Preconditions;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
+import java.io.File;
+import java.util.Map;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.internal.project.ProjectInternal;
@@ -28,12 +34,6 @@ import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.tasks.TaskDependency;
 import org.gradle.internal.xml.XmlTransformer;
 import org.gradle.plugins.ide.api.XmlFileContentMerger;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.Map;
-
-import static org.gradle.util.internal.ConfigureUtil.configure;
 
 /**
  * DSL-friendly model of the Eclipse project information.
@@ -304,7 +304,7 @@ public abstract class EclipseModel {
      * @param pathVariables A map with String-&gt;File pairs.
      */
     public void pathVariables(Map<String, File> pathVariables) {
-        Preconditions.checkNotNull(pathVariables);
+        checkNotNull(pathVariables);
         classpath.getPathVariables().putAll(pathVariables);
         if (wtp != null && wtp.getComponent() != null) {
             wtp.getComponent().getPathVariables().putAll(pathVariables);

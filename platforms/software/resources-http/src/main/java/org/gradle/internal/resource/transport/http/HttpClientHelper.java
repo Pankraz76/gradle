@@ -16,8 +16,23 @@
 
 package org.gradle.internal.resource.transport.http;
 
+import static java.lang.String.join;
+import static java.util.Collections.emptyList;
+import static org.apache.http.client.protocol.HttpClientContext.REDIRECT_LOCATIONS;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Iterables;
+import java.io.Closeable;
+import java.io.IOException;
+import java.net.SocketException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLHandshakeException;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -36,21 +51,6 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLHandshakeException;
-import java.io.Closeable;
-import java.io.IOException;
-import java.net.SocketException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import static java.lang.String.join;
-import static org.apache.http.client.protocol.HttpClientContext.REDIRECT_LOCATIONS;
 
 /**
  * Provides some convenience and unified logging.
@@ -225,7 +225,7 @@ public class HttpClientHelper implements Closeable {
     private static List<URI> getRedirectLocations(HttpContext httpContext) {
         @SuppressWarnings("unchecked")
         List<URI> redirects = (List<URI>) httpContext.getAttribute(REDIRECT_LOCATIONS);
-        return redirects == null ? Collections.emptyList() : redirects;
+        return redirects == null ? emptyList() : redirects;
     }
 
 

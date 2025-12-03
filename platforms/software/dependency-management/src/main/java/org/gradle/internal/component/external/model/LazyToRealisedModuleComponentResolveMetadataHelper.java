@@ -16,9 +16,19 @@
 
 package org.gradle.internal.component.external.model;
 
+import static java.util.Collections.emptyList;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.artifacts.component.ModuleComponentSelector;
@@ -27,13 +37,6 @@ import org.gradle.api.internal.artifacts.dsl.dependencies.PlatformSupport;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
 import org.gradle.internal.component.external.descriptor.Configuration;
 import org.gradle.internal.component.model.ExcludeMetadata;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Utility class to help transform a lazy {@link ModuleComponentResolveMetadata} into a realised one.
@@ -66,7 +69,7 @@ public class LazyToRealisedModuleComponentResolveMetadataHelper {
 
         ImmutableList.Builder<AbstractRealisedModuleComponentResolveMetadata.ImmutableRealisedVariantImpl> builder = new ImmutableList.Builder<>();
         builder.addAll(declaredVariants);
-        Map<String, ComponentVariant> variantsByName = declaredVariants.stream().collect(Collectors.toMap(ComponentVariant::getName, Function.identity()));
+        Map<String, ComponentVariant> variantsByName = declaredVariants.stream().collect(toMap(ComponentVariant::getName, identity()));
         for (AdditionalVariant additionalVariant : additionalVariants) {
             String baseName = additionalVariant.getBase();
             ImmutableAttributes attributes;
@@ -126,7 +129,7 @@ public class LazyToRealisedModuleComponentResolveMetadataHelper {
         for (ComponentVariant.DependencyConstraint dependencyConstraint : dependencyConstraints) {
             result.add(new GradleDependencyMetadata(
                 DefaultModuleComponentSelector.newSelector(DefaultModuleIdentifier.newId(dependencyConstraint.getGroup(), dependencyConstraint.getModule()), dependencyConstraint.getVersionConstraint(), dependencyConstraint.getAttributes(), ImmutableSet.of()),
-                Collections.emptyList(),
+                emptyList(),
                 true,
                 false,
                 dependencyConstraint.getReason(),

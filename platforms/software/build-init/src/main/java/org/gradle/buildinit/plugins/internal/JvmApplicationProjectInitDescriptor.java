@@ -16,18 +16,19 @@
 
 package org.gradle.buildinit.plugins.internal;
 
-import com.google.common.collect.ImmutableList;
-import org.gradle.api.internal.DocumentationRegistry;
-import org.gradle.buildinit.plugins.internal.model.Description;
-import org.gradle.buildinit.plugins.internal.modifiers.ComponentType;
-import org.gradle.buildinit.plugins.internal.modifiers.Language;
-import org.gradle.buildinit.plugins.internal.modifiers.ModularizationOption;
+import static java.util.Collections.singletonList;
 
+import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import org.gradle.api.internal.DocumentationRegistry;
+import org.gradle.buildinit.plugins.internal.model.Description;
+import org.gradle.buildinit.plugins.internal.modifiers.ComponentType;
+import org.gradle.buildinit.plugins.internal.modifiers.Language;
+import org.gradle.buildinit.plugins.internal.modifiers.ModularizationOption;
 
 public class JvmApplicationProjectInitDescriptor extends JvmProjectInitDescriptor {
 
@@ -80,7 +81,7 @@ public class JvmApplicationProjectInitDescriptor extends JvmProjectInitDescripto
     @Override
     protected List<String> getSourceTemplates(String subproject, InitSettings settings, TemplateFactory templateFactory) {
         if (isSingleProject(settings)) {
-            return Collections.singletonList("App");
+            return singletonList("App");
         }
         switch (subproject) {
             case "app":
@@ -97,7 +98,7 @@ public class JvmApplicationProjectInitDescriptor extends JvmProjectInitDescripto
     @Override
     protected List<String> getTestSourceTemplates(String subproject, InitSettings settings, TemplateFactory templateFactory) {
         if (isSingleProject(settings)) {
-            return Collections.singletonList(getTestFrameWorkName(settings));
+            return singletonList(getTestFrameWorkName(settings));
         }
 
         switch (subproject) {

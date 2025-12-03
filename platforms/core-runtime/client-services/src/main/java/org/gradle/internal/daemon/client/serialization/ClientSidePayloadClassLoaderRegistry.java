@@ -16,16 +16,9 @@
 
 package org.gradle.internal.daemon.client.serialization;
 
-import com.google.common.collect.ImmutableList;
-import org.gradle.tooling.internal.provider.serialization.ClassLoaderCache;
-import org.gradle.tooling.internal.provider.serialization.ClassLoaderDetails;
-import org.gradle.tooling.internal.provider.serialization.ClientOwnedClassLoaderSpec;
-import org.gradle.tooling.internal.provider.serialization.DeserializeMap;
-import org.gradle.tooling.internal.provider.serialization.PayloadClassLoaderRegistry;
-import org.gradle.tooling.internal.provider.serialization.SerializeMap;
-import org.jspecify.annotations.Nullable;
+import static java.util.UUID.randomUUID;
 
-import javax.annotation.concurrent.ThreadSafe;
+import com.google.common.collect.ImmutableList;
 import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.util.ArrayList;
@@ -37,6 +30,14 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import javax.annotation.concurrent.ThreadSafe;
+import org.gradle.tooling.internal.provider.serialization.ClassLoaderCache;
+import org.gradle.tooling.internal.provider.serialization.ClassLoaderDetails;
+import org.gradle.tooling.internal.provider.serialization.ClientOwnedClassLoaderSpec;
+import org.gradle.tooling.internal.provider.serialization.DeserializeMap;
+import org.gradle.tooling.internal.provider.serialization.PayloadClassLoaderRegistry;
+import org.gradle.tooling.internal.provider.serialization.SerializeMap;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link PayloadClassLoaderRegistry} used in the client JVM that maps classes loaded by application ClassLoaders. Inspects each class to calculate a minimal classpath to send across to the daemon process to recreate the ClassLoaders.
@@ -175,7 +176,7 @@ public class ClientSidePayloadClassLoaderRegistry implements PayloadClassLoaderR
             }
 
             // Haven't seen the classloaders before - add a new entry
-            UUID uuid = UUID.randomUUID();
+            UUID uuid = randomUUID();
             ClassLoaderDetails clientClassLoaders = new ClassLoaderDetails(uuid, new ClientOwnedClassLoaderSpec(ImmutableList.copyOf(classPath)));
             LocalClassLoaderMapping mapping = new LocalClassLoaderMapping(clientClassLoaders);
             for (ClassLoader candidate : candidates) {

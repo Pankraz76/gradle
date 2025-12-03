@@ -16,6 +16,9 @@
 
 package org.gradle.api.internal.project;
 
+import static java.util.Collections.singleton;
+
+import java.util.Collections;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.internal.DefaultMutationGuard;
@@ -25,8 +28,6 @@ import org.gradle.internal.operations.BuildOperationContext;
 import org.gradle.internal.operations.BuildOperationDescriptor;
 import org.gradle.internal.operations.BuildOperationRunner;
 import org.gradle.internal.operations.RunnableBuildOperation;
-
-import java.util.Collections;
 
 public class BuildOperationCrossProjectConfigurator implements CrossProjectConfigurator {
 
@@ -54,7 +55,7 @@ public class BuildOperationCrossProjectConfigurator implements CrossProjectConfi
 
     @Override
     public void rootProject(ProjectInternal project, Action<? super Project> buildOperationRunner) {
-        runBlockConfigureAction(ROOT_PROJECT_DETAILS, Collections.singleton(project), buildOperationRunner);
+        runBlockConfigureAction(ROOT_PROJECT_DETAILS, singleton(project), buildOperationRunner);
     }
 
     private void runBlockConfigureAction(final BuildOperationDescriptor.Builder details, final Iterable<? extends ProjectInternal> projects, final Action<? super Project> configureAction) {

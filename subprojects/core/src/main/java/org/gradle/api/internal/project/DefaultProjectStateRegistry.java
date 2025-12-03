@@ -15,7 +15,23 @@
  */
 package org.gradle.api.internal.project;
 
+import static java.util.Comparator.comparing;
+
 import com.google.common.collect.Iterables;
+import java.io.Closeable;
+import java.io.File;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier;
@@ -39,21 +55,6 @@ import org.gradle.internal.service.ServiceRegistry;
 import org.gradle.internal.work.WorkerLeaseService;
 import org.gradle.util.Path;
 import org.jspecify.annotations.Nullable;
-
-import java.io.Closeable;
-import java.io.File;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class DefaultProjectStateRegistry implements ProjectStateRegistry, Closeable {
     private final WorkerLeaseService workerLeaseService;
@@ -237,7 +238,7 @@ public class DefaultProjectStateRegistry implements ProjectStateRegistry, Closea
 
         @Override
         public Set<? extends ProjectState> getAllProjects() {
-            TreeSet<ProjectState> projects = new TreeSet<>(Comparator.comparing(ProjectState::getIdentityPath));
+            TreeSet<ProjectState> projects = new TreeSet<>(comparing(ProjectState::getIdentityPath));
             projects.addAll(projectsByPath.values());
             return projects;
         }
@@ -325,7 +326,7 @@ public class DefaultProjectStateRegistry implements ProjectStateRegistry, Closea
 
         @Override
         public Set<ProjectState> getChildProjects() {
-            Set<ProjectState> children = new TreeSet<>(Comparator.comparing(ProjectState::getIdentityPath));
+            Set<ProjectState> children = new TreeSet<>(comparing(ProjectState::getIdentityPath));
             for (ProjectDescriptorInternal child : descriptor.children()) {
                 children.add(getStateForChild(child));
             }

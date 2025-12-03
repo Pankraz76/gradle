@@ -16,6 +16,10 @@
 
 package org.gradle.model.internal.inspect;
 
+import static java.util.Collections.emptyList;
+
+import java.util.Collections;
+import java.util.List;
 import org.gradle.model.RuleSource;
 import org.gradle.model.Rules;
 import org.gradle.model.internal.core.ModelActionRole;
@@ -25,9 +29,6 @@ import org.gradle.model.internal.core.MutableModelNode;
 import org.gradle.model.internal.core.rule.describe.ModelRuleDescriptor;
 import org.gradle.model.internal.type.ModelType;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
 
 public class RuleDefinitionRuleExtractor extends AbstractAnnotationDrivenModelRuleExtractor<Rules> {
     private static final ModelType<RuleSource> RULE_SOURCE_MODEL_TYPE = ModelType.of(RuleSource.class);
@@ -77,7 +78,7 @@ public class RuleDefinitionRuleExtractor extends AbstractAnnotationDrivenModelRu
 
         @Override
         public List<? extends Class<?>> getRuleDependencies() {
-            return Collections.emptyList();
+            return emptyList();
         }
     }
 

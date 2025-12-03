@@ -16,6 +16,15 @@
 
 package org.gradle.process.internal;
 
+import static java.util.Collections.unmodifiableList;
+import static org.gradle.process.internal.DefaultExecSpec.copyBaseExecSpecTo;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import javax.inject.Inject;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.file.FileCollectionFactory;
@@ -27,15 +36,6 @@ import org.gradle.internal.file.PathToFileResolver;
 import org.gradle.internal.jvm.DefaultModularitySpec;
 import org.gradle.process.CommandLineArgumentProvider;
 import org.gradle.process.JavaExecSpec;
-
-import javax.inject.Inject;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import static org.gradle.process.internal.DefaultExecSpec.copyBaseExecSpecTo;
 
 
 public class DefaultJavaExecSpec extends DefaultJavaForkOptions implements JavaExecSpec, ProcessArgumentsSpec.HasExecutable {
@@ -186,7 +186,7 @@ public class DefaultJavaExecSpec extends DefaultJavaForkOptions implements JavaE
     public List<String> getAllJvmArgs() {
         List<String> allJvmArgs = new ArrayList<>(super.getAllJvmArgs());
         allJvmArgs.addAll(getJvmArguments().get());
-        return Collections.unmodifiableList(allJvmArgs);
+        return unmodifiableList(allJvmArgs);
     }
 
     @Override

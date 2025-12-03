@@ -15,6 +15,12 @@
  */
 package org.gradle.api.internal.artifacts;
 
+import static java.util.stream.Collectors.toList;
+
+import java.io.File;
+import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import org.gradle.StartParameter;
 import org.gradle.api.Describable;
 import org.gradle.api.InvalidUserCodeException;
@@ -152,11 +158,6 @@ import org.gradle.internal.service.ServiceRegistrationProvider;
 import org.gradle.internal.service.ServiceRegistry;
 import org.gradle.internal.service.ServiceRegistryBuilder;
 import org.gradle.util.internal.SimpleMapInterner;
-
-import java.io.File;
-import java.util.List;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public class DefaultDependencyManagementServices implements DependencyManagementServices {
 
@@ -618,7 +619,7 @@ public class DefaultDependencyManagementServices implements DependencyManagement
         private static List<ResolutionAwareRepository> collectRepositories(RepositoryHandler repositoryHandler) {
             return repositoryHandler.stream()
                 .map(ResolutionAwareRepository.class::cast)
-                .collect(Collectors.toList());
+                .collect(toList());
         }
     }
 

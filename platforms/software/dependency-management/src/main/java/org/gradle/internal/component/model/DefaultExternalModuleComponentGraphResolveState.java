@@ -16,7 +16,14 @@
 
 package org.gradle.internal.component.model;
 
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.ImmutableList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
@@ -30,12 +37,6 @@ import org.gradle.internal.component.external.model.ExternalModuleComponentGraph
 import org.gradle.internal.component.external.model.ImmutableCapabilities;
 import org.gradle.internal.lazy.Lazy;
 import org.jspecify.annotations.Nullable;
-
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collectors;
 
 /**
  * Default implementation of {@link ExternalModuleComponentGraphResolveState}
@@ -61,7 +62,7 @@ public class DefaultExternalModuleComponentGraphResolveState<G extends ExternalM
             graphMetadata.getVariantsForGraphTraversal().stream()
                 .map(ModuleConfigurationMetadata.class::cast)
                 .map(variant -> resolveStateFor(variant).asVariant())
-                .collect(Collectors.toList())
+                .collect(toList())
         );
         this.idGenerator = idGenerator;
     }

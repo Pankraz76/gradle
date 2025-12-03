@@ -16,11 +16,12 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Preconditions;
+import java.io.File;
 import org.gradle.api.Named;
 import org.gradle.util.internal.VersionNumber;
-
-import java.io.File;
 
 public class VisualStudioInstall implements Named {
     private final String name;
@@ -31,7 +32,7 @@ public class VisualStudioInstall implements Named {
     public VisualStudioInstall(String name, File baseDir, VersionNumber version, VisualCppInstall visualCppInstall) {
         this.name = name;
         this.baseDir = baseDir;
-        this.visualCppInstall = Preconditions.checkNotNull(visualCppInstall);
+        this.visualCppInstall = checkNotNull(visualCppInstall);
         this.version = version;
     }
 

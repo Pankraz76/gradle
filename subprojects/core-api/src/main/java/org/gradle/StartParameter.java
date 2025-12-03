@@ -16,8 +16,21 @@
 
 package org.gradle;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.unmodifiableList;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.gradle.api.Incubating;
@@ -41,18 +54,6 @@ import org.gradle.internal.concurrent.DefaultParallelismConfiguration;
 import org.gradle.internal.deprecation.StartParameterDeprecations;
 import org.gradle.internal.logging.DefaultLoggingConfiguration;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static java.util.Collections.emptyList;
 
 /**
  * <p>{@code StartParameter} defines the configuration used by a Gradle instance to execute a build. The properties of {@code StartParameter} generally correspond to the command-line options of
@@ -307,9 +308,9 @@ public class StartParameter implements LoggingConfiguration, ParallelismConfigur
      */
     public void setTaskNames(@Nullable Iterable<String> taskNames) {
         if (taskNames == null) {
-            this.taskRequests = Collections.singletonList(new RunDefaultTasksExecutionRequest());
+            this.taskRequests = singletonList(new RunDefaultTasksExecutionRequest());
         } else {
-            this.taskRequests = Collections.singletonList(DefaultTaskExecutionRequest.of(taskNames));
+            this.taskRequests = singletonList(DefaultTaskExecutionRequest.of(taskNames));
         }
     }
 
@@ -495,7 +496,7 @@ public class StartParameter implements LoggingConfiguration, ParallelismConfigur
      * @return list of all explicitly added init scripts.
      */
     public List<File> getInitScripts() {
-        return Collections.unmodifiableList(initScripts);
+        return unmodifiableList(initScripts);
     }
 
     /**
@@ -511,7 +512,7 @@ public class StartParameter implements LoggingConfiguration, ParallelismConfigur
 
         List<File> scripts = new ArrayList<>(getInitScripts());
         initScriptFinder.findScripts(scripts);
-        return Collections.unmodifiableList(scripts);
+        return unmodifiableList(scripts);
     }
 
     /**
@@ -783,7 +784,7 @@ public class StartParameter implements LoggingConfiguration, ParallelismConfigur
     }
 
     public List<File> getIncludedBuilds() {
-        return Collections.unmodifiableList(includedBuilds);
+        return unmodifiableList(includedBuilds);
     }
 
     /**

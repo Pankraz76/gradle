@@ -15,6 +15,14 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.selectors;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.internal.artifacts.ResolvedVersionConstraint;
 import org.gradle.api.internal.artifacts.ivyservice.ivyresolve.strategy.LatestVersionSelector;
@@ -25,12 +33,6 @@ import org.gradle.api.internal.artifacts.ivyservice.resolveengine.ComponentResol
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.builder.VirtualPlatformState;
 import org.gradle.internal.resolve.ModuleVersionResolveException;
 import org.gradle.internal.resolve.result.ComponentIdResolveResult;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
 
 class SelectorStateResolverResults {
     private final Comparator<Version> versionComparator;
@@ -57,7 +59,7 @@ class SelectorStateResolverResults {
 
             if (selectorState.isForce() && !hasSoftForce) {
                 T forcedComponent = componentForIdResolveResult(componentFactory, idResolveResult, selectorState);
-                return Collections.singletonList(forcedComponent);
+                return singletonList(forcedComponent);
             }
 
             if (idResolveResult.mark(this)) {
@@ -79,7 +81,7 @@ class SelectorStateResolverResults {
             throw failure;
         }
 
-        return resolved == null ? Collections.emptyList() : resolved;
+        return resolved == null ? emptyList() : resolved;
     }
 
     static <T extends ComponentResolutionState> boolean isVersionAllowedByPlatform(T componentState) {

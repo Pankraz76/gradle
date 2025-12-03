@@ -16,8 +16,14 @@
 
 package org.gradle.api.tasks.util;
 
+import static java.util.Collections.emptySet;
+import static java.util.Collections.unmodifiableSet;
+
 import com.google.common.collect.Sets;
 import groovy.lang.Closure;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.gradle.api.Incubating;
 import org.gradle.api.file.FileTreeElement;
 import org.gradle.api.specs.Spec;
@@ -31,10 +37,6 @@ import org.gradle.internal.typeconversion.NotationParser;
 import org.gradle.internal.typeconversion.NotationParserBuilder;
 import org.gradle.util.internal.CollectionUtils;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * Standalone implementation of {@link PatternFilterable}.
@@ -104,11 +106,11 @@ public class PatternSet implements AntBuilderAware, PatternFilterable {
     }
 
     private static <T> Set<T> nullToEmptyAndUnmodifiableSet(@Nullable Set<T> set) {
-        return set == null ? Collections.emptySet() : Collections.unmodifiableSet(set);
+        return set == null ? emptySet() : unmodifiableSet(set);
     }
 
     private static Set<?> nullToEmpty(@Nullable Set<?> set) {
-        return set == null ? Collections.emptySet() : set;
+        return set == null ? emptySet() : set;
     }
 
     public PatternSet copyFrom(PatternFilterable sourcePattern) {

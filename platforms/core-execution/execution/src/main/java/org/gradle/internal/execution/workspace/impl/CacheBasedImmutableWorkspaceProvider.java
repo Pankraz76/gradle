@@ -16,6 +16,15 @@
 
 package org.gradle.internal.execution.workspace.impl;
 
+import static java.util.UUID.randomUUID;
+
+import java.io.Closeable;
+import java.io.File;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Supplier;
 import org.gradle.api.internal.cache.CacheConfigurationsInternal;
 import org.gradle.cache.CacheBuilder;
 import org.gradle.cache.CacheCleanupStrategyFactory;
@@ -28,14 +37,6 @@ import org.gradle.cache.internal.SingleDepthFilesFinder;
 import org.gradle.internal.execution.workspace.ImmutableWorkspaceProvider;
 import org.gradle.internal.file.FileAccessTimeJournal;
 import org.gradle.internal.file.impl.SingleDepthFileAccessTracker;
-
-import java.io.Closeable;
-import java.io.File;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Supplier;
 
 public class CacheBasedImmutableWorkspaceProvider implements ImmutableWorkspaceProvider, Closeable {
     private static final int DEFAULT_FILE_TREE_DEPTH_TO_TRACK_AND_CLEANUP = 1;
@@ -125,7 +126,7 @@ public class CacheBasedImmutableWorkspaceProvider implements ImmutableWorkspaceP
             @Override
             public <T> T withTemporaryWorkspace(TemporaryWorkspaceAction<T> action) {
                 // TODO Use Files.createTemporaryDirectory() instead
-                String temporaryLocation = path + "-" + UUID.randomUUID();
+                String temporaryLocation = path + "-" + randomUUID();
                 File temporaryWorkspace = new File(baseDirectory, temporaryLocation);
                 return action.executeInTemporaryWorkspace(temporaryWorkspace);
             }

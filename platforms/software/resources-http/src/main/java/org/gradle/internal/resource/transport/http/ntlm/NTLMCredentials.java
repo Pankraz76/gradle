@@ -16,8 +16,9 @@
 package org.gradle.internal.resource.transport.http.ntlm;
 
 
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Preconditions;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Locale;
@@ -32,7 +33,7 @@ public class NTLMCredentials {
 
     public NTLMCredentials(String username, String password) {
         String domain;
-        Preconditions.checkNotNull(username, "Username must not be null!");
+        checkNotNull(username, "Username must not be null!");
         int slashPos = username.indexOf('\\');
         slashPos = slashPos >= 0 ? slashPos : username.indexOf('/');
         if (slashPos >= 0) {

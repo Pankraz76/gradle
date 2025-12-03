@@ -16,17 +16,10 @@
 
 package org.gradle.api.tasks;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import org.gradle.api.DefaultTask;
-import org.gradle.api.file.RegularFileProperty;
-import org.gradle.internal.IoActions;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
-import org.gradle.internal.util.PropertiesUtils;
-import org.gradle.util.internal.DeferredUtil;
-import org.jspecify.annotations.Nullable;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,6 +30,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Callable;
+import org.gradle.api.DefaultTask;
+import org.gradle.api.file.RegularFileProperty;
+import org.gradle.internal.IoActions;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyProperty;
+import org.gradle.internal.util.PropertiesUtils;
+import org.gradle.util.internal.DeferredUtil;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Writes a {@link java.util.Properties} in a way that the results can be expected to be reproducible.
@@ -216,6 +217,6 @@ public abstract class WriteProperties extends DefaultTask {
     }
 
     private static void checkForNullValue(String key, Object value) {
-        Preconditions.checkNotNull(value, "Property '%s' is not allowed to have a null value.", key);
+        checkNotNull(value, "Property '%s' is not allowed to have a null value.", key);
     }
 }

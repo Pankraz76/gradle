@@ -16,6 +16,11 @@
 
 package org.gradle.api.internal.artifacts.dsl.dependencies;
 
+import static java.util.Comparator.comparing;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import org.gradle.api.attributes.plugin.GradlePluginApiVersion;
 import org.gradle.internal.component.resolution.failure.ResolutionCandidateAssessor.AssessedAttribute;
 import org.gradle.internal.component.resolution.failure.ResolutionCandidateAssessor.AssessedCandidate;
@@ -26,10 +31,6 @@ import org.gradle.internal.component.resolution.failure.exception.VariantSelecti
 import org.gradle.internal.component.resolution.failure.interfaces.ResolutionFailure;
 import org.gradle.internal.component.resolution.failure.type.NoCompatibleVariantsFailure;
 import org.gradle.util.GradleVersion;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * A {@link ResolutionFailureDescriber} that describes a {@link ResolutionFailure} caused by a plugin requiring
@@ -70,7 +71,7 @@ public abstract class NewerGradleNeededByPluginFailureDescriber extends Abstract
             .map(this::findMinGradleVersionSupportedByPlugin)
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .min(Comparator.comparing(GradleVersion::getVersion))
+            .min(comparing(GradleVersion::getVersion))
             .orElseThrow(IllegalStateException::new);
     }
 
@@ -78,7 +79,7 @@ public abstract class NewerGradleNeededByPluginFailureDescriber extends Abstract
         return candidate.getIncompatibleAttributes().stream()
             .filter(this::isGradlePluginApiAttribute)
             .map(apiVersionAttribute -> GradleVersion.version(String.valueOf(apiVersionAttribute.getProvided())))
-            .min(Comparator.comparing(GradleVersion::getVersion));
+            .min(comparing(GradleVersion::getVersion));
     }
 
     private boolean isGradlePluginApiAttribute(AssessedAttribute<?> attribute) {

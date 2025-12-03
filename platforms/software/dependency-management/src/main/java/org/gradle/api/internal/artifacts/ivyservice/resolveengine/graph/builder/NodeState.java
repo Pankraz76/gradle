@@ -16,11 +16,27 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.builder;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toSet;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
@@ -54,18 +70,6 @@ import org.gradle.internal.logging.text.TreeFormatter;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Represents a node in the dependency graph.
@@ -237,7 +241,7 @@ public class NodeState implements DependencyGraphNode {
         if (variantState instanceof LocalVariantGraphResolveState) {
             return ((LocalVariantGraphResolveState) variantState).getFiles();
         }
-        return Collections.emptySet();
+        return emptySet();
     }
 
     @Override
@@ -466,7 +470,7 @@ public class NodeState implements DependencyGraphNode {
                 // variant and here we are in the case the "including" component said that transitive
                 // should be false so we need to arbitrarily carry that onto the dependency metadata
                 assert dependencies.size() == 1;
-                dependencies = Collections.singletonList(makeNonTransitive(dependencies.get(0)));
+                dependencies = singletonList(makeNonTransitive(dependencies.get(0)));
             }
             this.cachedDependencyStates = cacheDependencyStates(dependencies);
         }
@@ -508,7 +512,7 @@ public class NodeState implements DependencyGraphNode {
     @SuppressWarnings("MixedMutabilityReturnType")
     private List<DependencyState> cacheDependencyStates(List<? extends DependencyMetadata> dependencies) {
         if (dependencies.isEmpty()) {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         DependencySubstitutionApplicator dependencySubstitutionApplicator = resolveState.getDependencySubstitutionApplicator();
@@ -720,7 +724,7 @@ public class NodeState implements DependencyGraphNode {
                 incomingEdges.stream()
                     .map(EdgeState::getTransitiveExclusions)
                     .filter(Objects::nonNull)
-                    .collect(Collectors.toSet())
+                    .collect(toSet())
             );
         }
         if (incomingEdges.size() == 1) {

@@ -16,6 +16,11 @@
 
 package org.gradle.launcher.cli.converter;
 
+import static java.util.Collections.unmodifiableMap;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import org.gradle.cli.CommandLineConverter;
 import org.gradle.cli.CommandLineParser;
 import org.gradle.cli.ParsedCommandLine;
@@ -24,10 +29,6 @@ import org.gradle.internal.Cast;
 import org.gradle.launcher.configuration.InitialProperties;
 import org.gradle.process.internal.CurrentProcess;
 import org.gradle.process.internal.JvmOptions;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 public class InitialPropertiesConverter {
     private final CommandLineConverter<Map<String, String>> systemPropertiesCommandLineConverter = new SystemPropertiesCommandLineConverter();
@@ -44,7 +45,7 @@ public class InitialPropertiesConverter {
         return new InitialProperties() {
             @Override
             public Map<String, String> getRequestedSystemProperties() {
-                return Collections.unmodifiableMap(requestedSystemProperties);
+                return unmodifiableMap(requestedSystemProperties);
             }
         };
     }

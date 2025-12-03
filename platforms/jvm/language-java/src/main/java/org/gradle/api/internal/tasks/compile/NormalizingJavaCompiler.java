@@ -15,8 +15,14 @@
  */
 package org.gradle.api.internal.tasks.compile;
 
+import static java.util.stream.Collectors.joining;
+import static org.gradle.internal.FileUtils.hasExtension;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
@@ -25,12 +31,6 @@ import org.gradle.api.tasks.WorkResults;
 import org.gradle.language.base.internal.compile.Compiler;
 import org.gradle.util.internal.CollectionUtils;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.FileUtils.hasExtension;
 
 /**
  * A Java {@link Compiler} which does some normalization of the compile configuration and behaviour before delegating to some other compiler.
@@ -89,7 +89,7 @@ public class NormalizingJavaCompiler implements Compiler<JavaCompileSpec> {
         }
 
         List<String> compilerArgs = new JavaCompilerArgumentsBuilder(spec).includeLauncherOptions(true).includeSourceFiles(true).build();
-        String joinedArgs = compilerArgs.stream().map(it -> StringUtils.isBlank(it) ? ('"' + it + '"') : it).collect(Collectors.joining(" "));
+        String joinedArgs = compilerArgs.stream().map(it -> StringUtils.isBlank(it) ? ('"' + it + '"') : it).collect(joining(" "));
         LOGGER.debug("Compiler arguments: {}", joinedArgs);
     }
 

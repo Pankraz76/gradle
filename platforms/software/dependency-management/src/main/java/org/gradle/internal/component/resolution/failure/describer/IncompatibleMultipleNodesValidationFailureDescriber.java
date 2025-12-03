@@ -16,16 +16,17 @@
 
 package org.gradle.internal.component.resolution.failure.describer;
 
+import static java.util.Comparator.comparing;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+import java.util.Comparator;
+import java.util.List;
 import org.gradle.api.attributes.Attribute;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
 import org.gradle.internal.component.resolution.failure.ResolutionCandidateAssessor.AssessedCandidate;
 import org.gradle.internal.component.resolution.failure.exception.GraphValidationException;
 import org.gradle.internal.component.resolution.failure.type.IncompatibleMultipleNodesValidationFailure;
-
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * A {@link ResolutionFailureDescriber} that describes an {@link IncompatibleMultipleNodesValidationFailure}.
@@ -56,7 +57,7 @@ public abstract class IncompatibleMultipleNodesValidationFailureDescriber extend
     private void formatAttributes(StringBuilder sb, ImmutableAttributes attributes) {
         ImmutableSet<Attribute<?>> keySet = attributes.keySet();
         List<Attribute<?>> sorted = Lists.newArrayList(keySet);
-        sorted.sort(Comparator.comparing(Attribute::getName));
+        sorted.sort(comparing(Attribute::getName));
         boolean space = false;
         sb.append("{");
         for (Attribute<?> attribute : sorted) {

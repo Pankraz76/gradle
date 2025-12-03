@@ -15,10 +15,8 @@
  */
 package org.gradle.util.internal;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.function.TriConsumer;
-import org.gradle.api.problems.ProblemId;
-import org.gradle.api.problems.internal.GradleCoreProblemGroup;
+import static java.util.regex.Pattern.CASE_INSENSITIVE;
+import static java.util.regex.Pattern.UNICODE_CASE;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -28,6 +26,10 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.function.TriConsumer;
+import org.gradle.api.problems.ProblemId;
+import org.gradle.api.problems.internal.GradleCoreProblemGroup;
 
 /**
  * Selects a single item from a collection based on a camel case pattern.
@@ -82,7 +84,7 @@ public class NameMatcher {
 
         String camelCaseRegex = getCamelCasePatternForName(pattern);
         Pattern camelCasePattern = Pattern.compile(camelCaseRegex);
-        Pattern caseInsensitiveCamelCasePattern = Pattern.compile(camelCaseRegex, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        Pattern caseInsensitiveCamelCasePattern = Pattern.compile(camelCaseRegex, CASE_INSENSITIVE | UNICODE_CASE);
         Set<String> caseInsensitivePrefixMatches = new TreeSet<>();
         Set<String> caseSensitiveCamelCaseMatches = new TreeSet<>();
         Set<String> caseInsensitiveCamelCaseMatches = new TreeSet<>();

@@ -15,6 +15,10 @@
  */
 package org.gradle.testfixtures.internal;
 
+import static java.util.Collections.emptyMap;
+
+import java.util.Collections;
+import java.util.Map;
 import org.gradle.api.internal.properties.GradleProperties;
 import org.gradle.api.internal.properties.GradlePropertiesController;
 import org.gradle.initialization.BuildCancellationToken;
@@ -25,9 +29,6 @@ import org.gradle.internal.build.BuildState;
 import org.gradle.internal.service.Provides;
 import org.gradle.internal.service.scopes.BuildScopeServices;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.Map;
 
 public class TestBuildScopeServices extends BuildScopeServices {
 
@@ -60,12 +61,12 @@ public class TestBuildScopeServices extends BuildScopeServices {
 
         @Override
         public Map<String, String> getProperties() {
-            return Collections.emptyMap();
+            return emptyMap();
         }
 
         @Override
         public Map<String, String> getPropertiesWithPrefix(String prefix) {
-            return Collections.emptyMap();
+            return emptyMap();
         }
 
         @Override

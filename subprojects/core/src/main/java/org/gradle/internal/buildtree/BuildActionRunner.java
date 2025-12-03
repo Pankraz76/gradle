@@ -16,16 +16,17 @@
 
 package org.gradle.internal.buildtree;
 
+import static java.util.Collections.singletonList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.execution.MultipleBuildFailures;
 import org.gradle.internal.invocation.BuildAction;
 import org.gradle.internal.problems.failure.Failure;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Responsible for executing a {@link BuildAction} and generating the result.
@@ -164,7 +165,7 @@ public interface BuildActionRunner {
          * Returns a copy of this result adding the given failure.
          */
         public Result addFailure(Throwable t) {
-            return addFailures(Collections.singletonList(t));
+            return addFailures(singletonList(t));
         }
     }
 }

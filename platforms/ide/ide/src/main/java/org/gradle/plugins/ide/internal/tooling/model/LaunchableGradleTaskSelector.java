@@ -16,15 +16,16 @@
 
 package org.gradle.plugins.ide.internal.tooling.model;
 
-import org.gradle.TaskExecutionRequest;
-import org.gradle.tooling.internal.gradle.DefaultProjectIdentifier;
-import org.gradle.tooling.internal.protocol.InternalLaunchable;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.singletonList;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.TaskExecutionRequest;
+import org.gradle.tooling.internal.gradle.DefaultProjectIdentifier;
+import org.gradle.tooling.internal.protocol.InternalLaunchable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Data used for {@link org.gradle.tooling.model.TaskSelector}.
@@ -68,7 +69,7 @@ public class LaunchableGradleTaskSelector implements InternalLaunchable, TaskExe
 
     @Override
     public List<String> getArgs() {
-        return Collections.singletonList(taskName);
+        return singletonList(taskName);
     }
 
     public LaunchableGradleTaskSelector setTaskName(String taskName) {

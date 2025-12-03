@@ -16,6 +16,10 @@
 
 package org.gradle.model.internal.inspect;
 
+import static java.util.Collections.emptyList;
+
+import java.util.Collections;
+import java.util.List;
 import org.gradle.internal.Cast;
 import org.gradle.model.InvalidModelRuleDeclarationException;
 import org.gradle.model.Model;
@@ -24,9 +28,6 @@ import org.gradle.model.internal.core.ModelPath;
 import org.gradle.model.internal.core.ModelRegistrations;
 import org.gradle.model.internal.core.MutableModelNode;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
 
 public abstract class AbstractModelCreationRuleExtractor extends AbstractAnnotationDrivenModelRuleExtractor<Model> {
 
@@ -86,7 +87,7 @@ public abstract class AbstractModelCreationRuleExtractor extends AbstractAnnotat
 
         @Override
         public List<Class<?>> getRuleDependencies() {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         @Override

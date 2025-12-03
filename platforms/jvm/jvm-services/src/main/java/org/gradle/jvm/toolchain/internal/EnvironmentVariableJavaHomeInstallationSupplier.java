@@ -16,6 +16,9 @@
 
 package org.gradle.jvm.toolchain.internal;
 
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.Set;
@@ -37,10 +40,10 @@ public class EnvironmentVariableJavaHomeInstallationSupplier implements Installa
     public Set<InstallationLocation> get() {
         String javaHomePath = buildOptions.getEnvironmentVariableValue("JAVA_HOME");
         if (javaHomePath == null || javaHomePath.isEmpty()) {
-            return Collections.emptySet();
+            return emptySet();
         }
         File javaHome = new File(javaHomePath);
         InstallationLocation installationLocation = InstallationLocation.userDefined(javaHome, getSourceName());
-        return Collections.singleton(installationLocation);
+        return singleton(installationLocation);
     }
 }

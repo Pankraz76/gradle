@@ -16,17 +16,18 @@
 
 package org.gradle.internal.component.external.model.maven;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.artifacts.component.ModuleComponentSelector;
 import org.gradle.internal.component.external.descriptor.MavenScope;
 import org.gradle.internal.component.external.model.ExternalDependencyDescriptor;
 import org.gradle.internal.component.model.ExcludeMetadata;
 import org.gradle.internal.component.model.IvyArtifactName;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Represents a dependency as represented in a Maven POM file.
@@ -85,7 +86,7 @@ public class MavenDependencyDescriptor extends ExternalDependencyDescriptor {
     public List<ExcludeMetadata> getConfigurationExcludes() {
         // Ignore exclusions for dependencies with `<optional>true</optional>`, but not for <dependencyManagement>.
         if (type == MavenDependencyType.OPTIONAL_DEPENDENCY) {
-            return Collections.emptyList();
+            return emptyList();
         }
         return excludes;
     }

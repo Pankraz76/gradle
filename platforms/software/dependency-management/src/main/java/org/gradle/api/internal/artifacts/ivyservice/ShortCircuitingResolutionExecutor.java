@@ -15,7 +15,12 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice;
 
+import static java.util.Collections.emptySet;
+
 import com.google.common.annotations.VisibleForTesting;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.artifacts.ResolutionStrategy;
 import org.gradle.api.artifacts.ResolveException;
 import org.gradle.api.artifacts.ResolvedArtifact;
@@ -50,10 +55,6 @@ import org.gradle.internal.component.model.VariantGraphResolveState;
 import org.gradle.internal.model.CalculatedValue;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Detects empty resolutions and skips a lot of work in those cases.
@@ -96,7 +97,7 @@ public class ShortCircuitingResolutionExecutor {
                 // Invalid lock state, need to do a real resolution to gather locking failures
                 return delegate.resolveGraph(legacyParams, params, repositories);
             }
-            dependencyLockingProvider.persistResolvedDependencies(params.getDependencyLockingId(), params.getResolutionHost().displayName(), Collections.emptySet(), Collections.emptySet());
+            dependencyLockingProvider.persistResolvedDependencies(params.getDependencyLockingId(), params.getResolutionHost().displayName(), emptySet(), emptySet());
         }
 
         VisitedGraphResults graphResults = emptyGraphResults(params);
@@ -137,7 +138,7 @@ public class ShortCircuitingResolutionExecutor {
             rootVariant.getName(),
             attributeDesugaring
         );
-        return new DefaultVisitedGraphResults(emptyResult, Collections.emptySet());
+        return new DefaultVisitedGraphResults(emptyResult, emptySet());
     }
 
     private static ImmutableCapabilities getCapabilities(
@@ -197,22 +198,22 @@ public class ShortCircuitingResolutionExecutor {
 
         @Override
         public Set<ResolvedDependency> getFirstLevelModuleDependencies() {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         @Override
         public Set<ResolvedDependency> getAllModuleDependencies() {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         @Override
         public Set<UnresolvedDependency> getUnresolvedModuleDependencies() {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         @Override
         public Set<ResolvedArtifact> getArtifacts() {
-            return Collections.emptySet();
+            return emptySet();
         }
 
     }

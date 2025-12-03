@@ -15,6 +15,20 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.projectmodule;
 
+import static java.util.stream.Collectors.joining;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
@@ -35,19 +49,6 @@ import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 import org.gradle.util.Path;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * A service that will resolve a project identity path into publication coordinates.
@@ -334,7 +335,7 @@ public class DefaultProjectDependencyPublicationResolver implements ProjectDepen
             if (!componentsSeen.add(component)) {
                 String allComponents = componentsSeen.stream()
                     .map(SoftwareComponent::getName)
-                    .collect(Collectors.joining(", "));
+                    .collect(joining(", "));
                 throw new InvalidUserDataException("Circular dependency detected while resolving component coordinates. Found the following components: " + allComponents);
             }
 

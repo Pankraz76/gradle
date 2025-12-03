@@ -16,12 +16,13 @@
 
 package org.gradle.internal.component.model;
 
-import com.google.common.collect.Sets;
-import org.gradle.api.internal.attributes.MultipleCandidatesResult;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.singleton;
 
+import com.google.common.collect.Sets;
 import java.util.Collections;
 import java.util.Set;
+import org.gradle.api.internal.attributes.MultipleCandidatesResult;
+import org.jspecify.annotations.Nullable;
 
 public class DefaultMultipleCandidateResult<T> implements MultipleCandidatesResult<T> {
     private final Set<T> candidateValues;
@@ -54,7 +55,7 @@ public class DefaultMultipleCandidateResult<T> implements MultipleCandidatesResu
     public Set<T> getMatches() {
         assert hasResult();
         if (singleMatch != null) {
-            return Collections.singleton(singleMatch);
+            return singleton(singleMatch);
         }
         return multipleMatches;
     }

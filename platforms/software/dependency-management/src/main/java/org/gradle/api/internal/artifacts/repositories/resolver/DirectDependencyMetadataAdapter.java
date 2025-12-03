@@ -16,6 +16,13 @@
 
 package org.gradle.api.internal.artifacts.repositories.resolver;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.DependencyArtifact;
 import org.gradle.api.artifacts.DirectDependencyMetadata;
 import org.gradle.api.internal.artifacts.dependencies.DefaultDependencyArtifact;
@@ -28,10 +35,6 @@ import org.gradle.internal.component.external.model.ivy.IvyDependencyMetadata;
 import org.gradle.internal.component.external.model.maven.MavenDependencyDescriptor;
 import org.gradle.internal.component.external.model.maven.MavenDependencyMetadata;
 import org.gradle.internal.component.model.IvyArtifactName;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class DirectDependencyMetadataAdapter extends AbstractDependencyMetadataAdapter<DirectDependencyMetadata> implements DirectDependencyMetadata {
 
@@ -56,7 +59,7 @@ public class DirectDependencyMetadataAdapter extends AbstractDependencyMetadataA
 
     @Override
     public List<DependencyArtifact> getArtifactSelectors() {
-        return getIvyArtifacts().stream().map(this::asDependencyArtifact).collect(Collectors.toList());
+        return getIvyArtifacts().stream().map(this::asDependencyArtifact).collect(toList());
     }
 
     private DependencyArtifact asDependencyArtifact(IvyArtifactName ivyArtifactName) {
@@ -74,28 +77,28 @@ public class DirectDependencyMetadataAdapter extends AbstractDependencyMetadataA
         } else if (originalMetadata instanceof GradleDependencyMetadata){
             return fromGradleMetadata((GradleDependencyMetadata) originalMetadata);
         }
-        return Collections.emptyList();
+        return emptyList();
     }
 
     private List<IvyArtifactName> fromGradleMetadata(GradleDependencyMetadata metadata) {
         IvyArtifactName artifact = metadata.getDependencyArtifact();
         if(artifact != null) {
-            return Collections.singletonList(artifact);
+            return singletonList(artifact);
         }
-        return Collections.emptyList();
+        return emptyList();
     }
 
     private List<IvyArtifactName> fromIvyDescriptor(IvyDependencyDescriptor descriptor) {
         List<Artifact> artifacts = descriptor.getDependencyArtifacts();
-        return artifacts.stream().map(Artifact::getArtifactName).collect(Collectors.toList());
+        return artifacts.stream().map(Artifact::getArtifactName).collect(toList());
     }
 
     private List<IvyArtifactName> fromMavenDescriptor(MavenDependencyDescriptor descriptor) {
         IvyArtifactName artifact = descriptor.getDependencyArtifact();
         if(artifact != null) {
-            return Collections.singletonList(artifact);
+            return singletonList(artifact);
         }
-        return Collections.emptyList();
+        return emptyList();
     }
 
 }

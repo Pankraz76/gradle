@@ -16,9 +16,12 @@
 
 package org.gradle.api.internal.tasks.testing.junit;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Objects;
 import org.gradle.api.internal.tasks.testing.RequiresTestFrameworkTestDefinitionProcessor;
-import org.gradle.api.internal.tasks.testing.TestDefinitionConsumer;
 import org.gradle.api.internal.tasks.testing.TestDefinition;
+import org.gradle.api.internal.tasks.testing.TestDefinitionConsumer;
 import org.gradle.api.internal.tasks.testing.TestResultProcessor;
 import org.gradle.internal.actor.Actor;
 import org.gradle.internal.actor.ActorFactory;
@@ -26,8 +29,6 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Objects;
 
 @NullMarked
 public abstract class AbstractJUnitTestDefinitionProcessor<D extends TestDefinition> implements RequiresTestFrameworkTestDefinitionProcessor<D> {
@@ -62,7 +63,7 @@ public abstract class AbstractJUnitTestDefinitionProcessor<D extends TestDefinit
     public final void processTestDefinition(D testDefinition) {
         if (startedProcessing) {
             LOGGER.debug("Executing {}", testDefinition.getDisplayName());
-            Objects.requireNonNull(executor).accept(testDefinition);
+            requireNonNull(executor).accept(testDefinition);
         }
     }
 

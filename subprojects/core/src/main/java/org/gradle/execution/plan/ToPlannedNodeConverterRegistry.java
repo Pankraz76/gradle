@@ -16,19 +16,20 @@
 
 package org.gradle.execution.plan;
 
-import com.google.common.collect.ImmutableList;
-import org.gradle.internal.service.scopes.Scope;
-import org.gradle.internal.service.scopes.ServiceScope;
-import org.gradle.internal.taskgraph.NodeIdentity;
-import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
+import static java.util.stream.Collectors.toSet;
 
-import javax.annotation.concurrent.ThreadSafe;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
+import javax.annotation.concurrent.ThreadSafe;
+import org.gradle.internal.service.scopes.Scope;
+import org.gradle.internal.service.scopes.ServiceScope;
+import org.gradle.internal.taskgraph.NodeIdentity;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A Gradle user home level registry of {@link ToPlannedNodeConverter} instances.
@@ -61,7 +62,7 @@ public class ToPlannedNodeConverterRegistry {
     public Set<NodeIdentity.NodeType> getConvertedNodeTypes() {
         return converters.stream()
             .map(ToPlannedNodeConverter::getConvertedNodeType)
-            .collect(Collectors.toSet());
+            .collect(toSet());
     }
 
     /**

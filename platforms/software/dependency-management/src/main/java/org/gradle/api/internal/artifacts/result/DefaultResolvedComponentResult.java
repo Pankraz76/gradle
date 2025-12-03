@@ -16,9 +16,18 @@
 
 package org.gradle.api.internal.artifacts.result;
 
+import static java.util.Collections.unmodifiableSet;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import org.gradle.api.Action;
 import org.gradle.api.InvalidUserCodeException;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
@@ -29,14 +38,6 @@ import org.gradle.api.artifacts.result.ResolvedComponentResult;
 import org.gradle.api.artifacts.result.ResolvedDependencyResult;
 import org.gradle.api.artifacts.result.ResolvedVariantResult;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 public class DefaultResolvedComponentResult implements ResolvedComponentResultInternal {
 
@@ -106,7 +107,7 @@ public class DefaultResolvedComponentResult implements ResolvedComponentResultIn
 
     @Override
     public Set<ResolvedDependencyResult> getDependents() {
-        return Collections.unmodifiableSet(dependents);
+        return unmodifiableSet(dependents);
     }
 
     public DefaultResolvedComponentResult addDependent(ResolvedDependencyResult dependent) {

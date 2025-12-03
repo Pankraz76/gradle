@@ -16,17 +16,17 @@
 
 package org.gradle.buildinit.plugins.internal;
 
+import static java.util.Collections.singleton;
+import static org.gradle.buildinit.plugins.internal.NamespaceBuilder.toNamespace;
+
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
 import org.gradle.api.internal.DocumentationRegistry;
 import org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework;
 import org.gradle.buildinit.plugins.internal.modifiers.Language;
 import org.gradle.buildinit.plugins.internal.modifiers.ModularizationOption;
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform;
-
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.gradle.buildinit.plugins.internal.NamespaceBuilder.toNamespace;
 
 public abstract class CppProjectInitDescriptor extends LanguageLibraryProjectInitDescriptor {
     private final TemplateOperationFactory templateOperationFactory;
@@ -65,7 +65,7 @@ public abstract class CppProjectInitDescriptor extends LanguageLibraryProjectIni
 
     @Override
     public Set<BuildInitTestFramework> getTestFrameworks(ModularizationOption modularizationOption) {
-        return Collections.singleton(BuildInitTestFramework.CPPTest);
+        return singleton(BuildInitTestFramework.CPPTest);
     }
 
     @Override

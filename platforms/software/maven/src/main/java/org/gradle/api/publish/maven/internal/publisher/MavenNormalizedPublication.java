@@ -16,14 +16,15 @@
 
 package org.gradle.api.publish.maven.internal.publisher;
 
+import static java.util.stream.Collectors.toSet;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.internal.artifacts.DefaultModuleIdentifier;
 import org.gradle.api.publish.internal.PublicationArtifactInternal;
 import org.gradle.api.publish.maven.MavenArtifact;
 import org.gradle.internal.component.external.model.DefaultModuleComponentIdentifier;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class MavenNormalizedPublication {
 
@@ -88,7 +89,7 @@ public class MavenNormalizedPublication {
     public Set<MavenArtifact> getAdditionalArtifacts() {
         return allArtifacts.stream()
                 .filter(artifact -> artifact != pomArtifact && artifact != mainArtifact)
-                .collect(Collectors.toSet());
+                .collect(toSet());
     }
 
     public Set<MavenArtifact> getAllArtifacts() {

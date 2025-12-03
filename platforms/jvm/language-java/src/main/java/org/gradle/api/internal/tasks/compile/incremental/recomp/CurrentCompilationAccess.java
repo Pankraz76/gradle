@@ -16,6 +16,13 @@
 
 package org.gradle.api.internal.tasks.compile.incremental.recomp;
 
+import static java.util.stream.Collectors.toList;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.gradle.api.Action;
 import org.gradle.api.internal.tasks.compile.incremental.classpath.ClassSetAnalyzer;
 import org.gradle.api.internal.tasks.compile.incremental.deps.ClassSetAnalysisData;
@@ -29,12 +36,6 @@ import org.gradle.internal.time.Timer;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class CurrentCompilationAccess {
 
@@ -69,7 +70,7 @@ public class CurrentCompilationAccess {
         return snapshotAll(entries).stream()
             .map(CreateSnapshot::getSnapshot)
             .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private List<CreateSnapshot> snapshotAll(final Iterable<File> entries) {

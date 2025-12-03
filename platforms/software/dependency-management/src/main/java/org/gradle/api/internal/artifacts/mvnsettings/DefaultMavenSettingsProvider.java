@@ -15,6 +15,11 @@
  */
 package org.gradle.api.internal.artifacts.mvnsettings;
 
+import static java.util.Collections.singletonMap;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.settings.Settings;
 import org.apache.maven.settings.building.DefaultSettingsBuilder;
@@ -24,10 +29,6 @@ import org.apache.maven.settings.building.SettingsBuildingException;
 import org.apache.maven.settings.building.SettingsBuildingResult;
 import org.apache.maven.settings.io.DefaultSettingsReader;
 import org.apache.maven.settings.io.SettingsReader;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.Map;
 
 public class DefaultMavenSettingsProvider implements MavenSettingsProvider {
 
@@ -73,7 +74,7 @@ public class DefaultMavenSettingsProvider implements MavenSettingsProvider {
         if (settingsFile == null || !settingsFile.exists()) {
             return null;
         }
-        Map<String, ?> options = Collections.singletonMap(SettingsReader.IS_STRICT, Boolean.FALSE);
+        Map<String, ?> options = singletonMap(SettingsReader.IS_STRICT, Boolean.FALSE);
         SettingsReader settingsReader = new DefaultSettingsReader();
         try {
             String localRepository = settingsReader.read(settingsFile, options).getLocalRepository();

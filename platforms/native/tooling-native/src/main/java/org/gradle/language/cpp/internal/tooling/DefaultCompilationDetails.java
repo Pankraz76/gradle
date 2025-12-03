@@ -16,12 +16,13 @@
 
 package org.gradle.language.cpp.internal.tooling;
 
-import org.gradle.plugins.ide.internal.tooling.model.LaunchableGradleTask;
+import static java.util.Collections.emptyList;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.plugins.ide.internal.tooling.model.LaunchableGradleTask;
 
 public class DefaultCompilationDetails implements Serializable {
     private final LaunchableGradleTask compileTask;
@@ -67,7 +68,7 @@ public class DefaultCompilationDetails implements Serializable {
     }
 
     public List<File> getFrameworkSearchPaths() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     public List<File> getSystemHeaderSearchPaths() {
@@ -83,7 +84,7 @@ public class DefaultCompilationDetails implements Serializable {
     }
 
     public List<String> getMacroUndefines() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     public List<String> getAdditionalArgs() {

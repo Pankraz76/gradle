@@ -16,12 +16,13 @@
 
 package org.gradle.buildinit.plugins.internal;
 
-import org.gradle.api.internal.DocumentationRegistry;
-import org.gradle.buildinit.plugins.internal.model.Description;
-import org.gradle.buildinit.plugins.internal.modifiers.ComponentType;
+import static java.util.Collections.singletonList;
 
 import java.util.Collections;
 import java.util.List;
+import org.gradle.api.internal.DocumentationRegistry;
+import org.gradle.buildinit.plugins.internal.model.Description;
+import org.gradle.buildinit.plugins.internal.modifiers.ComponentType;
 
 public class JvmLibraryProjectInitDescriptor extends JvmProjectInitDescriptor {
 
@@ -54,12 +55,12 @@ public class JvmLibraryProjectInitDescriptor extends JvmProjectInitDescriptor {
 
     @Override
     protected List<String> getSourceTemplates(String subproject, InitSettings settings, TemplateFactory templateFactory) {
-        return Collections.singletonList("Library");
+        return singletonList("Library");
     }
 
     @Override
     protected List<String> getTestSourceTemplates(String subproject, InitSettings settings, TemplateFactory templateFactory) {
-        return Collections.singletonList(getUnitTestSourceTemplateName(settings));
+        return singletonList(getUnitTestSourceTemplateName(settings));
     }
 
     private static String getUnitTestSourceTemplateName(InitSettings settings) {

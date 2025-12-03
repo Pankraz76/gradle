@@ -16,7 +16,15 @@
 
 package org.gradle.internal.properties.bean;
 
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
+import static java.util.function.Function.identity;
+
 import com.google.common.base.Suppliers;
+import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import org.gradle.api.Buildable;
 import org.gradle.api.internal.provider.HasConfigurableValueInternal;
 import org.gradle.api.internal.tasks.TaskDependencyContainer;
@@ -41,14 +49,6 @@ import org.gradle.internal.snapshot.impl.ImplementationValue;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import static com.google.common.collect.ImmutableMap.toImmutableMap;
-
 @NullMarked
 public class DefaultPropertyWalker implements PropertyWalker {
     private final InstanceMetadataWalker walker;
@@ -58,7 +58,7 @@ public class DefaultPropertyWalker implements PropertyWalker {
     public DefaultPropertyWalker(TypeMetadataStore typeMetadataStore, ImplementationResolver implementationResolver, Collection<PropertyAnnotationHandler> propertyHandlers) {
         this.walker = TypeMetadataWalker.instanceWalker(typeMetadataStore, Nested.class);
         this.implementationResolver = implementationResolver;
-        this.handlers = propertyHandlers.stream().collect(toImmutableMap(PropertyAnnotationHandler::getAnnotationType, Function.identity()));
+        this.handlers = propertyHandlers.stream().collect(toImmutableMap(PropertyAnnotationHandler::getAnnotationType, identity()));
     }
 
     @Override

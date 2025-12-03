@@ -16,9 +16,29 @@
 
 package org.gradle.api.publish.maven.internal.publication;
 
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.inject.Inject;
 import org.gradle.api.GradleException;
 import org.gradle.api.InvalidUserCodeException;
 import org.gradle.api.artifacts.DependencyArtifact;
@@ -60,21 +80,6 @@ import org.gradle.api.publish.maven.internal.validation.MavenPublicationErrorChe
 import org.gradle.internal.typeconversion.NotationParser;
 import org.jspecify.annotations.Nullable;
 
-import javax.inject.Inject;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /**
  * Encapsulates all logic required to extract data from a {@link SoftwareComponentInternal} in order to
  * transform it to a representation compatible with Maven.
@@ -96,7 +101,7 @@ public class MavenComponentParser {
      * https://issues.apache.org/jira/browse/MNG-3832
      * This should be used for non-transitive dependencies
      */
-    private static final Set<ExcludeRule> EXCLUDE_ALL_RULE = Collections.singleton(new DefaultExcludeRule("*", "*"));
+    private static final Set<ExcludeRule> EXCLUDE_ALL_RULE = singleton(new DefaultExcludeRule("*", "*"));
 
     private static final Logger LOG = Logging.getLogger(MavenComponentParser.class);
 
@@ -132,7 +137,7 @@ public class MavenComponentParser {
                 return seenArtifacts.add(key);
             })
             .map(mavenArtifactParser::parseNotation)
-            .collect(Collectors.toSet());
+            .collect(toSet());
     }
 
     public Provider<ParsedDependencyResult> parseDependencies(
@@ -146,7 +151,7 @@ public class MavenComponentParser {
             .map(variant -> dependencyCoordinateResolverFactory
                 .createCoordinateResolvers(variant, versionMappingStrategy)
                 .map(resolvers -> getDependenciesForVariant(variant, resolvers, coordinates))
-            ).collect(Collectors.toList());
+            ).collect(toList());
 
         return new MergeProvider<>(parsedVariants).map(variants -> {
             List<MavenDependency> dependencies = new ArrayList<>();
@@ -263,7 +268,7 @@ public class MavenComponentParser {
 
     private static Stream<? extends SoftwareComponentVariant> createSortedVariantsStream(SoftwareComponentInternal component) {
         return component.getUsages().stream()
-            .sorted(Comparator.comparing(MavenPublishingAwareVariant::scopeForVariant));
+            .sorted(comparing(MavenPublishingAwareVariant::scopeForVariant));
     }
 
     /**
@@ -359,12 +364,12 @@ public class MavenComponentParser {
             }
 
             // Do not publish scope, as it has too different of semantics in Maven
-            collector.accept(newDependency(identifier, null, null, null, Collections.emptySet(), false));
+            collector.accept(newDependency(identifier, null, null, null, emptySet(), false));
         }
 
         private void convertImportDependencyConstraint(ModuleDependency dependency, Consumer<MavenDependency> collector) {
             ResolvedCoordinates identifier = resolveDependency(dependency, true);
-            collector.accept(newDependency(identifier, "pom", null, "import", Collections.emptySet(), false));
+            collector.accept(newDependency(identifier, "pom", null, "import", emptySet(), false));
         }
 
         private ResolvedCoordinates resolveDependency(ModuleDependency dependency, boolean variantPrecision) {

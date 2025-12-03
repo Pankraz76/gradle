@@ -16,16 +16,17 @@
 
 package org.gradle.internal.model;
 
+import static java.util.function.Function.identity;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import javax.inject.Inject;
 import org.gradle.internal.Describables;
 import org.gradle.internal.DisplayName;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 import org.gradle.internal.work.WorkerLimits;
-
-import javax.inject.Inject;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 /**
  * A factory for creating in-memory caches of various types.
@@ -199,7 +200,7 @@ public class InMemoryCacheFactory {
         private final DefaultLoadingCache<T, T> delegate;
 
         public DefaultInterner(int maxConcurrency) {
-            this.delegate = new DefaultLoadingCache<>(maxConcurrency, Function.identity());
+            this.delegate = new DefaultLoadingCache<>(maxConcurrency, identity());
         }
 
         @Override

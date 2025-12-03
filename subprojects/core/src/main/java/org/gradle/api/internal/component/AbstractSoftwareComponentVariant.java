@@ -15,12 +15,13 @@
  */
 package org.gradle.api.internal.component;
 
-import org.gradle.api.artifacts.PublishArtifact;
-import org.gradle.api.component.SoftwareComponentVariant;
-import org.gradle.api.internal.attributes.ImmutableAttributes;
+import static java.util.Collections.unmodifiableSet;
 
 import java.util.Collections;
 import java.util.Set;
+import org.gradle.api.artifacts.PublishArtifact;
+import org.gradle.api.component.SoftwareComponentVariant;
+import org.gradle.api.internal.attributes.ImmutableAttributes;
 
 /**
  * This extends {@link UsageContext} so that we can use it in {@link SoftwareComponentInternal#getUsages()}.
@@ -42,6 +43,6 @@ public abstract class AbstractSoftwareComponentVariant implements UsageContext {
 
     @Override
     public Set<? extends PublishArtifact> getArtifacts() {
-        return Collections.unmodifiableSet(artifacts);
+        return unmodifiableSet(artifacts);
     }
 }

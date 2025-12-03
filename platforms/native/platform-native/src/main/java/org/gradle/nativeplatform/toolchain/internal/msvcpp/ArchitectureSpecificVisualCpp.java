@@ -16,12 +16,13 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import org.gradle.util.internal.VersionNumber;
+import static java.util.Collections.singletonList;
 
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.gradle.util.internal.VersionNumber;
 
 public class ArchitectureSpecificVisualCpp implements VisualCpp {
     private static final String COMPILER_FILENAME = "cl.exe";
@@ -85,12 +86,12 @@ public class ArchitectureSpecificVisualCpp implements VisualCpp {
 
     @Override
     public List<File> getLibDirs() {
-        return Collections.singletonList(libDir);
+        return singletonList(libDir);
     }
 
     @Override
     public List<File> getIncludeDirs() {
-        return Collections.singletonList(includeDir);
+        return singletonList(includeDir);
     }
 
     @Override

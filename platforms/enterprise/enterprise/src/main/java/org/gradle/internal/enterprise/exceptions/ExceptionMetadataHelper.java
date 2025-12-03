@@ -16,17 +16,19 @@
 
 package org.gradle.internal.enterprise.exceptions;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import org.gradle.api.internal.TaskInternal;
 import org.gradle.api.tasks.TaskExecutionException;
 import org.gradle.api.tasks.VerificationException;
 import org.gradle.groovy.scripts.ScriptCompilationException;
 import org.gradle.internal.exceptions.LocationAwareException;
 import org.gradle.internal.exceptions.MultiCauseException;
-
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 public final class ExceptionMetadataHelper {
 
@@ -81,14 +83,14 @@ public final class ExceptionMetadataHelper {
             if (mceCauses != null && !mceCauses.isEmpty()) {
                 return mceCauses;
             } else {
-                return Collections.emptyList();
+                return emptyList();
             }
         } else {
             Throwable cause = t.getCause();
             if (cause != null) {
-                return Collections.singletonList(cause);
+                return singletonList(cause);
             } else {
-                return Collections.emptyList();
+                return emptyList();
             }
         }
     }

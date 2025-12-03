@@ -15,12 +15,7 @@
  */
 package org.gradle.nativeplatform.internal;
 
-import org.gradle.api.InvalidUserDataException;
-import org.gradle.api.Named;
-import org.gradle.nativeplatform.BuildType;
-import org.gradle.nativeplatform.Flavor;
-import org.gradle.platform.base.internal.DefaultPlatformRequirement;
-import org.gradle.platform.base.internal.PlatformRequirement;
+import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +23,12 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.gradle.api.InvalidUserDataException;
+import org.gradle.api.Named;
+import org.gradle.nativeplatform.BuildType;
+import org.gradle.nativeplatform.Flavor;
+import org.gradle.platform.base.internal.DefaultPlatformRequirement;
+import org.gradle.platform.base.internal.PlatformRequirement;
 
 public abstract class AbstractTargetedNativeComponentSpec extends AbstractNativeComponentSpec implements TargetedNativeComponentInternal {
 
@@ -37,7 +38,7 @@ public abstract class AbstractTargetedNativeComponentSpec extends AbstractNative
 
     @Override
     public List<PlatformRequirement> getTargetPlatforms() {
-        return Collections.unmodifiableList(targetPlatforms);
+        return unmodifiableList(targetPlatforms);
     }
 
     @Override

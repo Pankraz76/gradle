@@ -16,24 +16,11 @@
 
 package org.gradle.internal.instrumentation.processor.codegen;
 
+import static java.util.stream.Collectors.toSet;
+
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
-import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
-import org.gradle.internal.instrumentation.model.RequestExtra.OriginatingElement;
-import org.gradle.internal.instrumentation.processor.codegen.InstrumentationCodeGenerator.GenerationResult.CanGenerateClasses;
-import org.gradle.internal.instrumentation.processor.codegen.InstrumentationCodeGenerator.GenerationResult.CodeFailures;
-import org.gradle.internal.instrumentation.processor.codegen.InstrumentationResourceGenerator.GenerationResult.CanGenerateResource;
-import org.gradle.internal.instrumentation.processor.codegen.InstrumentationResourceGenerator.GenerationResult.ResourceFailures;
-import org.gradle.internal.instrumentation.util.NameUtil;
-
-import javax.annotation.processing.Filer;
-import javax.annotation.processing.Messager;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.tools.Diagnostic;
-import javax.tools.FileObject;
-import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
@@ -42,6 +29,20 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.annotation.processing.Filer;
+import javax.annotation.processing.Messager;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.tools.Diagnostic;
+import javax.tools.FileObject;
+import javax.tools.StandardLocation;
+import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
+import org.gradle.internal.instrumentation.model.RequestExtra.OriginatingElement;
+import org.gradle.internal.instrumentation.processor.codegen.InstrumentationCodeGenerator.GenerationResult.CanGenerateClasses;
+import org.gradle.internal.instrumentation.processor.codegen.InstrumentationCodeGenerator.GenerationResult.CodeFailures;
+import org.gradle.internal.instrumentation.processor.codegen.InstrumentationResourceGenerator.GenerationResult.CanGenerateResource;
+import org.gradle.internal.instrumentation.processor.codegen.InstrumentationResourceGenerator.GenerationResult.ResourceFailures;
+import org.gradle.internal.instrumentation.util.NameUtil;
 
 public class InstrumentationCodeGeneratorHost {
     private final Filer filer;
@@ -130,6 +131,6 @@ public class InstrumentationCodeGeneratorHost {
     private static Set<ExecutableElement> getOriginatingElements(Collection<CallInterceptionRequest> coveredRequests) {
         return coveredRequests.stream().map(requests ->
             requests.getRequestExtras().getByType(OriginatingElement.class).map(OriginatingElement::getElement).orElse(null)
-        ).filter(Objects::nonNull).collect(Collectors.toSet());
+        ).filter(Objects::nonNull).collect(toSet());
     }
 }

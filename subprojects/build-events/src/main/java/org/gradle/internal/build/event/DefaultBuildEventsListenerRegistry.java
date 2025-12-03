@@ -16,8 +16,23 @@
 
 package org.gradle.internal.build.event;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static java.util.Collections.singleton;
+
 import com.google.common.collect.ImmutableList;
 import com.google.errorprone.annotations.concurrent.GuardedBy;
+import java.io.Closeable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import org.gradle.BuildAdapter;
 import org.gradle.BuildResult;
 import org.gradle.api.internal.GradleInternal;
@@ -53,21 +68,6 @@ import org.gradle.tooling.internal.consumer.parameters.BuildProgressListenerAdap
 import org.gradle.tooling.internal.protocol.events.InternalTaskDescriptor;
 import org.gradle.tooling.internal.protocol.events.InternalTaskResult;
 import org.jspecify.annotations.Nullable;
-
-import java.io.Closeable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
-
-import static com.google.common.collect.ImmutableList.toImmutableList;
 
 public class DefaultBuildEventsListenerRegistry implements BuildEventsListenerRegistry, BuildEventListenerRegistryInternal {
     private final UserCodeApplicationContext applicationContext;
@@ -305,7 +305,7 @@ public class DefaultBuildEventsListenerRegistry implements BuildEventsListenerRe
         ) {
             super(registrationPoint, executorFactory);
             this.listenerProvider = listenerProvider;
-            BuildEventSubscriptions eventSubscriptions = new BuildEventSubscriptions(Collections.singleton(OperationType.TASK));
+            BuildEventSubscriptions eventSubscriptions = new BuildEventSubscriptions(singleton(OperationType.TASK));
             // TODO - share these listeners here and with the tooling api client, where possible
             listeners = ImmutableList.copyOf(factory.createListeners(eventSubscriptions, this));
         }

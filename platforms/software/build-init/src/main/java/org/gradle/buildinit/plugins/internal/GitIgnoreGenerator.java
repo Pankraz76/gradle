@@ -16,9 +16,12 @@
 
 package org.gradle.buildinit.plugins.internal;
 
-import com.google.common.collect.Sets;
-import org.gradle.internal.UncheckedException;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.file.StandardOpenOption.APPEND;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.util.stream.Collectors.toSet;
 
+import com.google.common.collect.Sets;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -32,10 +35,7 @@ import java.util.Set;
 import java.util.Spliterator;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.nio.file.StandardOpenOption.APPEND;
-import static java.nio.file.StandardOpenOption.CREATE;
+import org.gradle.internal.UncheckedException;
 
 public class GitIgnoreGenerator implements BuildContentGenerator {
 
@@ -64,7 +64,7 @@ public class GitIgnoreGenerator implements BuildContentGenerator {
         Set<String> result = Sets.newLinkedHashSet(Arrays.asList(".gradle", "build", ".kotlin"));
         if (gitignoreFile.exists()) {
             try (BufferedReader reader = new BufferedReader(new FileReader(gitignoreFile))){
-                result.removeAll(reader.lines().filter(it -> result.contains(it)).collect(Collectors.toSet()));
+                result.removeAll(reader.lines().filter(it -> result.contains(it)).collect(toSet()));
             } catch (IOException e) {
                 throw UncheckedException.throwAsUncheckedException(e);
             }

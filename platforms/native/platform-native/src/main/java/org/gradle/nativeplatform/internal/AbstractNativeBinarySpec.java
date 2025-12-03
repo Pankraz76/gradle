@@ -16,7 +16,16 @@
 
 package org.gradle.nativeplatform.internal;
 
+import static java.util.Collections.singleton;
+
 import com.google.common.collect.ImmutableMap;
+import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.file.FileCollectionFactory;
 import org.gradle.language.nativeplatform.DependentSourceSet;
@@ -41,14 +50,6 @@ import org.gradle.nativeplatform.toolchain.internal.PreCompiledHeader;
 import org.gradle.platform.base.binary.BaseBinarySpec;
 import org.gradle.platform.base.internal.BinaryBuildAbility;
 import org.gradle.platform.base.internal.ToolSearchBuildAbility;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
 
 public abstract class AbstractNativeBinarySpec extends BaseBinarySpec implements NativeBinarySpecInternal {
     private final Set<? super Object> libs = new LinkedHashSet<Object>();
@@ -182,7 +183,7 @@ public abstract class AbstractNativeBinarySpec extends BaseBinarySpec implements
 
     @Override
     public Collection<NativeDependencySet> getLibs(DependentSourceSet sourceSet) {
-        return resolve(Collections.singleton(sourceSet)).getAllResults();
+        return resolve(singleton(sourceSet)).getAllResults();
     }
 
     @Override

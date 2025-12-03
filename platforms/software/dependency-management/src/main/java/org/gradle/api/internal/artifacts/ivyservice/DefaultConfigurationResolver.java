@@ -16,7 +16,16 @@
 
 package org.gradle.api.internal.artifacts.ivyservice;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.ImmutableList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.attributes.Attribute;
@@ -59,12 +68,6 @@ import org.gradle.internal.model.CalculatedValue;
 import org.gradle.internal.model.CalculatedValueContainerFactory;
 import org.gradle.util.Path;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Responsible for resolving a configuration. Delegates to a {@link ShortCircuitingResolutionExecutor} to perform
@@ -119,7 +122,7 @@ public class DefaultConfigurationResolver implements ConfigurationResolver {
         AttributeContainerInternal attributes = rootVariant.getAttributes();
         List<ResolutionAwareRepository> filteredRepositories = repositoriesSupplier.get().stream()
             .filter(repository -> !shouldSkipRepository(repository, configuration.getName(), attributes))
-            .collect(Collectors.toList());
+            .collect(toList());
 
         ResolutionParameters params = getResolutionParameters(configuration, rootComponent, rootVariant, true);
         LegacyResolutionParameters legacyParams = new ConfigurationLegacyResolutionParameters(configuration.getResolutionStrategy());
@@ -217,7 +220,7 @@ public class DefaultConfigurationResolver implements ConfigurationResolver {
         public List<String> forVersionConflict(Conflict conflict) {
             if (owningProject == null) {
                 // owningProject is null for settings execution
-                return Collections.emptyList();
+                return emptyList();
             }
 
             String taskPath = owningProject.getBuildTreePath().append(Path.path("dependencyInsight")).asString();
@@ -225,7 +228,7 @@ public class DefaultConfigurationResolver implements ConfigurationResolver {
             ModuleIdentifier moduleId = conflict.getModuleId();
             String dependencyNotation = moduleId.getGroup() + ":" + moduleId.getName();
 
-            return Collections.singletonList(String.format(
+            return singletonList(String.format(
                 "Run with %s --configuration %s --dependency %s to get more insight on how to solve the conflict.",
                 taskPath, configurationName, dependencyNotation
             ));

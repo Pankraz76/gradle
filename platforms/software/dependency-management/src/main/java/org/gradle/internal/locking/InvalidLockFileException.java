@@ -16,10 +16,11 @@
 
 package org.gradle.internal.locking;
 
-import org.gradle.internal.exceptions.ResolutionProvider;
+import static java.util.Collections.singletonList;
 
 import java.util.Collections;
 import java.util.List;
+import org.gradle.internal.exceptions.ResolutionProvider;
 
 public class InvalidLockFileException extends RuntimeException implements ResolutionProvider {
     private final String resolutionMessage;
@@ -35,6 +36,6 @@ public class InvalidLockFileException extends RuntimeException implements Resolu
 
     @Override
     public List<String> getResolutions() {
-        return Collections.singletonList(resolutionMessage);
+        return singletonList(resolutionMessage);
     }
 }

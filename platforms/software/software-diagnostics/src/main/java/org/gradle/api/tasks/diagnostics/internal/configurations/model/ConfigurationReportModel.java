@@ -16,8 +16,9 @@
 
 package org.gradle.api.tasks.diagnostics.internal.configurations.model;
 
-import com.google.common.collect.ImmutableList;
+import static java.util.stream.Collectors.toList;
 
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -61,11 +62,11 @@ public final class ConfigurationReportModel {
     }
 
     public List<ReportConfiguration> getPurelyResolvableConfigs() {
-        return allConfigs.stream().filter(ReportConfiguration::isPurelyResolvable).collect(Collectors.toList());
+        return allConfigs.stream().filter(ReportConfiguration::isPurelyResolvable).collect(toList());
     }
 
     public List<ReportConfiguration> getPurelyConsumableConfigs() {
-        return allConfigs.stream().filter(ReportConfiguration::isPurelyConsumable).collect(Collectors.toList());
+        return allConfigs.stream().filter(ReportConfiguration::isPurelyConsumable).collect(toList());
     }
 
     public Optional<ReportConfiguration> getConfigNamed(String configName) {

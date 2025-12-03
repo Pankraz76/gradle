@@ -16,11 +16,23 @@
 
 package org.gradle.api.internal.tasks.testing.junitplatform;
 
+import static java.util.Objects.requireNonNull;
+import static org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.isNestedClassInsideEnclosedRunner;
+import static org.junit.platform.launcher.EngineFilter.excludeEngines;
+import static org.junit.platform.launcher.EngineFilter.includeEngines;
+import static org.junit.platform.launcher.TagFilter.excludeTags;
+import static org.junit.platform.launcher.TagFilter.includeTags;
+
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import javax.annotation.WillCloseWhenClosed;
 import org.gradle.api.internal.tasks.testing.ClassTestDefinition;
 import org.gradle.api.internal.tasks.testing.DirectoryBasedTestDefinition;
+import org.gradle.api.internal.tasks.testing.TestDefinition;
 import org.gradle.api.internal.tasks.testing.TestDefinitionConsumer;
 import org.gradle.api.internal.tasks.testing.TestDefinitionProcessor;
-import org.gradle.api.internal.tasks.testing.TestDefinition;
 import org.gradle.api.internal.tasks.testing.TestResultProcessor;
 import org.gradle.api.internal.tasks.testing.filter.TestFilterSpec;
 import org.gradle.api.internal.tasks.testing.filter.TestSelectionMatcher;
@@ -50,18 +62,6 @@ import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.TestPlan;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
-
-import javax.annotation.WillCloseWhenClosed;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import static org.gradle.api.internal.tasks.testing.junit.JUnitTestExecutor.isNestedClassInsideEnclosedRunner;
-import static org.junit.platform.launcher.EngineFilter.excludeEngines;
-import static org.junit.platform.launcher.EngineFilter.includeEngines;
-import static org.junit.platform.launcher.TagFilter.excludeTags;
-import static org.junit.platform.launcher.TagFilter.includeTags;
 
 /**
  * A {@link TestDefinitionProcessor} for JUnit Platform.
@@ -110,8 +110,8 @@ public final class JUnitPlatformTestDefinitionProcessor extends AbstractJUnitTes
     @Override
     public void stop() {
         if (startedProcessing) {
-            Objects.requireNonNull(testClassExecutor).processAllTestDefinitions();
-            Objects.requireNonNull(launcherSession).close();
+            requireNonNull(testClassExecutor).processAllTestDefinitions();
+            requireNonNull(launcherSession).close();
             super.stop();
         }
     }
@@ -163,7 +163,7 @@ public final class JUnitPlatformTestDefinitionProcessor extends AbstractJUnitTes
         private void processAllTestDefinitions() {
             LauncherDiscoveryRequest discoveryRequest = createLauncherDiscoveryRequest();
             TestExecutionListener executionListener = new JUnitPlatformTestExecutionListener(resultProcessor, clock, idGenerator, spec.getBaseDefinitionsDir());
-            Launcher launcher = Objects.requireNonNull(launcherSession).getLauncher();
+            Launcher launcher = requireNonNull(launcherSession).getLauncher();
             if (spec.isDryRun()) {
                 TestPlan testPlan = launcher.discover(discoveryRequest);
                 executeDryRun(testPlan, executionListener);

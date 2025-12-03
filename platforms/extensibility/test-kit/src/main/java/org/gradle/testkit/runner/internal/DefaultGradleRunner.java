@@ -16,6 +16,22 @@
 
 package org.gradle.testkit.runner.internal;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.unmodifiableList;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Writer;
+import java.net.URI;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.io.output.WriterOutputStream;
 import org.gradle.api.Action;
 import org.gradle.api.internal.file.temp.DefaultTemporaryFileProvider;
@@ -38,20 +54,6 @@ import org.gradle.testkit.runner.UnexpectedBuildFailure;
 import org.gradle.testkit.runner.UnexpectedBuildSuccess;
 import org.gradle.testkit.runner.internal.io.SynchronizedOutputStream;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.net.URI;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class DefaultGradleRunner extends GradleRunner {
 
     public static final String TEST_KIT_DIR_SYS_PROP = "org.gradle.testkit.dir";
@@ -62,8 +64,8 @@ public class DefaultGradleRunner extends GradleRunner {
     private GradleProvider gradleProvider;
     private TestKitDirProvider testKitDirProvider;
     private File projectDirectory;
-    private List<String> arguments = Collections.emptyList();
-    private List<String> jvmArguments = Collections.emptyList();
+    private List<String> arguments = emptyList();
+    private List<String> jvmArguments = emptyList();
     private ClassPath classpath = ClassPath.EMPTY;
     private boolean debug;
     private OutputStream standardOutput;
@@ -135,7 +137,7 @@ public class DefaultGradleRunner extends GradleRunner {
     }
 
     public DefaultGradleRunner withJvmArguments(List<String> jvmArguments) {
-        this.jvmArguments = Collections.unmodifiableList(new ArrayList<>(jvmArguments));
+        this.jvmArguments = unmodifiableList(new ArrayList<>(jvmArguments));
         return this;
     }
 
@@ -161,7 +163,7 @@ public class DefaultGradleRunner extends GradleRunner {
 
     @Override
     public DefaultGradleRunner withArguments(List<String> arguments) {
-        this.arguments = Collections.unmodifiableList(new ArrayList<>(arguments));
+        this.arguments = unmodifiableList(new ArrayList<>(arguments));
         return this;
     }
 

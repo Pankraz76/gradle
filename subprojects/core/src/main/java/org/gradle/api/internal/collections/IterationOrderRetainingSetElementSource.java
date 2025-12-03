@@ -16,16 +16,18 @@
 
 package org.gradle.api.internal.collections;
 
-import com.google.common.base.Objects;
-import org.gradle.api.internal.provider.CollectionProviderInternal;
-import org.gradle.api.internal.provider.ProviderInternal;
-import org.gradle.api.specs.Spec;
+import static java.util.Collections.EMPTY_SET;
+import static java.util.Collections.emptySet;
 
+import com.google.common.base.Objects;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import org.gradle.api.internal.provider.CollectionProviderInternal;
+import org.gradle.api.internal.provider.ProviderInternal;
+import org.gradle.api.specs.Spec;
 
 public class IterationOrderRetainingSetElementSource<T> extends AbstractIterationOrderRetainingElementSource<T> {
     private static final Spec<ValuePointer<?>> NO_DUPLICATES = pointer -> !pointer.getElement().isDuplicate(pointer.getIndex());
@@ -34,10 +36,10 @@ public class IterationOrderRetainingSetElementSource<T> extends AbstractIteratio
      * Tracks the subset of values added with add() (without a Provider), allowing us to filter out duplicates
      * from that subset in constant time.
      */
-    private Set<T> nonProvidedValues = Collections.emptySet();
+    private Set<T> nonProvidedValues = emptySet();
 
     private void ensureNonProviderValuesMutable() {
-        if (nonProvidedValues == Collections.EMPTY_SET) {
+        if (nonProvidedValues == EMPTY_SET) {
             nonProvidedValues = new HashSet<T>();
         }
     }
@@ -90,7 +92,7 @@ public class IterationOrderRetainingSetElementSource<T> extends AbstractIteratio
 
     @Override
     public void clear() {
-        nonProvidedValues = Collections.emptySet();
+        nonProvidedValues = emptySet();
         super.clear();
     }
 

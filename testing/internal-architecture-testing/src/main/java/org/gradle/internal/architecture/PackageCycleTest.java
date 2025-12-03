@@ -16,6 +16,8 @@
 
 package org.gradle.internal.architecture;
 
+import static java.util.stream.Collectors.toSet;
+
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.PackageMatchers;
 import com.tngtech.archunit.core.importer.ImportOption;
@@ -26,7 +28,6 @@ import com.tngtech.archunit.library.dependencies.SliceAssignment;
 import com.tngtech.archunit.library.dependencies.SliceIdentifier;
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition;
 import com.tngtech.archunit.thirdparty.com.google.common.collect.ImmutableSet;
-
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -60,7 +61,7 @@ public class PackageCycleTest {
             .map(pattern -> pattern.replace("/**", ".."))
             .map(pattern -> pattern.replace("/*", ""))
             .map(pattern -> pattern.replace("/", "."))
-            .collect(Collectors.toSet());
+            .collect(toSet());
     }
 
     private static boolean isClassNamePattern(String pattern) {
@@ -72,7 +73,7 @@ public class PackageCycleTest {
             .filter(PackageCycleTest::isClassNamePattern)
             .map(pattern -> pattern.replace("/", "."))
             .map(pattern -> pattern.replace("*", ""))
-            .collect(Collectors.toSet());
+            .collect(toSet());
     }
 
     private static final SliceAssignment GRADLE_SLICE_ASSIGNMENT = new SliceAssignment() {

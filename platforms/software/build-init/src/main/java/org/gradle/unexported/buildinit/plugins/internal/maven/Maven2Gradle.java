@@ -16,6 +16,21 @@
 
 package org.gradle.unexported.buildinit.plugins.internal.maven;
 
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.Plugin;
@@ -42,18 +57,6 @@ import org.gradle.buildinit.plugins.internal.VersionCatalogDependencyRegistry;
 import org.gradle.buildinit.plugins.internal.VersionCatalogGenerator;
 import org.gradle.buildinit.plugins.internal.modifiers.BuildInitDsl;
 import org.gradle.util.internal.RelativePathUtil;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * This script obtains the effective POM of the current project, reads its dependencies
@@ -163,7 +166,7 @@ public class Maven2Gradle {
             }
         } else {
             BuildScriptBuilder scriptBuilder = scriptBuilderFactory.scriptForMavenConversion(dsl, buildContentGenerationContext, "build", useIncubatingAPIs, insecureProtocolOption);
-            generateSettings(this.rootProject.getArtifactId(), Collections.emptySet(), buildContentGenerationContext);
+            generateSettings(this.rootProject.getArtifactId(), emptySet(), buildContentGenerationContext);
 
             scriptBuilder.plugin(null, "java-library");
             scriptBuilder.plugin(null, "maven-publish");
@@ -260,7 +263,7 @@ public class Maven2Gradle {
                 project.getParent() == null || (project.getParent() != null && proj.getArtifactId().equals(project.getParent().getArtifactId()) && proj.getGroupId().equals(project.getParent().getGroupId()))
             ).findFirst();
             return parentIsPartOfThisBuild.isPresent() && (incReactors || !"pom".equals(project.getPackaging()));
-        }).collect(Collectors.toSet());
+        }).collect(toSet());
     }
 
     private String fqn(MavenProject project, Set<MavenProject> allProjects) {
@@ -548,7 +551,7 @@ public class Maven2Gradle {
 
     private void createExternalDependency(org.apache.maven.model.Dependency mavenDependency, List<Dependency> result, String scope) {
         String classifier = mavenDependency.getClassifier();
-        List<String> exclusions = mavenDependency.getExclusions().stream().map(Exclusion::getArtifactId).collect(Collectors.toList());
+        List<String> exclusions = mavenDependency.getExclusions().stream().map(Exclusion::getArtifactId).collect(toList());
         result.add(new ExternalDependency(scope, mavenDependency.getGroupId(), mavenDependency.getArtifactId(), mavenDependency.getVersion(), classifier, exclusions));
     }
 

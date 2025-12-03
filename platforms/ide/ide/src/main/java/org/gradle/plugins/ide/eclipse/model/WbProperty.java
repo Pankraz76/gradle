@@ -16,10 +16,11 @@
 
 package org.gradle.plugins.ide.eclipse.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import groovy.util.Node;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -35,8 +36,8 @@ public class WbProperty implements WbModuleEntry {
     }
 
     public WbProperty(String name, String value) {
-        this.name = Preconditions.checkNotNull(name);
-        this.value = Preconditions.checkNotNull(value);
+        this.name = checkNotNull(name);
+        this.value = checkNotNull(value);
     }
 
     public String getName() {

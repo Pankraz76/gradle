@@ -16,7 +16,14 @@
 
 package org.gradle.api.internal.tasks.testing.junit;
 
+import static java.util.stream.Collectors.joining;
+
 import com.google.common.collect.Sets;
+import java.io.File;
+import java.io.IOException;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.internal.tasks.testing.TestFramework;
 import org.gradle.api.internal.tasks.testing.WorkerTestDefinitionProcessorFactory;
@@ -32,12 +39,6 @@ import org.gradle.api.tasks.testing.junit.JUnitOptions;
 import org.gradle.internal.Factory;
 import org.gradle.internal.scan.UsedByScanPlugin;
 import org.gradle.process.internal.worker.WorkerProcessBuilder;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @UsedByScanPlugin("test-retry")
 public abstract class JUnitTestFramework implements TestFramework {
@@ -113,7 +114,7 @@ public abstract class JUnitTestFramework implements TestFramework {
                     "This will result in the category being excluded, which may not be what was intended.  " +
                     "Please either include or exclude the category but not both.");
             } else {
-                String allCategories = intersection.stream().sorted().map(s -> "'" + s + "'").collect(Collectors.joining(", "));
+                String allCategories = intersection.stream().sorted().map(s -> "'" + s + "'").collect(joining(", "));
                 LOGGER.warn("The categories " + allCategories + " are both included and excluded.  " +
                     "This will result in the categories being excluded, which may not be what was intended. " +
                     "Please either include or exclude the categories but not both.");

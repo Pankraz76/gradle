@@ -16,10 +16,27 @@
 
 package org.gradle.internal.execution.steps;
 
+import static com.google.common.collect.ImmutableListMultimap.toImmutableListMultimap;
+import static com.google.common.collect.Maps.immutableEntry;
+import static java.util.stream.Collectors.joining;
+import static org.gradle.internal.execution.Execution.ExecutionOutcome.UP_TO_DATE;
+import static org.gradle.internal.snapshot.SnapshotVisitResult.CONTINUE;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableSortedMap;
+import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.FileSystemException;
+import java.nio.file.StandardCopyOption;
+import java.time.Duration;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import javax.annotation.CheckReturnValue;
 import org.apache.commons.io.FileUtils;
 import org.gradle.caching.internal.origin.OriginMetadata;
 import org.gradle.internal.execution.Execution;
@@ -45,23 +62,6 @@ import org.gradle.internal.snapshot.SnapshotVisitResult;
 import org.gradle.internal.vfs.FileSystemAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.CheckReturnValue;
-import java.io.File;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.FileSystemException;
-import java.nio.file.StandardCopyOption;
-import java.time.Duration;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static com.google.common.collect.ImmutableListMultimap.toImmutableListMultimap;
-import static com.google.common.collect.Maps.immutableEntry;
-import static org.gradle.internal.execution.Execution.ExecutionOutcome.UP_TO_DATE;
-import static org.gradle.internal.snapshot.SnapshotVisitResult.CONTINUE;
 
 /**
  * Assigns an immutable workspace to the work, and makes sure it contains the correct outputs.
@@ -198,8 +198,8 @@ public class AssignImmutableWorkspaceStep<C extends IdentityContext> implements 
             String actualOutputHashes = outputSnapshots.entrySet().stream()
                 .map(entry -> entry.getKey() + ":\n" + entry.getValue().roots()
                     .map(AssignImmutableWorkspaceStep::describeSnapshot)
-                    .collect(Collectors.joining("\n")))
-                .collect(Collectors.joining("\n"));
+                    .collect(joining("\n")))
+                .collect(joining("\n"));
             throw new IllegalStateException(String.format(
                 "The contents of the immutable workspace '%s' have been modified. " +
                     "These workspace directories are not supposed to be modified once they are created. " +

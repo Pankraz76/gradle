@@ -16,16 +16,17 @@
 
 package org.gradle.initialization;
 
+import static java.util.Comparator.comparing;
+
 import com.google.common.collect.ImmutableSortedSet;
+import java.util.Comparator;
+import java.util.Set;
 import org.gradle.api.internal.project.ProjectState;
 import org.gradle.internal.build.BuildState;
 
-import java.util.Comparator;
-import java.util.Set;
-
 public class BuildStructureOperationProject implements LoadProjectsBuildOperationType.Result.Project, ProjectsIdentifiedProgressDetails.Project {
     private static final Comparator<LoadProjectsBuildOperationType.Result.Project> PROJECT_COMPARATOR =
-        Comparator.comparing(LoadProjectsBuildOperationType.Result.Project::getName);
+        comparing(LoadProjectsBuildOperationType.Result.Project::getName);
     private final String name;
     private final String path;
     private final String identityPath;

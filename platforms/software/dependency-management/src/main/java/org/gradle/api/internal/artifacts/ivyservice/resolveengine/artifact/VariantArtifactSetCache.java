@@ -16,6 +16,12 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.excludes.simple.DefaultExcludeFactory;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.excludes.specs.ExcludeSpec;
 import org.gradle.api.internal.attributes.ImmutableAttributes;
@@ -24,10 +30,6 @@ import org.gradle.internal.component.model.ComponentGraphResolveState;
 import org.gradle.internal.component.model.VariantGraphResolveState;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
-
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Cache for {@link ArtifactSet} for nodes of a resolved graph.
@@ -85,9 +87,9 @@ public class VariantArtifactSetCache {
             component,
             variant,
             ImmutableAttributes.EMPTY,
-            Collections.emptyList(),
+            emptyList(),
             EXCLUDE_NOTHING,
-            Collections.emptySet()
+            emptySet()
         );
     }
 

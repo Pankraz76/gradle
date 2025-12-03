@@ -16,15 +16,17 @@
 
 package org.gradle.jvm.toolchain.internal;
 
-import com.google.common.annotations.VisibleForTesting;
-import org.gradle.internal.os.OperatingSystem;
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toSet;
 
-import javax.inject.Inject;
+import com.google.common.annotations.VisibleForTesting;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
+import org.gradle.internal.os.OperatingSystem;
 
 public class LinuxInstallationSupplier implements InstallationSupplier {
     @VisibleForTesting
@@ -53,8 +55,8 @@ public class LinuxInstallationSupplier implements InstallationSupplier {
             return Arrays.stream(roots)
                 .map(root -> FileBasedInstallationFactory.fromDirectory(root, getSourceName(), InstallationLocation::autoDetected))
                 .flatMap(Set::stream)
-                .collect(Collectors.toSet());
+                .collect(toSet());
         }
-        return Collections.emptySet();
+        return emptySet();
     }
 }

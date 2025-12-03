@@ -15,6 +15,15 @@
  */
 package org.gradle.api.internal.artifacts.repositories.transport;
 
+import static java.util.Collections.singleton;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.credentials.Credentials;
 import org.gradle.api.internal.artifacts.ivyservice.ArtifactCacheLockingAccessCoordinator;
@@ -39,14 +48,6 @@ import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 import org.gradle.internal.verifier.HttpRedirectVerifier;
 import org.gradle.util.internal.BuildCommencedTimeProvider;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 @ServiceScope(Scope.Build.class)
 public class RepositoryTransportFactory {
@@ -98,7 +99,7 @@ public class RepositoryTransportFactory {
     }
 
     public RepositoryTransport createTransport(String scheme, String name, Collection<Authentication> authentications, HttpRedirectVerifier redirectVerifier) {
-        return createTransport(Collections.singleton(scheme), name, authentications, redirectVerifier);
+        return createTransport(singleton(scheme), name, authentications, redirectVerifier);
     }
 
     public RepositoryTransport createTransport(Set<String> schemes, String name, Collection<Authentication> authentications, HttpRedirectVerifier redirectVerifier) {
@@ -113,7 +114,7 @@ public class RepositoryTransportFactory {
         // file:// repos are treated differently
         // 1) we don't cache their files
         // 2) we don't do progress logging for "downloading"
-        if (schemes.equals(Collections.singleton("file"))) {
+        if (schemes.equals(singleton("file"))) {
             return createFileTransport(name);
         }
         ResourceConnectorSpecification connectionDetails = new DefaultResourceConnectorSpecification(authentications, redirectVerifier);

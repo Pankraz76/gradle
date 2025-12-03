@@ -16,14 +16,15 @@
 
 package org.gradle.api.internal.tasks.options;
 
-import org.gradle.api.provider.Provider;
-import org.gradle.internal.reflect.JavaMethod;
-import org.gradle.util.internal.CollectionUtils;
+import static java.util.Collections.emptyList;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import org.gradle.api.provider.Provider;
+import org.gradle.internal.reflect.JavaMethod;
+import org.gradle.util.internal.CollectionUtils;
 
 public class InstanceOptionDescriptor implements OptionDescriptor {
 
@@ -81,7 +82,7 @@ public class InstanceOptionDescriptor implements OptionDescriptor {
                 return CollectionUtils.toStringList((Collection) values);
             }
         }
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override

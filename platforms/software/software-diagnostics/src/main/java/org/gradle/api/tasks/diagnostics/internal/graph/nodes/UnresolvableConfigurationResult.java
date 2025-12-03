@@ -15,18 +15,20 @@
  */
 package org.gradle.api.tasks.diagnostics.internal.graph.nodes;
 
-import com.google.common.base.Joiner;
-import org.gradle.api.artifacts.Configuration;
-import org.gradle.api.artifacts.Dependency;
-import org.gradle.api.artifacts.DependencySet;
-import org.gradle.api.artifacts.ProjectDependency;
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toList;
 
+import com.google.common.base.Joiner;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.gradle.api.artifacts.Configuration;
+import org.gradle.api.artifacts.Dependency;
+import org.gradle.api.artifacts.DependencySet;
+import org.gradle.api.artifacts.ProjectDependency;
 
 public class UnresolvableConfigurationResult extends AbstractRenderableDependency {
 
@@ -42,7 +44,7 @@ public class UnresolvableConfigurationResult extends AbstractRenderableDependenc
     private static Set<? extends RenderableDependency> unresolvableChildren(Configuration configuration) {
         final DependencySet dependencies = configuration.getDependencies();
         if (dependencies.isEmpty()) {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         Set<UnresolvableRenderableDependency> children = new LinkedHashSet<>();
@@ -65,7 +67,7 @@ public class UnresolvableConfigurationResult extends AbstractRenderableDependenc
         return Joiner.on(":").join(
             Stream.of(dependency.getGroup(), dependency.getName(), dependency.getVersion())
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList())
+                .collect(toList())
         );
     }
 

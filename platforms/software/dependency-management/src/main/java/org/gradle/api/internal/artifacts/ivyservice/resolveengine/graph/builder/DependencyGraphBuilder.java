@@ -15,8 +15,20 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.builder;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static java.util.stream.Collectors.toSet;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.gradle.api.GradleException;
@@ -63,16 +75,6 @@ import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @ServiceScope(Scope.Project.class)
 public class DependencyGraphBuilder {
@@ -460,7 +462,7 @@ public class DependencyGraphBuilder {
     private static Pair<Conflict, List<String>> buildConflictResolutions(ComponentState selected, ResolutionParameters.FailureResolutions failureResolutions) {
         ImmutableList<Conflict.Participant> participants = selected.getModule().getAllVersions().stream()
             .map(component -> new Conflict.Participant(component.getId().getVersion(), component.getComponentId()))
-            .collect(ImmutableList.toImmutableList());
+            .collect(toImmutableList());
 
         Conflict conflict = new Conflict(
             participants,
@@ -484,7 +486,7 @@ public class DependencyGraphBuilder {
     ) {
         Set<NodeState> selectedNodes = selected.getNodes().stream()
             .filter(n -> n.isSelected() && !n.isAttachedToVirtualPlatform() && !n.hasShadowedCapability())
-            .collect(Collectors.toSet());
+            .collect(toSet());
 
         if (selectedNodes.size() < 2) {
             return;
@@ -508,7 +510,7 @@ public class DependencyGraphBuilder {
         if (!incompatibleNodes.isEmpty()) {
             Set<VariantGraphResolveMetadata> incompatibleNodeMetadatas = incompatibleNodes.stream()
                 .map(NodeState::getMetadata)
-                .collect(Collectors.toSet());
+                .collect(toSet());
             AbstractResolutionFailureException variantsSelectionException = resolutionFailureHandler.incompatibleMultipleNodesValidationFailure(matcher, selected.getMetadata(), incompatibleNodeMetadatas);
             for (EdgeState edge : module.getIncomingEdges()) {
                 edge.failWith(variantsSelectionException);

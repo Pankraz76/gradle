@@ -16,7 +16,11 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.moduleconverter.dependencies;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableSet;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.artifacts.DependencyConstraint;
 import org.gradle.api.artifacts.ModuleDependency;
@@ -32,9 +36,6 @@ import org.gradle.internal.component.model.LocalComponentDependencyMetadata;
 import org.gradle.internal.component.model.LocalOriginDependencyMetadata;
 import org.gradle.util.internal.WrapUtil;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
 
 public class DefaultDependencyMetadataFactory implements DependencyMetadataFactory {
     private final List<DependencyMetadataConverter> dependencyDescriptorFactories;
@@ -53,7 +54,7 @@ public class DefaultDependencyMetadataFactory implements DependencyMetadataFacto
     public LocalOriginDependencyMetadata createDependencyConstraintMetadata(DependencyConstraint dependencyConstraint) {
         ComponentSelector selector = createSelector(dependencyConstraint);
         return new LocalComponentDependencyMetadata(selector, null,
-            Collections.emptyList(), Collections.emptyList(), ((DependencyConstraintInternal) dependencyConstraint).isForce(), false, false, true, false, dependencyConstraint.getReason());
+            emptyList(), emptyList(), ((DependencyConstraintInternal) dependencyConstraint).isForce(), false, false, true, false, dependencyConstraint.getReason());
     }
 
     private ComponentSelector createSelector(DependencyConstraint dependencyConstraint) {

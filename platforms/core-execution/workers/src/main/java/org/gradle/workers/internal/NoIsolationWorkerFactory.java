@@ -16,6 +16,9 @@
 
 package org.gradle.workers.internal;
 
+import static java.util.Collections.singleton;
+
+import java.util.Collections;
 import org.gradle.internal.Cast;
 import org.gradle.internal.Factory;
 import org.gradle.internal.classloader.ClassLoaderUtils;
@@ -28,8 +31,6 @@ import org.gradle.workers.WorkAction;
 import org.gradle.workers.WorkParameters;
 import org.gradle.workers.WorkerExecutor;
 
-import java.util.Collections;
-
 public class NoIsolationWorkerFactory implements WorkerFactory {
     private final BuildOperationRunner buildOperationRunner;
     private final ActionExecutionSpecFactory specFactory;
@@ -40,7 +41,7 @@ public class NoIsolationWorkerFactory implements WorkerFactory {
         this.buildOperationRunner = buildOperationRunner;
         this.specFactory = specFactory;
         IsolationScheme<WorkAction<?>, WorkParameters> isolationScheme = new IsolationScheme<>(Cast.uncheckedNonnullCast(WorkAction.class), WorkParameters.class, WorkParameters.None.class);
-        workerServer = new DefaultWorkerServer(internalServices, instantiatorFactory, isolationScheme, Collections.singleton(WorkerExecutor.class));
+        workerServer = new DefaultWorkerServer(internalServices, instantiatorFactory, isolationScheme, singleton(WorkerExecutor.class));
     }
 
     // Attaches the owning WorkerExecutor to this factory

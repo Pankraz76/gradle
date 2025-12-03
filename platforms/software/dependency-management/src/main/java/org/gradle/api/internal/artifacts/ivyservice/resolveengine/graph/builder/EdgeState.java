@@ -16,6 +16,13 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.builder;
 
+import static java.util.Collections.singletonList;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.artifacts.capability.CapabilitySelector;
 import org.gradle.api.artifacts.component.ComponentSelector;
 import org.gradle.api.artifacts.result.ComponentSelectionReason;
@@ -35,12 +42,6 @@ import org.gradle.internal.component.model.GraphVariantSelector;
 import org.gradle.internal.component.model.VariantGraphResolveState;
 import org.gradle.internal.resolve.ModuleVersionResolveException;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Represents the edges in the dependency graph.
@@ -312,7 +313,7 @@ class EdgeState implements DependencyGraphEdge {
                 dependencyMetadata.getArtifacts()
             );
 
-            return new GraphVariantSelectionResult(Collections.singletonList(selected), true);
+            return new GraphVariantSelectionResult(singletonList(selected), true);
         }
 
         // Otherwise, for target components that don't support attribute matching, fallback to legacy variant selection.

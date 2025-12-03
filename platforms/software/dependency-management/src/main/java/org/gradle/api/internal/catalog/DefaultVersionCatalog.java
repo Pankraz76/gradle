@@ -15,12 +15,13 @@
  */
 package org.gradle.api.internal.catalog;
 
+import static java.util.stream.Collectors.toList;
+import static org.gradle.api.internal.catalog.AliasNormalizer.normalize;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.gradle.api.internal.catalog.AliasNormalizer.normalize;
 
 public class DefaultVersionCatalog implements Serializable {
     private final String name;
@@ -60,14 +61,14 @@ public class DefaultVersionCatalog implements Serializable {
         return libraries.keySet()
             .stream()
             .sorted()
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     public List<String> getBundleAliases() {
         return bundles.keySet()
             .stream()
             .sorted()
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     public DependencyModel getDependencyData(String alias) {
@@ -78,14 +79,14 @@ public class DefaultVersionCatalog implements Serializable {
         return versions.keySet()
             .stream()
             .sorted()
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     public List<String> getPluginAliases() {
         return plugins.keySet()
             .stream()
             .sorted()
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     public BundleModel getBundle(String name) {

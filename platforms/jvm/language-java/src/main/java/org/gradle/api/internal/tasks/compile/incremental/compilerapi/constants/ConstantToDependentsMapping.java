@@ -16,10 +16,11 @@
 
 package org.gradle.api.internal.tasks.compile.incremental.compilerapi.constants;
 
-import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
+import static java.util.Collections.emptyMap;
 
 import java.util.Collections;
 import java.util.Map;
+import org.gradle.api.internal.tasks.compile.incremental.compilerapi.deps.DependentsSet;
 
 public class ConstantToDependentsMapping {
 
@@ -38,7 +39,7 @@ public class ConstantToDependentsMapping {
     }
 
     public static ConstantToDependentsMapping empty() {
-        return new ConstantToDependentsMapping(Collections.emptyMap());
+        return new ConstantToDependentsMapping(emptyMap());
     }
 
     public static ConstantToDependentsMappingBuilder builder() {

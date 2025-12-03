@@ -16,8 +16,24 @@
 
 package org.gradle.nativeplatform.toolchain.internal.gcc.metadata;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
+import static org.gradle.nativeplatform.toolchain.internal.gcc.metadata.GccCompilerType.CLANG;
+import static org.gradle.nativeplatform.toolchain.internal.gcc.metadata.GccCompilerType.GCC;
+
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.nio.file.NoSuchFileException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.gradle.api.GradleException;
 import org.gradle.internal.FileUtils;
 import org.gradle.internal.UncheckedException;
@@ -32,21 +48,6 @@ import org.gradle.nativeplatform.toolchain.internal.metadata.CompilerType;
 import org.gradle.process.internal.ExecAction;
 import org.gradle.process.internal.ExecActionFactory;
 import org.gradle.util.internal.VersionNumber;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.nio.file.NoSuchFileException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.gradle.nativeplatform.toolchain.internal.gcc.metadata.GccCompilerType.CLANG;
-import static org.gradle.nativeplatform.toolchain.internal.gcc.metadata.GccCompilerType.GCC;
 
 /**
  * Given a File pointing to an (existing) gcc/g++/clang/clang++ binary, extracts the version number and default architecture by running with -dM -E -v and scraping the output.
@@ -292,12 +293,12 @@ public class GccMetadataProvider extends AbstractMetadataProvider<GccMetadata> {
 
         @Override
         public List<File> getLibDirs() {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         @Override
         public Map<String, String> getPreprocessorMacros() {
-            return Collections.emptyMap();
+            return emptyMap();
         }
 
         @Override

@@ -16,6 +16,13 @@
 
 package org.gradle.plugins.ide.eclipse.model.internal;
 
+import static java.util.Collections.emptySet;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier;
@@ -36,12 +43,6 @@ import org.gradle.plugins.ide.internal.resolver.IdeDependencySet;
 import org.gradle.plugins.ide.internal.resolver.IdeDependencyVisitor;
 import org.gradle.plugins.ide.internal.resolver.NullGradleApiSourcesResolver;
 import org.gradle.plugins.ide.internal.resolver.UnresolvedIdeDependencyHandler;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 public class WtpComponentFactory {
     private final ProjectDependencyBuilder projectDependencyBuilder;
@@ -69,7 +70,7 @@ public class WtpComponentFactory {
 
     private static Set<Configuration> configOrEmptySet(Set<Configuration> configuration) {
         if (configuration == null) {
-            return Collections.emptySet();
+            return emptySet();
         } else {
             return configuration;
         }

@@ -16,6 +16,15 @@
 
 package org.gradle.internal.reflect.annotations.impl;
 
+import static java.util.Collections.emptyList;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+import static org.gradle.api.problems.Severity.ERROR;
+import static org.gradle.internal.deprecation.Documentation.userManual;
+import static org.gradle.internal.reflect.Methods.SIGNATURE_EQUIVALENCE;
+import static org.gradle.internal.reflect.annotations.AnnotationCategory.TYPE;
+
 import com.google.common.base.Equivalence;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -26,25 +35,6 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.SetMultimap;
-import org.apache.commons.lang3.StringUtils;
-import org.gradle.api.Action;
-import org.gradle.api.problems.internal.GradleCoreProblemGroup;
-import org.gradle.cache.Cache;
-import org.gradle.cache.internal.ClassCacheFactory;
-import org.gradle.internal.deprecation.DeprecationLogger;
-import org.gradle.internal.reflect.PropertyAccessorType;
-import org.gradle.internal.reflect.annotations.AnnotationCategory;
-import org.gradle.internal.reflect.annotations.FunctionAnnotationMetadata;
-import org.gradle.internal.reflect.annotations.HasAnnotationMetadata;
-import org.gradle.internal.reflect.annotations.PropertyAnnotationMetadata;
-import org.gradle.internal.reflect.annotations.TypeAnnotationMetadata;
-import org.gradle.internal.reflect.annotations.TypeAnnotationMetadataStore;
-import org.gradle.internal.reflect.validation.ReplayingTypeValidationContext;
-import org.gradle.internal.reflect.validation.TypeAwareProblemBuilder;
-import org.gradle.internal.reflect.validation.TypeValidationContext;
-import org.gradle.util.internal.TextUtil;
-
-import javax.inject.Inject;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
@@ -64,13 +54,24 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.joining;
-import static org.gradle.api.problems.Severity.ERROR;
-import static org.gradle.internal.deprecation.Documentation.userManual;
-import static org.gradle.internal.reflect.Methods.SIGNATURE_EQUIVALENCE;
-import static org.gradle.internal.reflect.annotations.AnnotationCategory.TYPE;
+import javax.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
+import org.gradle.api.Action;
+import org.gradle.api.problems.internal.GradleCoreProblemGroup;
+import org.gradle.cache.Cache;
+import org.gradle.cache.internal.ClassCacheFactory;
+import org.gradle.internal.deprecation.DeprecationLogger;
+import org.gradle.internal.reflect.PropertyAccessorType;
+import org.gradle.internal.reflect.annotations.AnnotationCategory;
+import org.gradle.internal.reflect.annotations.FunctionAnnotationMetadata;
+import org.gradle.internal.reflect.annotations.HasAnnotationMetadata;
+import org.gradle.internal.reflect.annotations.PropertyAnnotationMetadata;
+import org.gradle.internal.reflect.annotations.TypeAnnotationMetadata;
+import org.gradle.internal.reflect.annotations.TypeAnnotationMetadataStore;
+import org.gradle.internal.reflect.validation.ReplayingTypeValidationContext;
+import org.gradle.internal.reflect.validation.TypeAwareProblemBuilder;
+import org.gradle.internal.reflect.validation.TypeValidationContext;
+import org.gradle.util.internal.TextUtil;
 
 public class DefaultTypeAnnotationMetadataStore implements TypeAnnotationMetadataStore {
     private static final TypeAnnotationMetadata EMPTY_TYPE_ANNOTATION_METADATA = new TypeAnnotationMetadata() {
@@ -147,7 +148,7 @@ public class DefaultTypeAnnotationMetadataStore implements TypeAnnotationMetadat
         this.recordedTypeAnnotations = ImmutableSet.copyOf(recordedTypeAnnotations);
         this.ignoredPackagePrefixes = collectIgnoredPackagePrefixes(ignoredPackagePrefixes);
         this.propertyAnnotationCategories = allAnnotationCategoriesForProperties(propertyAnnotationCategories, ignoredMethodAnnotations);
-        this.functionAnnotationCategories = allAnnotationCategories(functionAnnotationCategories, Collections.emptyList());
+        this.functionAnnotationCategories = allAnnotationCategories(functionAnnotationCategories, emptyList());
         this.cache = initCache(ignoredSuperTypes, cacheFactory);
         this.potentiallyIgnoredMethodNames = allMethodNamesOf(ignoreMethodsFromTypes);
         this.globallyIgnoredMethods = allMethodsOf(ignoreMethodsFromTypes);
@@ -160,7 +161,7 @@ public class DefaultTypeAnnotationMetadataStore implements TypeAnnotationMetadat
     private static ImmutableSet<String> collectIgnoredPackagePrefixes(Collection<String> ignoredPackagePrefixes) {
         return ImmutableSet.copyOf(ignoredPackagePrefixes.stream()
             .map(prefix -> prefix + ".")
-            .collect(Collectors.toList())
+            .collect(toList())
         );
     }
 

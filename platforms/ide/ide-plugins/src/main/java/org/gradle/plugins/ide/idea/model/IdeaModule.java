@@ -15,10 +15,21 @@
  */
 package org.gradle.plugins.ide.idea.model;
 
+import static java.util.stream.Collectors.toCollection;
+import static org.gradle.util.internal.ConfigureUtil.configure;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
+import java.io.File;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Project;
@@ -28,17 +39,6 @@ import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.plugins.ide.idea.model.internal.IdeaDependenciesProvider;
 import org.gradle.plugins.ide.internal.IdeArtifactRegistry;
 import org.gradle.plugins.ide.internal.resolver.DefaultGradleApiSourcesResolver;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.gradle.util.internal.ConfigureUtil.configure;
 
 /**
  * Enables fine-tuning module details (*.iml file) of the IDEA plugin.
@@ -595,7 +595,7 @@ public abstract class IdeaModule {
     }
 
     private Set<Path> pathsOf(Set<File> files) {
-        return files.stream().map(file -> getPathFactory().path(file)).collect(Collectors.toCollection(LinkedHashSet::new));
+        return files.stream().map(file -> getPathFactory().path(file)).collect(toCollection(LinkedHashSet::new));
     }
 
 }

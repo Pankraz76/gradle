@@ -16,6 +16,11 @@
 
 package org.gradle.nativeplatform.internal.prebuilt;
 
+import static java.util.Collections.singleton;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.Set;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.file.FileCollectionFactory;
 import org.gradle.api.internal.file.collections.MinimalFileSet;
@@ -24,10 +29,6 @@ import org.gradle.nativeplatform.Flavor;
 import org.gradle.nativeplatform.NativeLibraryBinary;
 import org.gradle.nativeplatform.PrebuiltLibrary;
 import org.gradle.nativeplatform.platform.NativePlatform;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.Set;
 
 public abstract class AbstractPrebuiltLibraryBinary implements NativeLibraryBinary {
     private final String name;
@@ -107,7 +108,7 @@ public abstract class AbstractPrebuiltLibraryBinary implements NativeLibraryBina
             if (!file.exists() || !file.isFile()) {
                 throw new PrebuiltLibraryResolveException(String.format("%s %s does not exist for %s.", fileDescription, file.getAbsolutePath(), AbstractPrebuiltLibraryBinary.this.getDisplayName()));
             }
-            return Collections.singleton(file);
+            return singleton(file);
         }
     }
 }

@@ -15,9 +15,16 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.ivyresolve.parser;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.gradle.api.artifacts.ModuleIdentifier;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.artifacts.component.ModuleComponentSelector;
@@ -37,12 +44,6 @@ import org.gradle.internal.component.external.model.maven.MavenDependencyType;
 import org.gradle.internal.component.model.DefaultIvyArtifactName;
 import org.gradle.internal.component.model.ExcludeMetadata;
 import org.gradle.internal.component.model.IvyArtifactName;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This file was originally a copy of org.apache.ivy.plugins.parser.m2.PomModuleDescriptorBuilder, but has since been significantly modified.
@@ -275,7 +276,7 @@ public class GradlePomModuleDescriptorBuilder {
             return pomDependencyMgt.getExcludedModules();
         }
 
-        return Collections.emptyList();
+        return emptyList();
     }
 
     private PomDependencyMgt findDependencyDefault(PomDependencyMgt dependency) {

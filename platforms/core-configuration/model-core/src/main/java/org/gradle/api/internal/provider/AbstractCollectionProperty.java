@@ -16,8 +16,16 @@
 
 package org.gradle.api.internal.provider;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.gradle.api.internal.provider.AppendOnceList.toAppendOnceList;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableCollection;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.function.Supplier;
 import org.gradle.api.Transformer;
 import org.gradle.api.internal.provider.Collectors.ElementFromProvider;
 import org.gradle.api.internal.provider.Collectors.ElementsFromArray;
@@ -30,13 +38,6 @@ import org.gradle.internal.Cast;
 import org.gradle.internal.evaluation.EvaluationScopeContext;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.function.Supplier;
-
-import static org.gradle.api.internal.provider.AppendOnceList.toAppendOnceList;
 
 /**
  * The base class for collection properties.
@@ -140,7 +141,7 @@ public abstract class AbstractCollectionProperty<T, C extends Collection<T>> ext
 
     @Override
     public void add(final T element) {
-        Preconditions.checkNotNull(element, "Cannot add a null element to a property of type %s.", collectionType.getSimpleName());
+        checkNotNull(element, "Cannot add a null element to a property of type %s.", collectionType.getSimpleName());
         addExplicitCollector(new SingleElement<>(element));
     }
 
@@ -545,7 +546,7 @@ public abstract class AbstractCollectionProperty<T, C extends Collection<T>> ext
         }
 
         private Collector<T> toCollector(ExecutionTimeValue<? extends Iterable<? extends T>> value) {
-            Preconditions.checkArgument(!value.isMissing(), "Cannot get a collector for the missing value");
+            checkArgument(!value.isMissing(), "Cannot get a collector for the missing value");
             if (value.isChangingValue() || value.hasChangingContent() || value.getSideEffect() != null) {
                 return new ElementsFromCollectionProvider<>(value.toProvider());
             }

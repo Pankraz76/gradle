@@ -16,6 +16,12 @@
 
 package org.gradle.api.internal.resolve;
 
+import static java.util.Collections.emptyList;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.model.ModelMap;
 import org.gradle.model.internal.registry.ModelRegistry;
 import org.gradle.model.internal.type.ModelType;
@@ -23,11 +29,6 @@ import org.gradle.model.internal.type.ModelTypes;
 import org.gradle.platform.base.ComponentSpec;
 import org.gradle.platform.base.VariantComponent;
 import org.gradle.platform.base.VariantComponentSpec;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class DefaultLocalLibraryResolver implements LocalLibraryResolver {
     private static final ModelType<ModelMap<ComponentSpec>> COMPONENT_MAP_TYPE = ModelTypes.modelMap(ComponentSpec.class);
@@ -39,7 +40,7 @@ public class DefaultLocalLibraryResolver implements LocalLibraryResolver {
         collectLocalComponents(projectModel, "components", librarySpecs);
         collectLocalComponents(projectModel, "testSuites", librarySpecs);
         if (librarySpecs.isEmpty()) {
-            return Collections.emptyList();
+            return emptyList();
         }
         return librarySpecs;
     }

@@ -16,17 +16,18 @@
 
 package org.gradle.internal.execution.history.changes;
 
+import static java.util.Map.Entry.comparingByKey;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import org.gradle.internal.fingerprint.FileCollectionFingerprint;
 import org.gradle.internal.fingerprint.FileSystemLocationFingerprint;
 import org.gradle.internal.fingerprint.impl.IgnoredPathFingerprintingStrategy;
 import org.gradle.internal.hash.HashCode;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Compares {@link FileCollectionFingerprint}s ignoring the path.
@@ -34,7 +35,7 @@ import java.util.Map;
 public class IgnoredPathCompareStrategy extends AbstractFingerprintCompareStrategy {
     public static final FingerprintCompareStrategy INSTANCE = new IgnoredPathCompareStrategy();
 
-    private static final Comparator<Map.Entry<HashCode, FilePathWithType>> ENTRY_COMPARATOR = Map.Entry.comparingByKey();
+    private static final Comparator<Map.Entry<HashCode, FilePathWithType>> ENTRY_COMPARATOR = comparingByKey();
 
     private IgnoredPathCompareStrategy() {
         super(IgnoredPathCompareStrategy::visitChangesSince);

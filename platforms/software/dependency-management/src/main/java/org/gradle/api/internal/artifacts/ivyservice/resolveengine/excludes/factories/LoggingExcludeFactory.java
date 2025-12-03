@@ -15,11 +15,7 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.excludes.factories;
 
-import org.gradle.api.internal.artifacts.ivyservice.resolveengine.excludes.specs.ExcludeSpec;
-import org.gradle.internal.Factory;
-import org.gradle.internal.UncheckedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.util.stream.Collectors.joining;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -28,6 +24,11 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.gradle.api.internal.artifacts.ivyservice.resolveengine.excludes.specs.ExcludeSpec;
+import org.gradle.internal.Factory;
+import org.gradle.internal.UncheckedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LoggingExcludeFactory extends DelegatingExcludeFactory {
     private final static Logger LOGGER = LoggerFactory.getLogger(LoggingExcludeFactory.class);
@@ -84,7 +85,7 @@ public class LoggingExcludeFactory extends DelegatingExcludeFactory {
                 printWriter.print(Arrays.stream(stackTrace)
                     .limit(100)
                     .map(d -> "\"" + d.toString() + "\"")
-                    .collect(Collectors.joining(", "))
+                    .collect(joining(", "))
                 );
                 sw.append("]}");
                 LOGGER.debug("{\"operation\": { \"name\": \"{}\", \"operands\": {}, \"result\": {} } }", operationName, toList(operands), sw.toString());

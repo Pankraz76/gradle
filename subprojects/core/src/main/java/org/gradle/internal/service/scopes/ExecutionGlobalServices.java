@@ -15,10 +15,18 @@
  */
 package org.gradle.internal.service.scopes;
 
+import static java.util.stream.Collectors.toMap;
+import static org.gradle.internal.execution.model.annotations.ModifierAnnotationCategory.OPTIONAL;
+import static org.gradle.internal.execution.model.annotations.ModifierAnnotationCategory.REPLACES_EAGER_PROPERTY;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import groovy.lang.GroovyObject;
 import groovy.transform.Generated;
+import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.gradle.api.Describable;
 import org.gradle.api.artifacts.transform.CacheableTransform;
 import org.gradle.api.artifacts.transform.InputArtifact;
@@ -105,14 +113,6 @@ import org.gradle.work.DisableCachingByDefault;
 import org.gradle.work.Incremental;
 import org.gradle.work.NormalizeLineEndings;
 
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.execution.model.annotations.ModifierAnnotationCategory.OPTIONAL;
-import static org.gradle.internal.execution.model.annotations.ModifierAnnotationCategory.REPLACES_EAGER_PROPERTY;
-
 public class ExecutionGlobalServices implements ServiceRegistrationProvider {
     @VisibleForTesting
     public static final ImmutableSet<Class<? extends Annotation>> PROPERTY_TYPE_ANNOTATIONS = ImmutableSet.of(
@@ -176,7 +176,7 @@ public class ExecutionGlobalServices implements ServiceRegistrationProvider {
                 BindsProjectFeature.class
             ),
             ModifierAnnotationCategory.asMap(builder.build()),
-            FUNCTION_TYPE_ANNOTATIONS.stream().collect(Collectors.toMap(annotation -> annotation, annotation -> ModifierAnnotationCategory.TYPE)),
+            FUNCTION_TYPE_ANNOTATIONS.stream().collect(toMap(annotation -> annotation, annotation -> ModifierAnnotationCategory.TYPE)),
             ImmutableSet.of(
                 "java",
                 "groovy",

@@ -16,12 +16,13 @@
 
 package org.gradle.launcher.daemon.server;
 
-import org.gradle.internal.service.scopes.Scope;
-import org.gradle.internal.service.scopes.ServiceScope;
-import org.jspecify.annotations.Nullable;
+import static java.util.UUID.randomUUID;
 
 import java.io.File;
 import java.util.UUID;
+import org.gradle.internal.service.scopes.Scope;
+import org.gradle.internal.service.scopes.ServiceScope;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Carries the location of the log file for the current daemon.
@@ -37,7 +38,7 @@ public class DaemonLogFile {
     }
 
     static String getDaemonLogFileName(@Nullable Long pid) {
-        return DAEMON_LOG_PREFIX + (pid == null ? UUID.randomUUID() : pid) + DAEMON_LOG_SUFFIX;
+        return DAEMON_LOG_PREFIX + (pid == null ? randomUUID() : pid) + DAEMON_LOG_SUFFIX;
     }
 
     public File getFile() {

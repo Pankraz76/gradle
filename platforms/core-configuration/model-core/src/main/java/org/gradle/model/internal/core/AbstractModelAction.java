@@ -16,15 +16,17 @@
 
 package org.gradle.model.internal.core;
 
-import com.google.common.base.Preconditions;
-import org.gradle.model.internal.core.rule.describe.ModelRuleDescriptor;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Collections.emptyList;
 
+import com.google.common.base.Preconditions;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.model.internal.core.rule.describe.ModelRuleDescriptor;
 
 public abstract class AbstractModelAction<T> implements ModelAction {
-    public static final List<ModelReference<?>> EMPTY_MODEL_REF_LIST = Collections.emptyList();
+    public static final List<ModelReference<?>> EMPTY_MODEL_REF_LIST = emptyList();
 
     protected final ModelReference<T> subject;
     protected final ModelRuleDescriptor descriptor;
@@ -35,9 +37,9 @@ public abstract class AbstractModelAction<T> implements ModelAction {
     }
 
     protected AbstractModelAction(ModelReference<T> subject, ModelRuleDescriptor descriptor, List<? extends ModelReference<?>> inputs) {
-        this.subject = Preconditions.checkNotNull(subject, "subject");
-        this.descriptor = Preconditions.checkNotNull(descriptor, "descriptor");
-        Preconditions.checkNotNull(inputs, "inputs");
+        this.subject = checkNotNull(subject, "subject");
+        this.descriptor = checkNotNull(descriptor, "descriptor");
+        checkNotNull(inputs, "inputs");
         this.inputs = inputs.isEmpty() ? EMPTY_MODEL_REF_LIST : inputs;
     }
 

@@ -16,16 +16,17 @@
 
 package org.gradle.api.internal.file;
 
-import groovy.lang.Closure;
-import org.gradle.api.Action;
-import org.gradle.api.file.FileTree;
-import org.gradle.api.file.FileVisitor;
-import org.gradle.api.tasks.util.PatternFilterable;
+import static java.util.Collections.emptySet;
 
+import groovy.lang.Closure;
 import java.io.File;
 import java.util.Collections;
 import java.util.Set;
 import java.util.function.Consumer;
+import org.gradle.api.Action;
+import org.gradle.api.file.FileTree;
+import org.gradle.api.file.FileVisitor;
+import org.gradle.api.tasks.util.PatternFilterable;
 
 final class EmptyFileTree extends AbstractFileTree {
     public static final FileTreeInternal INSTANCE = new EmptyFileTree(DEFAULT_TREE_DISPLAY_NAME);
@@ -43,7 +44,7 @@ final class EmptyFileTree extends AbstractFileTree {
 
     @Override
     public Set<File> getFiles() {
-        return Collections.emptySet();
+        return emptySet();
     }
 
     @Override

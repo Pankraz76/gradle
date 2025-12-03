@@ -16,8 +16,16 @@
 
 package org.gradle.internal.locking;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.StartParameter;
 import org.gradle.api.Action;
 import org.gradle.api.Describable;
@@ -50,13 +58,6 @@ import org.gradle.internal.DisplayName;
 import org.gradle.internal.component.external.model.DefaultModuleComponentSelector;
 import org.gradle.internal.resource.local.FileResourceListener;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class DefaultDependencyLockingProvider implements DependencyLockingProvider {
 
@@ -139,7 +140,7 @@ public class DefaultDependencyLockingProvider implements DependencyLockingProvid
 
     private LockEntryFilter getIgnoredEntryFilter() {
         if (ignoredEntryFilter == null) {
-            ignoredEntryFilter = LockEntryFilterFactory.forParameter(ignoredDependencies.getOrElse(Collections.emptyList()), "Ignored dependencies", false);
+            ignoredEntryFilter = LockEntryFilterFactory.forParameter(ignoredDependencies.getOrElse(emptyList()), "Ignored dependencies", false);
         }
         return ignoredEntryFilter;
     }

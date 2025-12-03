@@ -16,16 +16,16 @@
 
 package org.gradle.internal.properties.annotations;
 
+import static java.util.stream.Collectors.joining;
+import static org.gradle.api.problems.Severity.ERROR;
+import static org.gradle.internal.deprecation.Documentation.userManual;
+
 import com.google.common.collect.ImmutableSet;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.gradle.api.problems.internal.GradleCoreProblemGroup;
 import org.gradle.internal.reflect.validation.TypeValidationContext;
 import org.jspecify.annotations.NullMarked;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.gradle.api.problems.Severity.ERROR;
-import static org.gradle.internal.deprecation.Documentation.userManual;
 
 /**
  * Utility methods for validating {@link org.gradle.api.tasks.Nested} properties.
@@ -112,6 +112,6 @@ public class NestedValidationUtil {
     private static final ImmutableSet<Class<?>> SUPPORTED_KEY_TYPES = ImmutableSet.of(String.class, Integer.class);
 
     private static String getSupportedKeyTypes() {
-        return SUPPORTED_KEY_TYPES.stream().map(cls -> "'" + cls.getCanonicalName() + "'").collect(Collectors.joining(", "));
+        return SUPPORTED_KEY_TYPES.stream().map(cls -> "'" + cls.getCanonicalName() + "'").collect(joining(", "));
     }
 }

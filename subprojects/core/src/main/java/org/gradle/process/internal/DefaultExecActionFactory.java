@@ -16,7 +16,10 @@
 
 package org.gradle.process.internal;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import com.google.common.base.Preconditions;
+import java.util.concurrent.Executor;
 import org.gradle.api.Action;
 import org.gradle.api.internal.ExternalProcessStartedListener;
 import org.gradle.api.internal.file.DefaultFileCollectionFactory;
@@ -39,8 +42,6 @@ import org.gradle.process.ExecResult;
 import org.gradle.process.ExecSpec;
 import org.gradle.process.JavaExecSpec;
 import org.jspecify.annotations.Nullable;
-
-import java.util.concurrent.Executor;
 
 public class DefaultExecActionFactory implements ExecFactory {
     protected final FileResolver fileResolver;
@@ -303,11 +304,11 @@ public class DefaultExecActionFactory implements ExecFactory {
 
         @Override
         public ExecFactory build() {
-            Preconditions.checkState(fileResolver != null, "fileResolver is not set");
-            Preconditions.checkState(fileCollectionFactory != null, "fileCollectionFactory is not set");
-            Preconditions.checkState(instantiator != null, "instantiator is not set");
-            Preconditions.checkState(buildCancellationToken != null, "buildCancellationToken is not set");
-            Preconditions.checkState(objectFactory != null, "objectFactory is not set");
+            checkState(fileResolver != null, "fileResolver is not set");
+            checkState(fileCollectionFactory != null, "fileCollectionFactory is not set");
+            checkState(instantiator != null, "instantiator is not set");
+            checkState(buildCancellationToken != null, "buildCancellationToken is not set");
+            checkState(objectFactory != null, "objectFactory is not set");
             return new DefaultExecActionFactory(
                 fileResolver,
                 fileCollectionFactory,

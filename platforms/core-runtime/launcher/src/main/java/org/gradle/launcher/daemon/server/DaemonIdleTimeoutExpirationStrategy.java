@@ -16,15 +16,15 @@
 
 package org.gradle.launcher.daemon.server;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.gradle.launcher.daemon.server.expiry.DaemonExpirationStatus.QUIET_EXPIRE;
+
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.base.Preconditions;
+import java.util.concurrent.TimeUnit;
 import org.gradle.launcher.daemon.server.expiry.DaemonExpirationResult;
 import org.gradle.launcher.daemon.server.expiry.DaemonExpirationStrategy;
-
-import java.util.concurrent.TimeUnit;
-
-import static org.gradle.launcher.daemon.server.expiry.DaemonExpirationStatus.QUIET_EXPIRE;
 
 public class DaemonIdleTimeoutExpirationStrategy implements DaemonExpirationStrategy {
     private final Function<?, Long> idleTimeout;
@@ -38,7 +38,7 @@ public class DaemonIdleTimeoutExpirationStrategy implements DaemonExpirationStra
 
     public DaemonIdleTimeoutExpirationStrategy(Daemon daemon, Function<?, Long> timeoutClosure) {
         this.daemon = daemon;
-        this.idleTimeout = Preconditions.checkNotNull(timeoutClosure);
+        this.idleTimeout = checkNotNull(timeoutClosure);
     }
 
     @Override

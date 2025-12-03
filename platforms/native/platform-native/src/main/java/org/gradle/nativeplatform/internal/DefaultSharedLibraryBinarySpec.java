@@ -16,6 +16,11 @@
 
 package org.gradle.nativeplatform.internal;
 
+import static java.util.Collections.singleton;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.Set;
 import org.gradle.api.file.FileCollection;
 import org.gradle.language.base.LanguageSourceSet;
 import org.gradle.language.nativeplatform.NativeResourceSet;
@@ -25,10 +30,6 @@ import org.gradle.nativeplatform.tasks.LinkSharedLibrary;
 import org.gradle.nativeplatform.tasks.ObjectFilesToBinary;
 import org.gradle.platform.base.BinaryTasksCollection;
 import org.gradle.platform.base.internal.BinaryTasksCollectionWrapper;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.Set;
 
 public class DefaultSharedLibraryBinarySpec extends AbstractNativeLibraryBinarySpec implements SharedLibraryBinary, SharedLibraryBinarySpecInternal {
     private final DefaultTasksCollection tasks = new DefaultTasksCollection(super.getTasks());
@@ -104,7 +105,7 @@ public class DefaultSharedLibraryBinarySpec extends AbstractNativeLibraryBinaryS
 
         @Override
         protected Set<File> getOutputs() {
-            return Collections.singleton(getSharedLibraryLinkFile());
+            return singleton(getSharedLibraryLinkFile());
         }
 
         private boolean isResourceOnly() {
@@ -145,7 +146,7 @@ public class DefaultSharedLibraryBinarySpec extends AbstractNativeLibraryBinaryS
 
         @Override
         protected Set<File> getOutputs() {
-            return Collections.singleton(getSharedLibraryFile());
+            return singleton(getSharedLibraryFile());
         }
     }
 }

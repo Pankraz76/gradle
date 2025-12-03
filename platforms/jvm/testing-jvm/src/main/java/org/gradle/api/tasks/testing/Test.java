@@ -16,8 +16,22 @@
 
 package org.gradle.api.tasks.testing;
 
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toSet;
+import static org.gradle.util.internal.ConfigureUtil.configureUsing;
+
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.StartParameter;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
@@ -93,19 +107,6 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
-
-import static org.gradle.util.internal.ConfigureUtil.configureUsing;
 
 /**
  * Executes JUnit (3.8.x, 4.x or 5.x) or TestNG tests. Test are always run in (one or more) separate JVMs.
@@ -683,7 +684,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
         return getTestDefinitionDirs().getFiles().stream()
             .filter(this::isValidDefinitionDir)
             .filter(this::matchesPatternSet)
-            .collect(Collectors.toSet());
+            .collect(toSet());
     }
 
     private boolean isValidDefinitionDir(File dir) {
@@ -732,7 +733,7 @@ public abstract class Test extends AbstractTestTask implements JavaForkOptions, 
             }
             return previousFailedTestClasses;
         } else {
-            return Collections.emptySet();
+            return emptySet();
         }
     }
 

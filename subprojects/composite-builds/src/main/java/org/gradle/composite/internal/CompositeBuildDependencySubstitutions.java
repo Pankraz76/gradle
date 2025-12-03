@@ -16,9 +16,15 @@
 
 package org.gradle.composite.internal;
 
+import static java.util.stream.Collectors.toCollection;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
+import java.util.Collection;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.DependencySubstitution;
 import org.gradle.api.artifacts.ModuleIdentifier;
@@ -38,11 +44,6 @@ import org.gradle.internal.resolve.ModuleVersionResolveException;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Collection;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 /**
  * Provides a dependency substitution rule for composite build,
@@ -97,7 +98,7 @@ public class CompositeBuildDependencySubstitutions implements Action<DependencyS
             SortedSet<String> sortedProjects =
                 providingProjects.stream()
                 .map(ComponentIdentifier::getDisplayName)
-                .collect(Collectors.toCollection(TreeSet::new));
+                .collect(toCollection(TreeSet::new));
             return String.format("Module version '%s' is not unique in composite: can be provided by %s.", selector.getDisplayName(), sortedProjects);
         });
     }

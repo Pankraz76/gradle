@@ -15,15 +15,17 @@
  */
 package org.gradle.api.tasks.diagnostics.internal.graph.nodes;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.artifacts.VersionConstraint;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.artifacts.component.ComponentSelector;
 import org.gradle.api.artifacts.component.ModuleComponentSelector;
 import org.gradle.api.artifacts.result.ResolvedVariantResult;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 public abstract class AbstractRenderableDependency implements RenderableDependency {
 
@@ -34,12 +36,12 @@ public abstract class AbstractRenderableDependency implements RenderableDependen
 
     @Override
     public List<ResolvedVariantResult> getResolvedVariants() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override
     public List<ResolvedVariantResult> getAllVariants() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override
@@ -49,12 +51,12 @@ public abstract class AbstractRenderableDependency implements RenderableDependen
 
     @Override
     public Set<? extends RenderableDependency> getChildren() {
-        return Collections.emptySet();
+        return emptySet();
     }
 
     @Override
     public List<Section> getExtraDetails() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     protected boolean exactMatch(ComponentSelector requested, ComponentIdentifier selected) {

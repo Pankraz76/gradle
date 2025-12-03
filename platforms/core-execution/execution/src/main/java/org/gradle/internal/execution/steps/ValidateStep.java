@@ -16,6 +16,13 @@
 
 package org.gradle.internal.execution.steps;
 
+import static java.util.Objects.requireNonNull;
+import static org.gradle.api.problems.Severity.ERROR;
+import static org.gradle.internal.deprecation.Documentation.userManual;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import org.gradle.api.internal.GeneratedSubclasses;
 import org.gradle.api.problems.internal.GradleCoreProblemGroup;
 import org.gradle.api.problems.internal.InternalProblem;
@@ -32,13 +39,6 @@ import org.gradle.internal.service.scopes.ServiceScope;
 import org.gradle.internal.snapshot.impl.ImplementationSnapshot;
 import org.gradle.internal.snapshot.impl.UnknownImplementationSnapshot;
 import org.gradle.util.internal.TextUtil;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-
-import static org.gradle.api.problems.Severity.ERROR;
-import static org.gradle.internal.deprecation.Documentation.userManual;
 
 public abstract class ValidateStep<
     C extends BeforeExecutionContext,
@@ -114,7 +114,7 @@ public abstract class ValidateStep<
             }
         });
         // It doesn't matter whether we use cacheable true or false, since none of the warnings depends on the cacheability of the task.
-        Class<?> workType = Objects.requireNonNull(workClass.get());
+        Class<?> workType = requireNonNull(workClass.get());
         TypeValidationContext workValidationContext = validationContext.forType(workType, true);
         validateImplementation(workValidationContext, beforeExecutionState.getImplementation(), "Implementation of ", work);
         beforeExecutionState.getAdditionalImplementations()

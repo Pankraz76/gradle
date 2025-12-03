@@ -16,6 +16,8 @@
 
 package org.gradle.api.internal.tasks.compile.incremental.recomp;
 
+import static java.util.Collections.emptySet;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,12 +46,12 @@ public class DefaultSourceFileClassNameConverter implements SourceFileClassNameC
 
     @Override
     public Set<String> getClassNames(String sourceFileRelativePath) {
-        return sourceClassesMapping.getOrDefault(sourceFileRelativePath, Collections.emptySet());
+        return sourceClassesMapping.getOrDefault(sourceFileRelativePath, emptySet());
     }
 
     @Override
     public Set<String> getRelativeSourcePaths(String fqcn) {
-        return classSourceMapping.getOrDefault(fqcn, Collections.emptySet());
+        return classSourceMapping.getOrDefault(fqcn, emptySet());
     }
 
     @Override

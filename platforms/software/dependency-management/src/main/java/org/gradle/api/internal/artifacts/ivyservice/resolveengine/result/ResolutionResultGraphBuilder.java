@@ -16,11 +16,19 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.result;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
 import org.gradle.api.artifacts.ModuleVersionSelector;
 import org.gradle.api.artifacts.UnresolvedDependency;
@@ -42,13 +50,6 @@ import org.gradle.internal.component.external.model.DefaultModuleComponentSelect
 import org.gradle.internal.component.external.model.ImmutableCapabilities;
 import org.gradle.internal.resolve.ModuleVersionResolveException;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class ResolutionResultGraphBuilder implements ResolvedComponentVisitor {
     private static final DefaultComponentSelectionDescriptor DEPENDENCY_LOCKING = new DefaultComponentSelectionDescriptor(ComponentSelectionCause.CONSTRAINT, Describables.of("Dependency locking"));
@@ -82,7 +83,7 @@ public class ResolutionResultGraphBuilder implements ResolvedComponentVisitor {
         );
 
         builder.visitSelectedVariant(1L, rootVariant);
-        builder.visitComponentVariants(Collections.emptyList());
+        builder.visitComponentVariants(emptyList());
         builder.endVisitComponent();
         ResolvedDependencyGraph graph = builder.getResolvedGraph(0L, 1L);
         return new MinimalResolutionResult(() -> graph, attributes);

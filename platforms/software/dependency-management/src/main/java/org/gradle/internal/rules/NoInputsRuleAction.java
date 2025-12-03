@@ -16,10 +16,11 @@
 
 package org.gradle.internal.rules;
 
-import org.gradle.api.Action;
+import static java.util.Collections.emptyList;
 
 import java.util.Collections;
 import java.util.List;
+import org.gradle.api.Action;
 
 public class NoInputsRuleAction<T> implements RuleAction<T> {
     private final Action<? super T> action;
@@ -30,7 +31,7 @@ public class NoInputsRuleAction<T> implements RuleAction<T> {
 
     @Override
     public List<Class<?>> getInputTypes() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override

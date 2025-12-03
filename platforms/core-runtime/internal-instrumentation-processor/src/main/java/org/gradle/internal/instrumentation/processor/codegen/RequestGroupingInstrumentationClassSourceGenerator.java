@@ -16,9 +16,10 @@
 
 package org.gradle.internal.instrumentation.processor.codegen;
 
-import com.squareup.javapoet.TypeSpec;
-import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
+import com.squareup.javapoet.TypeSpec;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -28,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import org.gradle.internal.instrumentation.model.CallInterceptionRequest;
 
 public abstract class RequestGroupingInstrumentationClassSourceGenerator implements InstrumentationCodeGenerator {
     protected abstract String classNameForRequest(CallInterceptionRequest request);
@@ -43,7 +45,7 @@ public abstract class RequestGroupingInstrumentationClassSourceGenerator impleme
     public GenerationResult generateCodeForRequestedInterceptors(Collection<CallInterceptionRequest> interceptionRequests) {
         LinkedHashMap<String, List<CallInterceptionRequest>> requestsByImplClass = interceptionRequests.stream()
             .filter(it -> classNameForRequest(it) != null)
-            .collect(Collectors.groupingBy(this::classNameForRequest, LinkedHashMap::new, Collectors.toList()));
+            .collect(groupingBy(this::classNameForRequest, LinkedHashMap::new, toList()));
 
         List<HasFailures.FailureInfo> failuresInfo = new ArrayList<>();
         Set<CallInterceptionRequest> processedRequests = new LinkedHashSet<>(interceptionRequests.size());

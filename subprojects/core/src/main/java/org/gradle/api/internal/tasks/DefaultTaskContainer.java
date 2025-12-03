@@ -15,8 +15,21 @@
  */
 package org.gradle.api.internal.tasks;
 
+import static java.util.Collections.singleton;
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.ImmutableSet;
 import groovy.lang.Closure;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
@@ -59,17 +72,6 @@ import org.gradle.util.internal.ConfigureUtil;
 import org.gradle.util.internal.GUtil;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 @NullMarked
 public class DefaultTaskContainer extends DefaultTaskCollection<Task> implements TaskContainerInternal {
@@ -140,7 +142,7 @@ public class DefaultTaskContainer extends DefaultTaskCollection<Task> implements
             throw new InvalidUserDataException("The task name must be provided.");
         }
 
-        final Class<? extends TaskInternal> type = Objects.requireNonNull(Cast.uncheckedCast(actualArgs.get(Task.TASK_TYPE)), "Task type must not be null");
+        final Class<? extends TaskInternal> type = requireNonNull(Cast.uncheckedCast(actualArgs.get(Task.TASK_TYPE)), "Task type must not be null");
 
         final TaskIdentity<? extends TaskInternal> identity = taskIdentityFactory.create(name, type, project);
         return buildOperationRunner.call(new CallableBuildOperation<Task>() {
@@ -611,7 +613,7 @@ public class DefaultTaskContainer extends DefaultTaskCollection<Task> implements
 
     @Override
     public Set<? extends Class<? extends Task>> getCreateableTypes() {
-        return Collections.singleton(getType());
+        return singleton(getType());
     }
 
     public void setModelNode(MutableModelNode modelNode) {

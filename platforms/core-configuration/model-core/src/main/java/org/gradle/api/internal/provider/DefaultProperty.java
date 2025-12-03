@@ -16,6 +16,8 @@
 
 package org.gradle.api.internal.provider;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.common.base.Preconditions;
 import org.gradle.api.Transformer;
 import org.gradle.api.provider.Property;
@@ -112,7 +114,7 @@ public class DefaultProperty<T> extends AbstractProperty<T, ProviderInternal<? e
 
     @Override
     public void set(Provider<? extends T> provider) {
-        Preconditions.checkArgument(provider != null, "Cannot set the value of a property using a null provider.");
+        checkArgument(provider != null, "Cannot set the value of a property using a null provider.");
         ProviderInternal<? extends T> p = Providers.internal(provider);
         setSupplier(p.asSupplier(getValidationDisplayName(), type, sanitizer));
     }
@@ -129,7 +131,7 @@ public class DefaultProperty<T> extends AbstractProperty<T, ProviderInternal<? e
 
     @Override
     public Property<T> convention(Provider<? extends T> provider) {
-        Preconditions.checkArgument(provider != null, "Cannot set the convention of a property using a null provider.");
+        checkArgument(provider != null, "Cannot set the convention of a property using a null provider.");
         setConvention(Providers.internal(provider).asSupplier(getValidationDisplayName(), type, sanitizer));
         return this;
     }

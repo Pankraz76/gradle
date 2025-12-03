@@ -16,7 +16,15 @@
 
 package org.gradle.execution.plan;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+
 import com.google.common.annotations.VisibleForTesting;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import org.gradle.api.Action;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.api.tasks.VerificationException;
@@ -24,12 +32,6 @@ import org.gradle.execution.plan.edges.DependencyNodesSet;
 import org.gradle.execution.plan.edges.DependentNodesSet;
 import org.gradle.internal.resources.ResourceLock;
 import org.jspecify.annotations.Nullable;
-
-import javax.annotation.OverridingMethodsMustInvokeSuper;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
 
 /**
  * A node in the execution graph that represents some executable code with potential dependencies on other nodes.
@@ -555,7 +557,7 @@ public abstract class Node {
     }
 
     public Set<Node> getFinalizingSuccessors() {
-        return Collections.emptySet();
+        return emptySet();
     }
 
     /**
@@ -631,7 +633,7 @@ public abstract class Node {
      * should not need to acquire additional locks.
      */
     public List<? extends ResourceLock> getResourcesToLock() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override

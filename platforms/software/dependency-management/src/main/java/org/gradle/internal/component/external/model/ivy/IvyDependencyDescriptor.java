@@ -16,12 +16,20 @@
 
 package org.gradle.internal.component.external.model.ivy;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.artifacts.component.ModuleComponentSelector;
 import org.gradle.internal.component.external.descriptor.Artifact;
 import org.gradle.internal.component.external.model.ExternalDependencyDescriptor;
@@ -32,13 +40,6 @@ import org.gradle.internal.component.model.ExcludeMetadata;
 import org.gradle.internal.component.model.IvyArtifactName;
 import org.gradle.internal.component.model.VariantGraphResolveState;
 import org.gradle.internal.component.resolution.failure.ResolutionFailureHandler;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Represents a dependency as represented in an Ivy module descriptor file.
@@ -65,7 +66,7 @@ public class IvyDependencyDescriptor extends ExternalDependencyDescriptor {
     }
 
     public IvyDependencyDescriptor(ModuleComponentSelector requested, ListMultimap<String, String> confMappings) {
-        this(requested, requested.getVersion(), false, true, false, confMappings, Collections.emptyList(), Collections.emptyList());
+        this(requested, requested.getVersion(), false, true, false, confMappings, emptyList(), emptyList());
     }
 
     @Override

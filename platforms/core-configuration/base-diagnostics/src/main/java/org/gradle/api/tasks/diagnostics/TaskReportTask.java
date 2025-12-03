@@ -15,8 +15,19 @@
  */
 package org.gradle.api.tasks.diagnostics;
 
+import static java.util.Collections.emptyList;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSetMultimap;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.inject.Inject;
 import org.gradle.api.Incubating;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -43,16 +54,6 @@ import org.gradle.internal.instrumentation.api.annotations.ToBeReplacedByLazyPro
 import org.gradle.internal.serialization.Cached;
 import org.gradle.util.Path;
 import org.gradle.work.DisableCachingByDefault;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.Collections.emptyList;
 
 /**
  * <p>Displays a list of tasks in the project. An instance of this type is used when you execute the {@code tasks} task
@@ -247,7 +248,7 @@ public abstract class TaskReportTask extends ConventionReportTask {
     }
 
     private List<RuleDetails> ruleDetailsFor(Project project) {
-        return project.getTasks().getRules().stream().map(rule -> RuleDetails.of(rule.getDescription())).collect(Collectors.toList());
+        return project.getTasks().getRules().stream().map(rule -> RuleDetails.of(rule.getDescription())).collect(toList());
     }
 
     private DefaultGroupTaskReportModel taskReportModelFor(Project project, boolean detail) {
@@ -268,7 +269,7 @@ public abstract class TaskReportTask extends ConventionReportTask {
         return ((ProjectInternal) p).getOwner().fromMutableState(project -> {
             ImmutableSetMultimap.Builder<String, TaskDetails> groups = ImmutableSetMultimap.<String, TaskDetails>builder()
                 .orderKeysBy(String::compareToIgnoreCase)
-                .orderValuesBy(Comparator.comparing(TaskDetails::getPath));
+                .orderValuesBy(comparing(TaskDetails::getPath));
 
             for (Task task : getProjectTaskLister().listProjectTasks(project)) {
                 groups.put(

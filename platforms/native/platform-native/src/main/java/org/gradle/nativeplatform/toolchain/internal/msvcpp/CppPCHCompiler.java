@@ -16,6 +16,11 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
+import static java.util.Collections.singletonList;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.Transformer;
 import org.gradle.internal.operations.BuildOperationExecutor;
 import org.gradle.internal.work.WorkerLeaseService;
@@ -24,10 +29,6 @@ import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.CppPCHCompileSpec;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
-
 public class CppPCHCompiler extends VisualCppNativeCompiler<CppPCHCompileSpec> {
     CppPCHCompiler(BuildOperationExecutor buildOperationExecutor, CompilerOutputFileNamingSchemeFactory compilerOutputFileNamingSchemeFactory, CommandLineToolInvocationWorker commandLineToolInvocationWorker, CommandLineToolContext invocationContext, Transformer<CppPCHCompileSpec, CppPCHCompileSpec> specTransformer, String objectFileExtension, boolean useCommandFile, WorkerLeaseService workerLeaseService) {
         super(buildOperationExecutor, compilerOutputFileNamingSchemeFactory, commandLineToolInvocationWorker, invocationContext, new VisualCppPCHCompilerArgsTransformer<CppPCHCompileSpec>(), specTransformer, objectFileExtension, useCommandFile, workerLeaseService);
@@ -35,6 +36,6 @@ public class CppPCHCompiler extends VisualCppNativeCompiler<CppPCHCompileSpec> {
 
     @Override
     protected List<String> getOutputArgs(CppPCHCompileSpec spec, File outputFile) {
-        return Collections.singletonList("/Fp" + outputFile.getAbsolutePath());
+        return singletonList("/Fp" + outputFile.getAbsolutePath());
     }
 }

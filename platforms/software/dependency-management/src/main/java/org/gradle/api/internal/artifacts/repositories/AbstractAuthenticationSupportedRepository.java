@@ -15,6 +15,12 @@
  */
 package org.gradle.api.internal.artifacts.repositories;
 
+import static java.util.Collections.emptyList;
+
+import java.net.URI;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.repositories.AuthenticationContainer;
@@ -33,11 +39,6 @@ import org.gradle.internal.artifacts.repositories.AuthenticationSupportedInterna
 import org.gradle.internal.authentication.AuthenticationInternal;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.util.internal.CollectionUtils;
-
-import java.net.URI;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public abstract class AbstractAuthenticationSupportedRepository<T extends RepositoryDescriptor> extends AbstractResolutionAwareArtifactRepository<T> implements AuthenticationSupportedInternal {
     private final AuthenticationSupporter delegate;
@@ -119,7 +120,7 @@ public abstract class AbstractAuthenticationSupportedRepository<T extends Reposi
     }
 
     protected Collection<URI> getRepositoryUrls() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     List<String> getAuthenticationSchemes() {

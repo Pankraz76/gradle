@@ -16,15 +16,12 @@
 
 package org.gradle.api.internal.plugins;
 
+import static java.util.stream.Collectors.joining;
+
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
-import org.apache.commons.lang3.StringUtils;
-import org.gradle.api.Transformer;
-import org.gradle.jvm.application.scripts.JavaAppStartScriptGenerationDetails;
-import org.gradle.util.internal.CollectionUtils;
-
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
@@ -32,6 +29,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import org.gradle.api.Transformer;
+import org.gradle.jvm.application.scripts.JavaAppStartScriptGenerationDetails;
+import org.gradle.util.internal.CollectionUtils;
 
 public class StartScriptTemplateBindingFactory implements Transformer<Map<String, String>, JavaAppStartScriptGenerationDetails> {
 
@@ -114,7 +115,7 @@ public class StartScriptTemplateBindingFactory implements Transformer<Map<String
     }
 
     private String createJoinedPath(Iterable<String> path) {
-        return Streams.stream(path).map(this::encodePath).collect(Collectors.joining(getMultiPathSeparator()));
+        return Streams.stream(path).map(this::encodePath).collect(joining(getMultiPathSeparator()));
     }
 
     private String encodePath(String path) {

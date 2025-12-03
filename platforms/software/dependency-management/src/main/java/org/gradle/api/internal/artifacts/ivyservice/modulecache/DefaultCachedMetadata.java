@@ -15,6 +15,12 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.modulecache;
 
+import static java.util.Collections.singletonMap;
+
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.gradle.api.artifacts.ResolvedModuleVersion;
 import org.gradle.api.internal.artifacts.ivyservice.modulecache.dynamicversions.DefaultResolvedModuleVersion;
 import org.gradle.internal.component.external.model.ExternalModuleComponentGraphResolveState;
@@ -23,11 +29,6 @@ import org.gradle.internal.component.external.model.MutableModuleComponentResolv
 import org.gradle.internal.component.model.ModuleSources;
 import org.gradle.util.internal.BuildCommencedTimeProvider;
 import org.jspecify.annotations.Nullable;
-
-import java.time.Duration;
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 class DefaultCachedMetadata implements ModuleMetadataCache.CachedMetadata {
     private final long ageMillis;
@@ -81,7 +82,7 @@ class DefaultCachedMetadata implements ModuleMetadataCache.CachedMetadata {
     @Override
     public synchronized void putProcessedMetadata(int hash, ExternalModuleComponentGraphResolveState processed) {
         if (processedMetadataByRules == null) {
-            processedMetadataByRules = Collections.singletonMap(hash, processed);
+            processedMetadataByRules = singletonMap(hash, processed);
             return;
         } else if (processedMetadataByRules.size() == 1) {
             processedMetadataByRules = new ConcurrentHashMap<>(processedMetadataByRules);

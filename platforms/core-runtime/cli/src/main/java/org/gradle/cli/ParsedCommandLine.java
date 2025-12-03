@@ -15,6 +15,8 @@
  */
 package org.gradle.cli;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.*;
 
 public class ParsedCommandLine {
@@ -113,7 +115,7 @@ public class ParsedCommandLine {
     }
 
     ParsedCommandLineOption addOption(String optionStr, CommandLineOption option) {
-        ParsedCommandLineOption parsedOption = Objects.requireNonNull(optionsByString.get(optionStr));
+        ParsedCommandLineOption parsedOption = requireNonNull(optionsByString.get(optionStr));
         presentOptions.addAll(option.getOptions());
         return parsedOption;
     }

@@ -15,14 +15,15 @@
  */
 package org.gradle.plugins.ide.eclipse.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import groovy.util.Node;
-import org.gradle.api.Incubating;
-import org.gradle.plugins.ide.eclipse.model.internal.PathUtil;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.gradle.api.Incubating;
+import org.gradle.plugins.ide.eclipse.model.internal.PathUtil;
 
 /**
  * A wtp descriptor dependent module entry.
@@ -48,11 +49,11 @@ public class WbDependentModule implements WbModuleEntry {
      */
     @Incubating
     public WbDependentModule(String archiveName, String deployPath, String handle) {
-        Preconditions.checkNotNull(archiveName);
-        Preconditions.checkNotNull(deployPath);
+        checkNotNull(archiveName);
+        checkNotNull(deployPath);
         this.archiveName = archiveName;
         this.deployPath = PathUtil.normalizePath(deployPath);
-        this.handle = Preconditions.checkNotNull(handle);
+        this.handle = checkNotNull(handle);
     }
 
     /**

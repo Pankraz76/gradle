@@ -16,14 +16,15 @@
 
 package org.gradle.model.internal.core;
 
+import static java.util.Collections.singleton;
+
 import com.google.common.base.Optional;
+import java.util.Collections;
 import org.gradle.internal.Cast;
 import org.gradle.internal.reflect.DirectInstantiator;
 import org.gradle.model.internal.core.rule.describe.ModelRuleDescriptor;
 import org.gradle.model.internal.type.ModelType;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collections;
 
 /**
  * Should be used along with {@code PolymorphicModelMapProjection}.
@@ -44,7 +45,7 @@ public class SpecializedModelMapProjection<P, E> implements ModelProjection {
 
     @Override
     public Iterable<String> getTypeDescriptions(MutableModelNode node) {
-        return Collections.singleton(publicType.toString());
+        return singleton(publicType.toString());
     }
 
     @Nullable

@@ -15,17 +15,18 @@
  */
 package org.gradle.api.internal.attributes;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.ImmutableList;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import org.gradle.api.attributes.Attribute;
 import org.gradle.api.internal.model.NamedObjectInstantiator;
 import org.gradle.api.internal.provider.PropertyFactory;
 import org.gradle.internal.isolation.Isolatable;
 import org.gradle.internal.isolation.IsolatableFactory;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 public final class DefaultAttributesFactory implements AttributesFactory {
 
@@ -123,7 +124,7 @@ public final class DefaultAttributesFactory implements AttributesFactory {
             return concatChild(nodeChildren, child);
         });
 
-        return Objects.requireNonNull(findChild(cachedChildren, entry));
+        return requireNonNull(findChild(cachedChildren, entry));
     }
 
     private static @Nullable ImmutableAttributes findChild(

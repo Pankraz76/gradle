@@ -16,13 +16,14 @@
 
 package org.gradle.plugins.ide.eclipse.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import groovy.util.Node;
-import org.gradle.plugins.ide.eclipse.model.internal.PathUtil;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.gradle.plugins.ide.eclipse.model.internal.PathUtil;
 
 /**
  * A classpath entry representing an output folder.
@@ -36,7 +37,7 @@ public class Output implements ClasspathEntry {
     }
 
     public Output(String path) {
-        Preconditions.checkNotNull(path);
+        checkNotNull(path);
         this.path = PathUtil.normalizePath(path);
     }
 

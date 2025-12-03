@@ -16,8 +16,15 @@
 
 package org.gradle.caching.internal.services;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.stream.Collectors.joining;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSortedMap;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.gradle.StartParameter;
 import org.gradle.api.internal.GeneratedSubclasses;
 import org.gradle.api.internal.cache.StringInterner;
@@ -41,11 +48,6 @@ import org.gradle.util.Path;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public abstract class AbstractBuildCacheControllerFactory<L extends BuildCacheService> implements BuildCacheControllerFactory {
 
@@ -180,7 +182,7 @@ public abstract class AbstractBuildCacheControllerFactory<L extends BuildCacheSe
                     } else {
                         return input.getKey() + " = " + input.getValue();
                     }
-                }).collect(Collectors.joining(", ")));
+                }).collect(joining(", ")));
                 config.append(")");
             }
 
@@ -242,14 +244,14 @@ public abstract class AbstractBuildCacheControllerFactory<L extends BuildCacheSe
 
         @Override
         public BuildCacheServiceFactory.Describer type(String type) {
-            this.type = Preconditions.checkNotNull(type, "'type' argument cannot be null");
+            this.type = checkNotNull(type, "'type' argument cannot be null");
             return this;
         }
 
         @Override
         public BuildCacheServiceFactory.Describer config(String name, String value) {
-            Preconditions.checkNotNull(name, "'name' argument cannot be null");
-            Preconditions.checkNotNull(value, "'value' argument cannot be null");
+            checkNotNull(name, "'name' argument cannot be null");
+            checkNotNull(value, "'value' argument cannot be null");
             configParams.put(name, value);
             return this;
         }

@@ -15,12 +15,7 @@
  */
 package org.gradle.util.internal;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.gradle.internal.IoActions;
-import org.gradle.internal.UncheckedException;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.reverse;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +33,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.Checksum;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.gradle.internal.IoActions;
+import org.gradle.internal.UncheckedException;
+import org.jspecify.annotations.Nullable;
 
 public class GFileUtils {
 
@@ -267,7 +268,7 @@ public class GFileUtils {
             parent = parent.getParentFile();
         }
 
-        Collections.reverse(toCreate);
+        reverse(toCreate);
         for (File parentDirToCreate : toCreate) {
             if (parentDirToCreate.isDirectory()) {
                 continue;

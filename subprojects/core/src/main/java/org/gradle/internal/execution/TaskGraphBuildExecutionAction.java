@@ -15,7 +15,14 @@
  */
 package org.gradle.internal.execution;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.Streams;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.gradle.TaskExecutionRequest;
 import org.gradle.api.internal.GradleInternal;
 import org.gradle.api.internal.StartParameterInternal;
@@ -32,11 +39,6 @@ import org.gradle.internal.graph.GraphNodeRenderer;
 import org.gradle.internal.logging.text.StyledTextOutput;
 import org.gradle.internal.logging.text.StyledTextOutputFactory;
 import org.gradle.util.internal.IncubationLogger;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * A {@link BuildWorkExecutor} that does not execute any tasks, but prints the task graph instead.
@@ -86,7 +88,7 @@ public class TaskGraphBuildExecutionAction implements BuildWorkExecutor {
             .stream()
             .map(TaskExecutionRequest::getArgs)
             .flatMap(List::stream)
-            .collect(Collectors.joining(" "));
+            .collect(joining(" "));
     }
 
     private static class NodeRenderer implements GraphNodeRenderer<TaskInfo> {
@@ -156,7 +158,7 @@ public class TaskGraphBuildExecutionAction implements BuildWorkExecutor {
         @Override
         public Collection<TaskInfo> getDependencies() {
             return extractTaskNodes(entryNodes, DependencyType.REGULAR)
-                .collect(Collectors.toList());
+                .collect(toList());
         }
     }
 
@@ -198,7 +200,7 @@ public class TaskGraphBuildExecutionAction implements BuildWorkExecutor {
             return Streams.concat(
                 extractTaskNodes(targetNode.getDependencySuccessors(), DependencyType.REGULAR),
                 extractTaskNodes(targetNode.getFinalizers(), DependencyType.FINALIZING)
-            ).collect(Collectors.toList());
+            ).collect(toList());
         }
 
         @Override

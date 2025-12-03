@@ -15,6 +15,16 @@
  */
 package org.gradle.tooling.internal.consumer;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+
+import java.io.File;
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.atomic.AtomicReference;
 import org.gradle.internal.UncheckedException;
 import org.gradle.internal.logging.progress.ProgressLogger;
 import org.gradle.internal.logging.progress.ProgressLoggerFactory;
@@ -38,14 +48,6 @@ import org.gradle.wrapper.Install;
 import org.gradle.wrapper.Logger;
 import org.gradle.wrapper.PathAssembler;
 import org.gradle.wrapper.WrapperConfiguration;
-
-import java.io.File;
-import java.net.URI;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class DistributionInstaller {
     private static final String APP_NAME = "Gradle Tooling API";
@@ -101,7 +103,7 @@ public class DistributionInstaller {
 
         @Override
         public List<String> getSubscribedOperations() {
-            return Collections.emptyList();
+            return emptyList();
         }
     }
 
@@ -151,7 +153,7 @@ public class DistributionInstaller {
             }
 
             long endTime = clock.getCurrentTime();
-            FileDownloadResult result = failure == null ? new DefaultFileDownloadSuccessResult(startTime, endTime, bytesDownloaded) : new DefaultFileDownloadFailureResult(startTime, endTime, Collections.singletonList(DefaultFailure.fromThrowable(failure)), bytesDownloaded);
+            FileDownloadResult result = failure == null ? new DefaultFileDownloadSuccessResult(startTime, endTime, bytesDownloaded) : new DefaultFileDownloadFailureResult(startTime, endTime, singletonList(DefaultFailure.fromThrowable(failure)), bytesDownloaded);
             buildProgressListener.onEvent(new DefaultFileDownloadFinishEvent(endTime, displayName + " finished", descriptor, result));
             if (failure != null) {
                 if (failure instanceof Exception) {

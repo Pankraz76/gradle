@@ -15,8 +15,20 @@
  */
 package org.gradle.api.internal.file;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
 import com.google.common.collect.ImmutableSet;
 import groovy.lang.Closure;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import org.gradle.api.file.DirectoryTree;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileSystemLocation;
@@ -43,16 +55,6 @@ import org.gradle.internal.MutableBoolean;
 import org.gradle.internal.deprecation.DocumentedFailure;
 import org.gradle.internal.logging.text.TreeFormatter;
 import org.gradle.util.internal.GUtil;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public abstract class AbstractFileCollection implements FileCollectionInternal {
     protected final TaskDependencyFactory taskDependencyFactory;
@@ -175,9 +177,9 @@ public abstract class AbstractFileCollection implements FileCollectionInternal {
         List<String> filesAsPaths = this.getFiles().stream()
             .map(File::getPath)
             .filter(path -> path.contains(File.pathSeparator))
-            .collect(Collectors.toList());
+            .collect(toList());
         if (!filesAsPaths.isEmpty()) {
-            String displayedFilePaths = filesAsPaths.stream().map(path -> "'" + path + "'").collect(Collectors.joining(","));
+            String displayedFilePaths = filesAsPaths.stream().map(path -> "'" + path + "'").collect(joining(","));
             throw DocumentedFailure.builder()
                 .withSummary(String.format(
                     "Converting files to a classpath string when their paths contain the path separator '%s' is not supported. " +

@@ -15,6 +15,11 @@
  */
 package org.gradle.api.internal.artifacts.ivyservice.ivyresolve;
 
+import static java.util.Collections.reverseOrder;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.ComponentMetadata;
 import org.gradle.api.artifacts.ComponentSelection;
@@ -41,10 +46,6 @@ import org.gradle.internal.resolve.result.ComponentSelectionContext;
 import org.gradle.internal.rules.SpecRuleAction;
 import org.gradle.util.internal.CollectionUtils;
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 class DefaultVersionedComponentChooser implements VersionedComponentChooser {
     private final ComponentSelectionRulesProcessor rulesProcessor = new ComponentSelectionRulesProcessor();
@@ -241,7 +242,7 @@ class DefaultVersionedComponentChooser implements VersionedComponentChooser {
     }
 
     private List<ModuleComponentResolveState> sortLatestFirst(Collection<? extends ModuleComponentResolveState> listing) {
-        return CollectionUtils.sort(listing, Collections.reverseOrder(versionComparator));
+        return CollectionUtils.sort(listing, reverseOrder(versionComparator));
     }
 
     private static class DynamicArtifactResolutionDetails implements ArtifactResolutionDetails {

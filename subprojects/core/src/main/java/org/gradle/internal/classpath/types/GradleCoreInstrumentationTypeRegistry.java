@@ -16,15 +16,11 @@
 
 package org.gradle.internal.classpath.types;
 
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import org.gradle.internal.UncheckedException;
-import org.gradle.internal.hash.HashCode;
-import org.gradle.internal.hash.StreamHasher;
-import org.gradle.internal.lazy.Lazy;
-import org.gradle.internal.service.scopes.Scope;
-import org.gradle.internal.service.scopes.ServiceScope;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -32,6 +28,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
+import org.gradle.internal.UncheckedException;
+import org.gradle.internal.hash.HashCode;
+import org.gradle.internal.hash.StreamHasher;
+import org.gradle.internal.lazy.Lazy;
+import org.gradle.internal.service.scopes.Scope;
+import org.gradle.internal.service.scopes.ServiceScope;
 
 /**
  * Provides instrumented super types for a given type for core Gradle types.
@@ -61,7 +63,7 @@ public class GradleCoreInstrumentationTypeRegistry implements InstrumentationTyp
 
     @Override
     public Set<String> getSuperTypes(String type) {
-        return instrumentedSuperTypes.get().getOrDefault(type, Collections.emptySet());
+        return instrumentedSuperTypes.get().getOrDefault(type, emptySet());
     }
 
     @Override
@@ -81,7 +83,7 @@ public class GradleCoreInstrumentationTypeRegistry implements InstrumentationTyp
     private Map<String, Set<String>> loadInstrumentedSuperTypes() {
         try (InputStream stream = GradleCoreInstrumentationTypeRegistry.class.getResourceAsStream(INSTRUMENTED_SUPER_TYPES_FILE)) {
             if (stream == null) {
-                return Collections.emptyMap();
+                return emptyMap();
             }
             Properties properties = new Properties();
             properties.load(stream);

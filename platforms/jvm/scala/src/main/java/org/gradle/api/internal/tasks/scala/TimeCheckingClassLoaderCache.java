@@ -16,10 +16,7 @@
 
 package org.gradle.api.internal.tasks.scala;
 
-import sbt.internal.inc.classpath.AbstractClassLoaderCache;
-import sbt.io.IO;
-import scala.Function0;
-import scala.jdk.javaapi.CollectionConverters;
+import static java.util.stream.Collectors.toSet;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +27,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import sbt.internal.inc.classpath.AbstractClassLoaderCache;
+import sbt.io.IO;
+import scala.Function0;
+import scala.jdk.javaapi.CollectionConverters;
 
 /**
  * This class implements AbstractClassLoaderCache in a way that allows safe
@@ -105,7 +106,7 @@ class TimeCheckingClassLoaderCache implements AbstractClassLoaderCache {
     }
 
     private Set<TimestampedFile> getTimestampedFiles(List<File> fs) {
-        return fs.stream().map(TimestampedFile::new).collect(Collectors.toSet());
+        return fs.stream().map(TimestampedFile::new).collect(toSet());
     }
 
     @Override

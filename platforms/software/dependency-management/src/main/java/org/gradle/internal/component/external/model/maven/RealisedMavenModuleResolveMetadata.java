@@ -16,11 +16,21 @@
 
 package org.gradle.internal.component.external.model.maven;
 
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
+import static org.gradle.internal.component.external.model.maven.DefaultMavenModuleResolveMetadata.JAR_PACKAGINGS;
+import static org.gradle.internal.component.external.model.maven.DefaultMavenModuleResolveMetadata.POM_PACKAGING;
+
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.internal.artifacts.NamedVariantIdentifier;
@@ -49,15 +59,6 @@ import org.gradle.internal.component.model.ModuleConfigurationMetadata;
 import org.gradle.internal.component.model.ModuleSources;
 import org.gradle.internal.component.model.VariantIdentifier;
 import org.jspecify.annotations.Nullable;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static org.gradle.internal.component.external.model.maven.DefaultMavenModuleResolveMetadata.JAR_PACKAGINGS;
-import static org.gradle.internal.component.external.model.maven.DefaultMavenModuleResolveMetadata.POM_PACKAGING;
 
 /**
  * {@link AbstractRealisedModuleComponentResolveMetadata Realised version} of a {@link MavenModuleResolveMetadata}.
@@ -125,7 +126,7 @@ public class RealisedMavenModuleResolveMetadata extends AbstractRealisedModuleCo
         }
         ImmutableList.Builder<ModuleConfigurationMetadata> builder = new ImmutableList.Builder<>();
         builder.addAll(derivedVariants);
-        Map<String, ModuleConfigurationMetadata> variantsByName = derivedVariants.stream().collect(Collectors.toMap(ConfigurationMetadata::getName, Function.identity()));
+        Map<String, ModuleConfigurationMetadata> variantsByName = derivedVariants.stream().collect(toMap(ConfigurationMetadata::getName, identity()));
         for (AdditionalVariant additionalVariant : additionalVariants) {
             String name = additionalVariant.getName();
             String baseName = additionalVariant.getBase();

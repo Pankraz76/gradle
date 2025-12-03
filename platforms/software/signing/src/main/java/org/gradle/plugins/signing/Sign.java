@@ -15,9 +15,28 @@
  */
 package org.gradle.plugins.signing;
 
+import static com.google.common.base.Predicates.notNull;
+import static java.util.Collections.emptyList;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
+
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.inject.Inject;
 import org.gradle.api.Buildable;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.DomainObjectSet;
@@ -47,23 +66,6 @@ import org.gradle.plugins.signing.signatory.Signatory;
 import org.gradle.plugins.signing.type.SignatureType;
 import org.gradle.work.DisableCachingByDefault;
 
-import javax.inject.Inject;
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
-import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
-
 /**
  * A task for creating digital signature files for one or more; tasks, files, publishable artifacts or configurations.
  *
@@ -83,12 +85,12 @@ public abstract class Sign extends DefaultTask implements SignatureSpec {
     private List<Signature.Generator> computeCachedSignatures() {
         if (getSignatory() == null) {
             // The task will fail, so we don't need any state.
-            return Collections.emptyList();
+            return emptyList();
         }
         return signatureStream()
             .map(Signature::getGenerator)
             .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private Stream<Signature> signatureStream() {
@@ -327,7 +329,7 @@ public abstract class Sign extends DefaultTask implements SignatureSpec {
     @NotToBeReplacedByLazyProperty(because = "Read-only file collection", willBeDeprecated = true)
     public FileCollection getFilesToSign() {
         return getFileCollectionFactory().fixed("Task \'" + getPath() + "\' files to sign",
-            Lists.newLinkedList(Iterables.filter(Iterables.transform(getSignatures(), Signature::getToSign), Predicates.notNull())));
+            Lists.newLinkedList(Iterables.filter(Iterables.transform(getSignatures(), Signature::getToSign), notNull())));
     }
 
     /**
@@ -337,7 +339,7 @@ public abstract class Sign extends DefaultTask implements SignatureSpec {
     @NotToBeReplacedByLazyProperty(because = "Read-only file collection", willBeDeprecated = true)
     public FileCollection getSignatureFiles() {
         return getFileCollectionFactory().fixed("Task \'" + getPath() + "\' signature files",
-            Lists.newLinkedList(Iterables.filter(Iterables.transform(getSignatures(), Signature::getFile), Predicates.notNull())));
+            Lists.newLinkedList(Iterables.filter(Iterables.transform(getSignatures(), Signature::getFile), notNull())));
     }
 
     @Override

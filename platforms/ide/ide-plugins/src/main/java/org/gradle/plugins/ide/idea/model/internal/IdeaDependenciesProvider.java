@@ -16,6 +16,17 @@
 
 package org.gradle.plugins.ide.idea.model.internal;
 
+import static java.util.Collections.emptySet;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.component.ComponentSelector;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
@@ -36,16 +47,6 @@ import org.gradle.plugins.ide.internal.resolver.GradleApiSourcesResolver;
 import org.gradle.plugins.ide.internal.resolver.IdeDependencySet;
 import org.gradle.plugins.ide.internal.resolver.IdeDependencyVisitor;
 import org.gradle.plugins.ide.internal.resolver.UnresolvedIdeDependencyHandler;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class IdeaDependenciesProvider {
 
@@ -73,7 +74,7 @@ public class IdeaDependenciesProvider {
     @SuppressWarnings("MixedMutabilityReturnType")
     private Set<SingleEntryModuleLibrary> getOutputLocations(IdeaModule ideaModule) {
         if (ideaModule.getSingleEntryLibraries() == null) {
-            return Collections.emptySet();
+            return emptySet();
         }
         Set<SingleEntryModuleLibrary> outputLocations = new LinkedHashSet<>();
         for (Map.Entry<String, Iterable<File>> outputLocation : ideaModule.getSingleEntryLibraries().entrySet()) {

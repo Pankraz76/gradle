@@ -16,12 +16,8 @@
 
 package org.gradle.api.internal.attributes;
 
-import org.gradle.api.Incubating;
-import org.gradle.api.attributes.Attribute;
-import org.gradle.api.attributes.AttributeContainer;
-import org.gradle.api.attributes.Category;
-import org.gradle.internal.Pair;
-import org.jspecify.annotations.Nullable;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
@@ -30,6 +26,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import org.gradle.api.Incubating;
+import org.gradle.api.attributes.Attribute;
+import org.gradle.api.attributes.AttributeContainer;
+import org.gradle.api.attributes.Category;
+import org.gradle.internal.Pair;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Static util class which provides utilities to check if an {@link Attribute} is {@link org.gradle.api.Incubating}.
@@ -61,7 +63,7 @@ public abstract class IncubatingAttributesChecker {
     }
 
     private static <T> boolean isIncubating(Pair<Attribute<T>, T> attributePair) {
-        return isIncubating(Objects.requireNonNull(attributePair.getLeft()), attributePair.getRight());
+        return isIncubating(requireNonNull(attributePair.getLeft()), attributePair.getRight());
     }
 
     private static <T> boolean isIncubatingAttributeInterface(Attribute<T> key) {
@@ -82,7 +84,7 @@ public abstract class IncubatingAttributesChecker {
     }
 
     private static List<Field> getIncubatingFields(Class<?> type) {
-        return Arrays.stream(type.getDeclaredFields()).filter(IncubatingAttributesChecker::isAnnotatedWithIncubating).collect(Collectors.toList());
+        return Arrays.stream(type.getDeclaredFields()).filter(IncubatingAttributesChecker::isAnnotatedWithIncubating).collect(toList());
     }
 
     private static boolean isAnnotatedWithIncubating(AnnotatedElement element) {

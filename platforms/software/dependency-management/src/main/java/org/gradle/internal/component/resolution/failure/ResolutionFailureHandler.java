@@ -16,8 +16,18 @@
 
 package org.gradle.internal.component.resolution.failure;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Stream;
 import org.gradle.api.artifacts.capability.CapabilitySelector;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact.ResolvedVariant;
 import org.gradle.api.internal.artifacts.ivyservice.resolveengine.artifact.ResolvedVariantSet;
@@ -62,13 +72,6 @@ import org.gradle.internal.component.resolution.failure.type.UnknownArtifactSele
 import org.gradle.internal.instantiation.InstanceGenerator;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * Provides a central location for handling failures encountered during
@@ -121,7 +124,7 @@ public class ResolutionFailureHandler {
 
     public AbstractResolutionFailureException moduleRejected(ModuleResolveState moduleResolveState, List<String> conflictResolutions) {
         AssessedSelection assessedSelection = SelectionReasonAssessor.assessSelection(moduleResolveState);
-        String legacyErrorMsg = Objects.requireNonNull(moduleResolveState.getSelected()).getRejectedErrorMessage();
+        String legacyErrorMsg = requireNonNull(moduleResolveState.getSelected()).getRejectedErrorMessage();
         ModuleRejectedFailure failure = new ModuleRejectedFailure(ResolutionFailureProblemId.NO_VERSION_SATISFIES, assessedSelection, conflictResolutions, legacyErrorMsg);
         return describeFailure(failure);
     }
@@ -136,7 +139,7 @@ public class ResolutionFailureHandler {
         ImmutableCapabilities targetConfigurationCapabilities
     ) {
         ResolutionCandidateAssessor resolutionCandidateAssessor = new ResolutionCandidateAssessor(requestedAttributes, matcher);
-        List<AssessedCandidate> assessedCandidates = Collections.singletonList(resolutionCandidateAssessor.assessCandidate(targetConfiguration.getName(), targetConfigurationCapabilities, targetConfiguration.getAttributes()));
+        List<AssessedCandidate> assessedCandidates = singletonList(resolutionCandidateAssessor.assessCandidate(targetConfiguration.getName(), targetConfigurationCapabilities, targetConfiguration.getAttributes()));
         ConfigurationNotCompatibleFailure failure = new ConfigurationNotCompatibleFailure(targetComponent.getId(), targetConfiguration.getName(), requestedAttributes, assessedCandidates);
         return describeFailure(failure);
     }
@@ -168,7 +171,7 @@ public class ResolutionFailureHandler {
         ComponentGraphResolveState targetComponent,
         AttributeContainerInternal requestedAttributes
     ) {
-        List<AssessedCandidate> assessedCandidates = Collections.emptyList();
+        List<AssessedCandidate> assessedCandidates = emptyList();
         NoCompatibleVariantsFailure failure = new NoCompatibleVariantsFailure(targetComponent.getId(), requestedAttributes, ImmutableSet.of(), assessedCandidates);
         return describeFailure(failure);
     }

@@ -16,12 +16,13 @@
 
 package org.gradle.internal.classpath.types;
 
-import org.gradle.internal.lazy.Lazy;
+import static java.util.Collections.emptySet;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
+import org.gradle.internal.lazy.Lazy;
 
 public class PropertiesBackedInstrumentationTypeRegistry implements InstrumentationTypeRegistry {
 
@@ -33,7 +34,7 @@ public class PropertiesBackedInstrumentationTypeRegistry implements Instrumentat
 
     @Override
     public Set<String> getSuperTypes(String type) {
-        return properties.get().getOrDefault(type, Collections.emptySet());
+        return properties.get().getOrDefault(type, emptySet());
     }
 
     @Override

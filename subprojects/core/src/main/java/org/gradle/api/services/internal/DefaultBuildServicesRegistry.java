@@ -16,8 +16,21 @@
 
 package org.gradle.api.services.internal;
 
+import static java.util.Collections.emptyList;
+import static org.gradle.api.services.internal.BuildServiceProvider.asBuildServiceProvider;
+import static org.gradle.internal.Cast.uncheckedCast;
+import static org.gradle.internal.Cast.uncheckedNonnullCast;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import org.apache.commons.lang3.StringUtils;
 import org.gradle.BuildAdapter;
 import org.gradle.BuildResult;
@@ -44,19 +57,6 @@ import org.gradle.internal.resources.SharedResource;
 import org.gradle.internal.resources.SharedResourceLeaseRegistry;
 import org.gradle.internal.service.ServiceRegistry;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import static org.gradle.api.services.internal.BuildServiceProvider.asBuildServiceProvider;
-import static org.gradle.internal.Cast.uncheckedCast;
-import static org.gradle.internal.Cast.uncheckedNonnullCast;
 
 public class DefaultBuildServicesRegistry implements BuildServiceRegistryInternal, HoldsProjectState {
 
@@ -203,7 +203,7 @@ public class DefaultBuildServicesRegistry implements BuildServiceRegistryInterna
     @Override
     public List<ResourceLock> getSharedResources(Set<Provider<? extends BuildService<?>>> services) {
         if (services.isEmpty()) {
-            return Collections.emptyList();
+            return emptyList();
         }
         ImmutableList.Builder<ResourceLock> locks = ImmutableList.builder();
         for (Provider<? extends BuildService<?>> service : services) {

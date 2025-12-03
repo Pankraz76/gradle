@@ -16,7 +16,24 @@
 
 package org.gradle.api.publish.tasks;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Collections.emptySet;
+import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
+
 import com.google.common.collect.ImmutableSet;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UncheckedIOException;
+import java.io.Writer;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.Buildable;
 import org.gradle.api.DefaultTask;
@@ -61,23 +78,6 @@ import org.gradle.internal.serialization.Transient;
 import org.gradle.work.DisableCachingByDefault;
 import org.jspecify.annotations.NonNull;
 
-import javax.inject.Inject;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.UncheckedIOException;
-import java.io.Writer;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
-
 /**
  * Generates a Gradle metadata file to represent a published {@link SoftwareComponent} instance.
  *
@@ -97,7 +97,7 @@ public abstract class GenerateModuleMetadata extends DefaultTask {
 
         this.variantFiles = getFileCollectionFactory().create(new VariantFiles(getTaskDependencyFactory()));
 
-        getSuppressedValidationErrors().convention(Collections.emptySet());
+        getSuppressedValidationErrors().convention(emptySet());
 
         // TODO - should be incremental
         getOutputs().upToDateWhen(Specs.satisfyNone());

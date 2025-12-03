@@ -16,16 +16,17 @@
 
 package org.gradle.jvm.toolchain.internal;
 
-import com.google.common.annotations.VisibleForTesting;
-import org.gradle.internal.SystemProperties;
-import org.gradle.internal.os.OperatingSystem;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptyList;
 
-import javax.inject.Inject;
+import com.google.common.annotations.VisibleForTesting;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import javax.inject.Inject;
+import org.gradle.internal.SystemProperties;
+import org.gradle.internal.os.OperatingSystem;
+import org.jspecify.annotations.Nullable;
 
 public class DefaultToolchainConfiguration implements ToolchainConfiguration {
     private Collection<String> javaInstallationsFromEnvironment;
@@ -53,8 +54,8 @@ public class DefaultToolchainConfiguration implements ToolchainConfiguration {
         this.autoDetectEnabled = true;
         this.downloadEnabled = true;
         this.intellijInstallationDirectory = defaultJdksDirectory(os);
-        this.javaInstallationsFromEnvironment = Collections.emptyList();
-        this.installationsFromPaths = Collections.emptyList();
+        this.javaInstallationsFromEnvironment = emptyList();
+        this.installationsFromPaths = emptyList();
     }
 
     @Override

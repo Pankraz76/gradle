@@ -16,17 +16,11 @@
 
 package org.gradle.internal.classpath;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.base.Preconditions;
 import com.google.common.hash.Hashing;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.gradle.api.GradleException;
-import org.gradle.api.internal.file.archive.ZipEntryConstants;
-import org.gradle.internal.classpath.ClasspathEntryVisitor.Entry.CompressionMethod;
-import org.gradle.util.internal.GFileUtils;
-import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +29,14 @@ import java.nio.file.StandardOpenOption;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.gradle.api.GradleException;
+import org.gradle.api.internal.file.archive.ZipEntryConstants;
+import org.gradle.internal.classpath.ClasspathEntryVisitor.Entry.CompressionMethod;
+import org.gradle.util.internal.GFileUtils;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 @NullMarked
 public class InPlaceClasspathBuilder implements ClasspathBuilder {
@@ -170,8 +172,8 @@ public class InPlaceClasspathBuilder implements ClasspathBuilder {
         if (!dir.exists()) {
             return;
         }
-        Preconditions.checkArgument(dir.isDirectory(), "Cannot clear contents of %s because it is not a directory", dir.getAbsolutePath());
-        for (File file : Objects.requireNonNull(dir.listFiles())) {
+        checkArgument(dir.isDirectory(), "Cannot clear contents of %s because it is not a directory", dir.getAbsolutePath());
+        for (File file : requireNonNull(dir.listFiles())) {
             GFileUtils.forceDelete(file);
         }
     }

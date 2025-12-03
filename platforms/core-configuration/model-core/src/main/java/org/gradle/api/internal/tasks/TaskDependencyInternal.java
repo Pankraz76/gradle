@@ -16,12 +16,13 @@
 
 package org.gradle.api.internal.tasks;
 
-import org.gradle.api.Task;
-import org.gradle.api.tasks.TaskDependency;
-import org.jspecify.annotations.Nullable;
+import static java.util.Collections.emptySet;
 
 import java.util.Collections;
 import java.util.Set;
+import org.gradle.api.Task;
+import org.gradle.api.tasks.TaskDependency;
+import org.jspecify.annotations.Nullable;
 
 public interface TaskDependencyInternal extends TaskDependency {
     /**
@@ -48,7 +49,7 @@ public interface TaskDependencyInternal extends TaskDependency {
     TaskDependencyInternal EMPTY = new TaskDependencyContainerInternal() {
         @Override
         public Set<? extends Task> getDependenciesForInternalUse(@Nullable Task task) {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         @Override

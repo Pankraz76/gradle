@@ -16,6 +16,13 @@
 
 package org.gradle.api.internal.tasks.testing.logging;
 
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.gradle.api.internal.DocumentationRegistry;
 import org.gradle.api.internal.tasks.testing.TestWorkerFailureException;
 import org.gradle.api.internal.tasks.testing.worker.ForkingTestDefinitionProcessor;
@@ -28,11 +35,6 @@ import org.gradle.internal.logging.progress.ProgressLoggerFactory;
 import org.gradle.util.internal.TextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Reports a live-updating total of tests run, failed and skipped.
@@ -179,7 +181,7 @@ public class TestCountLogger implements TestListener {
         //
         // It would be better to emit these as problems instead of packing everything into the exception.
         throw new TestWorkerFailureException("Test process encountered an unexpected problem.",
-            workerFailures.stream().map(TestFailure::getRawFailure).collect(Collectors.toList()),
-            Collections.singletonList("Check common problems " + new DocumentationRegistry().getDocumentationFor("java_testing", "sec:java_testing_troubleshooting") + "."));
+            workerFailures.stream().map(TestFailure::getRawFailure).collect(toList()),
+            singletonList("Check common problems " + new DocumentationRegistry().getDocumentationFor("java_testing", "sec:java_testing_troubleshooting") + "."));
     }
 }

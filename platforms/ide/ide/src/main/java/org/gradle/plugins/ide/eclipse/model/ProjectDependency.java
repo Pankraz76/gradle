@@ -16,12 +16,13 @@
 
 package org.gradle.plugins.ide.eclipse.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.common.base.Preconditions;
 import groovy.util.Node;
+import java.util.Objects;
 import org.gradle.api.internal.tasks.DefaultTaskDependency;
 import org.gradle.api.tasks.TaskDependency;
-
-import java.util.Objects;
 
 /**
  * A classpath entry representing a project dependency.
@@ -130,7 +131,7 @@ public class ProjectDependency extends AbstractClasspathEntry {
     }
 
     private void assertPathIsValid() {
-        Preconditions.checkArgument(path.startsWith("/"));
+        checkArgument(path.startsWith("/"));
     }
 
     @Override

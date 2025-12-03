@@ -16,8 +16,9 @@
 
 package org.gradle.api.internal.provider;
 
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Preconditions;
 import java.util.Map;
 
 class ValidatingMapEntryCollector<K, V> implements MapEntryCollector<K, V> {
@@ -36,11 +37,11 @@ class ValidatingMapEntryCollector<K, V> implements MapEntryCollector<K, V> {
 
     @Override
     public void add(K key, V value, Map<K, V> dest) {
-        Preconditions.checkNotNull(
+        checkNotNull(
             key,
             "Cannot get the value of a property of type %s with key type %s as the source contains a null key.",
             Map.class.getName(), keyType.getName());
-        Preconditions.checkNotNull(
+        checkNotNull(
             value,
             "Cannot get the value of a property of type %s with value type %s as the source contains a null value for key \"%s\".",
             Map.class.getName(), valueType.getName(), key);

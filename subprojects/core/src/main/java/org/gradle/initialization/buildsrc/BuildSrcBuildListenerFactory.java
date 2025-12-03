@@ -16,11 +16,15 @@
 
 package org.gradle.initialization.buildsrc;
 
+import static java.util.Collections.emptyList;
+import static org.gradle.api.internal.tasks.TaskDependencyUtil.getDependenciesForInternalUse;
+
+import java.util.Collections;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.internal.GradleInternal;
-import org.gradle.api.internal.initialization.ScriptClassPathResolver;
 import org.gradle.api.internal.initialization.ScriptClassPathResolutionContext;
+import org.gradle.api.internal.initialization.ScriptClassPathResolver;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.api.internal.project.ProjectState;
 import org.gradle.api.invocation.Gradle;
@@ -30,10 +34,6 @@ import org.gradle.internal.InternalBuildAdapter;
 import org.gradle.internal.classpath.ClassPath;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
-
-import java.util.Collections;
-
-import static org.gradle.api.internal.tasks.TaskDependencyUtil.getDependenciesForInternalUse;
 
 @ServiceScope(Scope.Build.class)
 public class BuildSrcBuildListenerFactory {
@@ -69,7 +69,7 @@ public class BuildSrcBuildListenerFactory {
         public void projectsLoaded(Gradle gradle) {
             GradleInternal gradleInternal = (GradleInternal) gradle;
             // Run only those tasks scheduled by this selector and not the default tasks
-            gradleInternal.getStartParameter().setTaskRequests(Collections.emptyList());
+            gradleInternal.getStartParameter().setTaskRequests(emptyList());
             ProjectInternal rootProject = gradleInternal.getRootProject();
             rootProjectState = rootProject.getOwner();
             rootProjectConfiguration.execute(rootProject);

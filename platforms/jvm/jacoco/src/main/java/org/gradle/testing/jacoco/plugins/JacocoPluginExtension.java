@@ -15,7 +15,13 @@
  */
 package org.gradle.testing.jacoco.plugins;
 
+import static java.util.Collections.emptyList;
+import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
+
 import com.google.common.collect.ImmutableList;
+import java.io.File;
+import java.util.Collections;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
 import org.gradle.api.Named;
@@ -40,12 +46,6 @@ import org.gradle.internal.jacoco.JacocoAgentJar;
 import org.gradle.process.CommandLineArgumentProvider;
 import org.gradle.process.JavaForkOptions;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.util.Collections;
-
-import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
 
 /**
  * Extension including common properties and methods for Jacoco.
@@ -178,7 +178,7 @@ public abstract class JacocoPluginExtension {
 
         @Override
         public Iterable<String> asArguments() {
-            return jacoco.isEnabled() ? ImmutableList.of(jacoco.getAsJvmArg()) : Collections.emptyList();
+            return jacoco.isEnabled() ? ImmutableList.of(jacoco.getAsJvmArg()) : emptyList();
         }
 
         @Internal

@@ -15,6 +15,15 @@
  */
 package org.gradle.unexported.buildinit.plugins.internal.maven;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singleton;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import org.apache.maven.settings.Settings;
 import org.apache.maven.settings.building.SettingsBuildingException;
 import org.gradle.api.artifacts.Configuration;
@@ -34,13 +43,6 @@ import org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework;
 import org.gradle.buildinit.plugins.internal.modifiers.ModularizationOption;
 import org.gradle.util.internal.IncubationLogger;
 import org.gradle.workers.WorkerExecutor;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class PomProjectInitDescriptor implements BuildConverter {
     private final static String MAVEN_VERSION = "3.9.5";
@@ -71,7 +73,7 @@ public class PomProjectInitDescriptor implements BuildConverter {
 
     @Override
     public Set<ModularizationOption> getModularizationOptions() {
-        return Collections.singleton(ModularizationOption.SINGLE_PROJECT);
+        return singleton(ModularizationOption.SINGLE_PROJECT);
     }
 
     @Override
@@ -81,7 +83,7 @@ public class PomProjectInitDescriptor implements BuildConverter {
 
     @Override
     public List<String> getDefaultProjectNames() {
-        return Collections.emptyList();
+        return emptyList();
     }
 
     @Override
@@ -152,7 +154,7 @@ public class PomProjectInitDescriptor implements BuildConverter {
 
     @Override
     public Set<BuildInitTestFramework> getTestFrameworks(ModularizationOption modularizationOption) {
-        return Collections.singleton(BuildInitTestFramework.NONE);
+        return singleton(BuildInitTestFramework.NONE);
     }
 
     @Override

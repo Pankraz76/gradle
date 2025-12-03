@@ -16,12 +16,13 @@
 
 package org.gradle.internal.id;
 
-import com.google.common.io.BaseEncoding;
-import org.gradle.internal.Factory;
+import static java.util.UUID.randomUUID;
 
+import com.google.common.io.BaseEncoding;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import org.gradle.internal.Factory;
 
 /**
  * A more compact / aesthetically pleasing representation of effectively a UUID.
@@ -65,7 +66,7 @@ public final class UniqueId {
     }
 
     public static UniqueId generate() {
-        return from(UUID.randomUUID());
+        return from(randomUUID());
     }
 
     public static Factory<UniqueId> factory() {

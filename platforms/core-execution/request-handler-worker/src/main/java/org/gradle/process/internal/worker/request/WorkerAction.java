@@ -16,6 +16,15 @@
 
 package org.gradle.process.internal.worker.request;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 import org.gradle.api.Action;
 import org.gradle.api.internal.provider.PropertyInternal;
 import org.gradle.cache.Cache;
@@ -37,13 +46,6 @@ import org.gradle.internal.state.ModelObject;
 import org.gradle.process.internal.worker.RequestHandler;
 import org.gradle.process.internal.worker.WorkerProcessContext;
 import org.gradle.process.internal.worker.child.WorkerLogEventListener;
-
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * Worker-side implementation of {@link RequestProtocol} executing actions.
@@ -74,7 +76,7 @@ public class WorkerAction implements Action<WorkerProcessContext>, Serializable,
         RequestArgumentSerializers argumentSerializers = new RequestArgumentSerializers();
         try {
             if (instantiatorFactory == null) {
-                instantiatorFactory = new DefaultInstantiatorFactory(new BasicClassCacheFactory(), Collections.emptyList(), new BasicPropertyRoleAnnotationHandler());
+                instantiatorFactory = new DefaultInstantiatorFactory(new BasicClassCacheFactory(), emptyList(), new BasicPropertyRoleAnnotationHandler());
             }
             ServiceRegistry serviceRegistry = ServiceRegistryBuilder.builder()
                 .displayName("worker action services")
@@ -191,7 +193,7 @@ public class WorkerAction implements Action<WorkerProcessContext>, Serializable,
     private static class BasicPropertyRoleAnnotationHandler implements PropertyRoleAnnotationHandler {
         @Override
         public Set<Class<? extends Annotation>> getAnnotationTypes() {
-            return Collections.emptySet();
+            return emptySet();
         }
 
         @Override

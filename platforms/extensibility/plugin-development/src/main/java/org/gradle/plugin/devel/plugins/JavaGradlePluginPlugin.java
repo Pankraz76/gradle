@@ -16,6 +16,21 @@
 
 package org.gradle.plugin.devel.plugins;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Callable;
 import org.gradle.api.Action;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Plugin;
@@ -62,20 +77,6 @@ import org.gradle.plugin.use.internal.DefaultPluginId;
 import org.gradle.plugin.use.resolve.internal.local.PluginPublication;
 import org.gradle.process.CommandLineArgumentProvider;
 import org.jspecify.annotations.NullMarked;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Callable;
-
-import static org.gradle.api.internal.lambdas.SerializableLambdas.spec;
 
 /**
  * A plugin for building java gradle plugins. Automatically generates plugin descriptors. Emits warnings for common error conditions. <p> Provides a direct integration with TestKit by declaring the
@@ -478,8 +479,8 @@ public abstract class JavaGradlePluginPlugin implements Plugin<Project> {
         @Override
         public Iterable<String> asArguments() {
             return test.getJavaVersion().isCompatibleWith(JavaVersion.VERSION_1_9)
-                ? Collections.singletonList("--add-opens=java.base/java.lang=ALL-UNNAMED")
-                : Collections.emptyList();
+                ? singletonList("--add-opens=java.base/java.lang=ALL-UNNAMED")
+                : emptyList();
         }
     }
 

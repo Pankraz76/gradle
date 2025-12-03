@@ -15,7 +15,17 @@
  */
 package org.gradle.api.internal.artifacts.dsl;
 
+import static java.util.stream.Collectors.toSet;
+import static org.gradle.util.internal.CollectionUtils.flattenCollections;
+
 import groovy.lang.Closure;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.gradle.api.Action;
 import org.gradle.api.InvalidUserCodeException;
 import org.gradle.api.artifacts.dsl.RepositoryHandler;
@@ -35,16 +45,6 @@ import org.gradle.internal.Cast;
 import org.gradle.internal.Factory;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.util.internal.ConfigureUtil;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.gradle.util.internal.CollectionUtils.flattenCollections;
 
 public class DefaultRepositoryHandler extends DefaultArtifactRepositoryContainer implements RepositoryHandlerInternal {
 
@@ -239,7 +239,7 @@ public class DefaultRepositoryHandler extends DefaultArtifactRepositoryContainer
             if (filter == null) {
                 throw new InvalidUserCodeException("You must specify the filter for the repository using filter { ... }");
             }
-            Set<? extends ArtifactRepository> targetRepositories = forRepositories.stream().map(Factory::create).collect(Collectors.toSet());
+            Set<? extends ArtifactRepository> targetRepositories = forRepositories.stream().map(Factory::create).collect(toSet());
             Action<? super RepositoryContentDescriptor> forExclusivity = transformForExclusivity(filter);
             this.repositories.all(repo -> {
                 if (targetRepositories.contains(repo)) {

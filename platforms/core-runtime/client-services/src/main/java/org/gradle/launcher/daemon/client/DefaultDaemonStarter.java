@@ -15,6 +15,18 @@
  */
 package org.gradle.launcher.daemon.client;
 
+import static java.util.Collections.emptyList;
+import static java.util.UUID.randomUUID;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 import org.gradle.api.GradleException;
 import org.gradle.api.internal.classpath.DefaultModuleRegistry;
 import org.gradle.api.internal.classpath.ModuleRegistry;
@@ -64,16 +76,6 @@ import org.gradle.util.internal.CollectionUtils;
 import org.gradle.util.internal.GFileUtils;
 import org.jspecify.annotations.NonNull;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-
 public class DefaultDaemonStarter implements DaemonStarter {
     private static final Logger LOGGER = Logging.getLogger(DefaultDaemonStarter.class);
 
@@ -97,7 +99,7 @@ public class DefaultDaemonStarter implements DaemonStarter {
 
     @Override
     public DaemonStartupInfo startDaemon(boolean singleUse) {
-        String daemonUid = UUID.randomUUID().toString();
+        String daemonUid = randomUUID().toString();
 
         DaemonJvmCriteria criteria = daemonRequestContext.getJvmCriteria();
         final File resolvedJava;
@@ -136,7 +138,7 @@ public class DefaultDaemonStarter implements DaemonStarter {
         } else {
             // When running from a Gradle distro, only need the daemon main jar. The daemon can find everything from there.
             classpath = registry.getModule("gradle-daemon-main").getImplementationClasspath();
-            searchClassPath = Collections.emptyList();
+            searchClassPath = emptyList();
         }
         if (classpath.isEmpty()) {
             throw new IllegalStateException("Unable to construct a bootstrap classpath when starting the daemon");
@@ -230,7 +232,7 @@ public class DefaultDaemonStarter implements DaemonStarter {
 
     private List<String> getPriorityArgs(DaemonPriority priority) {
         if (priority == DaemonPriority.NORMAL) {
-            return Collections.emptyList();
+            return emptyList();
         }
         OperatingSystem os = OperatingSystem.current();
         if (os.isUnix()) {
@@ -238,7 +240,7 @@ public class DefaultDaemonStarter implements DaemonStarter {
         } else if (os.isWindows()) {
             return Arrays.asList("cmd.exe", "/d", "/c", "start", "\"Gradle build daemon\"", "/b", "/belownormal", "/wait");
         } else {
-            return Collections.emptyList();
+            return emptyList();
         }
     }
 

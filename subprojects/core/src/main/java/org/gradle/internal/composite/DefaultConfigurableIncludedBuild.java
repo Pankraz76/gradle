@@ -16,7 +16,10 @@
 
 package org.gradle.internal.composite;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Preconditions;
+import java.io.File;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.DependencySubstitutions;
 import org.gradle.api.initialization.ConfigurableIncludedBuild;
@@ -24,8 +27,6 @@ import org.gradle.api.tasks.TaskReference;
 import org.gradle.internal.ImmutableActionSet;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-
-import java.io.File;
 
 public class DefaultConfigurableIncludedBuild implements ConfigurableIncludedBuild {
 
@@ -47,7 +48,7 @@ public class DefaultConfigurableIncludedBuild implements ConfigurableIncludedBui
 
     @Override
     public void setName(@NonNull String name) {
-        Preconditions.checkNotNull(name, "name must not be null");
+        checkNotNull(name, "name must not be null");
         this.name = name;
     }
 
@@ -59,7 +60,7 @@ public class DefaultConfigurableIncludedBuild implements ConfigurableIncludedBui
 
     @Override
     public void dependencySubstitution(@NonNull Action<? super DependencySubstitutions> action) {
-        Preconditions.checkNotNull(action, "action must not be null");
+        checkNotNull(action, "action must not be null");
         dependencySubstitutionActions = dependencySubstitutionActions.add(action);
     }
 

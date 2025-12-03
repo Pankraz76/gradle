@@ -16,10 +16,18 @@
 
 package org.gradle.plugins.ide.eclipse.model.internal;
 
+import static java.util.Collections.emptySet;
+
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
@@ -51,13 +59,6 @@ import org.gradle.plugins.ide.internal.resolver.UnresolvedIdeDependencyHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 public class EclipseDependenciesCreator {
     private static final Logger LOGGER = LoggerFactory.getLogger(EclipseDependenciesCreator.class);
     private final EclipseClasspath classpath;
@@ -76,7 +77,7 @@ public class EclipseDependenciesCreator {
 
     public List<AbstractClasspathEntry> createDependencyEntries() {
         EclipseDependenciesVisitor visitor = new EclipseDependenciesVisitor(classpath.getProject());
-        Set<Configuration> testConfigurations = classpath.getTestConfigurations().getOrElse(Collections.emptySet());
+        Set<Configuration> testConfigurations = classpath.getTestConfigurations().getOrElse(emptySet());
         new IdeDependencySet(classpath.getProject().getDependencies(), ((ProjectInternal) classpath.getProject()).getServices().get(JavaModuleDetector.class), classpath.getPlusConfigurations(), classpath.getMinusConfigurations(), inferModulePath, gradleApiSourcesResolver, testConfigurations).visit(visitor);
         return visitor.getDependencies();
     }

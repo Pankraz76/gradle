@@ -16,17 +16,18 @@
 
 package org.gradle.api.internal.artifacts.ivyservice;
 
-import com.google.common.base.Joiner;
-import org.gradle.api.InvalidUserDataException;
-import org.gradle.api.artifacts.ivy.IvyExtraInfo;
-import org.gradle.util.internal.CollectionUtils;
+import static java.util.Collections.unmodifiableMap;
 
-import javax.xml.namespace.QName;
+import com.google.common.base.Joiner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.xml.namespace.QName;
+import org.gradle.api.InvalidUserDataException;
+import org.gradle.api.artifacts.ivy.IvyExtraInfo;
+import org.gradle.util.internal.CollectionUtils;
 
 public class DefaultIvyExtraInfo implements IvyExtraInfo {
     protected final Map<NamespaceId, String> extraInfo;
@@ -65,6 +66,6 @@ public class DefaultIvyExtraInfo implements IvyExtraInfo {
         for (Map.Entry<NamespaceId, String> entry : extraInfo.entrySet()) {
             map.put(new QName(entry.getKey().getNamespace(), entry.getKey().getName()), entry.getValue());
         }
-        return Collections.unmodifiableMap(map);
+        return unmodifiableMap(map);
     }
 }

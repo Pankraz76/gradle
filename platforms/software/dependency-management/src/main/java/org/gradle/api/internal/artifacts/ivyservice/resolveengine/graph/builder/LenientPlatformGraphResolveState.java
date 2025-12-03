@@ -16,8 +16,14 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.resolveengine.graph.builder;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
@@ -53,11 +59,6 @@ import org.gradle.internal.component.model.VariantIdentifier;
 import org.gradle.internal.component.model.VariantResolveMetadata;
 import org.gradle.internal.lazy.Lazy;
 import org.jspecify.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 public class LenientPlatformGraphResolveState extends AbstractComponentGraphResolveState<LenientPlatformResolveMetadata> {
 
@@ -168,7 +169,7 @@ public class LenientPlatformGraphResolveState extends AbstractComponentGraphReso
         @Override
         public List<? extends VariantGraphResolveState> getVariantsForAttributeMatching() {
             // Variants are not selected from a lenient platform in the conventional manner.
-            return Collections.emptyList();
+            return emptyList();
         }
 
         @Override
@@ -327,7 +328,7 @@ public class LenientPlatformGraphResolveState extends AbstractComponentGraphReso
 
         @Override
         public List<? extends ExcludeMetadata> getExcludes() {
-            return Collections.emptyList();
+            return emptyList();
         }
 
         @Override
@@ -475,7 +476,7 @@ public class LenientPlatformGraphResolveState extends AbstractComponentGraphReso
                     virtualPlatformState.attachOrphanEdges();
                 }
             }
-            return result == null ? Collections.emptyList() : result;
+            return result == null ? emptyList() : result;
         }
 
         private @Nullable ModuleDependencyMetadata getDependencyForParticipatingComponent(

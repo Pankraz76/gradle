@@ -16,6 +16,13 @@
 
 package org.gradle.buildconfiguration.tasks;
 
+import static java.util.stream.Collectors.toList;
+
+import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.problems.ProblemId;
@@ -38,12 +45,6 @@ import org.gradle.jvm.toolchain.JvmVendorSpec;
 import org.gradle.jvm.toolchain.internal.DefaultJvmVendorSpec;
 import org.gradle.platform.BuildPlatform;
 import org.gradle.work.DisableCachingByDefault;
-
-import javax.inject.Inject;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Generates or updates the Gradle Daemon JVM criteria.
@@ -131,7 +132,7 @@ public abstract class UpdateDaemonJvm extends DefaultTask {
      */
     @OptionValues("jvm-vendor")
     public List<String> getAvailableVendors() {
-        return Arrays.stream(JvmVendor.KnownJvmVendor.values()).filter(e -> e!=JvmVendor.KnownJvmVendor.UNKNOWN).map(Enum::name).collect(Collectors.toList());
+        return Arrays.stream(JvmVendor.KnownJvmVendor.values()).filter(e -> e!=JvmVendor.KnownJvmVendor.UNKNOWN).map(Enum::name).collect(toList());
     }
 
     /**

@@ -15,7 +15,14 @@
  */
 package org.gradle.launcher.daemon.configuration;
 
+import static java.util.Collections.emptyMap;
+
 import com.google.common.collect.ImmutableList;
+import java.io.File;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.gradle.api.internal.file.FileCollectionFactory;
 import org.gradle.internal.buildconfiguration.tasks.DaemonJvmPropertiesAccessor;
 import org.gradle.internal.nativeintegration.services.NativeServices.NativeServicesMode;
@@ -29,12 +36,6 @@ import org.gradle.launcher.daemon.toolchain.DaemonJvmCriteria;
 import org.gradle.launcher.daemon.toolchain.ToolchainDownloadUrlProvider;
 import org.gradle.process.internal.JvmOptions;
 import org.gradle.util.internal.GUtil;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class DaemonParameters {
     static final int DEFAULT_IDLE_TIMEOUT = 3 * 60 * 60 * 1000;
@@ -62,7 +63,7 @@ public class DaemonParameters {
     private ToolchainDownloadUrlProvider toolchainDownloadUrlProvider;
 
     public DaemonParameters(File gradleUserHomeDir, FileCollectionFactory fileCollectionFactory) {
-        this(gradleUserHomeDir, fileCollectionFactory, Collections.emptyMap(), new HashMap<>(System.getenv()));
+        this(gradleUserHomeDir, fileCollectionFactory, emptyMap(), new HashMap<>(System.getenv()));
     }
 
     public DaemonParameters(File gradleUserHomeDir, FileCollectionFactory fileCollectionFactory, Map<String, String> extraSystemProperties, Map<String, String> environmentVariables) {

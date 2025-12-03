@@ -16,6 +16,15 @@
 
 package org.gradle.internal.buildconfiguration;
 
+import static java.util.Collections.emptyMap;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+
+import java.net.URI;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.api.problems.ProblemReporter;
 import org.gradle.api.problems.Problems;
@@ -27,24 +36,16 @@ import org.gradle.internal.deprecation.Documentation;
 import org.gradle.internal.jvm.Jvm;
 import org.gradle.jvm.toolchain.JavaLanguageVersion;
 import org.gradle.jvm.toolchain.JavaToolchainDownload;
-import org.gradle.jvm.toolchain.internal.DefaultJvmVendorSpec;
-import org.gradle.jvm.toolchain.internal.JavaToolchainResolverService;
 import org.gradle.jvm.toolchain.JavaToolchainSpec;
 import org.gradle.jvm.toolchain.JvmVendorSpec;
 import org.gradle.jvm.toolchain.internal.DefaultJavaToolchainRequest;
+import org.gradle.jvm.toolchain.internal.DefaultJvmVendorSpec;
 import org.gradle.jvm.toolchain.internal.DefaultToolchainSpec;
+import org.gradle.jvm.toolchain.internal.JavaToolchainResolverService;
 import org.gradle.platform.Architecture;
 import org.gradle.platform.BuildPlatform;
 import org.gradle.platform.BuildPlatformFactory;
 import org.gradle.platform.OperatingSystem;
-
-import java.net.URI;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.Collections.emptyMap;
 
 public class DaemonJvmPropertiesConfigurator implements ProjectConfigureAction {
 
@@ -64,7 +65,7 @@ public class DaemonJvmPropertiesConfigurator implements ProjectConfigureAction {
                 task.getToolchainPlatforms().convention(
                     Stream.of(Architecture.X86_64, Architecture.AARCH64).flatMap(arch ->
                             Stream.of(OperatingSystem.values()).map(os -> BuildPlatformFactory.of(arch, os)))
-                        .collect(Collectors.toSet()));
+                        .collect(toSet()));
                 task.getToolchainDownloadUrls().convention(task.getToolchainPlatforms()
                     .zip(task.getLanguageVersion()
                             .zip(task.getVendor().orElse(DefaultJvmVendorSpec.any()), Pair::of)
@@ -92,11 +93,11 @@ public class DaemonJvmPropertiesConfigurator implements ProjectConfigureAction {
                                     });
                             }
                             Map<BuildPlatform, Optional<URI>> buildPlatformOptionalUriMap = platforms.stream()
-                                .collect(Collectors.toMap(platform -> platform,
+                                .collect(toMap(platform -> platform,
                                     platform -> resolverService.tryResolve(new DefaultJavaToolchainRequest(toolchainSpec, platform)).map(JavaToolchainDownload::getUri)));
                             Map<BuildPlatform, URI> platformToDownloadUri = buildPlatformOptionalUriMap.entrySet().stream()
                                 .filter(e -> e.getValue().isPresent())
-                                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get()));
+                                .collect(toMap(Map.Entry::getKey, e -> e.getValue().get()));
                             if (platformToDownloadUri.isEmpty()) {
                                 throw reporter.throwing(new IllegalStateException("Toolchain resolvers did not return download URLs providing a JDK matching " + toolchainSpec + " for any of the requested platforms " + platforms),
                                     UpdateDaemonJvm.TASK_CONFIGURATION_PROBLEM_ID,

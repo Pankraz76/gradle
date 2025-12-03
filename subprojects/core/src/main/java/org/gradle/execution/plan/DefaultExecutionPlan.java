@@ -16,14 +16,11 @@
 
 package org.gradle.execution.plan;
 
+import static com.google.common.collect.Sets.newIdentityHashSet;
+import static java.util.Collections.singletonList;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import org.gradle.api.Task;
-import org.gradle.api.specs.Spec;
-import org.gradle.api.specs.Specs;
-import org.gradle.internal.resources.ResourceLockCoordinationService;
-import org.jspecify.annotations.NullMarked;
-
 import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,8 +35,11 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Consumer;
-
-import static com.google.common.collect.Sets.newIdentityHashSet;
+import org.gradle.api.Task;
+import org.gradle.api.specs.Spec;
+import org.gradle.api.specs.Specs;
+import org.gradle.internal.resources.ResourceLockCoordinationService;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * The mutation methods on this implementation are NOT threadsafe, and callers must synchronize access to these methods.
@@ -113,7 +113,7 @@ public class DefaultExecutionPlan implements ExecutionPlan, QueryableExecutionPl
 
     @Override
     public void addEntryTask(Task task) {
-        addEntryTasks(Collections.singletonList(task));
+        addEntryTasks(singletonList(task));
     }
 
     @Override

@@ -16,6 +16,10 @@
 
 package org.gradle.api.internal.tasks.compile;
 
+import static java.util.Collections.unmodifiableList;
+import static java.util.stream.Collectors.joining;
+import static javax.tools.Diagnostic.NOPOS;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.sun.tools.javac.api.ClientCodeWrapper;
 import com.sun.tools.javac.api.DiagnosticFormatter;
@@ -23,6 +27,16 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.JCDiagnostic;
 import com.sun.tools.javac.util.JavacMessages;
 import com.sun.tools.javac.util.Log;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticListener;
+import javax.tools.JavaFileObject;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.logging.Logging;
 import org.gradle.api.problems.Problem;
@@ -32,19 +46,6 @@ import org.gradle.api.problems.Problems;
 import org.gradle.api.problems.Severity;
 import org.gradle.api.problems.internal.GradleCoreProblemGroup;
 import org.gradle.api.problems.internal.InternalProblemReporter;
-
-import javax.tools.Diagnostic;
-import javax.tools.DiagnosticListener;
-import javax.tools.JavaFileObject;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static javax.tools.Diagnostic.NOPOS;
 
 /**
  * A {@link DiagnosticListener} that consumes {@link Diagnostic} messages, and reports them as Gradle {@link Problems}.
@@ -122,7 +123,7 @@ public class DiagnosticToProblemListener implements DiagnosticListener<JavaFileO
         return Stream.of(error, warning)
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .collect(Collectors.joining(System.lineSeparator()));
+            .collect(joining(System.lineSeparator()));
     }
 
     /**
@@ -329,6 +330,6 @@ public class DiagnosticToProblemListener implements DiagnosticListener<JavaFileO
     }
 
     public List<Problem> getReportedProblems() {
-        return Collections.unmodifiableList(problemsReported);
+        return unmodifiableList(problemsReported);
     }
 }

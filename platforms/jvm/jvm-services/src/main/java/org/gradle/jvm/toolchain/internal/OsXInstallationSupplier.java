@@ -16,13 +16,15 @@
 
 package org.gradle.jvm.toolchain.internal;
 
-import org.gradle.internal.os.OperatingSystem;
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toSet;
 
-import javax.inject.Inject;
 import java.io.File;
 import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
+import org.gradle.internal.os.OperatingSystem;
 
 public class OsXInstallationSupplier implements InstallationSupplier {
     private final OsXJavaHomeCommand javaHomeCommand;
@@ -41,9 +43,9 @@ public class OsXInstallationSupplier implements InstallationSupplier {
     @Override
     public Set<InstallationLocation> get() {
         if (os.isMacOsX()) {
-            return javaHomeCommand.findJavaHomes().stream().map(this::asInstallation).collect(Collectors.toSet());
+            return javaHomeCommand.findJavaHomes().stream().map(this::asInstallation).collect(toSet());
         }
-        return Collections.emptySet();
+        return emptySet();
     }
 
     private InstallationLocation asInstallation(File javaHome) {

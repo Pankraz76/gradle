@@ -16,12 +16,13 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.modulecache.artifacts;
 
-import org.gradle.internal.hash.HashCode;
+import static java.util.Collections.emptyList;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import org.gradle.internal.hash.HashCode;
 
 public class DefaultCachedArtifact implements CachedArtifact, Serializable {
     private final File cachedFile;
@@ -33,7 +34,7 @@ public class DefaultCachedArtifact implements CachedArtifact, Serializable {
         this.cachedFile = cachedFile;
         this.cachedAt = cachedAt;
         this.descriptorHash = descriptorHash;
-        this.attemptedLocations = Collections.emptyList();
+        this.attemptedLocations = emptyList();
     }
 
     public DefaultCachedArtifact(List<String> attemptedLocations, long cachedAt, HashCode descriptorHash) {

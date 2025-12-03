@@ -16,14 +16,16 @@
 
 package org.gradle.api.internal.tasks.options;
 
-import org.gradle.api.internal.tasks.TaskOptionsGenerator;
-import org.gradle.api.tasks.options.Option;
-import org.gradle.internal.typeconversion.TypeConversionException;
+import static java.util.Collections.emptySet;
+import static java.util.Comparator.comparing;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import org.gradle.api.internal.tasks.TaskOptionsGenerator;
+import org.gradle.api.tasks.options.Option;
+import org.gradle.internal.typeconversion.TypeConversionException;
 
 /**
  * A flag, does not take an argument.
@@ -70,7 +72,7 @@ public class BooleanOptionElement extends AbstractOptionElement {
      * @return a comparator that groups opposite option pairs together
      */
     public static Comparator<OptionDescriptor> groupOppositeOptions() {
-        return Comparator.comparing(optionDescriptor -> {
+        return comparing(optionDescriptor -> {
             if (optionDescriptor instanceof InstanceOptionDescriptor) {
                 InstanceOptionDescriptor instanceOptionDescriptor = (InstanceOptionDescriptor) optionDescriptor;
                 if (instanceOptionDescriptor.getOptionElement() instanceof BooleanOptionElement) {
@@ -90,7 +92,7 @@ public class BooleanOptionElement extends AbstractOptionElement {
 
     @Override
     public Set<String> getAvailableValues() {
-        return Collections.emptySet();
+        return emptySet();
     }
 
     @Override

@@ -16,8 +16,20 @@
 
 package org.gradle.plugin.devel.tasks.internal;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.gradle.api.problems.Severity.ERROR;
+import static org.gradle.internal.deprecation.Documentation.userManual;
+
 import com.google.common.io.Files;
 import com.google.gson.Gson;
+import java.io.File;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import javax.inject.Inject;
 import org.gradle.api.Task;
 import org.gradle.api.artifacts.transform.CacheableTransform;
 import org.gradle.api.artifacts.transform.TransformAction;
@@ -44,18 +56,6 @@ import org.gradle.workers.WorkParameters;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import static org.gradle.api.problems.Severity.ERROR;
-import static org.gradle.internal.deprecation.Documentation.userManual;
 
 public abstract class ValidateAction implements WorkAction<ValidateAction.Params> {
     private final static Logger LOGGER = Logging.getLogger(ValidateAction.class);
@@ -90,7 +90,7 @@ public abstract class ValidateAction implements WorkAction<ValidateAction.Params
                 //noinspection ResultOfMethodCallIgnored
                 output.createNewFile();
                 Gson gson = ValidationProblemSerialization.createGsonBuilder().create();
-                Files.asCharSink(output, StandardCharsets.UTF_8).write(gson.toJson(problemMessages));
+                Files.asCharSink(output, UTF_8).write(gson.toJson(problemMessages));
             } catch (IOException ex) {
                 throw new java.io.UncheckedIOException(ex);
             }

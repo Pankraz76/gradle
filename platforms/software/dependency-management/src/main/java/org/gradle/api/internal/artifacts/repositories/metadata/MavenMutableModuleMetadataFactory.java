@@ -15,7 +15,12 @@
  */
 package org.gradle.api.internal.artifacts.repositories.metadata;
 
+import static java.util.Collections.emptyList;
+
 import com.google.common.collect.ImmutableMap;
+import java.util.Collections;
+import java.util.List;
+import javax.inject.Inject;
 import org.gradle.api.artifacts.ModuleVersionIdentifier;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.internal.artifacts.ImmutableModuleIdentifierFactory;
@@ -29,10 +34,6 @@ import org.gradle.internal.component.external.model.maven.MavenDependencyDescrip
 import org.gradle.internal.component.external.model.maven.MutableMavenModuleResolveMetadata;
 import org.gradle.internal.service.scopes.Scope;
 import org.gradle.internal.service.scopes.ServiceScope;
-
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.List;
 
 @ServiceScope(Scope.BuildSession.class)
 public class MavenMutableModuleMetadataFactory implements MutableModuleMetadataFactory<MutableMavenModuleResolveMetadata> {
@@ -57,7 +58,7 @@ public class MavenMutableModuleMetadataFactory implements MutableModuleMetadataF
     @Override
     public MutableMavenModuleResolveMetadata createForGradleModuleMetadata(ModuleComponentIdentifier from) {
         ModuleVersionIdentifier mvi = asVersionIdentifier(from);
-        return new DefaultMutableMavenModuleResolveMetadata(mvi, from, Collections.emptyList(), attributesFactory, objectInstantiator, schema, ImmutableMap.of());
+        return new DefaultMutableMavenModuleResolveMetadata(mvi, from, emptyList(), attributesFactory, objectInstantiator, schema, ImmutableMap.of());
     }
 
     private ModuleVersionIdentifier asVersionIdentifier(ModuleComponentIdentifier from) {
@@ -66,7 +67,7 @@ public class MavenMutableModuleMetadataFactory implements MutableModuleMetadataF
 
     @Override
     public MutableMavenModuleResolveMetadata missing(ModuleComponentIdentifier from) {
-        MutableMavenModuleResolveMetadata metadata = create(from, Collections.emptyList());
+        MutableMavenModuleResolveMetadata metadata = create(from, emptyList());
         metadata.setMissing(true);
         return MavenResolver.processMetaData(metadata);
     }

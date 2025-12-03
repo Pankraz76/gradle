@@ -16,13 +16,14 @@
 
 package org.gradle.security.internal;
 
-import org.bouncycastle.openpgp.PGPPublicKey;
-import org.bouncycastle.openpgp.PGPPublicKeyRing;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import org.bouncycastle.openpgp.PGPPublicKey;
+import org.bouncycastle.openpgp.PGPPublicKeyRing;
 
 public final class PGPUtils {
 
@@ -39,7 +40,7 @@ public final class PGPUtils {
     public static List<String> getUserIDs(PGPPublicKey pk) {
         List<String> userIds = new ArrayList<>();
         pk.getRawUserIDs().forEachRemaining(id -> {
-            userIds.add(new String(id, StandardCharsets.UTF_8));
+            userIds.add(new String(id, UTF_8));
         });
         return userIds;
     }

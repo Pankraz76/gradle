@@ -16,7 +16,15 @@
 
 package org.gradle.api.internal.artifacts.ivyservice.resolutionstrategy;
 
+import static com.google.common.collect.ImmutableSet.toImmutableSet;
+import static org.gradle.api.internal.artifacts.configurations.MutationValidator.MutationType.STRATEGY;
+
 import com.google.common.collect.ImmutableSet;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.CapabilitiesResolution;
 import org.gradle.api.artifacts.ComponentSelection;
@@ -48,14 +56,6 @@ import org.gradle.internal.typeconversion.NotationParser;
 import org.gradle.internal.typeconversion.TimeUnitsParser;
 import org.gradle.vcs.internal.VcsResolver;
 import org.jspecify.annotations.Nullable;
-
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
-import static org.gradle.api.internal.artifacts.configurations.MutationValidator.MutationType.STRATEGY;
 
 public class DefaultResolutionStrategy implements ResolutionStrategyInternal {
 
@@ -134,7 +134,7 @@ public class DefaultResolutionStrategy implements ResolutionStrategyInternal {
     public Set<ModuleVersionSelector> getForcedModules() {
         return getParsedForcedModules().stream()
             .map(DefaultModuleVersionSelector::newSelector)
-            .collect(ImmutableSet.toImmutableSet());
+            .collect(toImmutableSet());
     }
 
     private Set<ModuleComponentSelector> getParsedForcedModules() {
