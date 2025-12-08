@@ -101,7 +101,7 @@ jobs:
           name: binary-compatibility-report
           path: testing/architecture-test/build/reports/binary-compatibility/report.html
   unit-test:
-    name: Matrix Unit Test 🧪 - (${{ matrix.bucket.name }})
+    name: Unit Test 🧪 Matrix (${{ matrix.bucket.name }})
     permissions:
       contents: read
     runs-on: ubuntu-latest
@@ -128,7 +128,7 @@ jobs:
           cache-read-only: ${{ github.ref != 'refs/heads/master' }}
       - run: ./gradlew ${{ matrix.bucket.tasks }} -DdisableLocalCache=true -PflakyTests=exclude ${{ needs.build.outputs.sys-prop-args }}
   unit-test-windows-arm:
-    name: Unit Test 🧪 - Windows ARM 🪟
+    name: Unit Test 🧪 Windows (ARM) 🪟
     permissions:
       contents: read
     runs-on: windows-11-arm
