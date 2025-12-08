@@ -8,10 +8,10 @@ on:
       - master
 concurrency: # On master/release, we don't want any jobs cancelled so the sha is used to name the group
   group: ${{
-    github.ref == 'refs/heads/master' ||
-    github.ref == 'refs/heads/release') &&
-    format('contributor-pr-base-{0}', github.sha) ||
-    format('contributor-pr-{0}', github.ref)
+    github.ref == 'refs/heads/master'
+    || github.ref == 'refs/heads/release'
+    && format('contributor-pr-base-{0}', github.sha)
+    || format('contributor-pr-{0}', github.ref)
     }}
   cancel-in-progress: false
 env:
