@@ -85,7 +85,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/master' }}
-      - run: ./gradlew clean rewriteDryRun -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }} -Dorg.gradle.jvmargs=-Xmx8G -Dorg.gradle.workers.max=2
+      - run: ./gradlew rewriteDryRun -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }} -Dorg.gradle.workers.max=1 -Dorg.gradle.jvmargs=-Xmx8G
       - name: Sanity Check 🔍
         uses: gradle/actions/setup-gradle@v5
         with:
