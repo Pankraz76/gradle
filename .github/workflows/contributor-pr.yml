@@ -7,9 +7,12 @@ on:
     branches:
       - master
 concurrency:
-  group: ${{ (github.ref == 'refs/heads/master'
+  group: ${{
+    (github.ref == 'refs/heads/master'
     || github.ref == 'refs/heads/release' ) && format('contributor-pr-base-{0}', github.sha)
-    || format('contributor-pr-{0}', github.ref) }} # On master/release, we don't want any jobs cancelled so the sha is used to name the group
+    || format('contributor-pr-{0}', github.ref
+    )
+    }} # On master/release, we don't want any jobs cancelled so the sha is used to name the group
   cancel-in-progress: false
 env:
   DEVELOCITY_ACCESS_KEY: ${{ secrets.DEVELOCITY_ACCESS_KEY }} # Set the DEVELOCITY_ACCESS_KEY so that a Build Scan is generated
