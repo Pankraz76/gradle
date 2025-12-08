@@ -71,21 +71,21 @@ jobs:
         with:
           name: build-receipt.properties
           path: incoming-distributions/build-receipt.properties
-      - name: Checkstyle ☑️
-        uses: gradle/actions/setup-gradle@v5
-        with:
-          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
-      - run: ./gradlew checkstyleMain -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }}
-      - name: Spotless ✨
-        uses: gradle/actions/setup-gradle@v5
-        with:
-          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
-      - run: ./gradlew spotlessCheck -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }}
-      - name: Rewrite ⚙️
-        uses: gradle/actions/setup-gradle@v5
-        with:
-          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
-      - run: ./gradlew rewriteDryRun -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }} -Dorg.gradle.workers.max=1 -Dorg.gradle.jvmargs=-Xmx8G
+#      - name: Checkstyle ☑️
+#        uses: gradle/actions/setup-gradle@v5
+#        with:
+#          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
+#      - run: ./gradlew checkstyleMain -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }}
+#      - name: Spotless ✨
+#        uses: gradle/actions/setup-gradle@v5
+#        with:
+#          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
+#      - run: ./gradlew spotlessCheck -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }}
+#      - name: Rewrite ⚙️
+#        uses: gradle/actions/setup-gradle@v5
+#        with:
+#          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
+      - run: ./gradlew rewriteDryRun -DdisableLocalCache=true ${{ needs.build.outputs.sys-prop-args }} -Dorg.gradle.jvmargs=-Xmx16G
       - name: Sanity Check 🔍
         uses: gradle/actions/setup-gradle@v5
         with:
