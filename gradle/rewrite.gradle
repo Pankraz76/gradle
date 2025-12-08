@@ -1,0 +1,49 @@
+project.apply plugin: 'org.openrewrite.rewrite'
+dependencies {
+    rewrite('org.openrewrite.recipe:rewrite-static-analysis:2.23.0')
+}
+repositories {
+    mavenCentral()
+}
+rewrite {
+    activeRecipe('org.gradle.openrewrite.SanityCheck')
+    configFile = project.getRootProject().file('gradle/rewrite.yml')
+    exclusion(
+        '**.groovy', // yet obsolete, consider removal.
+        '**.kt', // yet obsolete, consider removal.
+        '**/AbstractBasicGroovyCompilerIntegrationSpec**',
+        '**/BadJavaCode**',
+        '**/BrokenClass**',
+        '**/CreateMD5**',
+        '**/CustomTest**',
+        '**/DownloadPlugin**',
+        '**/FileSizeDiffPlugin**',
+        '**/FileSizeDiffTask**',
+        '**/GreetingPlugin**',
+        '**/HttpClientWrapper**',
+        '**/Instrument**',
+        '**/JavaToolchainResolverImplementation**',
+        '**/MyClass**',
+        '**/MyMain**',
+        '**/Person**',
+        '**/ProblemReportingPlugin**',
+        '**/SampleClass**',
+        '**/SiteExtension**',
+        '**/UrlVerify**',
+        '**/build/**',
+        '**/documentation/docs/**',
+        '**/integTest/**',
+        '**/project-with-source/**',
+        '**/resources/**',
+        '**/snippets/**',
+        '**/software/build-init/src/integTest/resources/**',
+        '**/some-thing/**',
+        '**/src/integTest/resources/**',
+        '**/templates/**',
+        '**/test-engine-build/**',
+        '**/testFixtures/**',
+        '**/workerApi/md5/**',
+    )
+    setExportDatatables(true)
+    setFailOnDryRunResults(true)
+}
