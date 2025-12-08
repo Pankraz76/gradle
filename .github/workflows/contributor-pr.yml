@@ -101,7 +101,7 @@ jobs:
           name: binary-compatibility-report
           path: testing/architecture-test/build/reports/binary-compatibility/report.html
   unit-test:
-    name: Unit Test 🧪 - Matrix ♟️ (${{ matrix.bucket.name }})
+    name: Matrix Unit Test 🧪 - (${{ matrix.bucket.name }})
     permissions:
       contents: read
     runs-on: ubuntu-latest
