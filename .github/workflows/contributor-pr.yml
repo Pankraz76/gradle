@@ -148,7 +148,7 @@ jobs:
         with:
           name: build-receipt.properties
           path: incoming-distributions/build-receipt.properties
-      - name: Test Setup Gradle 🐘
+      - name: Run Native Test 🐘
         uses: gradle/actions/setup-gradle@v5
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/master' }}
