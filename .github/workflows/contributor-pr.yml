@@ -15,8 +15,8 @@ concurrency:
   }}
   cancel-in-progress: false
 env:
-  DEVELOCITY_ACCESS_KEY: ${{ secrets.DEVELOCITY_ACCESS_KEY }} # Set the DEVELOCITY_ACCESS_KEY so that a Build Scan is generated
-  GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true # Enable debug for the `gradle-build-action` cache operations
+  DEVELOCITY_ACCESS_KEY: ${{ secrets.DEVELOCITY_ACCESS_KEY }} # Set the DEVELOCITY_ACCESS_KEY so that a Build Scan is generated.
+  GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true # Enable debug for the `gradle-build-action` cache operations.
 permissions: {}
 jobs:
   build:
@@ -142,7 +142,7 @@ jobs:
       - name: Setup Java ☕️
         uses: actions/setup-java@v5
         with:
-          distribution: microsoft #because that's what is available on ARM windows. zulu would also be an option.
+          distribution: microsoft # because that's what is available on ARM windows. zulu would also be an option.
           java-version: 17
       - uses: actions/download-artifact@v6
         with:
