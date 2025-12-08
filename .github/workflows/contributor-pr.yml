@@ -12,7 +12,7 @@ concurrency:
     || github.ref == 'refs/heads/release'
     && format('contributor-pr-base-{0}', github.sha)
     || format('contributor-pr-{0}', github.ref)
-    }}
+  }}
   cancel-in-progress: false
 env:
   DEVELOCITY_ACCESS_KEY: ${{ secrets.DEVELOCITY_ACCESS_KEY }} # Set the DEVELOCITY_ACCESS_KEY so that a Build Scan is generated
