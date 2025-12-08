@@ -6,8 +6,8 @@ on:
   pull_request:
     branches:
       - master
-concurrency: # On master/release, we don't want any jobs cancelled so the sha is used to name the group
-  group: ${{
+concurrency:
+  group: ${{ # On master/release, we don't want any jobs cancelled so the sha is used to name the group.
     github.ref == 'refs/heads/master'
     || github.ref == 'refs/heads/release'
     && format('contributor-pr-base-{0}', github.sha)
