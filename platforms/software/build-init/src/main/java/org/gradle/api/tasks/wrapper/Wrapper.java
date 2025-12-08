@@ -328,7 +328,7 @@ public abstract class Wrapper extends DefaultTask {
     }
 
     /**
-     * The list of available gradle distribution types. Always returns the contents of {@link DistributionType#values()}. 
+     * The list of available gradle distribution types. Always returns the contents of {@link DistributionType#values()}.
      * @deprecated Since 9.3.0. Use {@link DistributionType#values()} directly instead.
      */
     @Internal

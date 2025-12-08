@@ -20,10 +20,14 @@ plugins {
     id("gradlebuild.buildscan") // Reporting: Add more data through custom tags to a Build Scan
     id("gradlebuild.ide") // Local development: Tweak IDEA import
     id("gradlebuild.warmup-ec2") // Warm up EC2 AMI
-
     id("com.autonomousapps.dependency-analysis")
+    // id("com.diffplug.spotless") version ("8.1.0") apply false
+    // id("org.openrewrite.rewrite") version ("7.22.0") apply false
 }
-
+apply(from = "$rootDir/gradle/rewrite.gradle")
+allprojects {
+    apply(from = "$rootDir/gradle/spotless.gradle")
+}
 configure<DependencyAnalysisExtension> {
     issues {
         all {
@@ -32,12 +36,10 @@ configure<DependencyAnalysisExtension> {
             }
         }
     }
-
     usage {
         analysis {
             checkSuperClasses(true)
         }
     }
-
     useTypesafeProjectAccessors(true)
 }
