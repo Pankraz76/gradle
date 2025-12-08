@@ -43,7 +43,7 @@ jobs:
             } else {
                 core.setOutput('sys-prop-args', '')
             }
-      - name: Setup Gradle 🐘
+      - name: Run Compile 🐘
         uses: gradle/actions/setup-gradle@v5
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/master' }}
